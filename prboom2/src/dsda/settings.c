@@ -57,38 +57,63 @@ static int dsda_WadCompatibilityLevel(void) {
 
   // This might be called before all wads are loaded
   if (numwadfiles != last_numwadfiles) {
-    int num;
+      int num;
 
-    last_numwadfiles = numwadfiles;
-    num = W_CheckNumForName("COMPLVL");
+      last_numwadfiles = numwadfiles;
+      num = W_CheckNumForName("COMPLVL");
 
-    if (num != LUMP_NOT_FOUND) {
-      int length;
-      const char* data;
+      if (num != LUMP_NOT_FOUND) {
+          int length;
+          const char* data;
 
-      length = W_LumpLength(num);
-      data = W_LumpByNum(num);
+          length = W_LumpLength(num);
+          data = W_LumpByNum(num);
 
-      if (length == 7 && !strncasecmp("vanilla", data, 7)) {
-        if (gamemode == commercial) {
-          if (gamemission == pack_plut || gamemission == pack_tnt)
-            complvl = 4;
+          int gnum;
+          gnum = W_CheckNumForName("GAMEVERS");
+
+          if (length == 7 && !strncasecmp("vanilla", data, 7) && gnum != LUMP_NOT_FOUND) {
+              int vlength;
+              const char* vdata;
+
+              vlength = W_LumpLength(gnum);
+              vdata = W_LumpByNum(gnum);
+
+              if (vlength == 3 && !strncasecmp("1.2", vdata, 3))
+                  complvl = 0;
+              else if (vlength == 5 && !strncasecmp("1.666", vdata, 5))
+                  complvl = 1;
+              else if (vlength == 3 && !strncasecmp("1.9", vdata, 3))
+                  complvl = 2;
+              else if (vlength == 8 && !strncasecmp("ultimate", vdata, 8))
+                  complvl = 3;
+              else if (vlength == 5 && !strncasecmp("final", vdata, 5))
+                  complvl = 4;
+              else
+                  complvl = 2;
+          }
+          else if (length == 7 && !strncasecmp("vanilla", data, 7)) {
+              if (gamemode == commercial)
+                  if (gamemission == pack_plut || gamemission == pack_tnt)
+                      complvl = 4;
+                  else
+                      complvl = 2;
+              else
+                  complvl = 3;
+          }
+          else if (length == 4 && !strncasecmp("boom", data, 4))
+              complvl = 9;
+          else if (length == 3 && !strncasecmp("mbf", data, 3))
+              complvl = 11;
+          else if (length == 5 && !strncasecmp("mbf21", data, 5))
+              complvl = 21;
+
+          if (length == 7 && !strncasecmp("vanilla", data, 7) && gnum != LUMP_NOT_FOUND)
+              lprintf(LO_INFO, "Detected GAMEVERS lump: %i\n", complvl);
           else
-            complvl = 2;
-        }
-        else
-          complvl = 3;
+              lprintf(LO_INFO, "Detected COMPLVL lump: %i\n", complvl);
       }
-      else if (length == 4 && !strncasecmp("boom", data, 4))
-        complvl = 9;
-      else if (length == 3 && !strncasecmp("mbf", data, 3))
-        complvl = 11;
-      else if (length == 5 && !strncasecmp("mbf21", data, 5))
-        complvl = 21;
-
-      lprintf(LO_INFO, "Detected COMPLVL lump: %i\n", complvl);
-    }
-  }
+}
 
   return complvl;
 }
