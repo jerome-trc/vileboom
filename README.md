@@ -1,4 +1,11 @@
-# dsda-doom v0.27.5
+# dsda-doom v0.27.5 (Arsinikk's Fork)
+
+This is a fork off of DSDA Doom, which will include my own personal tweaks and features.
+- Arsinikk :3
+
+
+main dsda-doom description:
+
 This is a successor of prboom+ with many new features, including:
 - Heretic, Hexen, MBF21, Doom-in-Hexen, UDMF, and MAPINFO support
 - In-game console and scripting
