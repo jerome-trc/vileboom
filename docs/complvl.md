@@ -26,8 +26,8 @@ The COMPLVL lump only has a single key:
 
 ## GAMEVERS Lump
 
-The GAMEVERS lump Can be used in conjunction with the COMPLVL lump, only when the COMPLVL lump has the key of `vanilla`, to use a specific vanilla complevel.
-The GAMEVERS lump will not be loaded if the COMPLVL lump is missing or if COMPLVL has any other key than `vanilla`.
+The GAMEVERS lump can be used only when the COMPLVL lump has the key of `vanilla`, to specify an exact vanilla complevel.
+GAMEVERS will not be read if COMPLVL is absent or if COMPLVL has any other key than `vanilla`.
 
 ### Specification
 
