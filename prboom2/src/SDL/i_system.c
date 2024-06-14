@@ -160,7 +160,7 @@ unsigned long I_GetRandomTimeSeed(void)
  */
 const char* I_GetVersionString(char* buf, size_t sz)
 {
-  snprintf(buf,sz,"%s v%s (https://github.com/kraflab/dsda-doom/)",PACKAGE_NAME,PACKAGE_VERSION);
+  snprintf(buf,sz,"%s v%s (https://github.com/andrikpowell/nyan-doom/)",PACKAGE_NAME,PACKAGE_VERSION);
   return buf;
 }
 
@@ -298,7 +298,7 @@ const char* I_GetTempDir(void)
 // cph - V.Aguilar (5/30/99) suggested return ~/.lxdoom/, creating
 //  if non-existant
 // cph 2006/07/23 - give prboom+ its own dir
-static const char prboom_dir[] = {"/.dsda-doom"}; // Mead rem extra slash 8/21/03
+static const char prboom_dir[] = {"/.nyan-doom"}; // Mead rem extra slash 8/21/03
 
 const char *I_DoomExeDir(void)
 {
@@ -382,7 +382,7 @@ char* I_FindFileInternal(const char* wfname, const char* ext, dboolean isStatic)
     {NULL}, // current working directory
     {NULL, NULL, "DOOMWADDIR"}, // run-time $DOOMWADDIR
     {DOOMWADDIR}, // build-time configured DOOMWADDIR
-    {DSDA_ABSOLUTE_PWAD_PATH}, // build-time configured absolute path to dsda-doom.wad
+    {DSDA_ABSOLUTE_PWAD_PATH}, // build-time configured absolute path to nyan-doom.wad
     {NULL, NULL, NULL, I_GetBasePath}, // search the base path provided by SDL
     {NULL, "doom", "HOME"}, // ~/doom
     {NULL, NULL, "HOME"}, // ~

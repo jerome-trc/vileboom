@@ -588,15 +588,15 @@ function(AddGameExecutable TARGET SOURCES)
         target_link_libraries(${TARGET} PRIVATE PortMidi::portmidi)
     endif()
 
-    add_dependencies(${TARGET} dsda-doom-wad)
+    add_dependencies(${TARGET} nyan-doom-wad)
 
     if(MSVC)
         set_target_properties(${TARGET} PROPERTIES
             LINK_FLAGS "/MANIFEST:NO /SUBSYSTEM:CONSOLE"
         )
         add_custom_command(TARGET ${TARGET} POST_BUILD
-            COMMAND "mt.exe" -manifest \"${CMAKE_CURRENT_SOURCE_DIR}\\..\\ICONS\\dsda-doom.exe.manifest\" -outputresource:\"$<TARGET_FILE:dsda-doom>\"\;\#1
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different ${WAD_DATA_PATH} $<TARGET_FILE_DIR:dsda-doom>
+            COMMAND "mt.exe" -manifest \"${CMAKE_CURRENT_SOURCE_DIR}\\..\\ICONS\\nyan-doom.exe.manifest\" -outputresource:\"$<TARGET_FILE:nyan-doom>\"\;\#1
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different ${WAD_DATA_PATH} $<TARGET_FILE_DIR:nyan-doom>
         )
     elseif(WIN32)
         set_target_properties(${TARGET} PROPERTIES
@@ -630,4 +630,4 @@ function(AddGameExecutable TARGET SOURCES)
     )
 endfunction()
 
-AddGameExecutable(dsda-doom "${DSDA_SOURCES}")
+AddGameExecutable(nyan-doom "${DSDA_SOURCES}")

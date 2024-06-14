@@ -1,8 +1,14 @@
-# Arsinikk's DSDA Doom
-This is a fork off of DSDA Doom, which will include my own personal tweaks and features. (Arsinikk :3)
+# Arsinikk's Nyan Doom v1.1.0
+This is Arsinikk's own personal version of DSDA Doom (v0.27.5) with new added features and improvements. It's kept relatively up to date with the original.
 
-# dsda-doom v0.27.5 description:
+### New Features
+- Support for `GAMEVERS` lump in combination with `COMPLVL` to further specify Vanilla compatibility.
+- Scaled (fixed) fuzz effect for Spectres and invisiblity effects in the software renderer (Thanks to Lovey)
 
+### Patch Notes
+- [Nyan Doom v1.1](./patch_notes/v1.1.md)
+
+# From the original dsda-doom project
 This is a successor of prboom+ with many new features, including:
 - Heretic, Hexen, MBF21, Doom-in-Hexen, UDMF, and MAPINFO support
 - In-game console and scripting
@@ -17,9 +23,9 @@ This is a successor of prboom+ with many new features, including:
 Download windows releases [here](https://drive.google.com/drive/folders/1KMU1dY0HZrY5h2EyPzxxXuyH8DunAJV_?usp=sharing).
 
 ### Patch Notes
-- [v0.27](./patch_notes/v0.27.md)
-- [v0.26](./patch_notes/v0.26.md)
-- [v0.25](./patch_notes/v0.25.md)
+- [DSDA Doom v0.27](./patch_notes/v0.27.md)
+- [DSDA Doom v0.26](./patch_notes/v0.26.md)
+- [DSDA Doom v0.25](./patch_notes/v0.25.md)
 
 ### Launcher
 There is a dedicated launcher for this port available [here](https://github.com/Pedro-Beirao/dsda-launcher) by PBeGood4.
