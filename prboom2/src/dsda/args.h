@@ -51,6 +51,7 @@ typedef enum {
   dsda_arg_solo_net,
   dsda_arg_coop_spawns,
   dsda_arg_pistolstart,
+  dsda_arg_limitremoving,
   dsda_arg_chain_episodes,
   dsda_arg_stroller,
   dsda_arg_turbo,

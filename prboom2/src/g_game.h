@@ -124,6 +124,9 @@ extern int longtics;
 // automatic pistol start when advancing from one level to the next
 extern int pistolstart;
 
+// automatic pistol start when advancing from one level to the next
+extern int limitremoving;
+
 // hexen
 
 void G_Completed(int map, int position, int flags, angle_t angle);

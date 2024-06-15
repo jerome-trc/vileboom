@@ -1728,6 +1728,8 @@ static void D_DoomMainSetup(void)
   // Automatic pistol start when advancing from one level to the next.
   pistolstart = dsda_Flag(dsda_arg_pistolstart);
 
+  limitremoving = dsda_Flag(dsda_arg_limitremoving);
+
   // CPhipps - autoloading of wads
   autoload = !dsda_Flag(dsda_arg_noautoload);
 
