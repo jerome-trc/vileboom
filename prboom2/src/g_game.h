@@ -124,7 +124,7 @@ extern int longtics;
 // automatic pistol start when advancing from one level to the next
 extern int pistolstart;
 
-// automatic pistol start when advancing from one level to the next
+// disables overflow warnings and errors for vanilla complevels
 extern int limitremoving;
 
 // hexen

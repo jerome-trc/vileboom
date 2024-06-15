@@ -3,6 +3,7 @@ This is Arsinikk's own personal version of DSDA Doom (v0.27.5) with new added fe
 
 ### New Features
 - Support for `GAMEVERS` lump in combination with `COMPLVL` to further specify Vanilla compatibility.
+- Support for `-limitremoving` or `-lr` to disable overflow warnings and errors under Vanilla compatibility
 - Scaled (fixed) fuzz effect for Spectres and invisiblity effects in the software renderer (Thanks to Lovey)
 
 ### Patch Notes
@@ -23,9 +24,9 @@ This is a successor of prboom+ with many new features, including:
 Download windows releases [here](https://drive.google.com/drive/folders/1KMU1dY0HZrY5h2EyPzxxXuyH8DunAJV_?usp=sharing).
 
 ### Patch Notes
-- [DSDA Doom v0.27](./patch_notes/v0.27.md)
-- [DSDA Doom v0.26](./patch_notes/v0.26.md)
-- [DSDA Doom v0.25](./patch_notes/v0.25.md)
+- [v0.27](./patch_notes/v0.27.md)
+- [v0.26](./patch_notes/v0.26.md)
+- [v0.25](./patch_notes/v0.25.md)
 
 ### Launcher
 There is a dedicated launcher for this port available [here](https://github.com/Pedro-Beirao/dsda-launcher) by PBeGood4.

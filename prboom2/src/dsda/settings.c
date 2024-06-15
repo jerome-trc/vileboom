@@ -89,6 +89,26 @@ static int dsda_WadCompatibilityLevel(void) {
                   complvl = 3;
               else if (vlength == 5 && !strncasecmp("final", vdata, 5))
                   complvl = 4;
+              else if (vlength == 9 && !strncasecmp("1.2 limit", vdata, 9)) {
+                  complvl = 0;
+                  limitremoving = 1;
+              }
+              else if (vlength == 11 && !strncasecmp("1.666 limit", vdata, 11)) {
+                  complvl = 1;
+                  limitremoving = 1;
+              }
+              else if (vlength == 9 && !strncasecmp("1.9 limit", vdata, 9)) {
+                  complvl = 2;
+                  limitremoving = 1;
+              }
+              else if (vlength == 14 && !strncasecmp("ultimate limit", vdata, 14)) {
+                  complvl = 3;
+                  limitremoving = 1;
+              }
+              else if (vlength == 11 && !strncasecmp("final limit", vdata, 11)) {
+                  complvl = 4;
+                  limitremoving = 1;
+              }
               else
                   complvl = 2;
           }
@@ -109,9 +129,12 @@ static int dsda_WadCompatibilityLevel(void) {
               complvl = 21;
 
           if (length == 7 && !strncasecmp("vanilla", data, 7) && gnum != LUMP_NOT_FOUND)
-              lprintf(LO_INFO, "Detected GAMEVERS lump: %i\n", complvl);
+              lprintf(LO_INFO, "Detected COMPLVL and GAMEVERS lump: %i\n", complvl);
           else
               lprintf(LO_INFO, "Detected COMPLVL lump: %i\n", complvl);
+
+          if (limitremoving)
+              lprintf(LO_INFO, "Limit-removing detected. Overflows disabled\n");
       }
 }
 
