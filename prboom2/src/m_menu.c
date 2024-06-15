@@ -1092,8 +1092,8 @@ menuitem_t OptionsMenu[]=
   { 1, "M_WEAP", M_Weapons, 'w', "WEAPONS" },
   { 1, "M_STAT", M_StatusBar, 's', "STATUS BAR / HUD" },
   { 1, "M_AUTO", M_Automap, 'a', "AUTOMAP" },
-  { 1, "M_SVOL", M_Sound, 's', "SOUND VOLUME" },
   { 1, "M_LVLTBL", M_LevelTable, 's', "LEVEL TABLE" },
+  { 1, "M_SVOL", M_Sound, 's', "SOUND VOLUME" },
 };
 
 menu_t OptionsDef =
@@ -2597,6 +2597,11 @@ setup_menu_t stat_settings1[] =  // Status Bar and HUD Settings screen
   { "GRAY %",S_YESNO, m_conf, SB_X, dsda_config_sts_pct_always_gray },
   { "SINGLE KEY DISPLAY", S_YESNO, m_conf, SB_X, dsda_config_sts_traditional_keys },
   EMPTY_LINE,
+  { "Extended Hud", S_SKIP | S_TITLE, m_null, SB_X},
+  { "Use Extended Hud", S_YESNO, m_conf, SB_X, dsda_config_exhud },
+  { "Ex Hud Scale %", S_NUM, m_conf, SB_X, dsda_config_ex_text_scale_x },
+  { "Ex Hud Ratio %", S_NUM, m_conf, SB_X, dsda_config_ex_text_ratio_y },
+  EMPTY_LINE,
   { "HEADS-UP DISPLAY", S_SKIP | S_TITLE, m_null, SB_X},
   { "SHOW MESSAGES", S_YESNO, m_conf, SB_X, dsda_config_show_messages },
   { "HEALTH LOW/OK", S_NUM, m_conf, SB_X, dsda_config_hud_health_red },
@@ -2991,10 +2996,6 @@ setup_menu_t misc_settings[] = {
 
 setup_menu_t display_settings[] = {
   { "Display Options", S_SKIP | S_TITLE, m_null, G_X},
-  { "Use Extended Hud", S_YESNO, m_conf, G_X, dsda_config_exhud },
-  { "Ex Hud Scale %", S_NUM, m_conf, G_X, dsda_config_ex_text_scale_x },
-  { "Ex Hud Ratio %", S_NUM, m_conf, G_X, dsda_config_ex_text_ratio_y },
-  { "Hide Status Bar Horns", S_YESNO, m_conf, G_X, dsda_config_hide_horns },
   { "Hide Weapon", S_YESNO, m_conf, G_X, dsda_config_hide_weapon },
   { "Wipe Screen Effect", S_YESNO,  m_conf, G_X, dsda_config_render_wipescreen },
   { "Show FPS", S_YESNO,  m_conf, G_X, dsda_config_show_fps },
@@ -3009,6 +3010,7 @@ setup_menu_t display_settings[] = {
   EMPTY_LINE,
   { "Status Bar and Menu Appearance", S_CHOICE, m_conf, G_X, dsda_config_render_stretch_hud, 0, render_stretch_list },
   { "Fullscreen Menu Background", S_YESNO, m_conf, G_X, dsda_config_menu_background },
+  { "Hide Status Bar Horns", S_YESNO, m_conf, G_X, dsda_config_hide_horns },
 
   PREV_PAGE(misc_settings),
   NEXT_PAGE(mapping_settings),
@@ -3053,6 +3055,7 @@ setup_menu_t demo_settings[] = {
   { "Casual Play Settings", S_SKIP | S_TITLE, m_null, G_X},
   { "Allow Jumping", S_YESNO, m_conf, G_X, dsda_config_allow_jumping },
   { "OpenGL Show Health Bars", S_YESNO, m_conf, G_X, dsda_config_gl_health_bar },
+  { "OpenGL Blend Animations", S_YESNO, m_conf, G_X, dsda_config_gl_blend_animations },
 
   PREV_PAGE(mapping_settings),
   NEXT_PAGE(tas_settings),
