@@ -483,6 +483,8 @@ int EV_DoPlat
 
   rtn = 0;
 
+
+  if (ProcessNoTagLines(line, &sec, &id_p)) { if (zerotag_manual) goto manual_plat; else { return rtn; } };//e6y
   // Activate all <type> plats that are in_stasis
   switch(type)
   {
@@ -504,9 +506,11 @@ int EV_DoPlat
   {
     sec = &sectors[*id_p];
 
+    manual_plat:
     // don't start a second floor function if already moving
-    if (P_FloorActive(sec)) //jff 2/23/98 multiple thinkers
-      continue;
+    if (P_FloorActive(sec)) {//jff 2/23/98 multiple thinkers
+        if (!zerotag_manual) continue; else { return rtn; }
+    };//e6y
 
     // Create a thinker
     rtn = 1;
@@ -608,6 +612,7 @@ int EV_DoPlat
         break;
     }
     P_AddActivePlat(plat);  // add plat to list of active plats
+    if (zerotag_manual) return rtn; //e6y
   }
   return rtn;
 }

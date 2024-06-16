@@ -510,6 +510,7 @@ int EV_DoDoor
 ( line_t* line,
   vldoor_e  type )
 {
+  int secnum;
   const int *id_p;
   int rtn;
   sector_t* sec;
@@ -517,13 +518,16 @@ int EV_DoDoor
 
   rtn = 0;
 
+  if (ProcessNoTagLines(line, &sec, &secnum)) { if (zerotag_manual) goto manual_door; else { return rtn; } };//e6y
   // open all doors with the same tag as the activating line
   FIND_SECTORS(id_p, line->tag)
   {
     sec = &sectors[*id_p];
+    manual_door://e6y
     // if the ceiling already moving, don't start the door action
-    if (P_CeilingActive(sec)) //jff 2/22/98
-      continue;
+    if (P_CeilingActive(sec)) { //jff 2/22/98
+        if (!zerotag_manual) continue; else { return rtn; }
+    }; //e6y
 
     // new door thinker
     rtn = 1;
@@ -595,6 +599,7 @@ int EV_DoDoor
       default:
         break;
     }
+    if (zerotag_manual) return rtn; //e6y
   }
   return rtn;
 }

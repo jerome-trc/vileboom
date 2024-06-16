@@ -119,6 +119,7 @@ enum {
 };
 
 enum {
+  comperr_zerotag,
   comperr_passuse,
   comperr_hangsolid,
   comperr_blockmap,

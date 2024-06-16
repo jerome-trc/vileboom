@@ -46,14 +46,14 @@
 // check if a manual trigger, if so do just the sector on the backside
 #define FIND_GENLIN_SECTORS if (Trig == PushOnce || Trig == PushMany) \
                             { \
-                              if (!(sec = line->backsector)) \
-                                return rtn; \
-                              manual_list[0] = sec->iSectorID; \
-                              id_p = manual_list; \
-                            } \
-                            else \
-                            { \
-                              id_p = dsda_FindSectorsFromID(line->tag); \
+                                    if (!(sec = line->backsector)) \
+                                        return rtn; \
+                                        manual_list[0] = sec->iSectorID; \
+                                        id_p = manual_list; \
+                                } \
+                                    else \
+                                    { \
+                                        id_p = dsda_FindSectorsFromID(line->tag); \
                             }
 
 //////////////////////////////////////////////////////////
@@ -76,34 +76,35 @@
 int EV_DoGenFloor
 ( line_t*       line )
 {
-  const int *id_p;
-  int manual_list[2] = { -1, -1 };
-  int                   rtn;
-  sector_t*             sec;
-  floormove_t*          floor;
-  unsigned              value = (unsigned)line->special - GenFloorBase;
+    const int *id_p;
+    int manual_list[2] = { -1, -1 };
+    int                   rtn;
+    sector_t*             sec;
+    floormove_t*          floor;
+    unsigned              value = (unsigned)line->special - GenFloorBase;
 
-  // parse the bit fields in the line's special type
+    // parse the bit fields in the line's special type
 
-  int Crsh = (value & FloorCrush) >> FloorCrushShift;
-  int ChgT = (value & FloorChange) >> FloorChangeShift;
-  int Targ = (value & FloorTarget) >> FloorTargetShift;
-  int Dirn = (value & FloorDirection) >> FloorDirectionShift;
-  int ChgM = (value & FloorModel) >> FloorModelShift;
-  int Sped = (value & FloorSpeed) >> FloorSpeedShift;
-  int Trig = (value & TriggerType) >> TriggerTypeShift;
+    int Crsh = (value & FloorCrush) >> FloorCrushShift;
+    int ChgT = (value & FloorChange) >> FloorChangeShift;
+    int Targ = (value & FloorTarget) >> FloorTargetShift;
+    int Dirn = (value & FloorDirection) >> FloorDirectionShift;
+    int ChgM = (value & FloorModel) >> FloorModelShift;
+    int Sped = (value & FloorSpeed) >> FloorSpeedShift;
+    int Trig = (value & TriggerType) >> TriggerTypeShift;
 
-  rtn = 0;
+    rtn = 0;
 
-  FIND_GENLIN_SECTORS;
+FIND_GENLIN_SECTORS;
 
-  for (; *id_p >= 0; id_p++)
-  {
-    sec = &sectors[*id_p];
+for (; *id_p >= 0; id_p++)
+{
+    if ((!(sec = line->backsector)) && comperr_zerotag)
+        sec = &sectors[*id_p];
 
     // Do not start another function if floor already moving
     if (P_FloorActive(sec))
-      continue;
+            continue;
 
     // new floor thinker
     rtn = 1;
@@ -275,6 +276,7 @@ int EV_DoGenCeiling
 
   for (; *id_p >= 0; id_p++)
   {
+    if ((!(sec = line->backsector)) && comperr_zerotag)
     sec = &sectors[*id_p];
 
     // Do not start another function if ceiling already moving
@@ -454,7 +456,8 @@ int EV_DoGenLift
 
   for (; *id_p >= 0; id_p++)
   {
-    sec = &sectors[*id_p];
+      if ((!(sec = line->backsector)) && comperr_zerotag)
+          sec = &sectors[*id_p];
 
     // Do not start another function if floor already moving
     if (P_FloorActive(sec))
@@ -593,6 +596,7 @@ int EV_DoGenStairs
 
   for (; *id_p >= 0; id_p++)
   {
+      if ((!(sec = line->backsector)) && comperr_zerotag)
     sec = &sectors[*id_p];
 
     //Do not start another function if floor already moving
@@ -761,7 +765,8 @@ int EV_DoGenCrusher
 
   for (; *id_p >= 0; id_p++)
   {
-    sec = &sectors[*id_p];
+    if ((!(sec = line->backsector)) && comperr_zerotag)
+      sec = &sectors[*id_p];
 
     // Do not start another function if ceiling already moving
     if (P_CeilingActive(sec)) //jff 2/22/98
@@ -842,7 +847,8 @@ int EV_DoGenLockedDoor
 
   for (; *id_p >= 0; id_p++)
   {
-    sec = &sectors[*id_p];
+    if ((!(sec = line->backsector)) && comperr_zerotag)
+      sec = &sectors[*id_p];
 
     // Do not start another function if ceiling already moving
     if (P_CeilingActive(sec)) //jff 2/22/98
@@ -931,7 +937,8 @@ int EV_DoGenDoor
 
   for (; *id_p >= 0; id_p++)
   {
-    sec = &sectors[*id_p];
+    if ((!(sec = line->backsector)) && comperr_zerotag)
+      sec = &sectors[*id_p];
 
     // Do not start another function if ceiling already moving
     if (P_CeilingActive(sec)) //jff 2/22/98

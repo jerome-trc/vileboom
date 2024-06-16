@@ -212,6 +212,10 @@ extern int mlooky;
 
 void e6y_G_Compatibility(void);
 
+extern dboolean zerotag_manual;
+
+dboolean ProcessNoTagLines(line_t *line, sector_t **sec, int *id_p);
+
 const char* PathFindFileName(const char* pPath);
 
 //extern int viewMaxY;
