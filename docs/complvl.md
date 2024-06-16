@@ -14,7 +14,7 @@ The COMPLVL lump only has a single value:
 
 - `vanilla`
   - Selects complevel 2, 3 and 4, depending on the IWAD loaded, for vanilla compatibility
-  - Can be used in conjunction with the GAMEVERS lump to use a specific or rare vanilla complevel (0,1)
+  - Can be used in conjunction with the GAMEVERS lump to use a specific / rare vanilla complevel (0-4), as well enabling limit-removing support.
 - `boom`
   - Selects complevel 9, for boom compatibility
 - `mbf`
