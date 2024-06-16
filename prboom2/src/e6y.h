@@ -214,7 +214,7 @@ void e6y_G_Compatibility(void);
 
 extern dboolean zerotag_manual;
 
-dboolean ProcessNoTagLines(line_t *line, sector_t **sec, int *id_p);
+dboolean ProcessNoTagLines(line_t *line, sector_t **sec, int *secnum);
 
 const char* PathFindFileName(const char* pPath);
 

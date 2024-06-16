@@ -481,6 +481,7 @@ int EV_DoFloor
   floor_e       floortype )
 {
   const int *id_p;
+  int           secnum;
   int           rtn;
   int           i;
   sector_t*     sec;
@@ -488,7 +489,7 @@ int EV_DoFloor
 
   rtn = 0;
 
-  if (ProcessNoTagLines(line, &sec, &*id_p)) { if (zerotag_manual) goto manual_floor; else { return rtn; } };//e6y
+  if (ProcessNoTagLines(line, &sec, &secnum)) { if (zerotag_manual) goto manual_floor; else { return rtn; } };//e6y
   // move all floors with the same tag as the linedef
   FIND_SECTORS(id_p, line->tag)
   {
@@ -779,7 +780,7 @@ int EV_BuildStairs
   int           oldsecnum;
   int secnum;
   sector_t*     sec;
-  if (ProcessNoTagLines(line, &sec, &*id_p)) { if (zerotag_manual) goto manual_stair; else { return rtn; } };//e6y
+  if (ProcessNoTagLines(line, &sec, &secnum)) { if (zerotag_manual) goto manual_stair; else { return rtn; } };//e6y
 
   // start a stair at each sector tagged the same as the linedef
   FIND_SECTORS(id_p, line->tag)

@@ -478,13 +478,14 @@ int EV_DoPlat
 {
   plat_t* plat;
   const int *id_p;
+  int secnum;
   int             rtn;
   sector_t*       sec;
 
   rtn = 0;
 
 
-  if (ProcessNoTagLines(line, &sec, &id_p)) { if (zerotag_manual) goto manual_plat; else { return rtn; } };//e6y
+  if (ProcessNoTagLines(line, &sec, &secnum)) { if (zerotag_manual) goto manual_plat; else { return rtn; } };//e6y
   // Activate all <type> plats that are in_stasis
   switch(type)
   {
