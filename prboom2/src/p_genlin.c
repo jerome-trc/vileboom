@@ -48,8 +48,8 @@
                             { \
                               if (!(sec = line->backsector)) \
                                 return rtn; \
-                                manual_list[0] = sec->iSectorID; \
-                                id_p = manual_list; \
+                              manual_list[0] = sec->iSectorID; \
+                              id_p = manual_list; \
                             } \
                             else \
                             { \
