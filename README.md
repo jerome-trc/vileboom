@@ -1,10 +1,12 @@
-# Arsinikk's Nyan Doom v1.1.0
+# Arsinikk's Nyan Doom v1.1.1
 This is Arsinikk's own personal version of DSDA Doom (v0.27.5) with new added features and improvements. It's kept relatively up to date with the original.
 
 ### New Features
 - Support for `GAMEVERS` lump in combination with `COMPLVL` to further specify Vanilla compatibility.
 - Support for `-limitremoving` or `-lr` to disable overflow warnings and errors under Vanilla compatibility
 - Scaled (fixed) fuzz effect for Spectres and invisiblity effects in the software renderer (Thanks to Lovey)
+- Re-added `comperr_zerotag` setting (menu option to fix tag 0 maps)
+- Re-added opengl animated flats feature
 
 ### Patch Notes
 - [Nyan Doom v1.1](./patch_notes/v1.1.md)
