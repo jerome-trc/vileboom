@@ -170,13 +170,13 @@ else()
     set(DEFAULT_WAD_DIR "${CMAKE_INSTALL_DATADIR}/games/doom")
 endif()
 
-set(DSDAPWADDIR "${DEFAULT_WAD_DIR}" CACHE STRING "Path to install Nyan-Doom internal WAD, relative to CMAKE_INSTALL_PREFIX or absolute.")
+set(NYANPWADDIR "${DEFAULT_WAD_DIR}" CACHE STRING "Path to install Nyan-Doom internal WAD, relative to CMAKE_INSTALL_PREFIX or absolute.")
 set(DOOMWADDIR "${CMAKE_INSTALL_PREFIX}/${DEFAULT_WAD_DIR}" CACHE PATH "Path to look for WAD files.")
 
-if(IS_ABSOLUTE "${DSDAPWADDIR}")
-    set(DSDA_ABSOLUTE_PWAD_PATH "${DSDAPWADDIR}")
+if(IS_ABSOLUTE "${NYANPWADDIR}")
+    set(NYAN_ABSOLUTE_PWAD_PATH "${NYANPWADDIR}")
 else()
-    set(DSDA_ABSOLUTE_PWAD_PATH "${CMAKE_INSTALL_PREFIX}/${DSDAPWADDIR}")
+    set(NYAN_ABSOLUTE_PWAD_PATH "${CMAKE_INSTALL_PREFIX}/${NYANPWADDIR}")
 endif()
 
 option(SIMPLECHECKS "Enable checks which only impose significant overhead if a posible error is detected" ON)

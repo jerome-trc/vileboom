@@ -419,7 +419,7 @@ char* I_FindFileInternal(const char* wfname, const char* ext, dboolean isStatic)
     {NULL}, // current working directory
     {NULL, NULL, "DOOMWADDIR"}, // run-time $DOOMWADDIR
     {DOOMWADDIR}, // build-time configured DOOMWADDIR
-    {DSDA_ABSOLUTE_PWAD_PATH}, // build-time configured absolute path to nyan-doom.wad
+    {NYAN_ABSOLUTE_PWAD_PATH}, // build-time configured absolute path to nyan-doom.wad
     {NULL, NULL, NULL, I_GetBasePath}, // search the base path provided by SDL
     {NULL, "doom", "HOME"}, // ~/doom
     {NULL, NULL, "HOME"}, // ~
