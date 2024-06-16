@@ -3,10 +3,10 @@ This is Arsinikk's own personal version of DSDA Doom (v0.27.5) with new added fe
 
 ### New Features
 - Support for [GAMEVERS](./docs/gamevers.md) lump in combination with [COMPLVL](./docs/complvl.md) to further specify Vanilla compatibility.
-- Support for `-limitremoving` or `-lr` to disable overflow warnings and errors under Vanilla compatibility
-- Scaled (fixed) fuzz effect for Spectres and invisiblity effects in the software renderer (Thanks to Lovey)
+- Support for `-limitremoving` or `-lr` to disable overflow errors and emulation under Vanilla compatibility
+- Added new scaled fuzz effect for Spectres and invisibility effects in the software renderer (Thanks Lovey)
 - Re-added comperr_zerotag setting (menu option to fix tag 0 maps)
-- Re-added opengl animated flats feature
+- Re-added OpenGL animated textures feature
 
 ### Patch Notes
 - [Nyan Doom v1.1](./patch_notes/v1.1.md)
