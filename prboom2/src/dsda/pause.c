@@ -20,6 +20,9 @@
 
 #include "pause.h"
 
+#include "dsda/configuration.h"
+
+
 static dboolean paused;
 
 dboolean dsda_Paused(void) {
@@ -27,7 +30,10 @@ dboolean dsda_Paused(void) {
 }
 
 dboolean dsda_PausedViaMenu(void) {
-  return menuactive && !netgame;
+  if (dsda_IntConfig(dsda_config_menu_play_demo))
+      return !demoplayback && menuactive && !netgame;
+  else
+      return menuactive && !netgame;
 }
 
 dboolean dsda_PausedOutsideDemo(void) {

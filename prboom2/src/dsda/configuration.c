@@ -227,6 +227,10 @@ dsda_config_t dsda_config[dsda_config_count] = {
     "vanilla_keymap", dsda_config_vanilla_keymap,
     CONF_BOOL(0)
   },
+  [dsda_config_menu_play_demo] = {
+    "play_demo_on_menu", dsda_config_menu_play_demo,
+    CONF_BOOL(1)
+  },
   [dsda_config_menu_background] = {
     "menu_background", dsda_config_menu_background,
     CONF_BOOL(1)
