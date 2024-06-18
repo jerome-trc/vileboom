@@ -28,7 +28,7 @@ typedef enum {
   dsda_config_default_complevel,
   dsda_config_default_skill,
   dsda_config_vanilla_keymap,
-  dsda_config_menu_play_demo,
+  dsda_config_menu_pause_demo,
   dsda_config_menu_background,
   dsda_config_process_priority,
   dsda_config_max_player_corpse,

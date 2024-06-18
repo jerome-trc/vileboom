@@ -30,14 +30,17 @@ dboolean dsda_Paused(void) {
 }
 
 dboolean dsda_PausedViaMenu(void) {
-  if (dsda_IntConfig(dsda_config_menu_play_demo))
+  if (dsda_IntConfig(dsda_config_menu_pause_demo))
       return !demoplayback && menuactive && !netgame;
   else
       return menuactive && !netgame;
 }
 
 dboolean dsda_PausedOutsideDemo(void) {
-  return dsda_PauseMode(PAUSE_PLAYBACK | PAUSE_BUILDMODE) || dsda_PausedViaMenu();
+    if (dsda_IntConfig(dsda_config_menu_pause_demo))
+        return dsda_PauseMode(PAUSE_PLAYBACK | PAUSE_BUILDMODE);
+    else
+        return dsda_PauseMode(PAUSE_PLAYBACK | PAUSE_BUILDMODE) || dsda_PausedViaMenu();
 }
 
 dboolean dsda_CameraPaused(void) {
