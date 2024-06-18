@@ -83,7 +83,7 @@ cfg_def_t cfg_defs[] =
 
   SETTING_HEADING("Misc settings"),
   MIGRATED_SETTING(dsda_config_vanilla_keymap),
-  MIGRATED_SETTING(dsda_config_menu_play_demo),
+  MIGRATED_SETTING(dsda_config_menu_pause_demo),
   MIGRATED_SETTING(dsda_config_menu_background),
   MIGRATED_SETTING(dsda_config_max_player_corpse),
   MIGRATED_SETTING(dsda_config_flashing_hom),

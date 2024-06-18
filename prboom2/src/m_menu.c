@@ -99,6 +99,7 @@
 #include "dsda/text_color.h"
 #include "dsda/utility.h"
 #include "dsda/wad_stats.h"
+#include "dsda/widescreen.h"
 
 #include "heretic/mn_menu.h"
 #include "heretic/sb_bar.h"
@@ -568,7 +569,11 @@ void M_DrawReadThis1(void)
   {
     // e6y: wide-res
     V_ClearBorder();
-    V_DrawNamePatch(0, 0, 0, "HELP2", CR_DEFAULT, VPT_STRETCH);
+    int WS_DrawHelp1_exist = dsda_WadHelp1();
+    if (WS_DrawHelp1_exist)
+      V_DrawNamePatch(0, 0, 0, "HELP2_WS", CR_DEFAULT, VPT_STRETCH);
+    else
+      V_DrawNamePatch(0, 0, 0, "HELP2", CR_DEFAULT, VPT_STRETCH);
   }
   else
     M_DrawCredits();
@@ -2976,7 +2981,7 @@ setup_menu_t misc_settings[] = {
   { "Default compatibility level", S_CHOICE, m_conf, G_X, dsda_config_default_complevel, 0, &gen_compstrings[1] },
   { "Enable Cheat Code Entry", S_YESNO, m_conf, G_X, dsda_config_cheat_codes },
   { "Announce Map On Entry", S_YESNO, m_conf, G_X, dsda_config_announce_map },
-  { "Play Demos On Menu", S_YESNO, m_conf, G_X, dsda_config_menu_play_demo },
+  { "Pause Demos On Menu", S_YESNO, m_conf, G_X, dsda_config_menu_pause_demo },
   EMPTY_LINE,
   { "Quality Of Life", S_SKIP | S_TITLE, m_null, G_X},
   { "Rewind Interval (s)", S_NUM, m_conf, G_X, dsda_config_auto_key_frame_interval },
@@ -3742,33 +3747,36 @@ void M_InitExtendedHelp(void)
 
 {
   int index;
-  char namebfr[] = { "HELPnn"} ;
+  char namebfr[] = { "HELPnn" };
+  char wsnamebfr[] = { "HELPnnWS" };
 
   extended_help_count = 0;
   for (index = 1 ; index < 100 ; index++) {
-    namebfr[4] = index/10 + '0';
-    namebfr[5] = index%10 + '0';
-    if (!W_LumpNameExists(namebfr)) {
-      if (extended_help_count) {
-        /* The Extended Help menu is accessed using the
-         * Help hotkey (F1) or the "Read This!" menu item.
-         *
-         * If Extended Help screens are present, use the
-         * Extended Help routine when either the F1 Help Menu
-         * or the "Read This!" menu items are accessed.
-         *
-         * See also: https://www.doomworld.com/forum/topic/111465-boom-extended-help-screens-an-undocumented-feature/
-         */
-          HelpMenu[0].routine = M_ExtHelp;
-        if (gamemode == commercial) {
-          ExtHelpDef.prevMenu  = &ReadDef1; /* previous menu */
-          ReadMenu1[0].routine = M_ExtHelp;
-        } else {
-          ExtHelpDef.prevMenu  = &ReadDef2; /* previous menu */
-          ReadMenu2[0].routine = M_ExtHelp;
+      namebfr[4] = index/10 + '0';
+      namebfr[5] = index%10 + '0';
+      wsnamebfr[4] = index/10 + '0';
+      wsnamebfr[5] = index%10 + '0';
+    if ((!W_LumpNameExists(namebfr))) {
+        if (extended_help_count) {
+            /* The Extended Help menu is accessed using the
+             * Help hotkey (F1) or the "Read This!" menu item.
+             *
+             * If Extended Help screens are present, use the
+             * Extended Help routine when either the F1 Help Menu
+             * or the "Read This!" menu items are accessed.
+             *
+             * See also: https://www.doomworld.com/forum/topic/111465-boom-extended-help-screens-an-undocumented-feature/
+             */
+            HelpMenu[0].routine = M_ExtHelp;
+            if (gamemode == commercial) {
+                ExtHelpDef.prevMenu  = &ReadDef1; /* previous menu */
+                ReadMenu1[0].routine = M_ExtHelp;
+            } else {
+                ExtHelpDef.prevMenu  = &ReadDef2; /* previous menu */
+                ReadMenu2[0].routine = M_ExtHelp;
+            }
         }
-      }
-      return;
+        return;
     }
     extended_help_count++;
   }
@@ -3788,12 +3796,22 @@ void M_ExtHelp(int choice)
 void M_DrawExtHelp(void)
 {
   char namebfr[10] = { "HELPnn" }; // CPhipps - make it local & writable
+  char wsnamebfr[10] = { "HELPnnWS" };
+  namebfr[4] = extended_help_index / 10 + '0';
+  namebfr[5] = extended_help_index % 10 + '0';
+  wsnamebfr[4] = extended_help_index / 10 + '0';
+  wsnamebfr[5] = extended_help_index % 10 + '0';
 
   inhelpscreens = true;              // killough 5/1/98
-  namebfr[4] = extended_help_index/10 + '0';
-  namebfr[5] = extended_help_index%10 + '0';
-  // CPhipps - patch drawing updated
-  V_DrawNamePatch(0, 0, 0, namebfr, CR_DEFAULT, VPT_STRETCH);
+  int WS_Help_exist = dsda_WadHelp();
+  if (WS_Help_exist) {
+      // Arsinikk - draw widescreen patch
+      V_DrawNamePatch(0, 0, 0, wsnamebfr, CR_DEFAULT, VPT_STRETCH);
+  }
+  else {
+      // CPhipps - patch drawing updated
+      V_DrawNamePatch(0, 0, 0, namebfr, CR_DEFAULT, VPT_STRETCH);
+  }
 }
 
 //
@@ -4043,13 +4061,17 @@ static void M_DrawStringCentered(int cx, int cy, int color, const char* ch)
 void M_DrawHelp (void)
 {
   const int helplump = W_CheckNumForName("HELP");
+  const int helpwslump = W_CheckNumForName("HELP_WS");
 
   M_ChangeMenu(NULL, mnact_full);
 
   if (helplump != LUMP_NOT_FOUND && lumpinfo[helplump].source != source_iwad)
   {
     V_ClearBorder();
-    V_DrawNumPatch(0, 0, 0, helplump, CR_DEFAULT, VPT_STRETCH);
+    if (helpwslump != LUMP_NOT_FOUND)
+        V_DrawNumPatch(0, 0, 0, helpwslump, CR_DEFAULT, VPT_STRETCH);
+    else
+        V_DrawNumPatch(0, 0, 0, helplump, CR_DEFAULT, VPT_STRETCH);
   }
   else
   {
@@ -4089,6 +4111,8 @@ setup_menu_t cred_settings[]={
 void M_DrawCredits(void)     // killough 10/98: credit screen
 {
   const int creditlump = W_CheckNumForName("CREDIT");
+  const int creditwslump = W_CheckNumForName("CREDI_WS");
+  int WS_DrawCredit_exist = dsda_WadCredit();
 
   if (raven)
   {
@@ -4097,10 +4121,15 @@ void M_DrawCredits(void)     // killough 10/98: credit screen
   }
 
   inhelpscreens = true;
-  if (creditlump != LUMP_NOT_FOUND && lumpinfo[creditlump].source != source_iwad)
+  if (WS_DrawCredit_exist && creditlump != LUMP_NOT_FOUND && lumpinfo[creditlump].source != source_iwad)
   {
     V_ClearBorder();
-    V_DrawNumPatch(0, 0, 0, creditlump, CR_DEFAULT, VPT_STRETCH);
+    V_DrawNumPatch(0, 0, 0, creditwslump, CR_DEFAULT, VPT_STRETCH);
+  }
+  else if (creditlump != LUMP_NOT_FOUND && lumpinfo[creditlump].source != source_iwad)
+  {
+      V_ClearBorder();
+      V_DrawNumPatch(0, 0, 0, creditlump, CR_DEFAULT, VPT_STRETCH);
   }
   else
   {

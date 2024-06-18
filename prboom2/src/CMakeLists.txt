@@ -241,6 +241,8 @@ set(COMMON_SRC
     dsda/utility/string_view.h
     dsda/wad_stats.c
     dsda/wad_stats.h
+    dsda/widescreen.c
+    dsda/widescreen.h
     dsda/zipfile.c
     dsda/zipfile.h
     dstrings.c

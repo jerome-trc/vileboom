@@ -109,6 +109,7 @@
 #include "dsda/wad_stats.h"
 #include "dsda/zipfile.h"
 #include "dsda/gl/render_scale.h"
+#include "dsda/widescreen.h"
 
 #include "heretic/mn_menu.h"
 #include "heretic/sb_bar.h"
@@ -664,9 +665,9 @@ void D_AdvanceDemo (void)
 
 static void D_SetPageName(const char *name)
 {
-  if ((bfgedition) && name && !strncmp(name,"TITLEPIC",8))
-    pagename = "DMENUPIC";
-  else
+  //  if ((bfgedition) && name && !strncmp(name,"TITLEPIC",8))
+  //      pagename = "DMENUPIC";
+  //else
     pagename = name;
 }
 
@@ -683,12 +684,49 @@ void D_SetPage(const char* name, int tics, int music)
 
 static void D_DrawTitle1(const char *name)
 {
-  D_SetPage(name, TICRATE * 170 / 35, mus_intro);
+  int Check_WS_Titlepic = dsda_WadTitlepic();
+  if (Check_WS_Titlepic)
+    D_SetPage("TITLE_WS", TICRATE * 170 / 35, mus_intro);
+  else
+    D_SetPage(name, TICRATE * 170 / 35, mus_intro);
 }
 
 static void D_DrawTitle2(const char *name)
 {
-  D_SetPage(name, 0, mus_dm2ttl);
+    int WS_Titlepic_exist = dsda_WadTitlepic();
+    if (bfgedition)
+      D_SetPage("DMENUPIC", 0, mus_dm2ttl);
+    else if (WS_Titlepic_exist)
+      D_SetPage("TITLE_WS", 0, mus_dm2ttl);
+    else
+      D_SetPage(name, 0, mus_dm2ttl);
+}
+
+static void D_DrawCredits(const char* name)
+{
+    int WS_Credit_exist = dsda_WadCredit();
+    if (WS_Credit_exist)
+        D_SetPage("CREDI_WS", 200, 0);
+    else
+        D_SetPage(name, 200, 0);
+}
+
+static void D_DrawHelp1(const char* name)
+{
+    int WS_DrawHelp1_exist = dsda_WadHelp1();
+    if (WS_DrawHelp1_exist)
+        D_SetPage("HELP1_WS", 200, 0);
+    else
+        D_SetPage(name, 200, 0);
+}
+
+static void D_DrawHelp2(const char* name)
+{
+    int WS_DrawHelp2_exist = dsda_WadHelp2();
+    if (WS_DrawHelp2_exist)
+        D_SetPage("HELP2_WS", 200, 0);
+    else
+        D_SetPage(name, 200, 0);
 }
 
 /* killough 11/98: tabulate demo sequences
@@ -713,10 +751,10 @@ const demostate_t doom_demostates[][4] =
   },
 
   {
-    {D_SetPageName, NULL},
-    {D_SetPageName, NULL},
-    {D_SetPageName, NULL},
-    {D_SetPageName, NULL},
+    {D_DrawCredits, NULL},
+    {D_DrawCredits, NULL},
+    {D_DrawCredits, NULL},
+    {D_DrawCredits, NULL},
   },
 
   {
@@ -727,9 +765,9 @@ const demostate_t doom_demostates[][4] =
   },
 
   {
-    {D_SetPageName, "HELP2"},
-    {D_SetPageName, "HELP2"},
-    {D_SetPageName, "CREDIT"},
+    {D_DrawHelp2, "HELP2"},
+    {D_DrawHelp2, "HELP2"},
+    {D_DrawCredits, "CREDIT"},
     {D_DrawTitle1,  "TITLEPIC"},
   },
 
@@ -747,7 +785,7 @@ const demostate_t doom_demostates[][4] =
     // Both Plutonia and TNT are commercial like Doom2,
     // but in difference from  Doom2, they have demo4 in demo cycle.
     {G_DeferedPlayDemo, "demo4"},
-    {D_SetPageName, "CREDIT"},
+    {D_DrawCredits, "CREDIT"},
   },
 
   {

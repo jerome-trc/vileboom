@@ -48,6 +48,7 @@
 #include "dsda/exhud.h"
 #include "dsda/font.h"
 #include "dsda/mapinfo.h"
+#include "dsda/widescreen.h"
 
 #include "heretic/in_lude.h"
 #include "hexen/in_lude.h"
@@ -457,13 +458,45 @@ static int WI_secretLimit(int i)
 static void WI_slamBackground(void)
 {
   char  name[9];  // limited to 8 characters
+  int WS_Enterpic_exist = dsda_WadEnterpic();
+  int WS_Exitpic_exist = dsda_WadExitpic();
+  int WS_Interpic_exist = dsda_WadInterpic();
+  int WS_WIMAP0_exist = dsda_WadWIMAP0();
+  int WS_WIMAP1_exist = dsda_WadWIMAP1();
+  int WS_WIMAP2_exist = dsda_WadWIMAP2();
 
-  if (state != StatCount && enterpic) strcpy(name, enterpic);
-  else if (exitpic) strcpy(name, exitpic);
+  if (state != StatCount && enterpic)
+  {
+      if (WS_Enterpic_exist)
+          strcpy(name, "ENTER_WS");
+      else
+          strcpy(name, enterpic);
+  }
+  else if (exitpic)
+  {
+      if (WS_Exitpic_exist)
+          strcpy(name, "EXITP_WS");
+      else
+          strcpy(name, exitpic);
+  }
   else if (gamemode == commercial || wbs->epsd < 0 || (gamemode == retail && wbs->epsd >= 3))
-    strcpy(name, "INTERPIC");
+  {
+      if (WS_Interpic_exist)
+          strcpy(name, "INTER_WS");
+      else
+          strcpy(name, "INTERPIC");
+  }
   else
-    snprintf(name, sizeof(name), "WIMAP%d", wbs->epsd);
+  {
+      if (WS_WIMAP0_exist && (gameepisode == 1))
+          strcpy(name, "WSMAP0");
+      else if (WS_WIMAP1_exist && (gameepisode == 2))
+          strcpy(name, "WSMAP1");
+      else if (WS_WIMAP2_exist && (gameepisode == 3))
+          strcpy(name, "WSMAP2");
+      else
+          snprintf(name, sizeof(name), "WIMAP%d", wbs->epsd);
+  }
 
   // e6y: wide-res
   V_ClearBorder();

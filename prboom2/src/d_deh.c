@@ -63,6 +63,7 @@
 #include "dsda/sprite.h"
 #include "dsda/state.h"
 #include "dsda/utility.h"
+#include "dsda/widescreen.h"
 
 #define TRUE 1
 #define FALSE 0
@@ -508,6 +509,7 @@ const char *bgflat30     = "RROCK17";  // DOOM2 after MAP30
 const char *bgflat15     = "RROCK13";  // DOOM2 going MAP15 to MAP31
 const char *bgflat31     = "RROCK19";  // DOOM2 going MAP31 to MAP32
 const char *bgcastcall   = "BOSSBACK"; // Panel behind cast call
+//const char *bgcastcall   = dsda_WadBossback; // Panel behind cast call
 
 /* Ty 05/03/98 - externalized
  * cph - updated for prboom */

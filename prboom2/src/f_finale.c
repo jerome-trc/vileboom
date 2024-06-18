@@ -47,6 +47,7 @@
 
 #include "dsda/font.h"
 #include "dsda/mapinfo.h"
+#include "dsda/widescreen.h"
 
 #include "f_finale.h" // CPhipps - hmm...
 
@@ -490,7 +491,11 @@ static void F_StartCastMusic(const char* music, dboolean loop_music)
 void F_StartCast (const char* background, const char* music, dboolean loop_music)
 {
   castorder = (gamemode == commercial ? castorder_d2 : castorder_d1);
-  castbackground = (background ? background : bgcastcall);
+  int WS_Bossback_exist = dsda_WadBossback();
+  if(WS_Bossback_exist)
+    castbackground = (background ? background : "BOSSB_WS");
+  else
+    castbackground = (background ? background : bgcastcall);
 
   wipegamestate = -1;         // force a screen wipe
   castnum = 0;
