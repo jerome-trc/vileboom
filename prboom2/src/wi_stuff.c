@@ -458,8 +458,6 @@ static int WI_secretLimit(int i)
 static void WI_slamBackground(void)
 {
   char  name[9];  // limited to 8 characters
-  int WS_Enterpic_exist = dsda_WadEnterpic();
-  int WS_Exitpic_exist = dsda_WadExitpic();
   int WS_Interpic_exist = dsda_WadInterpic();
   int WS_WIMAP0_exist = dsda_WadWIMAP0();
   int WS_WIMAP1_exist = dsda_WadWIMAP1();
@@ -467,16 +465,10 @@ static void WI_slamBackground(void)
 
   if (state != StatCount && enterpic)
   {
-      if (WS_Enterpic_exist)
-          strcpy(name, "ENTER_WS");
-      else
           strcpy(name, enterpic);
   }
   else if (exitpic)
   {
-      if (WS_Exitpic_exist)
-          strcpy(name, "EXITP_WS");
-      else
           strcpy(name, exitpic);
   }
   else if (gamemode == commercial || wbs->epsd < 0 || (gamemode == retail && wbs->epsd >= 3))

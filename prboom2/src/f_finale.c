@@ -727,6 +727,8 @@ void F_CastDrawer (void)
 //
 static const char* pfub1 = "PFUB1";
 static const char* pfub2 = "PFUB2";
+static const char* pfub1ws = "PFUB1_WS";
+static const char* pfub2ws = "PFUB1_WS";
 
 static const char* scrollpic1;
 static const char* scrollpic2;
@@ -750,8 +752,16 @@ static dboolean end_patches_exist;
 void F_StartScroll (const char* right, const char* left, const char* music, dboolean loop_music)
 {
   wipegamestate = -1; // force a wipe
-  scrollpic1 = right ? right : pfub1;
-  scrollpic2 = left ? left : pfub2;
+  int WS_Bunny1_exist = dsda_WadBunny1();
+  int WS_Bunny2_exist = dsda_WadBunny2();
+  if (WS_Bunny1_exist)
+      scrollpic1 = right ? right : pfub1ws;
+  else
+      scrollpic1 = right ? right : pfub1;
+  if (WS_Bunny2_exist)
+      scrollpic1 = right ? right : pfub1ws;
+  else
+      scrollpic2 = left ? left : pfub2;
   finalecount = 0;
   finalestage = 1;
 
@@ -861,6 +871,12 @@ void F_Drawer (void)
     return;
   }
 
+  int WS_Credit_exist = dsda_WadCredit();
+  int WS_Help2_exist = dsda_WadHelp2();
+  int WS_Victory_exist = dsda_WadVictory();
+  int WS_Endpic_exist = dsda_WadEndpic();
+
+
   if (!finalestage)
     F_TextWrite ();
   else
@@ -873,18 +889,30 @@ void F_Drawer (void)
       // CPhipps - patch drawing updated
       case 1:
            if ( gamemode == retail || gamemode == commercial )
-             V_DrawNamePatch(0, 0, 0, "CREDIT", CR_DEFAULT, VPT_STRETCH);
+             if (WS_Credit_exist)
+                V_DrawNamePatch(0, 0, 0, "CREDI_WS", CR_DEFAULT, VPT_STRETCH);
+             else
+                V_DrawNamePatch(0, 0, 0, "CREDIT", CR_DEFAULT, VPT_STRETCH);
            else
-             V_DrawNamePatch(0, 0, 0, "HELP2", CR_DEFAULT, VPT_STRETCH);
+             if (WS_Help2_exist)
+                V_DrawNamePatch(0, 0, 0, "HELP2_WS", CR_DEFAULT, VPT_STRETCH);
+             else
+                V_DrawNamePatch(0, 0, 0, "HELP2", CR_DEFAULT, VPT_STRETCH);
            break;
       case 2:
-           V_DrawNamePatch(0, 0, 0, "VICTORY2", CR_DEFAULT, VPT_STRETCH);
+          if (WS_Victory_exist)
+            V_DrawNamePatch(0, 0, 0, "VICTO_WS", CR_DEFAULT, VPT_STRETCH);
+          else
+            V_DrawNamePatch(0, 0, 0, "VICTORY2", CR_DEFAULT, VPT_STRETCH);
            break;
       case 3:
            F_BunnyScroll ();
            break;
       case 4:
-           V_DrawNamePatch(0, 0, 0, "ENDPIC", CR_DEFAULT, VPT_STRETCH);
+           if (WS_Endpic_exist)
+             V_DrawNamePatch(0, 0, 0, "ENDPI_WS", CR_DEFAULT, VPT_STRETCH);
+           else
+             V_DrawNamePatch(0, 0, 0, "ENDPIC", CR_DEFAULT, VPT_STRETCH);
            break;
     }
   }

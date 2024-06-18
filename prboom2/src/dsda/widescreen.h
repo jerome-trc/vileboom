@@ -26,11 +26,12 @@ int dsda_WadHelp(void);
 int dsda_WadHelp1(void);
 int dsda_WadHelp2(void);
 int dsda_WadStbar(void);
-int dsda_WadEnterpic(void);
-int dsda_WadExitpic(void);
 int dsda_WadWIMAP0(void);
 int dsda_WadWIMAP1(void);
 int dsda_WadWIMAP2(void);
+int dsda_WadVictory(void);
+int dsda_WadBunny1(void);
+int dsda_WadBunny2(void);
 int dsda_WadEndpic(void);
 
 #endif

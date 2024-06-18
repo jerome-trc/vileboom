@@ -163,42 +163,6 @@ extern int dsda_WadStbar(void) {
     return ws;
 }
 
-extern int dsda_WadEnterpic(void) {
-    static int ws = 0;
-    static int last_numwadfiles = -1;
-
-    // This might be called before all wads are loaded
-    if (numwadfiles != last_numwadfiles) {
-        int num;
-
-        last_numwadfiles = numwadfiles;
-        num = W_CheckNumForName("ENTER_WS");
-
-        if (num != LUMP_NOT_FOUND) {
-            ws = 1;
-        }
-    }
-    return ws;
-}
-
-extern int dsda_WadExitpic(void) {
-    static int ws = 0;
-    static int last_numwadfiles = -1;
-
-    // This might be called before all wads are loaded
-    if (numwadfiles != last_numwadfiles) {
-        int num;
-
-        last_numwadfiles = numwadfiles;
-        num = W_CheckNumForName("EXITP_WS");
-
-        if (num != LUMP_NOT_FOUND) {
-            ws = 1;
-        }
-    }
-    return ws;
-}
-
 extern int dsda_WadWIMAP0(void) {
     static int ws = 0;
     static int last_numwadfiles = -1;
@@ -245,6 +209,60 @@ extern int dsda_WadWIMAP2(void) {
 
         last_numwadfiles = numwadfiles;
         num = W_CheckNumForName("WSMAP2");
+
+        if (num != LUMP_NOT_FOUND) {
+            ws = 1;
+        }
+    }
+    return ws;
+}
+
+extern int dsda_WadVictory(void) {
+    static int ws = 0;
+    static int last_numwadfiles = -1;
+
+    // This might be called before all wads are loaded
+    if (numwadfiles != last_numwadfiles) {
+        int num;
+
+        last_numwadfiles = numwadfiles;
+        num = W_CheckNumForName("VICTO_WS");
+
+        if (num != LUMP_NOT_FOUND) {
+            ws = 1;
+        }
+    }
+    return ws;
+}
+
+extern int dsda_WadBunny1(void) {
+    static int ws = 0;
+    static int last_numwadfiles = -1;
+
+    // This might be called before all wads are loaded
+    if (numwadfiles != last_numwadfiles) {
+        int num;
+
+        last_numwadfiles = numwadfiles;
+        num = W_CheckNumForName("PFUB1_WS");
+
+        if (num != LUMP_NOT_FOUND) {
+            ws = 1;
+        }
+    }
+    return ws;
+}
+
+extern int dsda_WadBunny2(void) {
+    static int ws = 0;
+    static int last_numwadfiles = -1;
+
+    // This might be called before all wads are loaded
+    if (numwadfiles != last_numwadfiles) {
+        int num;
+
+        last_numwadfiles = numwadfiles;
+        num = W_CheckNumForName("PFUB2_WS");
 
         if (num != LUMP_NOT_FOUND) {
             ws = 1;
