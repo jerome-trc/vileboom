@@ -2,13 +2,9 @@
 
 Nyan Doom supports new `*_WS` background and statusbar lumps.
 
-When any of these lumps are loaded within a WAD, they will take priority and override the default standard lumps.
+When any of the `widescreen` lumps are loaded within a WAD, they will take priority over the following `original` lumps.
 
-### Widescreen Lumps
-
-In the chart below, the original and corresponding widescreen patch is listed.
-
-#### Doom Patches
+### Doom Patches
 
 | Original       | Widescreen              |
 |----------------|-------------------------|
@@ -23,9 +19,12 @@ In the chart below, the original and corresponding widescreen patch is listed.
 | WIMAP0         | WSMAP0                  |
 | WIMAP1         | WSMAP1                  |
 | WIMAP2         | WSMAP2                  |
+| VICTORY2       | VICTO_WS                |
+| PFUB1          | PFUB1_WS                |
+| PFUB2          | PFUB2_WS                |
 | ENDPIC         | ENDPI_WS                |
 
-#### Boom Patches
+### Boom Patches
 
 | Original       | Widescreen              |
 |----------------|-------------------------|
@@ -34,12 +33,6 @@ In the chart below, the original and corresponding widescreen patch is listed.
 | ...            | ...                     |
 | HELP99         | HELP99WS                |
 
-#### MBF21 Patches
+### Heretic/Hexen Patches
 
-| Original       | Widescreen              |
-|----------------|-------------------------|
-| ENTERPIC       | ENTER_WS                |
-| EXITPIC        | EXITP_WS                |
-
-
-_Note that Heretic and Hexen do not yet have full widescreen lumps implimented._
+_WS Lumps not yet implimented.
