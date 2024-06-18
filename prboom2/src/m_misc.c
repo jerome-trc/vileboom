@@ -83,7 +83,6 @@ cfg_def_t cfg_defs[] =
 
   SETTING_HEADING("Misc settings"),
   MIGRATED_SETTING(dsda_config_vanilla_keymap),
-  MIGRATED_SETTING(dsda_config_menu_pause_demo),
   MIGRATED_SETTING(dsda_config_menu_background),
   MIGRATED_SETTING(dsda_config_max_player_corpse),
   MIGRATED_SETTING(dsda_config_flashing_hom),
@@ -305,6 +304,10 @@ cfg_def_t cfg_defs[] =
   MIGRATED_SETTING(dsda_config_weaponbob),
   MIGRATED_SETTING(dsda_config_quake_intensity),
   MIGRATED_SETTING(dsda_config_organize_failed_demos),
+
+  SETTING_HEADING("Nyan-Doom settings"),
+  MIGRATED_SETTING(nyan_config_menu_play_demo),
+  MIGRATED_SETTING(nyan_config_next_map_pause),
 
   SETTING_HEADING("Scripts"),
   MIGRATED_SETTING(dsda_config_script_0),

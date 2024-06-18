@@ -214,7 +214,10 @@ void Hexen_IN_Ticker(void)
     if (skipintermission || (gametype == SINGLE && !HubCount))
     {
         interstate = 1;
-        cnt = 10;
+        if (allow_incompatibility && dsda_IntConfig(nyan_config_next_map_pause))
+            cnt = 45;
+        else
+            cnt = 10;
         skipintermission = false;
     }
 }

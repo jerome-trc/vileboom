@@ -227,9 +227,9 @@ dsda_config_t dsda_config[dsda_config_count] = {
     "vanilla_keymap", dsda_config_vanilla_keymap,
     CONF_BOOL(0)
   },
-  [dsda_config_menu_pause_demo] = {
-    "play_demo_on_menu", dsda_config_menu_pause_demo,
-    CONF_BOOL(0)
+  [nyan_config_menu_play_demo] = {
+    "nyan_play_demos_in_menu", nyan_config_menu_play_demo,
+    CONF_BOOL(1)
   },
   [dsda_config_menu_background] = {
     "menu_background", dsda_config_menu_background,
@@ -376,6 +376,10 @@ dsda_config_t dsda_config[dsda_config_count] = {
   [dsda_config_organize_failed_demos] = {
     "dsda_organize_failed_demos", dsda_config_organize_failed_demos,
     CONF_BOOL(0)
+  },
+  [nyan_config_next_map_pause] = {
+   "nyan_next_map_pause", nyan_config_next_map_pause,
+   CONF_BOOL(1)
   },
   [dsda_config_script_0] = {
     "dsda_script_0", dsda_config_script_0,

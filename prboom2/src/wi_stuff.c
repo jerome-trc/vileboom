@@ -49,6 +49,7 @@
 #include "dsda/font.h"
 #include "dsda/mapinfo.h"
 #include "dsda/widescreen.h"
+#include "dsda/configuration.h"
 
 #include "heretic/in_lude.h"
 #include "hexen/in_lude.h"
@@ -992,7 +993,10 @@ void WI_initNoState(void)
 {
   state = NoState;
   acceleratestage = 0;
-  cnt = 10;
+  if (allow_incompatibility && dsda_IntConfig(nyan_config_next_map_pause))
+      cnt = 45;
+  else
+      cnt = 10;
 }
 
 
