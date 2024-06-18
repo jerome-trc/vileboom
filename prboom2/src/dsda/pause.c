@@ -31,16 +31,16 @@ dboolean dsda_Paused(void) {
 
 dboolean dsda_PausedViaMenu(void) {
   if (dsda_IntConfig(dsda_config_menu_pause_demo))
-      return !demoplayback && menuactive && !netgame;
-  else
       return menuactive && !netgame;
+  else
+      return !demoplayback && menuactive && !netgame;
 }
 
 dboolean dsda_PausedOutsideDemo(void) {
     if (dsda_IntConfig(dsda_config_menu_pause_demo))
-        return dsda_PauseMode(PAUSE_PLAYBACK | PAUSE_BUILDMODE);
-    else
         return dsda_PauseMode(PAUSE_PLAYBACK | PAUSE_BUILDMODE) || dsda_PausedViaMenu();
+    else
+        return dsda_PauseMode(PAUSE_PLAYBACK | PAUSE_BUILDMODE);
 }
 
 dboolean dsda_CameraPaused(void) {
