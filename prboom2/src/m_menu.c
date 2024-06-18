@@ -3768,14 +3768,17 @@ void M_InitExtendedHelp(void)
              *
              * See also: https://www.doomworld.com/forum/topic/111465-boom-extended-help-screens-an-undocumented-feature/
              */
-            HelpMenu[0].routine = M_ExtHelp;
-            if (gamemode == commercial) {
-                ExtHelpDef.prevMenu  = &ReadDef1; /* previous menu */
-                ReadMenu1[0].routine = M_ExtHelp;
-            } else {
+
+             // Arsinikk - Allowed Extended Help menu items in Doom 2
+
+            //HelpMenu[0].routine = M_ExtHelp;
+            //if (gamemode == commercial) {
+            //    ExtHelpDef.prevMenu  = &ReadDef1; /* previous menu */
+            //    ReadMenu1[0].routine = M_ExtHelp;
+            //} else {
                 ExtHelpDef.prevMenu  = &ReadDef2; /* previous menu */
-                ReadMenu2[0].routine = M_ExtHelp;
-            }
+            //    ReadMenu2[0].routine = M_ExtHelp;
+            //}
         }
         return;
     }
@@ -3804,6 +3807,7 @@ void M_DrawExtHelp(void)
   wsnamebfr[5] = extended_help_index % 10 + '0';
 
   inhelpscreens = true;              // killough 5/1/98
+  V_ClearBorder(); // Arsinikk - redraw background for every ext HELP screen
   int WS_Help_exist = dsda_WadHelp();
   if (WS_Help_exist) {
       // Arsinikk - draw widescreen patch
