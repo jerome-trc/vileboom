@@ -3771,7 +3771,7 @@ void M_InitExtendedHelp(void)
 
              // Arsinikk - Allowed Extended Help menu items in Doom 2
 
-            //HelpMenu[0].routine = M_ExtHelp;
+            HelpMenu[0].routine = M_ExtHelp;
             //if (gamemode == commercial) {
             //    ExtHelpDef.prevMenu  = &ReadDef1; /* previous menu */
             //    ReadMenu1[0].routine = M_ExtHelp;
