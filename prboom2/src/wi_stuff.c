@@ -482,11 +482,11 @@ static void WI_slamBackground(void)
   else
   {
       if (WS_WIMAP0_exist && (gameepisode == 1))
-          strcpy(name, "WSMAP0");
+          strcpy(name, "WIMAP0WS");
       else if (WS_WIMAP1_exist && (gameepisode == 2))
-          strcpy(name, "WSMAP1");
+          strcpy(name, "WIMAP1WS");
       else if (WS_WIMAP2_exist && (gameepisode == 3))
-          strcpy(name, "WSMAP2");
+          strcpy(name, "WIMAP2WS");
       else
           snprintf(name, sizeof(name), "WIMAP%d", wbs->epsd);
   }

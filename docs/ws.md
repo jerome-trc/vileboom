@@ -16,9 +16,9 @@ When any of the `widescreen` lumps are loaded within a WAD, they will take prior
 | HELP1          | HELP1_WS                |
 | HELP2          | HELP2_WS                |
 | BOSSBACK       | BOSSB_WS                |
-| WIMAP0         | WSMAP0                  |
-| WIMAP1         | WSMAP1                  |
-| WIMAP2         | WSMAP2                  |
+| WIMAP0         | WIMAP0WS                |
+| WIMAP1         | WIMAP1WS                |
+| WIMAP2         | WIMAP2WS                |
 | VICTORY2       | VICTO_WS                |
 | PFUB1          | PFUB1_WS                |
 | PFUB2          | PFUB2_WS                |

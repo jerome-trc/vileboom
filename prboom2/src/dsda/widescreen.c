@@ -172,7 +172,7 @@ extern int dsda_WadWIMAP0(void) {
         int num;
 
         last_numwadfiles = numwadfiles;
-        num = W_CheckNumForName("WSMAP0");
+        num = W_CheckNumForName("WIMAP0WS");
 
         if (num != LUMP_NOT_FOUND) {
             ws = 1;
@@ -190,7 +190,7 @@ extern int dsda_WadWIMAP1(void) {
         int num;
 
         last_numwadfiles = numwadfiles;
-        num = W_CheckNumForName("WSMAP1");
+        num = W_CheckNumForName("WIMAP1WS");
 
         if (num != LUMP_NOT_FOUND) {
             ws = 1;
@@ -208,7 +208,7 @@ extern int dsda_WadWIMAP2(void) {
         int num;
 
         last_numwadfiles = numwadfiles;
-        num = W_CheckNumForName("WSMAP2");
+        num = W_CheckNumForName("WIMAP2WS");
 
         if (num != LUMP_NOT_FOUND) {
             ws = 1;
