@@ -377,8 +377,8 @@ dsda_config_t dsda_config[dsda_config_count] = {
     "dsda_organize_failed_demos", dsda_config_organize_failed_demos,
     CONF_BOOL(0)
   },
-  [nyan_config_next_map_pause] = {
-   "nyan_next_map_pause", nyan_config_next_map_pause,
+  [nyan_config_intermission_pause] = {
+   "nyan_intermission_pause", nyan_config_intermission_pause,
    CONF_BOOL(1)
   },
   [dsda_config_script_0] = {
