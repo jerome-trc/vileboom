@@ -306,6 +306,8 @@ void M_ChangeDemoSmoothTurns(void);
 void M_ChangeTextureParams(void);
 void M_General(int);      // killough 10/98
 void M_DrawGeneral(void); // killough 10/98
+void M_DemoTas(int);      // Arsinikk
+void M_DrawDemoTas(void); // Arsinikk
 void M_LevelTable(int);
 void M_DrawLevelTable(void);
 void M_ChangeFullScreen(void);
@@ -1079,12 +1081,13 @@ void M_SaveGame (int choice)
 enum
 {
   general, // killough 10/98
+  set_demotas,
   set_key_bindings,
   set_weapons,
   set_statbar,
   set_automap,
-  soundvol,
   level_table,
+  soundvol,
   opt_end
 } options_e;
 
@@ -1093,6 +1096,7 @@ enum
 menuitem_t OptionsMenu[]=
 {
   { 1, "M_GENERL", M_General, 'g', "GENERAL" }, // killough 10/98
+  { 1, "M_DEMOTAS", M_DemoTas, 'd', "DEMOS / EMULATION" },
   { 1, "M_KEYBND", M_KeyBindings,'k', "KEY BINDINGS" },
   { 1, "M_WEAP", M_Weapons, 'w', "WEAPONS" },
   { 1, "M_STAT", M_StatusBar, 's', "STATUS BAR / HUD" },
@@ -1443,6 +1447,7 @@ dboolean setup_select      = false; // changing an item
 dboolean setup_gather      = false; // gathering keys for value
 dboolean colorbox_active   = false; // color palette being shown
 dboolean set_general_active = false;
+dboolean set_demotas_active = false;
 dboolean level_table_active = false;
 
 /////////////////////////////
@@ -1578,6 +1583,16 @@ menu_t GeneralDef =                                           // killough 10/98
   &OptionsDef,
   Generic_Setup,
   M_DrawGeneral,
+  34,5,      // skull drawn here
+  0
+};
+
+menu_t DemoTasDef =                                           // Arsinikk
+{
+  generic_setup_end,
+  &OptionsDef,
+  Generic_Setup,
+  M_DrawDemoTas,
   34,5,      // skull drawn here
   0
 };
@@ -2831,7 +2846,7 @@ void M_DrawAutoMap(void)
 // killough 10/10/98
 
 setup_menu_t audiovideo_settings[], mouse_settings[], controller_settings[], misc_settings[];
-setup_menu_t display_settings[], mapping_settings[], demo_settings[], tas_settings[];
+setup_menu_t misc2_settings[], display_settings[], mapping_settings[];
 
 setup_menu_t* gen_settings[] =
 {
@@ -2840,6 +2855,14 @@ setup_menu_t* gen_settings[] =
   controller_settings,
   misc_settings,
   display_settings,
+  misc2_settings,
+  NULL
+};
+
+setup_menu_t demo_settings[], tas_settings[];
+
+setup_menu_t* demotas_settings[] =
+{
   mapping_settings,
   demo_settings,
   tas_settings,
@@ -2981,13 +3004,12 @@ setup_menu_t misc_settings[] = {
   { "Default compatibility level", S_CHOICE, m_conf, G_X, dsda_config_default_complevel, 0, &gen_compstrings[1] },
   { "Enable Cheat Code Entry", S_YESNO, m_conf, G_X, dsda_config_cheat_codes },
   { "Announce Map On Entry", S_YESNO, m_conf, G_X, dsda_config_announce_map },
-  { "Pause Before Next Map", S_YESNO, m_conf, G_X, nyan_config_next_map_pause },
-  { "Play Demos In Menus", S_YESNO, m_conf, G_X, nyan_config_menu_play_demo },
   EMPTY_LINE,
   { "Quality Of Life", S_SKIP | S_TITLE, m_null, G_X},
   { "Rewind Interval (s)", S_NUM, m_conf, G_X, dsda_config_auto_key_frame_interval },
   { "Rewind Depth", S_NUM, m_conf, G_X, dsda_config_auto_key_frame_depth },
   { "Rewind Timeout (ms)", S_NUM, m_conf, G_X, dsda_config_auto_key_frame_timeout },
+  EMPTY_LINE,
   { "Organize My Save Files", S_YESNO, m_conf, G_X, dsda_config_organized_saves },
   { "Skip Quit Prompt", S_YESNO, m_conf, G_X, dsda_config_skip_quit_prompt },
   { "Death Use Action", S_CHOICE, m_conf, G_X, dsda_config_death_use_action, 0, death_use_strings },
@@ -3003,7 +3025,6 @@ setup_menu_t misc_settings[] = {
 
 setup_menu_t display_settings[] = {
   { "Display Options", S_SKIP | S_TITLE, m_null, G_X},
-  { "Hide Weapon", S_YESNO, m_conf, G_X, dsda_config_hide_weapon },
   { "Wipe Screen Effect", S_YESNO,  m_conf, G_X, dsda_config_render_wipescreen },
   { "Show FPS", S_YESNO,  m_conf, G_X, dsda_config_show_fps },
   { "View Bobbing", S_YESNO, m_conf, G_X, dsda_config_viewbob },
@@ -3017,10 +3038,25 @@ setup_menu_t display_settings[] = {
   EMPTY_LINE,
   { "Status Bar and Menu Appearance", S_CHOICE, m_conf, G_X, dsda_config_render_stretch_hud, 0, render_stretch_list },
   { "Fullscreen Menu Background", S_YESNO, m_conf, G_X, dsda_config_menu_background },
-  { "Hide Status Bar Horns", S_YESNO, m_conf, G_X, dsda_config_hide_horns },
 
   PREV_PAGE(misc_settings),
-  NEXT_PAGE(mapping_settings),
+  NEXT_PAGE(misc2_settings),
+  FINAL_ENTRY
+};
+
+setup_menu_t misc2_settings[] = {
+  { "Extra Options", S_SKIP | S_TITLE, m_null, G_X},
+  { "Hide Weapon", S_YESNO, m_conf, G_X, dsda_config_hide_weapon },
+  { "Hide Status Bar Horns", S_YESNO, m_conf, G_X, dsda_config_hide_horns },
+  { "Pause After Intermission", S_YESNO, m_conf, G_X, nyan_config_next_map_pause },
+  { "Play Demos In Menus", S_YESNO, m_conf, G_X, nyan_config_menu_play_demo },
+  { "Allow Jumping", S_YESNO, m_conf, G_X, dsda_config_allow_jumping },
+  EMPTY_LINE,
+  { "OpenGL Options", S_SKIP | S_TITLE, m_null, G_X},
+  { "Show Health Bars", S_YESNO, m_conf, G_X, dsda_config_gl_health_bar },
+  { "Blend Animations", S_YESNO, m_conf, G_X, dsda_config_gl_blend_animations },
+
+  PREV_PAGE(display_settings),
   FINAL_ENTRY
 };
 
@@ -3041,7 +3077,6 @@ setup_menu_t mapping_settings[] = {
   { "WALK UNDER SOLID HANGING BODIES", S_YESNO, m_conf, G_X, dsda_config_comperr_hangsolid },
   { "FIX CLIPPING IN LARGE LEVELS", S_YESNO, m_conf, G_X, dsda_config_comperr_blockmap },
 
-  PREV_PAGE(display_settings),
   NEXT_PAGE(demo_settings),
   FINAL_ENTRY
 };
@@ -3059,11 +3094,6 @@ setup_menu_t demo_settings[] = {
   { "Show Precise Intermission Time", S_YESNO,  m_conf, G_X, dsda_config_show_level_splits },
   EMPTY_LINE,
   { "Organize Failed Demos", S_YESNO,  m_conf, G_X, dsda_config_organize_failed_demos },
-  EMPTY_LINE,
-  { "Casual Play Settings", S_SKIP | S_TITLE, m_null, G_X},
-  { "Allow Jumping", S_YESNO, m_conf, G_X, dsda_config_allow_jumping },
-  { "OpenGL Show Health Bars", S_YESNO, m_conf, G_X, dsda_config_gl_health_bar },
-  { "OpenGL Blend Animations", S_YESNO, m_conf, G_X, dsda_config_gl_blend_animations },
 
   PREV_PAGE(mapping_settings),
   NEXT_PAGE(tas_settings),
@@ -3130,6 +3160,30 @@ void M_DrawGeneral(void)
 
   // proff/nicolas 09/20/98 -- changed for hi-res
   M_DrawTitle(114, 2, "M_GENERL", CR_DEFAULT, "GENERAL", cr_title);
+  M_DrawInstructions();
+  M_DrawScreenItems(current_setup_menu, DEFAULT_LIST_Y);
+}
+
+// Setting up for the Demo / TAS screen. Turn on flags, set pointers,
+// locate the first item on the screen where the cursor is allowed to
+// land.
+
+void M_DemoTas(int choice)
+{
+  M_EnterSetup(&DemoTasDef, &set_demotas_active, demotas_settings[0]);
+}
+
+// The drawing part of the Demo / TAS Setup initialization. Draw the
+// background, title, instruction line, and items.
+
+void M_DrawDemoTas(void)
+{
+  M_ChangeMenu(NULL, mnact_full);
+
+  M_DrawBackground(g_menu_flat, 0); // Draw background
+
+  // proff/nicolas 09/20/98 -- changed for hi-res
+  M_DrawTitle(114, 2, "M_DEMOTAS", CR_DEFAULT, "DEMOS / EMULATION", cr_title);
   M_DrawInstructions();
   M_DrawScreenItems(current_setup_menu, DEFAULT_LIST_Y);
 }
@@ -4909,6 +4963,10 @@ static dboolean M_SetupResponder(int ch, int action, event_t* ev)
   if (set_general_active || set_status_active)
     if (M_StringResponder(ch, action, ev))
       return true;
+
+  if (set_demotas_active)
+      if (M_StringResponder(ch, action, ev))
+          return true;
 
   if (level_table_active)
     if (M_LevelTableResponder(ch, action, ev))
