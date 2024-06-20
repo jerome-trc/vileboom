@@ -12,7 +12,7 @@
 // GNU General Public License for more details.
 //
 // DESCRIPTION:
-//	DSDA Widescreen
+//	DSDA Animate
 //
 
 #include "w_wad.h"

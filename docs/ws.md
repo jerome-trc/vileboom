@@ -1,8 +1,10 @@
 # Widescreen _WS Lump Support
 
-Nyan Doom supports new `*_WS` background and statusbar lumps.
+Nyan Doom supports new widescreen background and statusbar lumps with the suffix `_WS`.
 
 When any of the `widescreen` lumps are loaded within a WAD, they will take priority over the following `original` lumps.
+
+Note there are no widescreen versions for [animated lumps](animbg.md) as the animated lumps take priority over widescreen lumps. So the lump priority is: `start/end animations` > `widescreen` > `original`.
 
 ### Doom Patches
 
