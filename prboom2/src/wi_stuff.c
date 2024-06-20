@@ -489,7 +489,10 @@ static void WI_slamBackground(void)
       if (InterpicCheck)
           nicename = "INTER_S";
       else if (WS_Interpic_exist)
+      {
           nicename = "INTER_WS";
+          strcpy(name, "INTER_WS");
+      }
       else
       {
           nicename = "INTERPIC";
