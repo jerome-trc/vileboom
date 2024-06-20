@@ -99,7 +99,7 @@ int EV_DoGenFloor
 
   for (; *id_p >= 0; id_p++)
   {
-    if ((!(sec = line->backsector)) && comperr_zerotag)
+   // if ((!(sec = line->backsector)) && comperr_zerotag)
       sec = &sectors[*id_p];
 
     // Do not start another function if floor already moving
@@ -276,7 +276,7 @@ int EV_DoGenCeiling
 
   for (; *id_p >= 0; id_p++)
   {
-    if ((!(sec = line->backsector)) && comperr_zerotag)
+    //if ((!(sec = line->backsector)) && comperr_zerotag)
     sec = &sectors[*id_p];
 
     // Do not start another function if ceiling already moving
@@ -456,7 +456,7 @@ int EV_DoGenLift
 
   for (; *id_p >= 0; id_p++)
   {
-      if ((!(sec = line->backsector)) && comperr_zerotag)
+      //if ((!(sec = line->backsector)) && comperr_zerotag)
           sec = &sectors[*id_p];
 
     // Do not start another function if floor already moving
@@ -596,7 +596,7 @@ int EV_DoGenStairs
 
   for (; *id_p >= 0; id_p++)
   {
-      if ((!(sec = line->backsector)) && comperr_zerotag)
+      //if ((!(sec = line->backsector)) && comperr_zerotag)
     sec = &sectors[*id_p];
 
     //Do not start another function if floor already moving
@@ -765,7 +765,7 @@ int EV_DoGenCrusher
 
   for (; *id_p >= 0; id_p++)
   {
-    if ((!(sec = line->backsector)) && comperr_zerotag)
+    //if ((!(sec = line->backsector)) && comperr_zerotag)
       sec = &sectors[*id_p];
 
     // Do not start another function if ceiling already moving
@@ -847,7 +847,7 @@ int EV_DoGenLockedDoor
 
   for (; *id_p >= 0; id_p++)
   {
-    if ((!(sec = line->backsector)) && comperr_zerotag)
+    //if ((!(sec = line->backsector)) && comperr_zerotag)
       sec = &sectors[*id_p];
 
     // Do not start another function if ceiling already moving
@@ -937,7 +937,7 @@ int EV_DoGenDoor
 
   for (; *id_p >= 0; id_p++)
   {
-    if ((!(sec = line->backsector)) && comperr_zerotag)
+    //if ((!(sec = line->backsector)) && comperr_zerotag)
       sec = &sectors[*id_p];
 
     // Do not start another function if ceiling already moving
