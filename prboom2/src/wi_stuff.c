@@ -459,34 +459,67 @@ static int WI_secretLimit(int i)
 static void WI_slamBackground(void)
 {
   char  name[9];  // limited to 8 characters
-  int WS_Interpic_exist = dsda_WadInterpic();
-  int WS_WIMAP0_exist = dsda_WadWIMAP0();
-  int WS_WIMAP1_exist = dsda_WadWIMAP1();
-  int WS_WIMAP2_exist = dsda_WadWIMAP2();
+  const char* nicename;
 
   if (state != StatCount && enterpic)
   {
+      int EnterpicCheck;
+      EnterpicCheck = D_CheckAnimate("ENTERP_S", "ENTERP_E");
+      if (EnterpicCheck)
+          nicename = "ENTERP_S";
+      else
+          nicename = "ENTERPIC";
           strcpy(name, enterpic);
   }
   else if (exitpic)
   {
+      int ExitpicCheck;
+      ExitpicCheck = D_CheckAnimate("EXITP_S", "EXITP_E");
+      if (ExitpicCheck)
+          nicename = "EXITP_S";
+      else
+          nicename = "EXITPIC";
           strcpy(name, exitpic);
   }
   else if (gamemode == commercial || wbs->epsd < 0 || (gamemode == retail && wbs->epsd >= 3))
   {
-      if (WS_Interpic_exist)
-          strcpy(name, "INTER_WS");
+      int InterpicCheck;
+      int WS_Interpic_exist = dsda_WadInterpic();
+      InterpicCheck = D_CheckAnimate("INTER_S", "INTER_E");
+      if (InterpicCheck)
+          nicename = "INTER_S";
+      else if (WS_Interpic_exist)
+          nicename = "INTER_WS";
       else
+      {
+          nicename = "INTERPIC";
           strcpy(name, "INTERPIC");
+      }
   }
   else
   {
-      if (WS_WIMAP0_exist && (gameepisode == 1))
-          strcpy(name, "WIMAP0WS");
-      else if (WS_WIMAP1_exist && (gameepisode == 2))
-          strcpy(name, "WIMAP1WS");
-      else if (WS_WIMAP2_exist && (gameepisode == 3))
-          strcpy(name, "WIMAP2WS");
+      int Map0Check;
+      int Map1Check;
+      int Map2Check;
+      int WS_WIMAP0_exist = dsda_WadWIMAP0();
+      int WS_WIMAP1_exist = dsda_WadWIMAP1();
+      int WS_WIMAP2_exist = dsda_WadWIMAP2();
+      Map0Check = D_CheckAnimate("WIMAP0_S", "WIMAP0_E");
+      Map1Check = D_CheckAnimate("WIMAP1_S", "WIMAP1_E");
+      Map2Check = D_CheckAnimate("WIMAP2_S", "WIMAP2_E");
+
+      if ((gameepisode == 1) && Map0Check)
+          nicename = "WIMAP0_S";
+      else if ((gameepisode == 1) && WS_WIMAP0_exist)
+          nicename = "WIMAP0WS";
+      else if ((gameepisode == 2) && Map1Check)
+          nicename = "WIMAP1_S";
+      else if ((gameepisode == 2) && WS_WIMAP1_exist)
+          nicename = "WIMAP1WS";
+      else if ((gameepisode == 3) && Map2Check)
+          nicename = "WIMAP2_S";
+      else if ((gameepisode == 3) && WS_WIMAP2_exist)
+          nicename = "WIMAP2WS";
       else
           snprintf(name, sizeof(name), "WIMAP%d", wbs->epsd);
   }
@@ -494,8 +527,20 @@ static void WI_slamBackground(void)
   // e6y: wide-res
   V_ClearBorder();
 
-  // background
-  V_DrawNamePatch(0, 0, FB, name, CR_DEFAULT, VPT_STRETCH);
+  if (nicename == "ENTERP_S")
+      D_DrawAnimate("ENTERP_S", "ENTERP_E");
+  else if (nicename == "EXITP_S")
+      D_DrawAnimate("EXITP_S", "EXITP_E");
+  else if (nicename == "INTER_S")
+      D_DrawAnimate("INTER_S", "INTER_E");
+  else if (nicename == "WIMAP0_S")
+      D_DrawAnimate("WIMAP0_S", "WIMAP0_E");
+  else if (nicename == "WIMAP1_S")
+      D_DrawAnimate("WIMAP1_S", "WIMAP1_E");
+  else if (nicename == "WIMAP2_S")
+      D_DrawAnimate("WIMAP2_S", "WIMAP2_E");
+  else
+      V_DrawNamePatch(0, 0, FB, name, CR_DEFAULT, VPT_STRETCH);   // background
 }
 
 #define SPACEWIDTH 4
@@ -993,7 +1038,9 @@ void WI_initNoState(void)
 {
   state = NoState;
   acceleratestage = 0;
-  if (allow_incompatibility && dsda_IntConfig(nyan_config_intermission_pause))
+  if (gamemap == 30 || (gamemission == pack_nerve && allow_incompatibility && gamemap == 8) || dsda_FinaleShortcut())
+      cnt = 10;
+  else if (allow_incompatibility && dsda_IntConfig(nyan_config_intermission_pause))
       cnt = 45;
   else
       cnt = 10;

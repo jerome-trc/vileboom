@@ -110,6 +110,7 @@
 #include "dsda/zipfile.h"
 #include "dsda/gl/render_scale.h"
 #include "dsda/widescreen.h"
+#include "dsda/animate.h"
 
 #include "heretic/mn_menu.h"
 #include "heretic/sb_bar.h"
@@ -644,7 +645,19 @@ static void D_PageDrawer(void)
   {
     // e6y: wide-res
     V_ClearBorder();
-    V_DrawNamePatch(0, 0, 0, pagename, CR_DEFAULT, VPT_STRETCH);
+
+    if (pagename == "TITLE_S")
+        D_DrawAnimate("TITLE_S","TITLE_E");
+    else if (pagename == "HELP_S")
+        D_DrawAnimate("HELP_S", "HELP_E");
+    else if (pagename == "HELP1_S")
+        D_DrawAnimate("HELP1_S", "HELP1_E");
+    else if (pagename == "HELP2_S")
+        D_DrawAnimate("HELP2_S", "HELP2_E");
+    else if (pagename == "CREDIT_S")
+        D_DrawAnimate("CREDIT_S", "CREDIT_E");
+    else
+        V_DrawNamePatch(0, 0, 0, pagename, CR_DEFAULT, VPT_STRETCH);
   }
   else
     M_DrawCredits();
@@ -684,8 +697,11 @@ void D_SetPage(const char* name, int tics, int music)
 
 static void D_DrawTitle1(const char *name)
 {
-  int Check_WS_Titlepic = dsda_WadTitlepic();
-  if (Check_WS_Titlepic)
+  int CheckAnimate = D_CheckAnimate("TITLE_S","TITLE_E");
+  int CheckWS = dsda_WadTitlepic();
+  if (CheckAnimate)
+    D_SetPage("TITLE_S", TICRATE * 170 / 35, mus_intro);
+  else if (CheckWS)
     D_SetPage("TITLE_WS", TICRATE * 170 / 35, mus_intro);
   else
     D_SetPage(name, TICRATE * 170 / 35, mus_intro);
@@ -693,10 +709,13 @@ static void D_DrawTitle1(const char *name)
 
 static void D_DrawTitle2(const char *name)
 {
-    int WS_Titlepic_exist = dsda_WadTitlepic();
-    if (bfgedition)
-      D_SetPage("DMENUPIC", 0, mus_dm2ttl);
-    else if (WS_Titlepic_exist)
+    int CheckAnimate = D_CheckAnimate("TITLE_S", "TITLE_E");
+    int CheckWS = dsda_WadTitlepic();
+    if (CheckAnimate)
+        D_SetPage("TITLE_S", 0, mus_dm2ttl);
+    else if (bfgedition)
+        D_SetPage("DMENUPIC", 0, mus_dm2ttl);
+    else if (CheckWS)
       D_SetPage("TITLE_WS", 0, mus_dm2ttl);
     else
       D_SetPage(name, 0, mus_dm2ttl);
@@ -704,8 +723,11 @@ static void D_DrawTitle2(const char *name)
 
 static void D_DrawCredits(const char* name)
 {
+    int CheckAnimate = D_CheckAnimate("CREDIT_S", "CREDIT_E");
     int WS_Credit_exist = dsda_WadCredit();
-    if (WS_Credit_exist)
+    if (CheckAnimate)
+        D_SetPage("CREDIT_S", 200, 0);
+    else if (WS_Credit_exist)
         D_SetPage("CREDI_WS", 200, 0);
     else
         D_SetPage(name, 200, 0);
@@ -713,8 +735,11 @@ static void D_DrawCredits(const char* name)
 
 static void D_DrawHelp1(const char* name)
 {
+    int CheckAnimate = D_CheckAnimate("HELP1_S", "HELP1_E");
     int WS_DrawHelp1_exist = dsda_WadHelp1();
-    if (WS_DrawHelp1_exist)
+    if (CheckAnimate)
+        D_SetPage("HELP1_S", 200, 0);
+    else if (WS_DrawHelp1_exist)
         D_SetPage("HELP1_WS", 200, 0);
     else
         D_SetPage(name, 200, 0);
@@ -722,8 +747,11 @@ static void D_DrawHelp1(const char* name)
 
 static void D_DrawHelp2(const char* name)
 {
+    int CheckAnimate = D_CheckAnimate("HELP2_S", "HELP2_E");
     int WS_DrawHelp2_exist = dsda_WadHelp2();
-    if (WS_DrawHelp2_exist)
+    if (CheckAnimate)
+        D_SetPage("HELP2_S", 200, 0);
+    else if (WS_DrawHelp2_exist)
         D_SetPage("HELP2_WS", 200, 0);
     else
         D_SetPage(name, 200, 0);

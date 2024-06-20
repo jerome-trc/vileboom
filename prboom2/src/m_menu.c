@@ -100,6 +100,7 @@
 #include "dsda/utility.h"
 #include "dsda/wad_stats.h"
 #include "dsda/widescreen.h"
+#include "dsda/animate.h"
 
 #include "heretic/mn_menu.h"
 #include "heretic/sb_bar.h"
@@ -450,6 +451,10 @@ menu_t MainDef =
 void M_DrawMainMenu(void)
 {
   if (raven) return MN_DrawMainMenu();
+ 
+  int Check;
+  Check = D_CheckAnimate("S_DOOM", "E_DOOM");
+  if (Check) return M_DrawMenuAnimate(94,2,"S_DOOM","E_DOOM");
 
   // CPhipps - patch drawing updated
   V_DrawNamePatch(94, 2, 0, "M_DOOM", CR_DEFAULT, VPT_STRETCH);
@@ -4121,13 +4126,16 @@ void M_DrawHelp (void)
 {
   const int helplump = W_CheckNumForName("HELP");
   const int helpwslump = W_CheckNumForName("HELP_WS");
+  int CheckAnimate = D_CheckAnimate("HELP_S", "HELP_E");
 
   M_ChangeMenu(NULL, mnact_full);
 
   if (helplump != LUMP_NOT_FOUND && lumpinfo[helplump].source != source_iwad)
   {
     V_ClearBorder();
-    if (helpwslump != LUMP_NOT_FOUND)
+    if (CheckAnimate)
+        D_DrawAnimate("HELP_S", "HELP_E");
+    else if (helpwslump != LUMP_NOT_FOUND)
         V_DrawNumPatch(0, 0, 0, helpwslump, CR_DEFAULT, VPT_STRETCH);
     else
         V_DrawNumPatch(0, 0, 0, helplump, CR_DEFAULT, VPT_STRETCH);
@@ -4171,7 +4179,8 @@ void M_DrawCredits(void)     // killough 10/98: credit screen
 {
   const int creditlump = W_CheckNumForName("CREDIT");
   const int creditwslump = W_CheckNumForName("CREDI_WS");
-  int WS_DrawCredit_exist = dsda_WadCredit();
+  int CheckAnimate = D_CheckAnimate("CREDIT_S", "CREDIT_E");
+  int WS_Credit_exist = dsda_WadCredit();
 
   if (raven)
   {
@@ -4180,7 +4189,11 @@ void M_DrawCredits(void)     // killough 10/98: credit screen
   }
 
   inhelpscreens = true;
-  if (WS_DrawCredit_exist && creditlump != LUMP_NOT_FOUND && lumpinfo[creditlump].source != source_iwad)
+
+  if (CheckAnimate) {
+      D_DrawAnimate("CREDIT_S", "CREDIT_E");
+  }
+  else if (WS_Credit_exist && creditlump != LUMP_NOT_FOUND && lumpinfo[creditlump].source != source_iwad)
   {
     V_ClearBorder();
     V_DrawNumPatch(0, 0, 0, creditwslump, CR_DEFAULT, VPT_STRETCH);
@@ -5829,9 +5842,16 @@ void M_Drawer (void)
 
     // DRAW SKULL
     if (max > 0)
-      // CPhipps - patch drawing updated
-      V_DrawNamePatch(x + SKULLXOFF, currentMenu->y - 5 + itemOn*LINEHEIGHT,0,
-          skullName[whichSkull], CR_DEFAULT, VPT_STRETCH);
+    {
+        // CPhipps - patch drawing updated
+        int Check;
+        Check = D_CheckAnimate("S_SKULL", "E_SKULL");
+        if (Check)
+            return M_DrawMenuAnimate(x + SKULLXOFF, currentMenu->y - 5 + itemOn * LINEHEIGHT, "S_SKULL", "E_SKULL");
+        else
+            V_DrawNamePatch(x + SKULLXOFF, currentMenu->y - 5 + itemOn * LINEHEIGHT, 0,
+            skullName[whichSkull], CR_DEFAULT, VPT_STRETCH);
+    }
   }
 
   V_EndUIDraw();

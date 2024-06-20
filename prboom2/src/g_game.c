@@ -1682,18 +1682,22 @@ void G_Ticker (void)
       AM_Ticker();
       ST_Ticker();
       HU_Ticker();
+      Animate_Ticker();
       break;
 
     case GS_INTERMISSION:
       WI_Ticker();
+      Animate_Ticker();
       break;
 
     case GS_FINALE:
       F_Ticker();
+      Animate_Ticker();
       break;
 
     case GS_DEMOSCREEN:
       D_PageTicker();
+      Animate_Ticker();
       break;
   }
 

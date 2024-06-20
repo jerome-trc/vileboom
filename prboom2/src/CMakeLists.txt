@@ -17,6 +17,8 @@ set(COMMON_SRC
     dsda/ambient.h
     dsda/analysis.c
     dsda/analysis.h
+    dsda/animate.c
+    dsda/animate.h
     dsda/args.c
     dsda/args.h
     dsda/brute_force.c

@@ -967,7 +967,6 @@ static void ST_loadGraphics(void)
     }
 
   //e6y: status bar background
-  //R_SetPatchNum(&stbarbg, dsda_WadStbar);
   int WS_Stbar_exist = dsda_WadStbar();
   if (WS_Stbar_exist)
     R_SetPatchNum(&stbarbg, "STBAR_WS");

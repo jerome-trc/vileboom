@@ -48,6 +48,7 @@
 #include "dsda/font.h"
 #include "dsda/mapinfo.h"
 #include "dsda/widescreen.h"
+#include "dsda/animate.h"
 
 #include "f_finale.h" // CPhipps - hmm...
 
@@ -707,7 +708,12 @@ void F_CastDrawer (void)
   V_ClearBorder();
   // erase the entire screen to a background
   // CPhipps - patch drawing updated
-  V_DrawNamePatch(0,0,0, castbackground, CR_DEFAULT, VPT_STRETCH); // Ty 03/30/98 bg texture extern
+  
+  int CheckAnimate = D_CheckAnimate("BOSSB_S", "BOSSB_E");
+  if (CheckAnimate)
+      D_DrawAnimateAdv(0,0,"BOSSB_S", "BOSSB_E");
+  else
+      V_DrawNamePatch(0,0,0, castbackground, CR_DEFAULT, VPT_STRETCH); // Ty 03/30/98 bg texture extern
 
   F_CastPrint (*(castorder[castnum].name));
 
@@ -727,8 +733,8 @@ void F_CastDrawer (void)
 //
 static const char* pfub1 = "PFUB1";
 static const char* pfub2 = "PFUB2";
-static const char* pfub1ws = "PFUB1_WS";
-static const char* pfub2ws = "PFUB1_WS";
+static const char* pfub1_ws = "PFUB1_WS";
+static const char* pfub2_ws = "PFUB1_WS";
 
 static const char* scrollpic1;
 static const char* scrollpic2;
@@ -755,11 +761,11 @@ void F_StartScroll (const char* right, const char* left, const char* music, dboo
   int WS_Bunny1_exist = dsda_WadBunny1();
   int WS_Bunny2_exist = dsda_WadBunny2();
   if (WS_Bunny1_exist)
-      scrollpic1 = right ? right : pfub1ws;
+      scrollpic1 = right ? right : pfub1_ws;
   else
       scrollpic1 = right ? right : pfub1;
   if (WS_Bunny2_exist)
-      scrollpic1 = right ? right : pfub1ws;
+      scrollpic2 = left ? left : pfub2_ws;
   else
       scrollpic2 = left ? left : pfub2;
   finalecount = 0;
@@ -802,17 +808,54 @@ void F_BunnyScroll (void)
     }
   }
 
+//////////////////////////////////////////////////////////////////////
+//
+// Arsinikk - note that while the code is sound for the animated
+// bunny sequence, Nyan Doom + DSDA Doom have visual errors/artefacts.
+//
+// Therefore until this is fixed, I'm going to leave the code
+// commented out :)
+// 
+/////////////////////////////////////////////////////////////////////
+
   {
     int scrolled = 320 - (finalecount-230)/2;
+
+
+
+    // int Bunny1CheckAnimate = D_CheckAnimate("PFUB1_S", "PFUB1_E");
+    // int Bunny2CheckAnimate = D_CheckAnimate("PFUB2_S", "PFUB2_E");
+    // int BunnyAnimate;
+    //if (Bunny2CheckAnimate && Bunny2CheckAnimate)
+    //{
+    //    BunnyAnimate = 1;
+    //}
     if (scrolled <= 0) {
-      V_DrawNamePatch(0, 0, 0, scrollpic2, CR_DEFAULT, VPT_STRETCH);
+        //if (BunnyAnimate)
+        //    D_DrawAnimateAdv(0,0,"PFUB2_S", "PFUB2_E");
+        //else
+            V_DrawNamePatch(0, 0, 0, scrollpic2, CR_DEFAULT, VPT_STRETCH);
     } else if (scrolled >= 320) {
-      V_DrawNamePatch(p1offset, 0, 0, scrollpic1, CR_DEFAULT, VPT_STRETCH);
+        //if (BunnyAnimate)
+        //    D_DrawAnimateAdv(p1offset, 0, "PFUB1_S", "PFUB1_E");
+        //else
+            V_DrawNamePatch(p1offset, 0, 0, scrollpic1, CR_DEFAULT, VPT_STRETCH);
       if (p1offset > 0)
-        V_DrawNamePatch(-320, 0, 0, scrollpic2, CR_DEFAULT, VPT_STRETCH);
+        //if (BunnyAnimate)
+        //    D_DrawAnimateAdv(-320, 0, "PFUB2_S", "PFUB2_E");
+        //else
+            V_DrawNamePatch(-320, 0, 0, scrollpic2, CR_DEFAULT, VPT_STRETCH);
     } else {
-      V_DrawNamePatch(p1offset + 320 - scrolled, 0, 0, scrollpic1, CR_DEFAULT, VPT_STRETCH);
-      V_DrawNamePatch(-scrolled, 0, 0, scrollpic2, CR_DEFAULT, VPT_STRETCH);
+        // if (BunnyAnimate)
+        // {
+        //     D_DrawAnimateAdv(p1offset + 320 - scrolled, 0, "PFUB1_S", "PFUB1_E");
+        //     D_DrawAnimateAdv(-scrolled, 0, "PFUB2_S", "PFUB2_E");
+        // }
+        // else
+        // {
+            V_DrawNamePatch(p1offset + 320 - scrolled, 0, 0, scrollpic1, CR_DEFAULT, VPT_STRETCH);
+            V_DrawNamePatch(-scrolled, 0, 0, scrollpic2, CR_DEFAULT, VPT_STRETCH);
+        // }
     }
     if (p2width == 320)
       V_ClearBorder();
@@ -871,16 +914,19 @@ void F_Drawer (void)
     return;
   }
 
-  int WS_Credit_exist = dsda_WadCredit();
-  int WS_Help2_exist = dsda_WadHelp2();
-  int WS_Victory_exist = dsda_WadVictory();
-  int WS_Endpic_exist = dsda_WadEndpic();
-
 
   if (!finalestage)
     F_TextWrite ();
   else
   {
+    int WS_Credit_exist = dsda_WadCredit();
+    int WS_Help2_exist = dsda_WadHelp2();
+    int WS_Victory_exist = dsda_WadVictory();
+    int WS_Endpic_exist = dsda_WadEndpic();
+    int CreditCheckAnimate = D_CheckAnimate("CREDIT_S", "CREDIT_E");
+    int Help2CheckAnimate = D_CheckAnimate("HELP2_S", "HELP2_E");
+    int VictoryCheckAnimate = D_CheckAnimate("VICTOR_S", "VICTOR_E");
+    int EndpicCheckAnimate = D_CheckAnimate("ENDPIC_S", "ENDPIC_E");
     // e6y: wide-res
     V_ClearBorder();
 
@@ -888,19 +934,25 @@ void F_Drawer (void)
     {
       // CPhipps - patch drawing updated
       case 1:
-           if ( gamemode == retail || gamemode == commercial )
-             if (WS_Credit_exist)
+          if (gamemode == retail || gamemode == commercial)
+             if (CreditCheckAnimate)
+                D_DrawAnimate("CREDIT_S", "CREDIT_E");
+             else if (WS_Credit_exist)
                 V_DrawNamePatch(0, 0, 0, "CREDI_WS", CR_DEFAULT, VPT_STRETCH);
              else
                 V_DrawNamePatch(0, 0, 0, "CREDIT", CR_DEFAULT, VPT_STRETCH);
            else
-             if (WS_Help2_exist)
+             if (Help2CheckAnimate)
+                D_DrawAnimate("HELP2_S", "HELP2_E");
+             else if (WS_Help2_exist)
                 V_DrawNamePatch(0, 0, 0, "HELP2_WS", CR_DEFAULT, VPT_STRETCH);
              else
                 V_DrawNamePatch(0, 0, 0, "HELP2", CR_DEFAULT, VPT_STRETCH);
            break;
       case 2:
-          if (WS_Victory_exist)
+          if (VictoryCheckAnimate)
+            D_DrawAnimate("VICTOR_S", "VICTOR_E");
+          else if (WS_Victory_exist)
             V_DrawNamePatch(0, 0, 0, "VICTO_WS", CR_DEFAULT, VPT_STRETCH);
           else
             V_DrawNamePatch(0, 0, 0, "VICTORY2", CR_DEFAULT, VPT_STRETCH);
@@ -909,7 +961,9 @@ void F_Drawer (void)
            F_BunnyScroll ();
            break;
       case 4:
-           if (WS_Endpic_exist)
+           if (EndpicCheckAnimate)
+             D_DrawAnimate("ENDPIC_S", "ENDPIC_E");
+           else if (WS_Endpic_exist)
              V_DrawNamePatch(0, 0, 0, "ENDPI_WS", CR_DEFAULT, VPT_STRETCH);
            else
              V_DrawNamePatch(0, 0, 0, "ENDPIC", CR_DEFAULT, VPT_STRETCH);
