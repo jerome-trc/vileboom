@@ -698,10 +698,10 @@ void D_SetPage(const char* name, int tics, int music)
 static void D_DrawTitle1(const char *name)
 {
   int CheckAnimate = D_CheckAnimate("TITLE_S","TITLE_E");
-  int CheckWS = dsda_WadTitlepic();
+  int CheckWide = D_CheckWide("TITLE_WS");
   if (CheckAnimate)
     D_SetPage("TITLE_S", TICRATE * 170 / 35, mus_intro);
-  else if (CheckWS)
+  else if (CheckWide)
     D_SetPage("TITLE_WS", TICRATE * 170 / 35, mus_intro);
   else
     D_SetPage(name, TICRATE * 170 / 35, mus_intro);
@@ -710,12 +710,12 @@ static void D_DrawTitle1(const char *name)
 static void D_DrawTitle2(const char *name)
 {
     int CheckAnimate = D_CheckAnimate("TITLE_S", "TITLE_E");
-    int CheckWS = dsda_WadTitlepic();
+    int CheckWide = D_CheckWide("TITLE_WS");
     if (CheckAnimate)
         D_SetPage("TITLE_S", 0, mus_dm2ttl);
     else if (bfgedition)
         D_SetPage("DMENUPIC", 0, mus_dm2ttl);
-    else if (CheckWS)
+    else if (CheckWide)
       D_SetPage("TITLE_WS", 0, mus_dm2ttl);
     else
       D_SetPage(name, 0, mus_dm2ttl);
@@ -724,10 +724,10 @@ static void D_DrawTitle2(const char *name)
 static void D_DrawCredits(const char* name)
 {
     int CheckAnimate = D_CheckAnimate("CREDIT_S", "CREDIT_E");
-    int WS_Credit_exist = dsda_WadCredit();
+    int CheckWide = D_CheckWide("CREDI_WS");
     if (CheckAnimate)
         D_SetPage("CREDIT_S", 200, 0);
-    else if (WS_Credit_exist)
+    else if (CheckWide)
         D_SetPage("CREDI_WS", 200, 0);
     else
         D_SetPage(name, 200, 0);
@@ -736,10 +736,10 @@ static void D_DrawCredits(const char* name)
 static void D_DrawHelp1(const char* name)
 {
     int CheckAnimate = D_CheckAnimate("HELP1_S", "HELP1_E");
-    int WS_DrawHelp1_exist = dsda_WadHelp1();
+    int CheckWide = D_CheckWide("HELP1_WS");
     if (CheckAnimate)
         D_SetPage("HELP1_S", 200, 0);
-    else if (WS_DrawHelp1_exist)
+    else if (CheckWide)
         D_SetPage("HELP1_WS", 200, 0);
     else
         D_SetPage(name, 200, 0);
@@ -748,10 +748,10 @@ static void D_DrawHelp1(const char* name)
 static void D_DrawHelp2(const char* name)
 {
     int CheckAnimate = D_CheckAnimate("HELP2_S", "HELP2_E");
-    int WS_DrawHelp2_exist = dsda_WadHelp2();
+    int CheckWide = D_CheckWide("HELP2_WS");
     if (CheckAnimate)
         D_SetPage("HELP2_S", 200, 0);
-    else if (WS_DrawHelp2_exist)
+    else if (CheckWide)
         D_SetPage("HELP2_WS", 200, 0);
     else
         D_SetPage(name, 200, 0);

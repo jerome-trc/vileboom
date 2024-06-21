@@ -463,9 +463,8 @@ static void WI_slamBackground(void)
 
   if (state != StatCount && enterpic)
   {
-      int EnterpicCheck;
-      EnterpicCheck = D_CheckAnimate("ENTERP_S", "ENTERP_E");
-      if (EnterpicCheck)
+      int EnterpicAnimate = D_CheckAnimate("ENTERP_S", "ENTERP_E");
+      if (EnterpicAnimate)
           nicename = "ENTERP_S";
       else
           nicename = "ENTERPIC";
@@ -473,9 +472,8 @@ static void WI_slamBackground(void)
   }
   else if (exitpic)
   {
-      int ExitpicCheck;
-      ExitpicCheck = D_CheckAnimate("EXITP_S", "EXITP_E");
-      if (ExitpicCheck)
+      int ExitpicAnimate = D_CheckAnimate("EXITP_S", "EXITP_E");
+      if (ExitpicAnimate)
           nicename = "EXITP_S";
       else
           nicename = "EXITPIC";
@@ -483,12 +481,11 @@ static void WI_slamBackground(void)
   }
   else if (gamemode == commercial || wbs->epsd < 0 || (gamemode == retail && wbs->epsd >= 3))
   {
-      int InterpicCheck;
-      int WS_Interpic_exist = dsda_WadInterpic();
-      InterpicCheck = D_CheckAnimate("INTER_S", "INTER_E");
-      if (InterpicCheck)
+      int InterpicWide = D_CheckWide("INTER_WS");
+      int InterpicAnimate = D_CheckAnimate("INTER_S", "INTER_E");
+      if (InterpicAnimate)
           nicename = "INTER_S";
-      else if (WS_Interpic_exist)
+      else if (InterpicWide)
       {
           nicename = "INTER_WS";
           strcpy(name, "INTER_WS");
@@ -501,27 +498,24 @@ static void WI_slamBackground(void)
   }
   else
   {
-      int Map0Check;
-      int Map1Check;
-      int Map2Check;
-      int WS_WIMAP0_exist = dsda_WadWIMAP0();
-      int WS_WIMAP1_exist = dsda_WadWIMAP1();
-      int WS_WIMAP2_exist = dsda_WadWIMAP2();
-      Map0Check = D_CheckAnimate("WIMAP0_S", "WIMAP0_E");
-      Map1Check = D_CheckAnimate("WIMAP1_S", "WIMAP1_E");
-      Map2Check = D_CheckAnimate("WIMAP2_S", "WIMAP2_E");
+      int Map0Wide = D_CheckWide("WIMAP0WS");
+      int Map1Wide = D_CheckWide("WIMAP1WS");
+      int Map2Wide = D_CheckWide("WIMAP2WS");
+      int Map0Animate = D_CheckAnimate("WIMAP0_S", "WIMAP0_E");
+      int Map1Animate = D_CheckAnimate("WIMAP1_S", "WIMAP1_E");
+      int Map2Animate = D_CheckAnimate("WIMAP2_S", "WIMAP2_E");
 
-      if ((gameepisode == 1) && Map0Check)
+      if ((gameepisode == 1) && Map0Animate)
           nicename = "WIMAP0_S";
-      else if ((gameepisode == 1) && WS_WIMAP0_exist)
+      else if ((gameepisode == 1) && Map0Wide)
           nicename = "WIMAP0WS";
-      else if ((gameepisode == 2) && Map1Check)
+      else if ((gameepisode == 2) && Map1Animate)
           nicename = "WIMAP1_S";
-      else if ((gameepisode == 2) && WS_WIMAP1_exist)
+      else if ((gameepisode == 2) && Map1Wide)
           nicename = "WIMAP1WS";
-      else if ((gameepisode == 3) && Map2Check)
+      else if ((gameepisode == 3) && Map2Animate)
           nicename = "WIMAP2_S";
-      else if ((gameepisode == 3) && WS_WIMAP2_exist)
+      else if ((gameepisode == 3) && Map2Wide)
           nicename = "WIMAP2WS";
       else
           snprintf(name, sizeof(name), "WIMAP%d", wbs->epsd);

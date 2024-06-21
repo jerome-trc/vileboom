@@ -18,20 +18,6 @@
 #ifndef __DSDA_WIDESCREEN__
 #define __DSDA_WIDESCREEN__
 
-int dsda_WadTitlepic(void);
-int dsda_WadInterpic(void);
-int dsda_WadCredit(void);
-int dsda_WadBossback(void);
-int dsda_WadHelp(void);
-int dsda_WadHelp1(void);
-int dsda_WadHelp2(void);
-int dsda_WadStbar(void);
-int dsda_WadWIMAP0(void);
-int dsda_WadWIMAP1(void);
-int dsda_WadWIMAP2(void);
-int dsda_WadVictory(void);
-int dsda_WadBunny1(void);
-int dsda_WadBunny2(void);
-int dsda_WadEndpic(void);
+int D_CheckWide(const char* lump);
 
 #endif

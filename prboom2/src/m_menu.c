@@ -576,8 +576,8 @@ void M_DrawReadThis1(void)
   {
     // e6y: wide-res
     V_ClearBorder();
-    int WS_DrawHelp1_exist = dsda_WadHelp1();
-    if (WS_DrawHelp1_exist)
+    int CheckWide = D_CheckWide("HELP2_WS");
+    if (CheckWide)
       V_DrawNamePatch(0, 0, 0, "HELP2_WS", CR_DEFAULT, VPT_STRETCH);
     else
       V_DrawNamePatch(0, 0, 0, "HELP2", CR_DEFAULT, VPT_STRETCH);
@@ -3867,8 +3867,8 @@ void M_DrawExtHelp(void)
 
   inhelpscreens = true;              // killough 5/1/98
   V_ClearBorder(); // Arsinikk - redraw background for every ext HELP screen
-  int WS_Help_exist = dsda_WadHelp();
-  if (WS_Help_exist) {
+  int CheckWide = D_CheckWide("HELP_WS");
+  if (CheckWide) {
       // Arsinikk - draw widescreen patch
       V_DrawNamePatch(0, 0, 0, wsnamebfr, CR_DEFAULT, VPT_STRETCH);
   }
@@ -4180,7 +4180,7 @@ void M_DrawCredits(void)     // killough 10/98: credit screen
   const int creditlump = W_CheckNumForName("CREDIT");
   const int creditwslump = W_CheckNumForName("CREDI_WS");
   int CheckAnimate = D_CheckAnimate("CREDIT_S", "CREDIT_E");
-  int WS_Credit_exist = dsda_WadCredit();
+  int CreditWide = D_CheckWide("CREDI_WS");
 
   if (raven)
   {
@@ -4193,7 +4193,7 @@ void M_DrawCredits(void)     // killough 10/98: credit screen
   if (CheckAnimate) {
       D_DrawAnimate("CREDIT_S", "CREDIT_E");
   }
-  else if (WS_Credit_exist && creditlump != LUMP_NOT_FOUND && lumpinfo[creditlump].source != source_iwad)
+  else if (CreditWide && creditlump != LUMP_NOT_FOUND && lumpinfo[creditlump].source != source_iwad)
   {
     V_ClearBorder();
     V_DrawNumPatch(0, 0, 0, creditwslump, CR_DEFAULT, VPT_STRETCH);

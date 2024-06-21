@@ -492,8 +492,8 @@ static void F_StartCastMusic(const char* music, dboolean loop_music)
 void F_StartCast (const char* background, const char* music, dboolean loop_music)
 {
   castorder = (gamemode == commercial ? castorder_d2 : castorder_d1);
-  int WS_Bossback_exist = dsda_WadBossback();
-  if(WS_Bossback_exist)
+  int BossbackWide = D_CheckWide("BOSSB_WS");
+  if(BossbackWide)
     castbackground = (background ? background : "BOSSB_WS");
   else
     castbackground = (background ? background : bgcastcall);
@@ -758,13 +758,13 @@ static dboolean end_patches_exist;
 void F_StartScroll (const char* right, const char* left, const char* music, dboolean loop_music)
 {
   wipegamestate = -1; // force a wipe
-  int WS_Bunny1_exist = dsda_WadBunny1();
-  int WS_Bunny2_exist = dsda_WadBunny2();
-  if (WS_Bunny1_exist)
+  int Bunny1Wide = D_CheckWide("PFUB1_WS");
+  int Bunny2Wide = D_CheckWide("PFUB2_WS");
+  if (Bunny1Wide)
       scrollpic1 = right ? right : pfub1_ws;
   else
       scrollpic1 = right ? right : pfub1;
-  if (WS_Bunny2_exist)
+  if (Bunny2Wide)
       scrollpic2 = left ? left : pfub2_ws;
   else
       scrollpic2 = left ? left : pfub2;
@@ -919,14 +919,14 @@ void F_Drawer (void)
     F_TextWrite ();
   else
   {
-    int WS_Credit_exist = dsda_WadCredit();
-    int WS_Help2_exist = dsda_WadHelp2();
-    int WS_Victory_exist = dsda_WadVictory();
-    int WS_Endpic_exist = dsda_WadEndpic();
-    int CreditCheckAnimate = D_CheckAnimate("CREDIT_S", "CREDIT_E");
-    int Help2CheckAnimate = D_CheckAnimate("HELP2_S", "HELP2_E");
-    int VictoryCheckAnimate = D_CheckAnimate("VICTOR_S", "VICTOR_E");
-    int EndpicCheckAnimate = D_CheckAnimate("ENDPIC_S", "ENDPIC_E");
+    int CreditWide = D_CheckWide("CREDI_WS");
+    int Help2Wide = D_CheckWide("HELP2_WS");
+    int VictoryWide = D_CheckWide("VICTO_WS");
+    int EndpicWide = D_CheckWide("ENDPI_WS");
+    int CreditAnimate = D_CheckAnimate("CREDIT_S", "CREDIT_E");
+    int Help2Animate = D_CheckAnimate("HELP2_S", "HELP2_E");
+    int VictoryAnimate = D_CheckAnimate("VICTOR_S", "VICTOR_E");
+    int EndpicAnimate = D_CheckAnimate("ENDPIC_S", "ENDPIC_E");
     // e6y: wide-res
     V_ClearBorder();
 
@@ -935,24 +935,24 @@ void F_Drawer (void)
       // CPhipps - patch drawing updated
       case 1:
           if (gamemode == retail || gamemode == commercial)
-             if (CreditCheckAnimate)
+             if (CreditAnimate)
                 D_DrawAnimate("CREDIT_S", "CREDIT_E");
-             else if (WS_Credit_exist)
+             else if (CreditWide)
                 V_DrawNamePatch(0, 0, 0, "CREDI_WS", CR_DEFAULT, VPT_STRETCH);
              else
                 V_DrawNamePatch(0, 0, 0, "CREDIT", CR_DEFAULT, VPT_STRETCH);
            else
-             if (Help2CheckAnimate)
+             if (Help2Animate)
                 D_DrawAnimate("HELP2_S", "HELP2_E");
-             else if (WS_Help2_exist)
+             else if (Help2Wide)
                 V_DrawNamePatch(0, 0, 0, "HELP2_WS", CR_DEFAULT, VPT_STRETCH);
              else
                 V_DrawNamePatch(0, 0, 0, "HELP2", CR_DEFAULT, VPT_STRETCH);
            break;
       case 2:
-          if (VictoryCheckAnimate)
+          if (VictoryAnimate)
             D_DrawAnimate("VICTOR_S", "VICTOR_E");
-          else if (WS_Victory_exist)
+          else if (VictoryWide)
             V_DrawNamePatch(0, 0, 0, "VICTO_WS", CR_DEFAULT, VPT_STRETCH);
           else
             V_DrawNamePatch(0, 0, 0, "VICTORY2", CR_DEFAULT, VPT_STRETCH);
@@ -961,9 +961,9 @@ void F_Drawer (void)
            F_BunnyScroll ();
            break;
       case 4:
-           if (EndpicCheckAnimate)
+           if (EndpicAnimate)
              D_DrawAnimate("ENDPIC_S", "ENDPIC_E");
-           else if (WS_Endpic_exist)
+           else if (EndpicWide)
              V_DrawNamePatch(0, 0, 0, "ENDPI_WS", CR_DEFAULT, VPT_STRETCH);
            else
              V_DrawNamePatch(0, 0, 0, "ENDPIC", CR_DEFAULT, VPT_STRETCH);
