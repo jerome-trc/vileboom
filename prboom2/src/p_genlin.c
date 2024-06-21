@@ -46,11 +46,11 @@
 // check if a manual trigger, if so do just the sector on the backside
 #define FIND_GENLIN_SECTORS if (Trig == PushOnce || Trig == PushMany) \
                             { \
-                              if (!(sec = line->backsector)) \
-                                return rtn; \
-                              manual_list[0] = sec->iSectorID; \
-                              id_p = manual_list; \
-                            } \
+                                if (!(sec = line->backsector)) \
+                                    return rtn; \
+                                    manual_list[0] = sec->iSectorID; \
+                                    id_p = manual_list; \
+                                } \
                             else \
                             { \
                               id_p = dsda_FindSectorsFromID(line->tag); \
@@ -99,12 +99,14 @@ int EV_DoGenFloor
 
   for (; *id_p >= 0; id_p++)
   {
-   // if ((!(sec = line->backsector)) && comperr_zerotag)
-      sec = &sectors[*id_p];
+      if ((comperr(comperr_zerotag)) && (line->tag == 0) && (id_p = manual_list))
+          sec = line->backsector;
+      else
+        sec = &sectors[*id_p];
 
     // Do not start another function if floor already moving
     if (P_FloorActive(sec))
-      continue;
+            continue;
 
     // new floor thinker
     rtn = 1;
@@ -276,8 +278,10 @@ int EV_DoGenCeiling
 
   for (; *id_p >= 0; id_p++)
   {
-    //if ((!(sec = line->backsector)) && comperr_zerotag)
-    sec = &sectors[*id_p];
+      if ((comperr(comperr_zerotag)) && (line->tag == 0) && (id_p = manual_list))
+          sec = line->backsector;
+      else
+          sec = &sectors[*id_p];
 
     // Do not start another function if ceiling already moving
     if (P_CeilingActive(sec)) //jff 2/22/98
@@ -456,7 +460,9 @@ int EV_DoGenLift
 
   for (; *id_p >= 0; id_p++)
   {
-      //if ((!(sec = line->backsector)) && comperr_zerotag)
+      if ((comperr(comperr_zerotag)) && (line->tag == 0) && (id_p = manual_list))
+          sec = line->backsector;
+      else
           sec = &sectors[*id_p];
 
     // Do not start another function if floor already moving
@@ -596,8 +602,10 @@ int EV_DoGenStairs
 
   for (; *id_p >= 0; id_p++)
   {
-      //if ((!(sec = line->backsector)) && comperr_zerotag)
-    sec = &sectors[*id_p];
+      if ((comperr(comperr_zerotag)) && (line->tag == 0) && (id_p = manual_list))
+          sec = line->backsector;
+      else
+          sec = &sectors[*id_p];
 
     //Do not start another function if floor already moving
     //jff 2/26/98 add special lockout condition to wait for entire
@@ -765,8 +773,10 @@ int EV_DoGenCrusher
 
   for (; *id_p >= 0; id_p++)
   {
-    //if ((!(sec = line->backsector)) && comperr_zerotag)
-      sec = &sectors[*id_p];
+      if ((comperr(comperr_zerotag)) && (line->tag == 0) && (id_p = manual_list))
+          sec = line->backsector;
+      else
+          sec = &sectors[*id_p];
 
     // Do not start another function if ceiling already moving
     if (P_CeilingActive(sec)) //jff 2/22/98
@@ -847,8 +857,10 @@ int EV_DoGenLockedDoor
 
   for (; *id_p >= 0; id_p++)
   {
-    //if ((!(sec = line->backsector)) && comperr_zerotag)
-      sec = &sectors[*id_p];
+      if ((comperr(comperr_zerotag)) && (line->tag == 0) && (id_p = manual_list))
+          sec = line->backsector;
+      else
+          sec = &sectors[*id_p];
 
     // Do not start another function if ceiling already moving
     if (P_CeilingActive(sec)) //jff 2/22/98
@@ -937,8 +949,10 @@ int EV_DoGenDoor
 
   for (; *id_p >= 0; id_p++)
   {
-    //if ((!(sec = line->backsector)) && comperr_zerotag)
-      sec = &sectors[*id_p];
+      if ((comperr(comperr_zerotag)) && (line->tag == 0) && (id_p = manual_list))
+          sec = line->backsector;
+      else
+          sec = &sectors[*id_p];
 
     // Do not start another function if ceiling already moving
     if (P_CeilingActive(sec)) //jff 2/22/98
