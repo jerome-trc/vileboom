@@ -149,6 +149,9 @@ int ST_SCALED_OFFSETX;
 //#define ST_HEALTHX              90
 //#define ST_HEALTHY              171
 
+#define ST_BERSERKX             (ST_X+171)
+#define ST_BERSERKY             (ST_Y+25)
+
 // Weapon pos.
 // proff 08/18/98: Changed for high-res
 #define ST_ARMSX                (ST_X+111)
@@ -877,11 +880,10 @@ static void ST_drawWidgets(dboolean refresh)
   for (i=0;i<6;i++)
     STlib_updateMultIcon(&w_arms[i], refresh);
 
-  STlib_updateMultIcon(&w_faces, refresh);
+  if (plyr->powers[pw_strength])
+      STlib_updateBinIcon(&w_berserk, refresh);
 
-  // Can someone help get this single patch working 1/2
-  //if (plyr->powers[pw_strength])
-  //    STlib_updateBinIcon(&w_berserk, refresh);
+  STlib_updateMultIcon(&w_faces, refresh);
 
   for (i=0;i<3;i++)
     STlib_updateMultIcon(&w_keyboxes[i], refresh);
@@ -1121,16 +1123,14 @@ static void ST_createWidgets(void)
                     &plyr->armorpoints[ARMOR_ARMOR],
                     &st_statusbaron, &tallpercent);
 
-  // Can someone help get this single patch working 2/2
-
   // berserk icon
- /*  STlib_initBinIcon(&w_berserk,
-                    153,
-                    15,
-                    "SML_PSTR",
+  STlib_initBinIcon(&w_berserk,
+                    ST_BERSERKX,
+                    ST_BERSERKY,
+                    &berserk,
                     &st_notdeathmatch,
                     &st_statusbaron);
-*/
+
   // keyboxes 0-2
   STlib_initMultIcon(&w_keyboxes[0],
                      ST_KEY0X,

@@ -299,10 +299,21 @@ void STlib_updateMultIcon
   }
 }
 
+//
+// STlib_initBinIcon()
+//
+// Initialize a st_binicon_t widget, used for a multinumber display
+// like the status bar's weapons, that are present or not.
+//
+// Passed a st_binicon_t widget, the position, the digit patches, a pointer
+// to the flags representing what is displayed, and pointer to the enable flag
+// Returns nothing.
+//
+
 void STlib_initBinIcon
 (st_binicon_t* b,
-    int			x,
-    int			y,
+    int x,
+    int y,
     const patchnum_t* i,
     dboolean* val,
     dboolean* on)
@@ -315,31 +326,48 @@ void STlib_initBinIcon
     b->p = i;
 }
 
-void STlib_updateBinIcon
-( st_binicon_t* bi,
-  dboolean refresh)
-{
-    int     x;
-    int     y;
-    int     w;
-    int     h;
 
-    if (*bi->on && (bi->oldval != *bi->val || refresh))
-    {
-        x = bi->x - bi->p->leftoffset;
-        y = bi->y - bi->p->topoffset;
-        w = bi->p->width;
-        h = bi->p->height;
+//
+// STlib_updateBinIcon()
+//
+// DInitialize a st_binicon_t widget, used for a multinumber display
+// like the status bar's weapons, that are present or not.
+//
+// Draw a st_binicon_t widget, used for a multinumber display
+// like the status bar's weapons that are present or not. Displays each
+// when the control flag changes or refresh is true
+//
+// Passed a st_binicon_t widget, and a refresh flag
+// Returns nothing.
+//
+
+
+void STlib_updateBinIcon
+( st_binicon_t*   bi,
+  dboolean   refresh )
+{
+  int     x;
+  int     y;
+  int     w;
+  int     h;
+
+  if (*bi->on && (bi->oldval != *bi->val || refresh))
+  {
+    x = bi->x - bi->p->leftoffset;
+    y = bi->y - bi->p->topoffset;
+    w = bi->p->width;
+    h = bi->p->height;
 
 #ifdef RANGECHECK
-        if (y - ST_Y < 0)
-            I_Error("STlib_updateBinIcon: y - ST_Y < 0");
+    if (y - ST_Y < 0)
+      I_Error("STlib_updateBinIcon: y - ST_Y < 0");
 #endif
 
     if (*bi->val)
-        V_DrawNamePatch(bi->x, bi->y, FG, bi->p, CR_DEFAULT, VPT_ALIGN_BOTTOM);
+      V_DrawNumPatch(bi->x, bi->y, FG, bi->p->lumpnum, CR_DEFAULT, VPT_STRETCH);
     else
-        V_CopyRect(BG, FG, x, y, w, h, VPT_STRETCH | VPT_ALIGN_BOTTOM);
+      V_CopyRect(BG, FG, x, y, w, h, VPT_STRETCH);
+
     bi->oldval = *bi->val;
-    }
+  }
 }

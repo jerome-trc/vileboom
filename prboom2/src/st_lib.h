@@ -117,24 +117,22 @@ typedef struct
 
 typedef struct
 {
-    // center-justified location of icon
-    int     x;
-    int     y;
+	// center-justified location of icon
+	int     x;
+	int     y;
 
-    // last icon value
-    int     oldval;
+	// last icon value
+	dboolean oldval;
 
-    // pointer to current icon status
-    dboolean* val;
+	// pointer to current icon status
+	dboolean* val;
 
-    // pointer to boolean
-    //  stating whether to update icon
-    dboolean* on;
+	// pointer to dboolean
+	//  stating whether to update icon
+	dboolean* on;
 
-
-    const patchnum_t* p;	// icon
-    int      data;   // user data
-
+	const patchnum_t* p;  // icon
+	int     data;   // user data
 } st_binicon_t;
 
 
