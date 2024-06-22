@@ -182,6 +182,10 @@ set(GRAPHICS
     graphics/stkeys7.ppm
     graphics/stkeys8.ppm
     graphics/stcfn096.ppm
+    graphics/sml_pstr.ppm
+    graphics/sml_arm0.ppm
+    graphics/sml_arm1.ppm
+    graphics/sml_arm2.ppm
     graphics/m_butt1.ppm
     graphics/m_butt2.ppm
     graphics/m_colors.ppm

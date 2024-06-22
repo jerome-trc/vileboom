@@ -22,6 +22,8 @@
 #include "hud_components/big_armor.h"
 #include "hud_components/big_armor_text.h"
 #include "hud_components/big_artifact.h"
+#include "hud_components/sml_berserk.h"
+#include "hud_components/sml_armor.h"
 #include "hud_components/big_health.h"
 #include "hud_components/big_health_text.h"
 #include "hud_components/color_test.h"
