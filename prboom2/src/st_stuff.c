@@ -298,6 +298,9 @@ static patchnum_t keys[DOOM_NUMCARDS+3];
 // face status patches
 static patchnum_t faces[ST_NUMFACES];
 
+// berserk
+static patchnum_t berserk;
+
 // face background
 static patchnum_t faceback; // CPhipps - single background, translated for different players
 
@@ -320,6 +323,9 @@ static st_number_t w_frags;
 
 // health widget
 static st_percent_t w_health;
+
+// berserk background
+static st_binicon_t	w_berserk;
 
 // weapon ownership widgets
 static st_multicon_t w_arms[6];
@@ -873,6 +879,10 @@ static void ST_drawWidgets(dboolean refresh)
 
   STlib_updateMultIcon(&w_faces, refresh);
 
+  // Can someone help get this single patch working 1/2
+  //if (plyr->powers[pw_strength])
+  //    STlib_updateBinIcon(&w_berserk, refresh);
+
   for (i=0;i<3;i++)
     STlib_updateMultIcon(&w_keyboxes[i], refresh);
 
@@ -965,6 +975,8 @@ static void ST_loadGraphics(void)
       sprintf(namebuf, "STKEYS%d", i);
       R_SetPatchNum(&keys[i], namebuf);
     }
+
+  R_SetPatchNum(&berserk, "SML_PSTR");
 
   //e6y: status bar background
   int StbarWide = D_CheckWide("STBAR_WS");
@@ -1109,6 +1121,16 @@ static void ST_createWidgets(void)
                     &plyr->armorpoints[ARMOR_ARMOR],
                     &st_statusbaron, &tallpercent);
 
+  // Can someone help get this single patch working 2/2
+
+  // berserk icon
+ /*  STlib_initBinIcon(&w_berserk,
+                    153,
+                    15,
+                    "SML_PSTR",
+                    &st_notdeathmatch,
+                    &st_statusbaron);
+*/
   // keyboxes 0-2
   STlib_initMultIcon(&w_keyboxes[0],
                      ST_KEY0X,

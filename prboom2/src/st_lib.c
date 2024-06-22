@@ -298,3 +298,48 @@ void STlib_updateMultIcon
     mi->oldinum = *mi->inum;
   }
 }
+
+void STlib_initBinIcon
+(st_binicon_t* b,
+    int			x,
+    int			y,
+    const patchnum_t* i,
+    dboolean* val,
+    dboolean* on)
+{
+    b->x = x;
+    b->y = y;
+    b->oldval = 0;
+    b->val = val;
+    b->on = on;
+    b->p = i;
+}
+
+void STlib_updateBinIcon
+( st_binicon_t* bi,
+  dboolean refresh)
+{
+    int     x;
+    int     y;
+    int     w;
+    int     h;
+
+    if (*bi->on && (bi->oldval != *bi->val || refresh))
+    {
+        x = bi->x - bi->p->leftoffset;
+        y = bi->y - bi->p->topoffset;
+        w = bi->p->width;
+        h = bi->p->height;
+
+#ifdef RANGECHECK
+        if (y - ST_Y < 0)
+            I_Error("STlib_updateBinIcon: y - ST_Y < 0");
+#endif
+
+    if (*bi->val)
+        V_DrawNamePatch(bi->x, bi->y, FG, bi->p, CR_DEFAULT, VPT_ALIGN_BOTTOM);
+    else
+        V_CopyRect(BG, FG, x, y, w, h, VPT_STRETCH | VPT_ALIGN_BOTTOM);
+    bi->oldval = *bi->val;
+    }
+}
