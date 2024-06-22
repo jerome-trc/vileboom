@@ -1460,6 +1460,7 @@ static const char *D_AutoLoadGameBase()
 {
   return hexen ? "hexen-all" :
          heretic ? "heretic-all" :
+         chex ? "chex-all" :
          "doom-all";
 }
 
