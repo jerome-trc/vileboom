@@ -80,6 +80,8 @@ void ST_SetResolution(void);
 
 void ST_Refresh(void);
 
+void ST_drawWidgets(dboolean refresh);
+
 int ST_HealthColor(int health);
 
 // States for status bar code.

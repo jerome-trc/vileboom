@@ -2622,11 +2622,7 @@ setup_menu_t stat_settings1[] =  // Status Bar and HUD Settings screen
   { "USE RED NUMBERS", S_YESNO, m_conf, SB_X, dsda_config_sts_always_red },
   { "GRAY %",S_YESNO, m_conf, SB_X, dsda_config_sts_pct_always_gray },
   { "SINGLE KEY DISPLAY", S_YESNO, m_conf, SB_X, dsda_config_sts_traditional_keys },
-  EMPTY_LINE,
-  { "Extended Hud", S_SKIP | S_TITLE, m_null, SB_X},
-  { "Use Extended Hud", S_YESNO, m_conf, SB_X, dsda_config_exhud },
-  { "Ex Hud Scale %", S_NUM, m_conf, SB_X, dsda_config_ex_text_scale_x },
-  { "Ex Hud Ratio %", S_NUM, m_conf, SB_X, dsda_config_ex_text_ratio_y },
+  { "BERSERK INDICATOR", S_YESNO, m_conf, SB_X, nyan_config_hud_berserk },
   EMPTY_LINE,
   { "HEADS-UP DISPLAY", S_SKIP | S_TITLE, m_null, SB_X},
   { "SHOW MESSAGES", S_YESNO, m_conf, SB_X, dsda_config_show_messages },
@@ -2650,6 +2646,11 @@ static const char *crosshair_str[] =
 
 setup_menu_t stat_settings2[] =
 {
+  { "Extended Hud", S_SKIP | S_TITLE, m_null, HUD_X},
+  { "Use Extended Hud", S_YESNO, m_conf, HUD_X, dsda_config_exhud },
+  { "Ex Hud Scale %", S_NUM, m_conf, HUD_X, dsda_config_ex_text_scale_x },
+  { "Ex Hud Ratio %", S_NUM, m_conf, HUD_X, dsda_config_ex_text_ratio_y },
+  EMPTY_LINE,
   { "CROSSHAIR SETTINGS", S_SKIP | S_TITLE, m_null, HUD_X},
   { "ENABLE CROSSHAIR", S_CHOICE, m_conf, HUD_X, dsda_config_hudadd_crosshair, 0, crosshair_str },
   { "SCALE CROSSHAIR", S_YESNO, m_conf, HUD_X, dsda_config_hudadd_crosshair_scale },

@@ -713,10 +713,10 @@ static void D_DrawTitle2(const char *name)
     int CheckWide = D_CheckWide("TITLE_WS");
     if (CheckAnimate)
         D_SetPage("TITLE_S", 0, mus_dm2ttl);
-    else if (bfgedition)
-        D_SetPage("DMENUPIC", 0, mus_dm2ttl);
     else if (CheckWide)
       D_SetPage("TITLE_WS", 0, mus_dm2ttl);
+    else if (bfgedition)
+        D_SetPage("DMENUPIC", 0, mus_dm2ttl);
     else
       D_SetPage(name, 0, mus_dm2ttl);
 }
@@ -994,7 +994,8 @@ void CheckIWAD(const char *iwadname,GameMode_t *gmode,dboolean *hassec)
                   fileinfo[length].name[4] == '2')
                 ++sc;
           }
-
+          // Arsinikk - would be nice to have a unity wad check:
+          // (TITLEPIC, check for 320px wide or larger lump size)
           if (!strncmp(fileinfo[length].name,"DMENUPIC",8))
             bfgedition++;
           if (!strncmp(fileinfo[length].name,"HACX",4))

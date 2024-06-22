@@ -449,6 +449,12 @@ static void ST_refreshBackground(void)
         V_DrawNumPatch(ST_ARMSBGX, y, BG, armsbg.lumpnum, CR_DEFAULT, flags);
       }
 
+      // Arsinikk - display berserk indicator
+      if ((plyr->powers[pw_strength]) && dsda_IntConfig(nyan_config_hud_berserk))
+      {
+              V_DrawNumPatch(ST_BERSERKX, ST_BERSERKY, BG, berserk.lumpnum, CR_DEFAULT, flags);
+      }
+
       // killough 3/7/98: make face background change with displayplayer
       if (netgame)
       {
@@ -836,6 +842,18 @@ int ST_HealthColor(int health)
     return cr_health_super;
 }
 
+void ST_berserkRefresh(void)
+{
+    dboolean statusbaron = R_StatusBarVisible();
+    dboolean fullmenu = (menuactive == mnact_full);
+
+    if (statusbaron) {
+        ST_refreshBackground();
+        if (!fullmenu)
+            ST_drawWidgets(true);
+    }
+}
+
 static void ST_drawWidgets(dboolean refresh)
 {
   int i;
@@ -880,9 +898,6 @@ static void ST_drawWidgets(dboolean refresh)
   for (i=0;i<6;i++)
     STlib_updateMultIcon(&w_arms[i], refresh);
 
-  if (plyr->powers[pw_strength])
-      STlib_updateBinIcon(&w_berserk, refresh);
-
   STlib_updateMultIcon(&w_faces, refresh);
 
   for (i=0;i<3;i++)
@@ -924,6 +939,7 @@ void ST_Drawer(dboolean refresh)
   st_firsttime = st_firsttime || refresh || fullmenu;
 
   ST_doPaletteStuff();  // Do red-/gold-shifts from damage/items
+  ST_berserkRefresh();
 
   if (statusbaron) {
     if (st_firsttime || (V_IsOpenGLMode()))
@@ -978,7 +994,10 @@ static void ST_loadGraphics(void)
       R_SetPatchNum(&keys[i], namebuf);
     }
 
-  R_SetPatchNum(&berserk, "SML_PSTR");
+  if (!bfgedition)
+    R_SetPatchNum(&berserk, "SML_PSTR");
+  else
+    R_SetPatchNum(&berserk, "SML_PSTU");
 
   //e6y: status bar background
   int StbarWide = D_CheckWide("STBAR_WS");
@@ -1122,14 +1141,6 @@ static void ST_createWidgets(void)
                     tallnum,
                     &plyr->armorpoints[ARMOR_ARMOR],
                     &st_statusbaron, &tallpercent);
-
-  // berserk icon
-  STlib_initBinIcon(&w_berserk,
-                    ST_BERSERKX,
-                    ST_BERSERKY,
-                    &berserk,
-                    &st_notdeathmatch,
-                    &st_statusbaron);
 
   // keyboxes 0-2
   STlib_initMultIcon(&w_keyboxes[0],

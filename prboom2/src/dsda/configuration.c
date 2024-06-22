@@ -357,6 +357,10 @@ dsda_config_t dsda_config[dsda_config_count] = {
     "dsda_exhud", dsda_config_exhud,
     CONF_BOOL(0), NULL, CONF_FEATURE | NOT_STRICT, dsda_InitExHud
   },
+  [nyan_config_hud_berserk] = {
+  "nyan_berserk_icon", nyan_config_hud_berserk,
+  CONF_BOOL(1)
+  },
   [dsda_config_free_text] = {
     "dsda_free_text", dsda_config_free_text,
     CONF_STRING(""), NULL, NOT_STRICT, dsda_UpdateFreeText
