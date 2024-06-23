@@ -46,11 +46,11 @@
 // check if a manual trigger, if so do just the sector on the backside
 #define FIND_GENLIN_SECTORS if (Trig == PushOnce || Trig == PushMany) \
                             { \
-                                if (!(sec = line->backsector)) \
-                                    return rtn; \
-                                    manual_list[0] = sec->iSectorID; \
-                                    id_p = manual_list; \
-                                } \
+                              if (!(sec = line->backsector)) \
+                                return rtn; \
+                              manual_list[0] = sec->iSectorID; \
+                              id_p = manual_list; \
+                            } \
                             else \
                             { \
                               id_p = dsda_FindSectorsFromID(line->tag); \
@@ -106,7 +106,7 @@ int EV_DoGenFloor
 
     // Do not start another function if floor already moving
     if (P_FloorActive(sec))
-            continue;
+      continue;
 
     // new floor thinker
     rtn = 1;

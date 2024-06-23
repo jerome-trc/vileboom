@@ -678,9 +678,9 @@ void D_AdvanceDemo (void)
 
 static void D_SetPageName(const char *name)
 {
-  //  if ((bfgedition) && name && !strncmp(name,"TITLEPIC",8))
-  //      pagename = "DMENUPIC";
-  //else
+    //if ((bfgedition) && name && !strncmp(name,"TITLEPIC",8))
+    //  pagename = "DMENUPIC";
+    //else
     pagename = name;
 }
 

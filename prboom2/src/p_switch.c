@@ -454,7 +454,7 @@ P_UseSpecialLine
         if ((line->special & FloorChange) || !(line->special & FloorModel))
           return false; // FloorModel is "Allow Monsters" if FloorChange is 0
       if (!comperr(comperr_zerotag) && !line->tag && ((line->special & 6) != 6)) //e6y //jff 2/27/98 all non-manual
-          return false;                         // generalized types require tag
+        return false;                         // generalized types require tag
       linefunc = EV_DoGenFloor;
     }
     else if ((unsigned)line->special >= GenCeilingBase)
@@ -463,7 +463,7 @@ P_UseSpecialLine
         if ((line->special & CeilingChange) || !(line->special & CeilingModel))
           return false;   // CeilingModel is "Allow Monsters" if CeilingChange is 0
       if (!comperr(comperr_zerotag) && !line->tag && ((line->special & 6) != 6)) //e6y //jff 2/27/98 all non-manual
-          return false;                         // generalized types require tag
+        return false;                         // generalized types require tag
       linefunc = EV_DoGenCeiling;
     }
     else if ((unsigned)line->special >= GenDoorBase)
@@ -476,7 +476,7 @@ P_UseSpecialLine
           return false;
       }
       if (!comperr(comperr_zerotag) && !line->tag && ((line->special & 6) != 6)) //e6y //jff 2/27/98 all non-manual
-          return false;                         // generalized types require tag
+        return false;                         // generalized types require tag
       linefunc = EV_DoGenDoor;
     }
     else if ((unsigned)line->special >= GenLockedBase)
@@ -486,7 +486,7 @@ P_UseSpecialLine
       if (!P_CanUnlockGenDoor(line,thing->player))
         return false;
       if (!comperr(comperr_zerotag) && !line->tag && ((line->special & 6) != 6)) //e6y //jff 2/27/98 all non-manual
-          return false;                         // generalized types require tag
+        return false;                         // generalized types require tag
 
       linefunc = EV_DoGenLockedDoor;
     }
@@ -496,7 +496,7 @@ P_UseSpecialLine
         if (!(line->special & LiftMonster))
           return false; // monsters disallowed
       if (!comperr(comperr_zerotag) && !line->tag && ((line->special & 6) != 6)) //e6y //jff 2/27/98 all non-manual
-          return false;                         // generalized types require tag
+        return false;                         // generalized types require tag
       linefunc = EV_DoGenLift;
     }
     else if ((unsigned)line->special >= GenStairsBase)
@@ -505,7 +505,7 @@ P_UseSpecialLine
         if (!(line->special & StairMonster))
           return false; // monsters disallowed
       if (!comperr(comperr_zerotag) && !line->tag && ((line->special & 6) != 6)) //e6y //jff 2/27/98 all non-manual
-          return false;                         // generalized types require tag
+        return false;                         // generalized types require tag
       linefunc = EV_DoGenStairs;
     }
     else if ((unsigned)line->special >= GenCrusherBase)
@@ -514,7 +514,7 @@ P_UseSpecialLine
         if (!(line->special & CrusherMonster))
           return false; // monsters disallowed
       if (!comperr(comperr_zerotag) && !line->tag && ((line->special & 6) != 6)) //e6y //jff 2/27/98 all non-manual
-          return false;                         // generalized types require tag
+        return false;                         // generalized types require tag
       linefunc = EV_DoGenCrusher;
     }
 

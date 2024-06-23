@@ -77,6 +77,10 @@ Unless otherwise specified, argument values are integers. For toggles, a 1 means
 - `big_health`: shows the player health (color-coded) in the status bar font with the health sprite
 - `big_health_text`: shows the player health (color-coded) in the status bar font
 - `big_artifact`: shows the current artifact as seen on the status bar
+- `sml_armor`: shows the player armor type with a small sprite
+  - Sprite is hidden when armor is 0%
+- `sml_berserk`: shows the player berserk status with a small sprite
+  - Sprite is hidden when berserk is inactive
 - `fps`: shows the current fps
 - `attempts`: shows the current and total demo attempts
 - `render_stats`: shows various render stats (`idrate`)

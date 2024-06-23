@@ -1033,20 +1033,20 @@ void ST_Drawer(dboolean refresh)
     //ST_armorRefresh();
 
   if (statusbaron) {
-      if (st_firsttime || (V_IsOpenGLMode()))
-      {
-          /* If just after ST_Start(), refresh all */
-          st_firsttime = false;
-          ST_refreshBackground(); // draw status bar background to off-screen buff
-          if (!fullmenu)
-              ST_drawWidgets(true); // and refresh all widgets
-      }
-      else
-      {
-          /* Otherwise, update as little as possible */
-          if (!fullmenu)
-              ST_drawWidgets(false); // update all widgets
-      }
+    if (st_firsttime || (V_IsOpenGLMode()))
+    {
+      /* If just after ST_Start(), refresh all */
+      st_firsttime = false;
+      ST_refreshBackground(); // draw status bar background to off-screen buff
+      if (!fullmenu)
+        ST_drawWidgets(true); // and refresh all widgets
+    }
+    else
+    {
+      /* Otherwise, update as little as possible */
+      if (!fullmenu)
+        ST_drawWidgets(false); // update all widgets
+    }
   }
 
   V_EndUIDraw();
@@ -1056,7 +1056,7 @@ void ST_Drawer(dboolean refresh)
 
 //
 // ST_loadGraphics
-// 
+//
 // CPhipps - Loads graphics needed for status bar
 //
 static void ST_loadGraphics(void)
