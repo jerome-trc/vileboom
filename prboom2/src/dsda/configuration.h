@@ -61,6 +61,7 @@ typedef enum {
   dsda_config_show_level_splits,
   dsda_config_exhud,
   nyan_config_hud_berserk,
+  nyan_config_hud_armoricon,
   dsda_config_free_text,
   dsda_config_mute_sfx,
   dsda_config_mute_music,

@@ -38,15 +38,15 @@ static const char* dsda_ArmorName(player_t* player) {
     int armor;
 
     armor = player->armorpoints[ARMOR_ARMOR];
-    if (armor <= 0) {
-        return "SML_ARM0";
-    }
-    else if (player->armortype < 2) {
-        return "SML_ARM1";
-    }
-    else {
-        return "SML_ARM2";
-    }
+
+    if (player->armortype >= 2)
+        if (gamemission == chex) { return "SM_ARM2C"; }
+        else { return "SM_ARM2I"; }
+    else if (player->armortype == 1)
+        if (gamemission == chex) { return "SM_ARM1C"; }
+        else { return "SM_ARM1I"; }
+    else
+        return NULL;
 }
 
 void drawArmorIcon(player_t* player, int* x, int* y, const char* (*armor)(player_t*)) {
@@ -66,8 +66,8 @@ static void dsda_DrawComponent(void) {
 
     x = local->component.x;
     y = local->component.y;
-
-    drawArmorIcon(player, &x, &y, dsda_ArmorName);
+    if (!raven)
+        drawArmorIcon(player, &x, &y, dsda_ArmorName);
 }
 
 void dsda_InitSmlArmorHC(int x_offset, int y_offset, int vpt, int* args, int arg_count, void** data) {

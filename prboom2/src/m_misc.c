@@ -309,6 +309,7 @@ cfg_def_t cfg_defs[] =
   MIGRATED_SETTING(nyan_config_menu_play_demo),
   MIGRATED_SETTING(nyan_config_intermission_pause),
   MIGRATED_SETTING(nyan_config_hud_berserk),
+  MIGRATED_SETTING(nyan_config_hud_armoricon),
 
 
   SETTING_HEADING("Scripts"),

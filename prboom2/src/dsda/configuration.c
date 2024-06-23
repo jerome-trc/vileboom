@@ -361,6 +361,10 @@ dsda_config_t dsda_config[dsda_config_count] = {
   "nyan_berserk_icon", nyan_config_hud_berserk,
   CONF_BOOL(1)
   },
+  [nyan_config_hud_armoricon] = {
+  "nyan_armor_icon", nyan_config_hud_armoricon,
+  CONF_BOOL(1)
+  },
   [dsda_config_free_text] = {
     "dsda_free_text", dsda_config_free_text,
     CONF_STRING(""), NULL, NOT_STRICT, dsda_UpdateFreeText

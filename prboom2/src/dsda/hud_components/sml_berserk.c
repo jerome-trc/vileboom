@@ -36,7 +36,9 @@ static int patch_spacing;
 
 static const char* dsda_BerserkName(player_t* player) {
     if (player->powers[pw_strength])
-            return "SML_PSTR";
+        if (gamemission == chex) { return "SM_PSTC"; }
+        else if (bfgedition) { return "SM_PSTU"; }
+        else { return "SM_PSTR"; }
     else
         return NULL;
 }
@@ -58,8 +60,8 @@ static void dsda_DrawComponent(void) {
 
     x = local->component.x;
     y = local->component.y;
-
-    drawBerserkIcon(player, &x, &y, dsda_BerserkName);
+    if (!raven)
+        drawBerserkIcon(player, &x, &y, dsda_BerserkName);
     //V_DrawNumPatch(x, y, FG, strength_lump, CR_DEFAULT, local->component.vpt);
     //x += 4;
 }

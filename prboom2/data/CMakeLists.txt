@@ -182,11 +182,15 @@ set(GRAPHICS
     graphics/stkeys7.ppm
     graphics/stkeys8.ppm
     graphics/stcfn096.ppm
-    graphics/sml_pstr.ppm
-    graphics/sml_pstu.ppm
-    graphics/sml_arm0.ppm
-    graphics/sml_arm1.ppm
-    graphics/sml_arm2.ppm
+    graphics/sm_pstr.ppm
+    graphics/sm_pstu.ppm
+    graphics/sm_pstc.ppm
+    graphics/sm_arm1.ppm
+    graphics/sm_arm2.ppm
+    graphics/sm_arm1i.ppm
+    graphics/sm_arm2i.ppm
+    graphics/sm_arm1c.ppm
+    graphics/sm_arm2c.ppm
     graphics/m_butt1.ppm
     graphics/m_butt2.ppm
     graphics/m_colors.ppm

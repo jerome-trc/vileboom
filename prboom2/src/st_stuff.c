@@ -151,6 +151,12 @@ int ST_SCALED_OFFSETX;
 
 #define ST_BERSERKX             (ST_X+171)
 #define ST_BERSERKY             (ST_Y+25)
+#define ST_BERSERKCHEXX         (ST_X+164)
+#define ST_BERSERKCHEXY         (ST_Y+1)
+#define ST_ARMORCHEXX           (ST_X+168)
+#define ST_ARMORCHEXY           (ST_Y+1)
+#define ST_ARMORICONX           (ST_X+171)
+#define ST_ARMORICONY           (ST_Y+2)
 
 // Weapon pos.
 // proff 08/18/98: Changed for high-res
@@ -304,6 +310,10 @@ static patchnum_t faces[ST_NUMFACES];
 // berserk
 static patchnum_t berserk;
 
+// armor icon
+static patchnum_t armor1icon;
+static patchnum_t armor2icon;
+
 // face background
 static patchnum_t faceback; // CPhipps - single background, translated for different players
 
@@ -445,14 +455,36 @@ static void ST_refreshBackground(void)
 
       V_DrawNumPatch(ST_X, y, BG, stbarbg.lumpnum, CR_DEFAULT, flags);
       if (!deathmatch)
-      {
         V_DrawNumPatch(ST_ARMSBGX, y, BG, armsbg.lumpnum, CR_DEFAULT, flags);
-      }
 
-      // Arsinikk - display berserk indicator
-      if ((plyr->powers[pw_strength]) && dsda_IntConfig(nyan_config_hud_berserk))
+      // Arsinikk - fullmenu is needed to hide indicators in complex menu screens
+      dboolean fullmenu = (menuactive == mnact_full);
+      if (!fullmenu)
       {
-              V_DrawNumPatch(ST_BERSERKX, ST_BERSERKY, BG, berserk.lumpnum, CR_DEFAULT, flags);
+          // Arsinikk - display berserk indicator
+          if ((plyr->powers[pw_strength]) && dsda_IntConfig(nyan_config_hud_berserk))
+          {
+              if (gamemission == chex)
+                  V_DrawNumPatch(ST_BERSERKCHEXX, ST_BERSERKCHEXY, BG, berserk.lumpnum, CR_DEFAULT, flags);
+              else
+                  V_DrawNumPatch(ST_BERSERKX, ST_BERSERKY, BG, berserk.lumpnum, CR_DEFAULT, flags);
+          }
+          // Arsinikk - display armor indicator
+          // (changes based on lack of armor or type)
+          if ((plyr->armortype >= 2) && dsda_IntConfig(nyan_config_hud_armoricon))
+          {
+              if (gamemission == chex)
+                  V_DrawNumPatch(ST_ARMORCHEXX, ST_ARMORCHEXY, BG, armor2icon.lumpnum, CR_GREEN, flags);
+              else
+                  V_DrawNumPatch(ST_ARMORICONX, ST_ARMORICONY, BG, armor2icon.lumpnum, CR_GREEN, flags);
+          }
+          else if ((plyr->armortype == 1) && dsda_IntConfig(nyan_config_hud_armoricon))
+          {
+              if (gamemission == chex)
+                  V_DrawNumPatch(ST_ARMORCHEXX, ST_ARMORCHEXY, BG, armor1icon.lumpnum, CR_GREEN, flags);
+              else
+                  V_DrawNumPatch(ST_ARMORICONX, ST_ARMORICONY, BG, armor1icon.lumpnum, CR_GREEN, flags);
+          }
       }
 
       // killough 3/7/98: make face background change with displayplayer
@@ -842,12 +874,61 @@ int ST_HealthColor(int health)
     return cr_health_super;
 }
 
-void ST_berserkRefresh(void)
+// Arsinikk - originally used this code to forceRefresh at select times
+// but the armor indicator needed it forced all the time.
+//
+// Plus if we are forcing a refresh for software all the time,
+// this is no longer needed
+
+//int ST_BerserkFirst = 1;
+
+/*void ST_berserkRefresh(void)
+{
+    if (ST_BerserkFirst == 1)
+    {
+        ST_BerserkFirst = 0;
+        dboolean statusbaron = R_StatusBarVisible();
+        dboolean fullmenu = (menuactive == mnact_full);
+
+        if ((statusbaron) && !(V_IsOpenGLMode())) {
+            ST_refreshBackground();
+            if (!fullmenu)
+                ST_drawWidgets(true);
+        }
+    }
+}
+
+void ST_armorRefresh(void)
 {
     dboolean statusbaron = R_StatusBarVisible();
     dboolean fullmenu = (menuactive == mnact_full);
 
-    if (statusbaron) {
+    if ((statusbaron) && !(V_IsOpenGLMode())) {
+        ST_refreshBackground();
+        if (!fullmenu)
+            ST_drawWidgets(true);
+    }
+} */
+
+// Arsinikk - This is the magic code that will keep
+// the statusbar background in software up-to-date.
+//
+// I haven't seen any downsides to keeping the software
+// statusbar up-to-date, to be the same as OpenGL.
+// 
+// This fixes a few issues like when status bar
+// numbers are too long and leave artefacts on the
+// background
+// (see https://www.doomworld.com/forum/topic/141819-200-line-christmas-mbf21-community-project-dev-thread/)
+// 
+// Also fixes the new armor and berserk stbar indicators!
+
+void ST_stbarRefresh(void)
+{
+    dboolean statusbaron = R_StatusBarVisible();
+    dboolean fullmenu = (menuactive == mnact_full);
+
+    if ((statusbaron) && !(V_IsOpenGLMode())) {
         ST_refreshBackground();
         if (!fullmenu)
             ST_drawWidgets(true);
@@ -939,23 +1020,33 @@ void ST_Drawer(dboolean refresh)
   st_firsttime = st_firsttime || refresh || fullmenu;
 
   ST_doPaletteStuff();  // Do red-/gold-shifts from damage/items
-  ST_berserkRefresh();
+
+  // Arsinikk - Refreshes status bar background for software
+  // See ST_stbarRefresh for more info
+  if (!(V_IsOpenGLMode()))
+     ST_stbarRefresh();
+  
+  //if (plyr->powers[pw_strength])
+    //ST_berserkRefresh();
+
+  //if ((plyr->armortype >= 0) && !(V_IsOpenGLMode()))
+    //ST_armorRefresh();
 
   if (statusbaron) {
-    if (st_firsttime || (V_IsOpenGLMode()))
-    {
-      /* If just after ST_Start(), refresh all */
-      st_firsttime = false;
-      ST_refreshBackground(); // draw status bar background to off-screen buff
-      if (!fullmenu)
-        ST_drawWidgets(true); // and refresh all widgets
-    }
-    else
-    {
-      /* Otherwise, update as little as possible */
-      if (!fullmenu)
-        ST_drawWidgets(false); // update all widgets
-    }
+      if (st_firsttime || (V_IsOpenGLMode()))
+      {
+          /* If just after ST_Start(), refresh all */
+          st_firsttime = false;
+          ST_refreshBackground(); // draw status bar background to off-screen buff
+          if (!fullmenu)
+              ST_drawWidgets(true); // and refresh all widgets
+      }
+      else
+      {
+          /* Otherwise, update as little as possible */
+          if (!fullmenu)
+              ST_drawWidgets(false); // update all widgets
+      }
   }
 
   V_EndUIDraw();
@@ -965,7 +1056,7 @@ void ST_Drawer(dboolean refresh)
 
 //
 // ST_loadGraphics
-//
+// 
 // CPhipps - Loads graphics needed for status bar
 //
 static void ST_loadGraphics(void)
@@ -994,10 +1085,24 @@ static void ST_loadGraphics(void)
       R_SetPatchNum(&keys[i], namebuf);
     }
 
-  if (!bfgedition)
-    R_SetPatchNum(&berserk, "SML_PSTR");
+  // Set berserk hud indicators
+  // Green cross for bfg edition (unity)
+
+  if (gamemission == chex) R_SetPatchNum(&berserk, "SM_PSTC");
+  else if (bfgedition) R_SetPatchNum(&berserk, "SM_PSTU");
+  else R_SetPatchNum(&berserk, "SM_PSTR");
+
+  // Set armor hud indicators
+  if (gamemission == chex)
+  {
+      R_SetPatchNum(&armor1icon, "SM_ARM1C");
+      R_SetPatchNum(&armor2icon, "SM_ARM2C");
+  }
   else
-    R_SetPatchNum(&berserk, "SML_PSTU");
+  {
+      R_SetPatchNum(&armor1icon, "SM_ARM1");
+      R_SetPatchNum(&armor2icon, "SM_ARM2");
+  }
 
   //e6y: status bar background
   int StbarWide = D_CheckWide("STBAR_WS");
