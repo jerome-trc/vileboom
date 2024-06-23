@@ -1072,7 +1072,9 @@ void AddIWAD(const char *iwad)
     case registered:
     case shareware:
       gamemission = doom;
-      if (i>=8 && !strnicmp(iwad+i-8,"chex.wad",8))
+      if (i>=11 && !strnicmp(iwad+i-11,"rekkrsa.wad",11))
+          gamemission = rekkr;
+      else if (i>=8 && !strnicmp(iwad+i-8,"chex.wad",8))
         gamemission = chex;
       break;
     case commercial:
@@ -1460,7 +1462,6 @@ static const char *D_AutoLoadGameBase()
 {
   return hexen ? "hexen-all" :
          heretic ? "heretic-all" :
-         chex ? "chex-all" :
          "doom-all";
 }
 
@@ -1633,6 +1634,9 @@ static void EvaluateDoomVerStr(void)
         {
           case chex:
             doomverstr = "Chex(R) Quest";
+            break;
+          case rekkr:
+            doomverstr = "REKKR";
             break;
           default:
             doomverstr = "The Ultimate DOOM";

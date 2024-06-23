@@ -78,6 +78,7 @@ typedef enum {
   pack_nerve,   // No Rest For The Living
   hacx,         // HACX - Twitch 'n Kill
   chex,         // Chex Quest
+  rekkr,        // REKKR
   none
 } GameMission_t;
 
