@@ -5866,8 +5866,7 @@ void M_Drawer (void)
             V_DrawNumPatch(x + SKULLXOFF, currentMenu->y - 5 + itemOn * LINEHEIGHT, 0, SLump + frame, CR_DEFAULT, VPT_STRETCH);
         }
         else
-            V_DrawNamePatch(x + SKULLXOFF, currentMenu->y - 5 + itemOn * LINEHEIGHT, 0,
-            skullName[whichSkull], CR_DEFAULT, VPT_STRETCH);
+            V_DrawNamePatch(x + SKULLXOFF, currentMenu->y - 5 + itemOn * LINEHEIGHT, 0, skullName[whichSkull], CR_DEFAULT, VPT_STRETCH);
     }
   }
 
@@ -5928,7 +5927,12 @@ void M_Ticker (void)
     whichSkull ^= 1;
     skullAnimCounter = 8;
   }
+  if(menuactive)
+  {
+    Animate_Ticker();
+  }
   skullTime++;
+
 
   if (raven) return MN_Ticker();
 }
