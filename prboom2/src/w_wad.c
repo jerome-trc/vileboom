@@ -55,8 +55,6 @@
 #include "lprintf.h"
 #include "e6y.h"
 
-#include "dsda/utility.h"
-
 //
 // GLOBALS
 //
@@ -153,11 +151,14 @@ static void W_AddFile(wadfile_info_t *wadfile)
 
   wadfile->handle = M_OpenRB(wadfile->name);
   if (wadfile->handle == -1)
-  {
-    if (!dsda_HasFileExt(wadfile->name, ".lmp"))
-      I_Error("W_AddFile: couldn't open %s",wadfile->name);
-    return;
-  }
+    {
+      if (  strlen(wadfile->name)<=4 ||      // add error check -- killough
+	         (strcasecmp(wadfile->name+strlen(wadfile->name)-4 , ".lmp" ) &&
+	          strcasecmp(wadfile->name+strlen(wadfile->name)-4 , ".gwa" ) )
+         )
+	I_Error("W_AddFile: couldn't open %s",wadfile->name);
+      return;
+    }
 
   //jff 8/3/98 use logical output routine
   lprintf (LO_INFO," adding %s\n",wadfile->name);
@@ -177,7 +178,12 @@ static void W_AddFile(wadfile_info_t *wadfile)
     }
   }
 
-  if (!dsda_HasFileExt(wadfile->name, ".wad"))
+  if (  strlen(wadfile->name)<=4 ||
+	      (
+          strcasecmp(wadfile->name+strlen(wadfile->name)-4,".wad") &&
+	        strcasecmp(wadfile->name+strlen(wadfile->name)-4,".gwa")
+        )
+     )
     {
       // single lump file
       fileinfo = &singleinfo;

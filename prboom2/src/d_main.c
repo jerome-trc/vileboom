@@ -880,6 +880,7 @@ void D_StartTitle (void)
 //         - modified to allocate & use new wadfiles array
 void D_AddFile (const char *file, wad_source_t source)
 {
+  char *gwa_filename=NULL;
   int len;
 
   // There can only be one iwad source!
@@ -904,6 +905,20 @@ void D_AddFile (const char *file, wad_source_t source)
     gamemission = pack_nerve;
 
   numwadfiles++;
+  // proff: automatically try to add the gwa files
+  // proff - moved from w_wad.c
+  gwa_filename=AddDefaultExtension(strcpy(Z_Malloc(strlen(file)+5), file), ".wad");
+  if (dsda_HasFileExt(gwa_filename, ".wad"))
+  {
+    char *ext;
+    ext = &gwa_filename[strlen(gwa_filename)-4];
+    ext[1] = 'g'; ext[2] = 'w'; ext[3] = 'a';
+    wadfiles = Z_Realloc(wadfiles, sizeof(*wadfiles)*(numwadfiles+1));
+    wadfiles[numwadfiles].name = gwa_filename;
+    wadfiles[numwadfiles].src = source_pwad; // Ty 08/29/98
+    wadfiles[numwadfiles].handle = 0;
+    numwadfiles++;
+  }
 }
 
 // killough 10/98: support -dehout filename
@@ -1287,10 +1302,10 @@ static char *GetAutoloadDir(const char *iwadname, dboolean createdir)
 
     if (autoload_path == NULL)
     {
-        const char* configdir = I_ConfigDir();
-        len = snprintf(NULL, 0, "%s/autoload", configdir);
+        const char* exedir = I_DoomExeDir();
+        len = snprintf(NULL, 0, "%s/autoload", exedir);
         autoload_path = Z_Malloc(len+1);
-        snprintf(autoload_path, len+1, "%s/autoload", configdir);
+        snprintf(autoload_path, len+1, "%s/autoload", exedir);
     }
 
     M_MakeDir(autoload_path, false);
@@ -1712,6 +1727,10 @@ static void D_DoomMainSetup(void)
     dsda_PrintArgHelp();
     I_SafeExit(0);
   }
+
+  // figgi 09/18/00-- added switch to force classic bsp nodes
+  if (dsda_Flag(dsda_arg_forceoldbsp))
+    forceOldBsp = true;
 
   DoLooseFiles();  // Ty 08/29/98 - handle "loose" files on command line
 

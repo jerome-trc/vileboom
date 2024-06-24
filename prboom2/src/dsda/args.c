@@ -78,11 +78,6 @@ static arg_config_t arg_config[dsda_arg_count] = {
     "plays the given demo file",
     arg_string,
   },
-  [dsda_arg_playlump] = {
-    "-playlump", NULL, NULL,
-    "plays the given internal demo lump (e.g., DEMO1)",
-    arg_string,
-  },
   [dsda_arg_timedemo] = {
     "-timedemo", NULL, NULL,
     "plays the given demo file as fast as possible, timing the process",
@@ -431,6 +426,11 @@ static arg_config_t arg_config[dsda_arg_count] = {
   [dsda_arg_resetgamma] = {
     "-resetgamma", NULL, NULL,
     "reset gamma and exit",
+    arg_null,
+  },
+  [dsda_arg_forceoldbsp] = {
+    "-forceoldbsp", NULL, NULL,
+    "force classic bsp nodes",
     arg_null,
   },
   [dsda_arg_force_old_zdoom_nodes] = {

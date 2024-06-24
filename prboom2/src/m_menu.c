@@ -2226,7 +2226,6 @@ setup_menu_t keys_settings2[] =  // Key Binding screen strings
   {"LOAD"        ,S_INPUT     ,m_scrn,KB_X,0,dsda_input_loadgame},
   {"QUICKSAVE"   ,S_INPUT     ,m_scrn,KB_X,0,dsda_input_quicksave},
   {"QUICKLOAD"   ,S_INPUT     ,m_scrn,KB_X,0,dsda_input_quickload},
-  {"LEVEL TABLE" ,S_INPUT     ,m_scrn,KB_X,0,dsda_input_level_table},
   {"END GAME"    ,S_INPUT     ,m_scrn,KB_X,0,dsda_input_endgame},
   {"QUIT"        ,S_INPUT     ,m_scrn,KB_X,0,dsda_input_quit},
 
@@ -2299,7 +2298,6 @@ setup_menu_t keys_settings5[] =  // Key Binding screen strings
   {"MISC"                 ,S_SKIP|S_TITLE,m_null,KB_X},
   {"RESTART CURRENT MAP"  ,S_INPUT   ,m_scrn,KB_X,0,dsda_input_restart},
   {"NEXT LEVEL"           ,S_INPUT   ,m_scrn,KB_X,0,dsda_input_nextlevel},
-  {"PREVIOUS LEVEL"       ,S_INPUT   ,m_scrn,KB_X,0,dsda_input_prevlevel},
   {"Show Alive Monsters"  ,S_INPUT   ,m_scrn,KB_X,0,dsda_input_showalive},
 
   PREV_PAGE(keys_settings4),
@@ -3086,6 +3084,7 @@ setup_menu_t mapping_settings[] = {
   { "USE PASSES THRU ALL SPECIAL LINES", S_YESNO, m_conf, G_X, dsda_config_comperr_passuse },
   { "WALK UNDER SOLID HANGING BODIES", S_YESNO, m_conf, G_X, dsda_config_comperr_hangsolid },
   { "FIX CLIPPING IN LARGE LEVELS", S_YESNO, m_conf, G_X, dsda_config_comperr_blockmap },
+  { "ALLOW VERTICAL AIMING", S_YESNO, m_conf, G_X, dsda_config_comperr_freeaim },
 
   NEXT_PAGE(demo_settings),
   FINAL_ENTRY
@@ -3138,6 +3137,7 @@ void M_ChangeFullScreen(void)
 void M_ChangeVideoMode(void)
 {
   V_ChangeScreenResolution();
+  M_ChangeMaxViewPitch();
 }
 
 void M_ChangeUseGLSurface(void)
@@ -5216,14 +5216,6 @@ dboolean M_Responder (event_t* ev) {
       return true;
     }
 
-    if (dsda_InputActivated(dsda_input_level_table))
-    {
-      M_StartControlPanel();
-      S_StartVoidSound(g_sfx_swtchn);
-      M_LevelTable(0);
-      return true;
-    }
-
     if (dsda_InputActivated(dsda_input_soundvolume))
     {
       M_StartControlPanel ();
@@ -5348,12 +5340,6 @@ dboolean M_Responder (event_t* ev) {
         if (G_GotoNextLevel())
           return true;
       }
-    }
-
-    if (dsda_InputActivated(dsda_input_prevlevel))
-    {
-      if (G_GotoPrevLevel())
-          return true;
     }
 
     if (dsda_InputActivated(dsda_input_restart))
@@ -6211,6 +6197,7 @@ void M_Init(void)
 
   //e6y
   M_ChangeSpeed();
+  M_ChangeMaxViewPitch();
   M_ChangeSkyMode();
   M_ChangeFOV();
 

@@ -112,10 +112,16 @@ ssline_t *sslines;
 
 byte     *map_subsectors;
 
+////////////////////////////////////////////////////////////////////////////////////////////
+// figgi 08/21/00 -- constants and globals for glBsp support
+#define GL_VERT_OFFSET  4
+
 typedef enum {
   UNKNOWN_NODES = -1,
   DEFAULT_BSP_NODES,
   DEEP_BSP_V4_NODES,
+  GL_V1_NODES,
+  GL_V2_NODES,
   ZDOOM_XNOD_NODES,
   ZDOOM_ZNOD_NODES,
   ZDOOM_XGLN_NODES,
@@ -129,6 +135,7 @@ typedef enum {
 int firstglvertex = 0;
 static nodes_version_t nodesVersion = DEFAULT_BSP_NODES;
 dboolean use_gl_nodes = false;
+dboolean forceOldBsp = false;
 dboolean has_behavior;
 dboolean udmf_map;
 
@@ -142,6 +149,20 @@ typedef struct
   unsigned short  partner; // corresponding partner seg, or -1 on one-sided walls
 } glseg_t;
 
+// fixed 32 bit gl_vert format v2.0+ (glBsp 1.91)
+typedef struct
+{
+  fixed_t x,y;
+} mapglvertex_t;
+
+enum
+{
+   ML_GL_LABEL=0,  // A separator name, GL_ExMx or GL_MAPxx
+   ML_GL_VERTS,     // Extra Vertices
+   ML_GL_SEGS,     // Segs, from linedefs & minisegs
+   ML_GL_SSECT,    // SubSectors, list of segs
+   ML_GL_NODES     // GL BSP nodes
+};
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -223,10 +244,20 @@ typedef struct
   int blockmap;
   int behavior;
 
+  int gl_label;
+  int gl_verts;
+  int gl_segs;
+  int gl_ssect;
+  int gl_nodes;
+
   int znodes;
 } level_components_t;
 
 static level_components_t level_components;
+
+static dboolean P_GLLumpsExist(void) {
+  return level_components.gl_label != LUMP_NOT_FOUND;
+}
 
 // e6y: Smart malloc
 // Used by P_SetupLevel() for smart data loading
@@ -284,6 +315,29 @@ static void P_GetNodesVersion(void)
 {
   nodesVersion = DEFAULT_BSP_NODES;
   use_gl_nodes = false;
+
+  if (P_GLLumpsExist() &&
+      (mbf21 || forceOldBsp == false) &&
+      (compatibility_level >= prboom_2_compatibility))
+  {
+    if (!CheckForIdentifier(level_components.gl_verts, "gNd", 3))
+    {
+      use_gl_nodes = true;
+      nodesVersion = GL_V1_NODES;
+      lprintf(LO_DEBUG, "P_GetNodesVersion: using v1 gl nodes\n");
+    }
+    else if (CheckForIdentifier(level_components.gl_verts, "gNd2", 4) &&
+             !CheckForIdentifier(level_components.gl_segs, "gNd3", 4))
+    {
+      use_gl_nodes = true;
+      nodesVersion = GL_V2_NODES;
+      lprintf(LO_DEBUG, "P_GetNodesVersion: using v2 gl nodes\n");
+    }
+    else
+    {
+      lprintf(LO_DEBUG, "P_GetNodesVersion: ignoring unsupported gl nodes version");
+    }
+  }
 
   if (nodesVersion == DEFAULT_BSP_NODES)
   {
@@ -363,8 +417,9 @@ static void P_GetNodesVersion(void)
 // figgi -- FIXME: Automap showes wrong zoom boundaries when starting game
 //           when P_LoadVertexes is used with classic BSP nodes.
 
-static void P_LoadVertexes(int lump)
+static void P_LoadVertexes(int lump, int gllump)
 {
+  const byte         *gldata;
   int                 i;
   const mapvertex_t*  ml;
 
@@ -373,8 +428,44 @@ static void P_LoadVertexes(int lump)
   numvertexes   = W_LumpLength(lump) / sizeof(mapvertex_t);
   firstglvertex = numvertexes;
 
-  // Allocate zone memory for buffer.
-  vertexes = calloc_IfSameLevel(vertexes, numvertexes, sizeof(vertex_t));
+  if (use_gl_nodes)
+  {
+    gldata = W_LumpByNum(gllump);
+
+    if (nodesVersion == GL_V2_NODES) // 32 bit GL_VERT format (16.16 fixed)
+    {
+      const mapglvertex_t*  mgl;
+
+      numvertexes += (W_LumpLength(gllump) - GL_VERT_OFFSET)/sizeof(mapglvertex_t);
+      vertexes = malloc_IfSameLevel(vertexes, numvertexes * sizeof(vertex_t));
+      mgl      = (const mapglvertex_t *) (gldata + GL_VERT_OFFSET);
+
+      for (i = firstglvertex; i < numvertexes; i++)
+      {
+        vertexes[i].x = mgl->x;
+        vertexes[i].y = mgl->y;
+        mgl++;
+      }
+    }
+    else
+    {
+      numvertexes += W_LumpLength(gllump)/sizeof(mapvertex_t);
+      vertexes = malloc_IfSameLevel(vertexes, numvertexes * sizeof(vertex_t));
+      ml       = (const mapvertex_t *)gldata;
+
+      for (i = firstglvertex; i < numvertexes; i++)
+      {
+        vertexes[i].x = LittleShort(ml->x)<<FRACBITS;
+        vertexes[i].y = LittleShort(ml->y)<<FRACBITS;
+        ml++;
+      }
+    }
+  }
+  else
+  {
+    // Allocate zone memory for buffer.
+    vertexes = calloc_IfSameLevel(vertexes, numvertexes, sizeof(vertex_t));
+  }
 
   // Load data into cache.
   // cph 2006/07/29 - cast to mapvertex_t here, making the loop below much neater
@@ -390,7 +481,7 @@ static void P_LoadVertexes(int lump)
   }
 }
 
-static void P_LoadUDMFVertexes(int lump)
+static void P_LoadUDMFVertexes(int lump, int gllump)
 {
   int i;
 
@@ -695,6 +786,64 @@ static void P_LoadSegs_V4(int lump)
     // with certain nodebuilders. Fixes among others, line 20365
     // of DV.wad, map 5
     li->offset = GetOffset(li->v1, (ml->side ? ldef->v2 : ldef->v1));
+  }
+}
+
+
+/*******************************************
+ * Name     : P_LoadGLSegs           *
+ * created  : 08/13/00             *
+ * modified : 09/18/00, adapted for PrBoom *
+ * author   : figgi              *
+ * what   : support for gl nodes       *
+ *******************************************/
+static void P_LoadGLSegs(int lump)
+{
+  int     i;
+  const glseg_t   *ml;
+  line_t    *ldef;
+
+  numsegs = W_LumpLength(lump) / sizeof(glseg_t);
+  segs = malloc_IfSameLevel(segs, numsegs * sizeof(seg_t));
+  memset(segs, 0, numsegs * sizeof(seg_t));
+  ml = (const glseg_t*)W_LumpByNum(lump);
+
+  if ((!ml) || (!numsegs))
+    I_Error("P_LoadGLSegs: no glsegs in level");
+
+  for(i = 0; i < numsegs; i++)
+  {             // check for gl-vertices
+    segs[i].v1 = &vertexes[checkGLVertex(LittleShort(ml->v1))];
+    segs[i].v2 = &vertexes[checkGLVertex(LittleShort(ml->v2))];
+
+    if(ml->linedef != (unsigned short)-1) // skip minisegs
+    {
+      ldef = &lines[ml->linedef];
+      segs[i].linedef = ldef;
+      segs[i].angle = R_PointToAngle2(segs[i].v1->x,segs[i].v1->y,segs[i].v2->x,segs[i].v2->y);
+
+      segs[i].sidedef = &sides[ldef->sidenum[ml->side]];
+      segs[i].frontsector = sides[ldef->sidenum[ml->side]].sector;
+      if (ldef->flags & ML_TWOSIDED)
+        segs[i].backsector = sides[ldef->sidenum[ml->side^1]].sector;
+      else
+        segs[i].backsector = 0;
+
+      if (ml->side)
+        segs[i].offset = GetOffset(segs[i].v1, ldef->v2);
+      else
+        segs[i].offset = GetOffset(segs[i].v1, ldef->v1);
+    }
+    else
+    {
+      segs[i].angle  = 0;
+      segs[i].offset  = 0;
+      segs[i].linedef = NULL;
+      segs[i].sidedef = NULL;
+      segs[i].frontsector = NULL;
+      segs[i].backsector  = NULL;
+    }
+    ml++;
   }
 }
 
@@ -3404,7 +3553,7 @@ static void P_UpdateMapFormat()
   }
 }
 
-static void P_UpdateLevelComponents(int lumpnum) {
+static void P_UpdateLevelComponents(int lumpnum, int gl_lumpnum) {
   level_components.label = lumpnum;
   level_components.things = lumpnum + ML_THINGS;
   level_components.linedefs = lumpnum + ML_LINEDEFS;
@@ -3418,6 +3567,23 @@ static void P_UpdateLevelComponents(int lumpnum) {
   level_components.blockmap = lumpnum + ML_BLOCKMAP;
   level_components.behavior = lumpnum + ML_BEHAVIOR;
 
+  if (gl_lumpnum > lumpnum)
+  {
+    level_components.gl_label = gl_lumpnum;
+    level_components.gl_verts = gl_lumpnum + ML_GL_VERTS;
+    level_components.gl_segs = gl_lumpnum + ML_GL_SEGS;
+    level_components.gl_ssect = gl_lumpnum + ML_GL_SSECT;
+    level_components.gl_nodes = gl_lumpnum + ML_GL_NODES;
+  }
+  else
+  {
+    level_components.gl_label = LUMP_NOT_FOUND;
+    level_components.gl_verts = LUMP_NOT_FOUND;
+    level_components.gl_segs = LUMP_NOT_FOUND;
+    level_components.gl_ssect = LUMP_NOT_FOUND;
+    level_components.gl_nodes = LUMP_NOT_FOUND;
+  }
+
   level_components.znodes = LUMP_NOT_FOUND;
 
   P_VerifyLevelComponents(lumpnum);
@@ -3425,7 +3591,7 @@ static void P_UpdateLevelComponents(int lumpnum) {
   has_behavior = P_CheckForBehavior(lumpnum);
 }
 
-static void P_UpdateUDMFLevelComponents(int lumpnum)
+static void P_UpdateUDMFLevelComponents(int lumpnum, int gl_lumpnum)
 {
   int i;
 
@@ -3441,6 +3607,11 @@ static void P_UpdateUDMFLevelComponents(int lumpnum)
   level_components.reject = LUMP_NOT_FOUND;
   level_components.blockmap = LUMP_NOT_FOUND;
   level_components.behavior = LUMP_NOT_FOUND;
+  level_components.gl_label = LUMP_NOT_FOUND;
+  level_components.gl_verts = LUMP_NOT_FOUND;
+  level_components.gl_segs = LUMP_NOT_FOUND;
+  level_components.gl_ssect = LUMP_NOT_FOUND;
+  level_components.gl_nodes = LUMP_NOT_FOUND;
   level_components.znodes = LUMP_NOT_FOUND;
 
   for (i = lumpnum + ML_TEXTMAP + 1; ; ++i)
@@ -3502,11 +3673,11 @@ void P_UpdateMapLoader(int lumpnum)
 // Checking for presence of necessary lumps
 //
 
-void P_CheckLevelWadStructure(int lumpnum)
+void P_CheckLevelWadStructure(int lumpnum, int gl_lumpnum)
 {
   P_UpdateMapLoader(lumpnum);
 
-  map_loader.update_level_components(lumpnum);
+  map_loader.update_level_components(lumpnum, gl_lumpnum);
 
   P_UpdateMapFormat();
 }
@@ -3624,6 +3795,9 @@ void P_SetupLevel(int episode, int map, int playermask, int skill)
   char  lumpname[9];
   int   lumpnum;
 
+  char  gl_lumpname[9];
+  int   gl_lumpnum;
+
   //e6y
   totallive = 0;
 
@@ -3644,6 +3818,16 @@ void P_SetupLevel(int episode, int map, int playermask, int skill)
     players[i].maxkilldiscount = 0;//e6y
   }
 
+  // Make sure all sounds are stopped before Z_FreeTag.
+  S_Start();
+
+  Z_FreeLevel();
+
+  P_InitThinkers();
+
+  // if working with a devlopment map, reload it
+  //    W_Reload ();     killough 1/31/98: W_Reload obsolete
+
   // find map name
   snprintf(lumpname, sizeof(lumpname), "%s", dsda_MapLumpName(episode, map));
   lumpnum = W_GetNumForName(lumpname);
@@ -3661,10 +3845,28 @@ void P_SetupLevel(int episode, int map, int playermask, int skill)
 
   P_InitThinkers();
 
+  if (strlen(lumpname) < 6)
+  {
+    snprintf(gl_lumpname, sizeof(gl_lumpname), "GL_%s", lumpname);
+    gl_lumpnum = W_CheckNumForName(gl_lumpname); // figgi
+  }
+  else
+  {
+    gl_lumpname[0] = '\0';
+    gl_lumpnum = LUMP_NOT_FOUND;
+  }
+
+  // Make sure all sounds are stopped before Z_FreeTag.
+  S_Start();
+
+  Z_FreeLevel();
+
+  P_InitThinkers();
+
   // e6y
   // Refuse to load a map with incomplete pwad structure.
   // Avoid segfaults on levels without nodes.
-  P_CheckLevelWadStructure(lumpnum);
+  P_CheckLevelWadStructure(lumpnum, gl_lumpnum);
 
   dsda_ApplyLevelCompatibility(lumpnum);
 
@@ -3712,7 +3914,7 @@ void P_SetupLevel(int episode, int map, int playermask, int skill)
 
   dsda_ResetHealthGroups();
 
-  map_loader.load_vertexes(level_components.vertexes);
+  map_loader.load_vertexes(level_components.vertexes, level_components.gl_verts);
   map_loader.load_sectors(level_components.sectors);
   map_loader.allocate_sidedefs(level_components.sidedefs);
   map_loader.load_linedefs(level_components.linedefs);
@@ -3738,6 +3940,14 @@ void P_SetupLevel(int episode, int map, int playermask, int skill)
 
   switch (nodesVersion)
   {
+    case GL_V1_NODES:
+    case GL_V2_NODES:
+      P_LoadSubsectors(level_components.gl_ssect);
+      P_LoadNodes(level_components.gl_nodes);
+      P_LoadGLSegs(level_components.gl_segs);
+
+      break;
+
     case ZDOOM_XNOD_NODES:
     case ZDOOM_ZNOD_NODES:
       P_LoadZNodes(level_components.nodes, 0);
@@ -3868,6 +4078,11 @@ void P_SetupLevel(int episode, int map, int playermask, int skill)
   if (gamemode == commercial && !hexen)
     P_SpawnBrainTargets();
 
+  if (gamemode != shareware)
+  {
+    S_ParseMusInfo(lumpname);
+  }
+
   // clear special respawning que
   iquehead = iquetail = 0;
 
@@ -3899,11 +4114,7 @@ void P_SetupLevel(int episode, int map, int playermask, int skill)
   }
 
   //e6y
-  if (!samelevel)
-  {
-    P_SyncWalkcam(true, true);
-  }
-
+  P_SyncWalkcam(true, true);
   R_SmoothPlaying_Reset(NULL);
 
   P_InitLightning();

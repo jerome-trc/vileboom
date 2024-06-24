@@ -277,29 +277,39 @@ static void FUNC_V_CopyRect(int srcscrn, int destscrn,
 
 static void FUNC_V_FillFlat(int lump, int scrn, int x, int y, int width, int height, enum patch_translation_e flags)
 {
+  /* erase the entire screen to a tiled background */
   const byte *data;
-  byte *dest;
-  int sx, sy;
-  int pitch, src_x_offset, src_y_offset;
-  float ratio_x, ratio_y;
-  stretch_param_t* stretch;
+  int sx, sy, w, h;
+  int j, pitch;
 
-  stretch = dsda_StretchParams(flags);
-  pitch = screens[scrn].pitch;
-  data = W_LumpByNum(lump + firstflat);
+  lump += firstflat;
 
-  ratio_x = stretch->video->width / 320.f;
-  ratio_y = stretch->video->height / 200.f;
+  // killough 4/17/98:
+  data = W_LumpByNum(lump);
 
-  for (sy = y; sy < y + height; ++sy)
   {
-    src_y_offset = 64 * ((int) ((sy - y) / ratio_y) % 64);
-    dest = screens[scrn].data + pitch * sy + x;
+    const byte *src, *src_p;
+    byte *dest, *dest_p;
+    pitch = screens[scrn].pitch;
 
-    for (sx = x; sx < x + width; ++sx)
+    for (sy = y ; sy < y + height; sy += 64)
     {
-      src_x_offset = (int) ((sx - x) / ratio_x) % 64;
-      *dest++ = data[src_x_offset + src_y_offset];
+      h = (y + height - sy < 64 ? y + height - sy : 64);
+      dest = screens[scrn].data + pitch * sy + x;
+      src = data + 64 * ((sy - y) % 64);
+      for (sx = x; sx < x + width; sx += 64)
+      {
+        src_p = src;
+        dest_p = dest;
+        w = (x + width - sx < 64 ? x + width - sx : 64);
+        for (j = 0; j < h; j++)
+        {
+          memcpy (dest_p, src_p, w);
+          dest_p += pitch;
+          src_p += 64;
+        }
+        dest += 64;
+      }
     }
   }
 }
@@ -328,7 +338,7 @@ static void FUNC_V_FillPatch(int lump, int scrn, int x, int y, int width, int he
  */
 static void FUNC_V_DrawBackground(const char* flatname, int scrn)
 {
-  V_FillFlatName(flatname, scrn, 0, 0, SCREENWIDTH, SCREENHEIGHT, VPT_STRETCH);
+  V_FillFlatName(flatname, scrn, 0, 0, SCREENWIDTH, SCREENHEIGHT, VPT_NONE);
 }
 
 //
@@ -728,7 +738,7 @@ static void WRAP_gld_CopyRect(int srcscrn, int destscrn, int x, int y, int width
 }
 static void WRAP_gld_DrawBackground(const char *flatname, int n)
 {
-  gld_FillFlatName(flatname, 0, 0, SCREENWIDTH, SCREENHEIGHT, VPT_STRETCH);
+  gld_FillFlatName(flatname, 0, 0, SCREENWIDTH, SCREENHEIGHT, VPT_NONE);
 }
 static void WRAP_gld_FillFlat(int lump, int n, int x, int y, int width, int height, enum patch_translation_e flags)
 {

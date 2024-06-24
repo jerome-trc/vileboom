@@ -53,7 +53,7 @@ jobs:
             }
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
       - name: Install Dependencies (MSYS2)
         if: matrix.config.shell == 'msys2 {0}'
@@ -79,13 +79,9 @@ jobs:
         if: ${{ matrix.config.vcpkg_triplet }}
         run: |
           set -euo pipefail
+          ( cd "$VCPKG_INSTALLATION_ROOT" && git pull )
           NUGET=$(vcpkg fetch nuget | tail -n 1)
           GH_PACKAGES_URL="https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
-
-          cd "$VCPKG_INSTALLATION_ROOT"
-          git fetch --tags
-          LATESTTAG=$(git describe --tags --abbrev=0)
-          git checkout $LATESTTAG
 
           "$NUGET" sources add \
             -source "$GH_PACKAGES_URL" \

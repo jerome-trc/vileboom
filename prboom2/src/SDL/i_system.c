@@ -123,8 +123,6 @@ fixed_t I_GetTimeFrac (void)
   }
   else
   {
-    static fixed_t last_frac;
-    static int last_gametic;
     unsigned long long tic_time;
     const double tics_per_usec = TICRATE / 1000000.0f;
 
@@ -132,14 +130,6 @@ fixed_t I_GetTimeFrac (void)
 
     frac = (fixed_t) (tic_time * FRACUNIT * tics_per_usec);
     frac = BETWEEN(0, FRACUNIT, frac);
-
-    if (frac < last_frac && last_gametic == gametic)
-    {
-      frac = FRACUNIT;
-    }
-
-    last_frac = frac;
-    last_gametic = gametic;
   }
 
   return frac;
@@ -236,15 +226,11 @@ void I_SwitchToWindow(HWND hwnd)
   }
 }
 
-const char *I_ConfigDir(void)
-{
-  return I_ExeDir();
-}
-
-const char *I_ExeDir(void)
+const char *I_DoomExeDir(void)
 {
   extern char **dsda_argv;
 
+  static const char current_dir_dummy[] = {"."}; // proff - rem extra slash 8/21/03
   static char *base;
   if (!base)        // cache multiple requests
     {
@@ -260,7 +246,7 @@ const char *I_ExeDir(void)
         Z_Free(base);
         base = (char*)Z_Malloc(1024);
         if (!M_getcwd(base, 1024) || !M_WriteAccess(base))
-          strcpy(base, ".");
+          strcpy(base, current_dir_dummy);
       }
     }
   return base;
@@ -288,12 +274,7 @@ const char* I_GetTempDir(void)
 
 #elif defined(AMIGA)
 
-const char *I_ConfigDir(void)
-{
-  return "PROGDIR:";
-}
-
-const char *I_ExeDir(void)
+const char *I_DoomExeDir(void)
 {
   return "PROGDIR:";
 }
@@ -309,7 +290,7 @@ const char* I_GetTempDir(void)
 // cph 2006/07/23 - give prboom+ its own dir
 static const char prboom_dir[] = {"/.nyan-doom"}; // Mead rem extra slash 8/21/03
 
-const char *I_ConfigDir(void)
+const char *I_DoomExeDir(void)
 {
   static char *base;
   if (!base)        // cache multiple requests
@@ -324,31 +305,6 @@ const char *I_ConfigDir(void)
     strcat(base, prboom_dir);
     M_MakeDir(base, true); // Make sure it exists
   }
-  return base;
-}
-
-const char *I_ExeDir(void)
-{
-  extern char **dsda_argv;
-
-  static char *base;
-  if (!base)        // cache multiple requests
-    {
-      size_t len = strlen(*dsda_argv);
-      char *p = (base = (char*)Z_Malloc(len+1)) + len - 1;
-      strcpy(base,*dsda_argv);
-      while (p > base && *p!='/' && *p!='\\')
-        *p--=0;
-      if (*p=='/' || *p=='\\')
-        *p--=0;
-      if (strlen(base) < 2 || !M_WriteAccess(base))
-      {
-        Z_Free(base);
-        base = (char*)Z_Malloc(1024);
-        if (!M_getcwd(base, 1024) || !M_WriteAccess(base))
-          strcpy(base, ".");
-      }
-    }
   return base;
 }
 
@@ -410,12 +366,9 @@ char* I_FindFileInternal(const char* wfname, const char* ext, dboolean isStatic)
     const char *dir; // directory
     const char *sub; // subdirectory
     const char *env; // environment variable
-    const char *(*func)(void); // for functions that return the directory
+    const char *(*func)(void); // for I_DoomExeDir
   } search0[] = {
-    {NULL, NULL, NULL, I_ExeDir}, // executable directory
-#ifndef _WIN32
-    {NULL, NULL, NULL, I_ConfigDir}, // config and autoload directory. on windows, this is the same as I_ExeDir
-#endif
+    {NULL, NULL, NULL, I_DoomExeDir}, // config directory
     {NULL}, // current working directory
     {NULL, NULL, "DOOMWADDIR"}, // run-time $DOOMWADDIR
     {DOOMWADDIR}, // build-time configured DOOMWADDIR
