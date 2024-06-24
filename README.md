@@ -1,4 +1,4 @@
-# Arsinikk's Nyan Doom v1.1.3
+# Arsinikk's Nyan Doom v1.1.4
 This is Arsinikk's own personal version of DSDA Doom (v0.27.5) with new added features and improvements. It's kept relatively up to date with the original.
 
 ### New Features
@@ -8,6 +8,7 @@ This is Arsinikk's own personal version of DSDA Doom (v0.27.5) with new added fe
 - added [Extended HELP](https://www.doomworld.com/forum/topic/111465-boom-extended-help-screens-an-undocumented-feature/) screens (`HELP01`-`HELP99`) for Doom2/Plutonia/TNT _(previously only accessible via Doom 1)_.
 - Native [widescreen](./docs/ws.md) lump support _(no more widescreen asset wads)_
 - [Animated backgrounds](./docs/animbg.md) and menu graphics support _(TITLEPIC, INTERPIC, M_DOOM, etc)_
+- New "berserk" and "armour" Statusbar elements *(Options > Status Bar / HUD > Status Indicators)*
 - Various new gameplay and menu options not found in DSDA-Doom
 
 ### Patch Notes

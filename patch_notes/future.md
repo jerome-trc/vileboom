@@ -1,5 +1,6 @@
 ## Planned Features for the Future
 - Add dark transparent background behind menu / automap like in [Woof](https://github.com/fabiangreffrath/woof)
+- PrBoomX's "Tag Finder"
 - Add option / functionality for midtexture bleeds in OpenGL
 - Re-add shrunken view (+ and - view)
 - ENDOOM
@@ -8,6 +9,8 @@
   - Add proper support for ENDOOM on Windows (possibly thru an external ENDOOM.exe?)
 
 ## Feature Status and Notes (For Nerds)
+- PrBoomX's "Tag Finder"
+  - I've created a "tag-finder" [branch](https://github.com/andrikpowell/nyan-doom/tree/tag-finder) that has all the needed code for the feature. I'm not sure why It's not working... Perhaps DSDA Doom code has changed something? :/
 - Woof Dark Transparent Background
   - Seems like it may be possible, but it's a bit harder to figure out due to WinMBF having a slightly different codebase than PrBoom's.
   - Seems to use a new CR_DARK colormap to print over the screen like a screen palette (like berserk or item pickup)
