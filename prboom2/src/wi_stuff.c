@@ -50,6 +50,7 @@
 #include "dsda/mapinfo.h"
 #include "dsda/widescreen.h"
 #include "dsda/configuration.h"
+#include "dsda/animate.h"
 
 #include "heretic/in_lude.h"
 #include "hexen/in_lude.h"
@@ -463,32 +464,22 @@ static void WI_slamBackground(void)
 
   if (state != StatCount && enterpic)
   {
-      int EnterpicAnimate = D_CheckAnimate("ENTERP_S", "ENTERP_E");
-      if (EnterpicAnimate)
-          nicename = "ENTERP_S";
-      else
-          nicename = "ENTERPIC";
-          strcpy(name, enterpic);
+    strcpy(name, enterpic);
   }
   else if (exitpic)
   {
-      int ExitpicAnimate = D_CheckAnimate("EXITP_S", "EXITP_E");
-      if (ExitpicAnimate)
-          nicename = "EXITP_S";
-      else
-          nicename = "EXITPIC";
-          strcpy(name, exitpic);
+    strcpy(name, exitpic);
   }
   else if (gamemode == commercial || wbs->epsd < 0 || (gamemode == retail && wbs->epsd >= 3))
   {
-      int InterpicWide = D_CheckWide("INTER_WS");
-      int InterpicAnimate = D_CheckAnimate("INTER_S", "INTER_E");
+      int InterpicWide = D_CheckWide(interpic_wide);
+      int InterpicAnimate = D_CheckAnimate(interpic_start, interpic_end);
       if (InterpicAnimate)
-          nicename = "INTER_S";
+          nicename = interpic_start;
       else if (InterpicWide)
       {
-          nicename = "INTER_WS";
-          strcpy(name, "INTER_WS");
+          nicename = interpic_wide;
+          strcpy(name, interpic_wide);
       }
       else
       {
@@ -498,25 +489,25 @@ static void WI_slamBackground(void)
   }
   else
   {
-      int Map0Wide = D_CheckWide("WIMAP0WS");
-      int Map1Wide = D_CheckWide("WIMAP1WS");
-      int Map2Wide = D_CheckWide("WIMAP2WS");
-      int Map0Animate = D_CheckAnimate("WIMAP0_S", "WIMAP0_E");
-      int Map1Animate = D_CheckAnimate("WIMAP1_S", "WIMAP1_E");
-      int Map2Animate = D_CheckAnimate("WIMAP2_S", "WIMAP2_E");
+      int Map0Wide = D_CheckWide(e1map_wide);
+      int Map1Wide = D_CheckWide(e2map_wide);
+      int Map2Wide = D_CheckWide(e3map_wide);
+      int Map0Animate = D_CheckAnimate(e1map_start, e1map_end);
+      int Map1Animate = D_CheckAnimate(e2map_start, e2map_end);
+      int Map2Animate = D_CheckAnimate(e3map_start, e3map_end);
 
       if ((gameepisode == 1) && Map0Animate)
-          nicename = "WIMAP0_S";
+          nicename = e1map_start;
       else if ((gameepisode == 1) && Map0Wide)
-          nicename = "WIMAP0WS";
+          nicename = e1map_wide;
       else if ((gameepisode == 2) && Map1Animate)
-          nicename = "WIMAP1_S";
+          nicename = e2map_start;
       else if ((gameepisode == 2) && Map1Wide)
-          nicename = "WIMAP1WS";
+          nicename = e2map_wide;
       else if ((gameepisode == 3) && Map2Animate)
-          nicename = "WIMAP2_S";
+          nicename = e3map_start;
       else if ((gameepisode == 3) && Map2Wide)
-          nicename = "WIMAP2WS";
+          nicename = e3map_wide;
       else
           snprintf(name, sizeof(name), "WIMAP%d", wbs->epsd);
   }
@@ -524,18 +515,14 @@ static void WI_slamBackground(void)
   // e6y: wide-res
   V_ClearBorder();
 
-  if (nicename == "ENTERP_S")
-      D_DrawAnimate("ENTERP_S", "ENTERP_E");
-  else if (nicename == "EXITP_S")
-      D_DrawAnimate("EXITP_S", "EXITP_E");
-  else if (nicename == "INTER_S")
-      D_DrawAnimate("INTER_S", "INTER_E");
-  else if (nicename == "WIMAP0_S")
-      D_DrawAnimate("WIMAP0_S", "WIMAP0_E");
-  else if (nicename == "WIMAP1_S")
-      D_DrawAnimate("WIMAP1_S", "WIMAP1_E");
-  else if (nicename == "WIMAP2_S")
-      D_DrawAnimate("WIMAP2_S", "WIMAP2_E");
+  if (nicename == interpic_start)
+      D_DrawAnimate(interpic_start, interpic_end);
+  else if (nicename == e1map_start)
+      D_DrawAnimate(e1map_start, e1map_end);
+  else if (nicename == e2map_start)
+      D_DrawAnimate(e2map_start, e2map_end);
+  else if (nicename == e3map_start)
+      D_DrawAnimate(e3map_start, e3map_end);
   else
       V_DrawNamePatch(0, 0, FB, name, CR_DEFAULT, VPT_STRETCH);   // background
 }

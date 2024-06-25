@@ -23,6 +23,31 @@
 
 int frameTime;
 
+char* titlepic_start = "S_TITLEP";
+char* titlepic_end = "E_TITLEP";
+char* interpic_start = "S_INTERP";
+char* interpic_end = "E_INTERP";
+char* credit_start = "S_CREDIT";
+char* credit_end = "E_CREDIT";
+char* help0_start = "S_HELP";
+char* help0_end = "E_HELP";
+char* help1_start = "S_HELP1";
+char* help1_end = "E_HELP1";
+char* help2_start = "S_HELP2";
+char* help2_end = "E_HELP2";
+char* bossback_start = "S_BOSSBA";
+char* bossback_end = "E_BOSSBA";
+char* e1map_start = "S_WIMAP0";
+char* e1map_end = "E_WIMAP0";
+char* e2map_start = "S_WIMAP1";
+char* e2map_end = "E_WIMAP1";
+char* e3map_start = "S_WIMAP2";
+char* e3map_end = "E_WIMAP2";
+char* victory_start = "S_VICTOR";
+char* victory_end = "E_VICTOR";
+char* endpic_start = "S_ENDPIC";
+char* endpic_end = "E_ENDPIC";
+
 void Animate_Ticker(void)
 {
     // counter for all animation

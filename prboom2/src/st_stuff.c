@@ -1105,9 +1105,9 @@ static void ST_loadGraphics(void)
   }
 
   //e6y: status bar background
-  int StbarWide = D_CheckWide("STBAR_WS");
+  int StbarWide = D_CheckWide(stbar_wide);
   if (StbarWide)
-    R_SetPatchNum(&stbarbg, "STBAR_WS");
+    R_SetPatchNum(&stbarbg, stbar_wide);
   else
       R_SetPatchNum(&stbarbg, "STBAR");
   R_SetPatchNum(&brdr_b, "brdr_b");

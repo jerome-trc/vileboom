@@ -8,30 +8,27 @@ Note there are no [widescreen](ws.md) versions for these animated lumps as they 
 
 #### Please Note:
 The `start` lumps should be placed *above* or *before* the `end` lumps in the WAD lump order. Failure to do so will result in the widescreen / original lumps being displayed instead.
+- `Start` Lumps with the prefix `S_` mark the start the animation
+- `End` Lumps with the prefix `E_` mark the end of animation
 
 ### Animated Backgrounds
-- `Start` Lumps with the suffix `_S` mark the start the animation
-- `End` Lumps with the suffix `_E` mark the end of animation
-
 
 | Original       | Start Animation         | End Animation           |
 |----------------|-------------------------|-------------------------|
-| TITLEPIC       | TITLE_S                 | TITLE_E                 |
-| INTERPIC       | INTER_S                 | INTER_E                 |
-| CREDIT         | CREDIT_S                | CREDIT_E                |
-| HELP           | HELP_S                  | HELP_E                  |
-| HELP1          | HELP1_S                 | HELP1_E                 |
-| HELP2          | HELP2_S                 | HELP2_E                 |
-| BOSSBACK       | BOSSB_S                 | BOSSB_E                 |
-| WIMAP0         | WIMAP0_S                | WIMAP0_E                |
-| WIMAP1         | WIMAP1_S                | WIMAP1_E                |
-| WIMAP2         | WIMAP2_S                | WIMAP2_E                |
-| VICTORY2       | VICTOR_S                | VICTOR_E                |
-| ENDPIC         | ENDPIC_S                | ENDPIC_E                |
+| TITLEPIC       | S_TITLEP                | E_TITLEP                |
+| INTERPIC       | S_INTERP                | E_INTERP                |
+| CREDIT         | S_CREDIT                | E_CREDIT                |
+| HELP           | S_HELP                  | E_HELP                  |
+| HELP1          | S_HELP1                 | E_HELP1                 |
+| HELP2          | S_HELP2                 | E_HELP2                 |
+| BOSSBACK       | S_BOSSBA                | E_BOSSBA                |
+| WIMAP0         | S_WIMAP0                | E_WIMAP0                |
+| WIMAP1         | S_WIMAP1                | E_WIMAP1                |
+| WIMAP2         | S_WIMAP2                | E_WIMAP2                |
+| VICTORY2       | S_VICTOR                | E_VICTOR                |
+| ENDPIC         | S_ENDPIC                | E_ENDPIC                |
 
 ### Animated Menu Graphics
-- `Start` Lumps with the prefix `S_` mark the start the animation
-- `End` Lumps with the prefix `E_` mark the end of animation
 
 | Original       | Animation Start         | Animation End           |
 |----------------|-------------------------|-------------------------|

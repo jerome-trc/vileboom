@@ -19,6 +19,22 @@
 
 #include "widescreen.h"
 
+char* stbar_wide = "STBAR_WS";
+char* titlepic_wide = "TITLE_WS";
+char* interpic_wide = "INTER_WS";
+char* credit_wide = "CREDI_WS";
+char* help0_wide = "HELP_WS";
+char* help1_wide = "HELP1_WS";
+char* help2_wide = "HELP2_WS";
+char* bossback_wide = "BOSSB_WS";
+char* e1map_wide = "WIMAP0WS";
+char* e2map_wide = "WIMAP1WS";
+char* e3map_wide = "WIMAP2WS";
+char* victory_wide = "VICTO_WS";
+char* bunny1_wide = "PFUB1_WS";
+char* bunny2_wide = "PFUB2_WS";
+char* endpic_wide = "ENDPI_WS";
+
 extern int D_CheckWide(const char* lump) {
     static int ws = 0;
     static int last_numwadfiles = -1;

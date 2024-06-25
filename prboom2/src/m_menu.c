@@ -576,9 +576,9 @@ void M_DrawReadThis1(void)
   {
     // e6y: wide-res
     V_ClearBorder();
-    int CheckWide = D_CheckWide("HELP2_WS");
+    int CheckWide = D_CheckWide(help2_wide);
     if (CheckWide)
-      V_DrawNamePatch(0, 0, 0, "HELP2_WS", CR_DEFAULT, VPT_STRETCH);
+      V_DrawNamePatch(0, 0, 0, help2_wide, CR_DEFAULT, VPT_STRETCH);
     else
       V_DrawNamePatch(0, 0, 0, "HELP2", CR_DEFAULT, VPT_STRETCH);
   }
@@ -3873,7 +3873,7 @@ void M_DrawExtHelp(void)
 
   inhelpscreens = true;              // killough 5/1/98
   V_ClearBorder(); // Arsinikk - redraw background for every ext HELP screen
-  int CheckWide = D_CheckWide("HELP_WS");
+  int CheckWide = D_CheckWide(help0_wide);
   if (CheckWide) {
       // Arsinikk - draw widescreen patch
       V_DrawNamePatch(0, 0, 0, wsnamebfr, CR_DEFAULT, VPT_STRETCH);
@@ -4131,8 +4131,8 @@ static void M_DrawStringCentered(int cx, int cy, int color, const char* ch)
 void M_DrawHelp (void)
 {
   const int helplump = W_CheckNumForName("HELP");
-  const int helpwslump = W_CheckNumForName("HELP_WS");
-  int CheckAnimate = D_CheckAnimate("HELP_S", "HELP_E");
+  const int helpwslump = W_CheckNumForName(help0_wide);
+  int CheckAnimate = D_CheckAnimate(help0_start, help0_end);
 
   M_ChangeMenu(NULL, mnact_full);
 
@@ -4140,7 +4140,7 @@ void M_DrawHelp (void)
   {
     V_ClearBorder();
     if (CheckAnimate)
-        D_DrawAnimate("HELP_S", "HELP_E");
+        D_DrawAnimate(help0_start, help0_end);
     else if (helpwslump != LUMP_NOT_FOUND)
         V_DrawNumPatch(0, 0, 0, helpwslump, CR_DEFAULT, VPT_STRETCH);
     else
@@ -4184,9 +4184,9 @@ setup_menu_t cred_settings[]={
 void M_DrawCredits(void)     // killough 10/98: credit screen
 {
   const int creditlump = W_CheckNumForName("CREDIT");
-  const int creditwslump = W_CheckNumForName("CREDI_WS");
-  int CheckAnimate = D_CheckAnimate("CREDIT_S", "CREDIT_E");
-  int CreditWide = D_CheckWide("CREDI_WS");
+  const int creditwslump = W_CheckNumForName(credit_wide);
+  int CheckAnimate = D_CheckAnimate(credit_start, credit_end);
+  int CreditWide = D_CheckWide(credit_wide);
 
   if (raven)
   {
@@ -4197,7 +4197,7 @@ void M_DrawCredits(void)     // killough 10/98: credit screen
   inhelpscreens = true;
 
   if (CheckAnimate) {
-      D_DrawAnimate("CREDIT_S", "CREDIT_E");
+      D_DrawAnimate(credit_start, credit_end);
   }
   else if (CreditWide && creditlump != LUMP_NOT_FOUND && lumpinfo[creditlump].source != source_iwad)
   {
