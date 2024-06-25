@@ -1,4 +1,4 @@
-# Arsinikk's Nyan Doom v1.1.4
+# Arsinikk's Nyan Doom v1.1.5
 This is Arsinikk's own personal version of DSDA Doom (v0.27.5) with new added features and improvements. It's kept relatively up to date with the original.
 
 ### New Features
