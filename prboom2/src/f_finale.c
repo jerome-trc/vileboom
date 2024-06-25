@@ -711,7 +711,7 @@ void F_CastDrawer (void)
   
   int CheckAnimate = D_CheckAnimate("BOSSB_S", "BOSSB_E");
   if (CheckAnimate)
-      D_DrawAnimateAdv(0,0,"BOSSB_S", "BOSSB_E");
+      D_DrawAnimate("BOSSB_S", "BOSSB_E");
   else
       V_DrawNamePatch(0,0,0, castbackground, CR_DEFAULT, VPT_STRETCH); // Ty 03/30/98 bg texture extern
 
@@ -832,24 +832,24 @@ void F_BunnyScroll (void)
     //}
     if (scrolled <= 0) {
         //if (BunnyAnimate)
-        //    D_DrawAnimateAdv(0,0,"PFUB2_S", "PFUB2_E");
+        //    D_DrawAnimateBunny(0,0,"PFUB2_S", "PFUB2_E");
         //else
             V_DrawNamePatch(0, 0, 0, scrollpic2, CR_DEFAULT, VPT_STRETCH);
     } else if (scrolled >= 320) {
         //if (BunnyAnimate)
-        //    D_DrawAnimateAdv(p1offset, 0, "PFUB1_S", "PFUB1_E");
+        //    D_DrawAnimateBunny(p1offset, 0, "PFUB1_S", "PFUB1_E");
         //else
             V_DrawNamePatch(p1offset, 0, 0, scrollpic1, CR_DEFAULT, VPT_STRETCH);
       if (p1offset > 0)
         //if (BunnyAnimate)
-        //    D_DrawAnimateAdv(-320, 0, "PFUB2_S", "PFUB2_E");
+        //    D_DrawAnimateBunny(-320, 0, "PFUB2_S", "PFUB2_E");
         //else
             V_DrawNamePatch(-320, 0, 0, scrollpic2, CR_DEFAULT, VPT_STRETCH);
     } else {
         // if (BunnyAnimate)
         // {
-        //     D_DrawAnimateAdv(p1offset + 320 - scrolled, 0, "PFUB1_S", "PFUB1_E");
-        //     D_DrawAnimateAdv(-scrolled, 0, "PFUB2_S", "PFUB2_E");
+        //     D_DrawAnimateBunny(p1offset + 320 - scrolled, 0, "PFUB1_S", "PFUB1_E");
+        //     D_DrawAnimateBunny(-scrolled, 0, "PFUB2_S", "PFUB2_E");
         // }
         // else
         // {

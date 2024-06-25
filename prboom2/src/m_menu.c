@@ -163,7 +163,6 @@ extern dboolean  message_dontfuckwithme;
 extern const char* g_menu_flat;
 extern int g_menu_save_page_size;
 extern int g_menu_font_spacing;
-int skullTime;
 
 //
 // defaulted values
@@ -5852,21 +5851,13 @@ void M_Drawer (void)
     {
         // CPhipps - patch drawing updated
         int CheckSkull;
+        int xSkull = x + SKULLXOFF;
+        int ySkull = currentMenu->y - 5 + itemOn * LINEHEIGHT;
         CheckSkull = D_CheckAnimate("S_SKULL", "E_SKULL");
         if (CheckSkull)
-        {
-            int frameDiff;
-            int frame;
-            static int SLump;
-            static int ELump;
-            SLump = W_GetNumForName("S_SKULL");
-            ELump = W_GetNumForName("E_SKULL");
-            frameDiff = ELump - SLump;
-            frame = (skullTime / 8) % (frameDiff + 1);
-            V_DrawNumPatch(x + SKULLXOFF, currentMenu->y - 5 + itemOn * LINEHEIGHT, 0, SLump + frame, CR_DEFAULT, VPT_STRETCH);
-        }
+            M_DrawMenuAnimate(xSkull,ySkull,"S_SKULL","E_SKULL");
         else
-            V_DrawNamePatch(x + SKULLXOFF, currentMenu->y - 5 + itemOn * LINEHEIGHT, 0, skullName[whichSkull], CR_DEFAULT, VPT_STRETCH);
+            V_DrawNamePatch(xSkull, ySkull, 0, skullName[whichSkull], CR_DEFAULT, VPT_STRETCH);
     }
   }
 
@@ -5927,12 +5918,8 @@ void M_Ticker (void)
     whichSkull ^= 1;
     skullAnimCounter = 8;
   }
-  if(menuactive)
-  {
+  if (menuactive)
     Animate_Ticker();
-  }
-  skullTime++;
-
 
   if (raven) return MN_Ticker();
 }

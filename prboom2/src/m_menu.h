@@ -38,6 +38,9 @@
 
 #include "dsda/configuration.h"
 
+int xSkull;
+int ySkull;
+
 //
 // MENUS
 //

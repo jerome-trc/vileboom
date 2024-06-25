@@ -17,6 +17,7 @@
 
 #include "w_wad.h"
 
+#include "m_menu.h"
 #include "animate.h"
 #include "v_video.h"
 
@@ -39,16 +40,9 @@ extern int D_CheckAnimate(const char* lump_s, const char* lump_e)
     SCheck = W_CheckNumForName(lump_s);
     ECheck = W_CheckNumForName(lump_e);
     if ((SCheck != LUMP_NOT_FOUND) && (ECheck != LUMP_NOT_FOUND))
-    {
-        // Arsinikk - Note this check doesn't work... if you know
-        // how to make lump_e come after lump_s, please help fix.
-        if ((W_GetNumForName(lump_s)) < (W_GetNumForName(lump_e)))
-        {
+        if ((W_GetNumForName(lump_s)) <= (W_GetNumForName(lump_e)))
             Animate = 1;
-        }
-    }
-    else
-        return Animate;
+    return Animate;
 }
 
 extern void D_DrawAnimate(const char* lump_s, const char* lump_e)
@@ -64,7 +58,9 @@ extern void D_DrawAnimate(const char* lump_s, const char* lump_e)
     V_DrawNumPatch(0, 0, 0, SLump + frame, CR_DEFAULT, VPT_STRETCH);
 }
 
-extern void D_DrawAnimateAdv(const char* lump_x, const char* lump_y, const char* lump_s, const char* lump_e)
+// Arsinik - Currently disabled due to Bunny sequence not working
+//
+/* extern void D_DrawAnimateBunny(const char* lump_x, const char* lump_y, const char* lump_s, const char* lump_e)
 {
     int frameDiff;
     int frame;
@@ -75,7 +71,7 @@ extern void D_DrawAnimateAdv(const char* lump_x, const char* lump_y, const char*
     frameDiff = ELump - SLump;
     frame = (frameTime / 12) % (frameDiff + 1);
     V_DrawNumPatch(lump_x, lump_y, 0, SLump + frame, CR_DEFAULT, VPT_STRETCH);
-}
+} */
 
 extern void M_DrawMenuAnimate(const char* lump_x, const char* lump_y, const char* lump_s, const char* lump_e)
 {
