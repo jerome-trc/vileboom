@@ -7,7 +7,7 @@ Only when both `start` and `end` animation lumps are present for a single entry,
 Note there are no [widescreen](ws.md) versions for these animated lumps as they take priority over widescreen lumps. The lump priority is: `start/end animations` > `widescreen` > `original`.
 
 #### Please Note:
-The `start` lumps should be placed *above* or *on top* the `end` lumps in the WAD lump order. Failure to do so will result in a crash (working to fix this).
+The `start` lumps should be placed *above* or *before* the `end` lumps in the WAD lump order. Failure to do so will result in the widescreen / original lumps being displayed instead.
 
 ### Animated Backgrounds
 - `Start` Lumps with the suffix `_S` mark the start the animation
