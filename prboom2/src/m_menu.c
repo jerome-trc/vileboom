@@ -2615,6 +2615,16 @@ setup_menu_t* stat_settings[] =
   NULL
 };
 
+static const char *berserk_icon_list[] = { "Off", "Cross", NULL };
+
+static const char* armor_icon_list[] = 
+{
+  [ARMOR_ICON_OFF] = "Off",
+  [ARMOR_ICON_1] = "Corner",
+  [ARMOR_ICON_2] = "Icon",
+  NULL
+};
+
 setup_menu_t stat_settings1[] =  // Status Bar and HUD Settings screen
 {
   { "STATUS BAR", S_SKIP | S_TITLE, m_null, SB_X},
@@ -2623,8 +2633,9 @@ setup_menu_t stat_settings1[] =  // Status Bar and HUD Settings screen
   { "SINGLE KEY DISPLAY", S_YESNO, m_conf, SB_X, dsda_config_sts_traditional_keys },
   EMPTY_LINE,
   { "STATUS INDICATORS", S_SKIP | S_TITLE, m_null, SB_X},
-  { "BERSERK", S_YESNO, m_conf, SB_X, nyan_config_hud_berserk },
-  { "ARMOR", S_YESNO, m_conf, SB_X, nyan_config_hud_armoricon },
+//  { "BERSERK", S_YESNO, m_conf, SB_X, nyan_config_hud_berserk },
+  { "BERSERK", S_CHOICE, m_conf, SB_X, nyan_config_hud_berserk, 0, berserk_icon_list },
+  { "ARMOR", S_CHOICE, m_conf, SB_X, nyan_config_hud_armoricon, 0, armor_icon_list },
   EMPTY_LINE,
   { "HEADS-UP DISPLAY", S_SKIP | S_TITLE, m_null, SB_X},
   { "SHOW MESSAGES", S_YESNO, m_conf, SB_X, dsda_config_show_messages },

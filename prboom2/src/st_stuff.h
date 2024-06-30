@@ -93,6 +93,22 @@ typedef enum
 
 extern int st_palette;    // cph 2006/04/06 - make palette visible
 
+typedef enum
+{
+  BERSERK_ICON_OFF,
+  BERSERK_ICON_ON
+} berserk_icon_t;
+
+typedef enum
+{
+  ARMOR_ICON_OFF,
+  ARMOR_ICON_1,
+  ARMOR_ICON_2
+} armor_icon_t;
+
+extern berserk_icon_t berserk_icon;
+extern armor_icon_t armor_icon;
+
 // e6y: makes sense for wide resolutions
 extern patchnum_t grnrock;
 extern patchnum_t brdr_b;

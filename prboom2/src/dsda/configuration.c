@@ -30,6 +30,7 @@
 #include "smooth.h"
 #include "v_video.h"
 #include "z_zone.h"
+#include "st_stuff.h"
 
 #include "dsda/args.h"
 #include "dsda/exhud.h"
@@ -361,12 +362,13 @@ dsda_config_t dsda_config[dsda_config_count] = {
     CONF_BOOL(0), NULL, CONF_FEATURE | NOT_STRICT, dsda_InitExHud
   },
   [nyan_config_hud_berserk] = {
-  "nyan_berserk_icon", nyan_config_hud_berserk,
-  CONF_BOOL(1)
+    "nyan_berserk_icon", nyan_config_hud_berserk,
+    dsda_config_int, 0, 1, { 1 }, &berserk_icon
   },
   [nyan_config_hud_armoricon] = {
-  "nyan_armor_icon", nyan_config_hud_armoricon,
-  CONF_BOOL(1)
+    "nyan_armor_icon", nyan_config_hud_armoricon,
+    dsda_config_int, ARMOR_ICON_OFF, ARMOR_ICON_2,
+    { ARMOR_ICON_1 }, (int*) &armor_icon
   },
   [dsda_config_free_text] = {
     "dsda_free_text", dsda_config_free_text,

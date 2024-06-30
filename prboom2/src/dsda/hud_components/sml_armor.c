@@ -30,21 +30,17 @@ typedef struct {
 
 static local_component_t* local;
 
-static int strength_lump;
-static int patch_delta_x;
-static int patch_spacing;
-
 static const char* dsda_ArmorName(player_t* player) {
     int armor;
 
     armor = player->armorpoints[ARMOR_ARMOR];
 
     if (player->armortype >= 2)
-        if (gamemission == chex) { return "SM_ARM2C"; }
-        else { return "SM_ARM2I"; }
+        if (gamemission == chex) { return "CHXARMS2"; }
+        else { return "STFARMS4"; }
     else if (player->armortype == 1)
-        if (gamemission == chex) { return "SM_ARM1C"; }
-        else { return "SM_ARM1I"; }
+        if (gamemission == chex) { return "CHXARMS1"; }
+        else { return "STFARMS3"; }
     else
         return NULL;
 }
@@ -66,8 +62,13 @@ static void dsda_DrawComponent(void) {
 
     x = local->component.x;
     y = local->component.y;
-    if (!raven)
-        drawArmorIcon(player, &x, &y, dsda_ArmorName);
+    if (!raven) 
+    {
+        if (gamemission == chex)
+            drawArmorIcon(player, &x, &y, dsda_ArmorName);
+        else
+            drawArmorIcon(player, &x, &y+2, dsda_ArmorName);
+    }
 }
 
 void dsda_InitSmlArmorHC(int x_offset, int y_offset, int vpt, int* args, int arg_count, void** data) {
