@@ -1152,7 +1152,7 @@ static void G_ResetInventory(player_t *p)
 //
 
 void resetPistolStart(void) {
-  if(dsda_IntConfig(nyan_config_pistolstart)==1)
+  if(cfg_pistolstart==1)
     dsda_UpdateIntConfig(nyan_config_pistolstart, 0, true);
 }
 
@@ -1208,13 +1208,13 @@ static void G_DoLoadLevel (void)
   }
 
   // automatic pistol start when advancing from one level to the next
-  if (cfg_pistolstart > 0)
+  if (cfg_pistolstart)
   {
     if (allow_incompatibility)
     {
       G_PlayerReborn(0);
     }
-    else if (reelplayback)
+    else if (reelplayback || !arg_pistolstart)
     {
       // no-op - silently ignore pistolstart when playing demo from the
       // demo reel
@@ -3950,6 +3950,11 @@ void G_DoPlayDemo(void)
 
     lprintf(LO_INFO, "Playing demo:\n  Name: %s\n  Compatibility: %s\n",
                      defdemoname, comp_lev_str[compatibility_level]);
+    if((cfg_pistolstart==2) && !arg_pistolstart)
+    {
+      // ignore pistolstart "Aways" config setting when playing demo
+      lprintf(LO_INFO, "  'Pistol Start' set to 'Always'. Disabled for demo playback.\n");
+    }
 
     gameaction = ga_nothing;
   }

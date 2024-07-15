@@ -2613,7 +2613,12 @@ setup_menu_t* stat_settings[] =
   NULL
 };
 
-static const char *berserk_icon_list[] = { "Off", "Cross", NULL };
+static const char* berserk_icon_list[] =
+{
+  [BERSERK_ICON_OFF] = "Off",
+  [BERSERK_ICON_ON] = "Cross",
+  NULL
+};
 
 static const char* armor_icon_list[] = 
 {

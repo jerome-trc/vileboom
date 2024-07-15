@@ -364,7 +364,8 @@ dsda_config_t dsda_config[dsda_config_count] = {
   },
   [nyan_config_hud_berserk] = {
     "nyan_berserk_icon", nyan_config_hud_berserk,
-    dsda_config_int, 0, 1, { 1 }, &berserk_icon
+    dsda_config_int, BERSERK_ICON_OFF, BERSERK_ICON_ON,
+    { BERSERK_ICON_ON }, (int*) &berserk_icon
   },
   [nyan_config_hud_armoricon] = {
     "nyan_armor_icon", nyan_config_hud_armoricon,
@@ -373,7 +374,8 @@ dsda_config_t dsda_config[dsda_config_count] = {
   },
   [nyan_config_pistolstart] = {
     "nyan_pistol_start", nyan_config_pistolstart,
-    dsda_config_int, PISTOL_START_OFF, PISTOL_START_ALWAYS, { PISTOL_START_OFF }, (int*) &cfg_pistolstart
+    dsda_config_int, PISTOL_START_OFF, PISTOL_START_ALWAYS,
+    { PISTOL_START_OFF }, (int*) &cfg_pistolstart
   },
   [dsda_config_free_text] = {
     "dsda_free_text", dsda_config_free_text,

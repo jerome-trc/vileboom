@@ -1808,7 +1808,6 @@ static void D_DoomMainSetup(void)
   if (arg_pistolstart && !cfg_pistolstart)
   {
       dsda_UpdateIntConfig(nyan_config_pistolstart, 1, true);
-      !arg_pistolstart;
   }
 
   // disables overflow warnings and errors for vanilla complevels
