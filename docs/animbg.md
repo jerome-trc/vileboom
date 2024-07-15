@@ -2,7 +2,7 @@
 
 Nyan Doom supports new animated background and menu graphics via specific lumps.
 
-Only when both `start` and `end` animation lumps are present for a single entry, will those animation lumps take priority over the `original` lumps. Any lumps in-between the `start` and `end` lumps will also be included in the animation.
+Only when both `start` and `end` animation lumps are present for a single entry, will those animation lumps take priority over the `original` lumps. Any lumps in-between the `start` and `end` lumps will also be included in the animation. Animations run at the same speed as the Menu Selector (`M_SKULL1/2`).
 
 Note there are no [widescreen](ws.md) versions for these animated lumps as they take priority over widescreen lumps. The lump priority is: `start/end animations` > `widescreen` > `original`.
 
@@ -28,12 +28,14 @@ The `start` lumps should be placed *above* or *before* the `end` lumps in the WA
 | VICTORY2       | S_VICTOR                | E_VICTOR                |
 | ENDPIC         | S_ENDPIC                | E_ENDPIC                |
 
-### Animated Menu Graphics
+### Animated Menu / Statusbar Graphics
 
 | Original       | Animation Start         | Animation End           |
 |----------------|-------------------------|-------------------------|
 | M_DOOM         | S_DOOM                  | E_DOOM                  |
 | M_SKULL1/2     | S_SKULL                 | E_SKULL                 |
+| STBAR          | S_STBAR                 | E_STBAR                 |
+| STARMS         | S_STARMS                | E_STARMS                |
 
 ### Heretic/Hexen Animated Backgrounds
 
@@ -41,7 +43,6 @@ Lumps not yet implimented.
 
 ### Unsupported
 
-The following lumps currently have visual or technical issues and therefore do not currently have animations:
+The following lumps have visual or technical issues and therefore do not have animations:
 - PFUB1
 - PFUB2
-- STBAR
