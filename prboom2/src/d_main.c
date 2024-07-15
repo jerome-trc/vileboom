@@ -697,64 +697,49 @@ void D_SetPage(const char* name, int tics, int music)
 
 static void D_DrawTitle1(const char *name)
 {
-  int CheckAnimate = D_CheckAnimate(titlepic_start,titlepic_end);
-  int CheckWide = D_CheckWide(titlepic_wide);
-  if (CheckAnimate)
-    D_SetPage(titlepic_start, TICRATE * 170 / 35, mus_intro);
-  else if (CheckWide)
-    D_SetPage(titlepic_wide, TICRATE * 170 / 35, mus_intro);
-  else
-    D_SetPage(name, TICRATE * 170 / 35, mus_intro);
+  if (Check_Titlepic_Animate)
+    name = titlepic_start;
+  else if (Check_Titlepic_Wide)
+    name = titlepic_wide;
+  D_SetPage(name, TICRATE * 170 / 35, mus_intro);
 }
 
 static void D_DrawTitle2(const char *name)
 {
-    int CheckAnimate = D_CheckAnimate(titlepic_start, titlepic_end);
-    int CheckWide = D_CheckWide(titlepic_wide);
-    if (CheckAnimate)
-        D_SetPage(titlepic_start, 0, mus_dm2ttl);
-    else if (CheckWide)
-      D_SetPage(titlepic_wide, 0, mus_dm2ttl);
+    if (Check_Titlepic_Animate)
+      name = titlepic_start;
+    else if (Check_Titlepic_Wide)
+      name = titlepic_wide;
     else if (bfgedition)
-        D_SetPage("DMENUPIC", 0, mus_dm2ttl);
-    else
-      D_SetPage(name, 0, mus_dm2ttl);
+      name = "DMENUPIC";
+    D_SetPage(name, 0, mus_dm2ttl);
 }
 
 static void D_DrawCredits(const char* name)
 {
-    int CheckAnimate = D_CheckAnimate(credit_start, credit_end);
-    int CheckWide = D_CheckWide(credit_wide);
-    if (CheckAnimate)
-        D_SetPage(credit_start, 200, 0);
-    else if (CheckWide)
-        D_SetPage(credit_wide, 200, 0);
-    else
-        D_SetPage(name, 200, 0);
+    if (Check_Credit_Animate)
+      name = credit_start;
+    else if (Check_Credit_Wide)
+      name = credit_wide;
+    D_SetPage(name, 200, 0);
 }
 
 static void D_DrawHelp1(const char* name)
 {
-    int CheckAnimate = D_CheckAnimate(help1_start, help1_end);
-    int CheckWide = D_CheckWide(help1_wide);
-    if (CheckAnimate)
-        D_SetPage(help1_start, 200, 0);
-    else if (CheckWide)
-        D_SetPage(help1_wide, 200, 0);
-    else
-        D_SetPage(name, 200, 0);
+    if (Check_Help1_Animate)
+      name = help1_start;
+    else if (Check_Help1_Wide)
+      name = help1_wide;
+    D_SetPage(name, 200, 0);
 }
 
 static void D_DrawHelp2(const char* name)
 {
-    int CheckAnimate = D_CheckAnimate(help2_start, help2_end);
-    int CheckWide = D_CheckWide(help2_wide);
-    if (CheckAnimate)
-        D_SetPage(help2_start, 200, 0);
-    else if (CheckWide)
-        D_SetPage(help2_wide, 200, 0);
-    else
-        D_SetPage(name, 200, 0);
+    if (Check_Help2_Animate)
+      name = help2_start;
+    else if (Check_Help2_Wide)
+      name = help2_wide;
+    D_SetPage(name, 200, 0);
 }
 
 /* killough 11/98: tabulate demo sequences

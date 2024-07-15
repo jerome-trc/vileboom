@@ -55,6 +55,7 @@
 #include "dsda/stretch.h"
 #include "dsda/text_color.h"
 #include "dsda/widescreen.h"
+#include "dsda/animate.h"
 
 #include "heretic/sb_bar.h"
 
@@ -458,10 +459,23 @@ static void ST_refreshBackground(void)
   if (st_statusbaron)
     {
       flags = VPT_ALIGN_BOTTOM;
-
-      V_DrawNumPatch(ST_X, y, BG, stbarbg.lumpnum, CR_DEFAULT, flags);
+      int xStbar = ST_X;
+      int xStarms = ST_ARMSBGX;
+      int yStbar = y;
+      int zStbar = BG;
+      if (Check_Stbar_Animate)
+        M_DrawStbarAnimate(xStbar, yStbar, zStbar, stbar_start, stbar_end);
+      else if (Check_Stbar_Wide)
+        V_DrawNamePatch(xStbar, yStbar, zStbar, stbar_wide, CR_DEFAULT, flags);
+      else
+        V_DrawNumPatch(xStbar, yStbar, zStbar, stbarbg.lumpnum, CR_DEFAULT, flags);
       if (!deathmatch)
-        V_DrawNumPatch(ST_ARMSBGX, y, BG, armsbg.lumpnum, CR_DEFAULT, flags);
+      {
+        if (Check_Starms_Animate)
+          M_DrawStbarAnimate(xStarms, yStbar, zStbar, stbar_start, stbar_end);
+        else
+          V_DrawNumPatch(xStarms, yStbar, zStbar, armsbg.lumpnum, CR_DEFAULT, flags);
+      }
 
     // Set armor hud indicators
     if (gamemission == chex)
@@ -1077,11 +1091,10 @@ static void ST_loadGraphics(void)
   else R_SetPatchNum(&berserk, "STFPSTR");
 
   //e6y: status bar background
-  int StbarWide = D_CheckWide(stbar_wide);
-  if (StbarWide)
+  if (Check_Stbar_Wide)
     R_SetPatchNum(&stbarbg, stbar_wide);
   else
-      R_SetPatchNum(&stbarbg, "STBAR");
+    R_SetPatchNum(&stbarbg, "STBAR");
   R_SetPatchNum(&brdr_b, "brdr_b");
 
   // arms background

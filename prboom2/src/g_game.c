@@ -1650,26 +1650,18 @@ void G_Ticker (void)
       AM_Ticker();
       ST_Ticker();
       HU_Ticker();
-      if(!menuactive)
-        Animate_Ticker();
       break;
 
     case GS_INTERMISSION:
       WI_Ticker();
-      if(!menuactive)
-        Animate_Ticker();
       break;
 
     case GS_FINALE:
       F_Ticker();
-      if(!menuactive)
-        Animate_Ticker();
       break;
 
     case GS_DEMOSCREEN:
       D_PageTicker();
-      if(!menuactive)
-        Animate_Ticker();
       break;
   }
 
@@ -2761,6 +2753,8 @@ void G_ReloadDefaults(void)
   nomonsters = clnomonsters;
 
   dsda_ClearPlaybackStream();
+  dsda_AnimateExistCheck();
+  dsda_WideExistCheck();
 
   // killough 2/21/98:
   memset(playeringame + 1, 0, sizeof(*playeringame) * (MAX_MAXPLAYERS - 1));

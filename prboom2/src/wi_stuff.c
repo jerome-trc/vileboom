@@ -472,41 +472,27 @@ static void WI_slamBackground(void)
   }
   else if (gamemode == commercial || wbs->epsd < 0 || (gamemode == retail && wbs->epsd >= 3))
   {
-      int InterpicWide = D_CheckWide(interpic_wide);
-      int InterpicAnimate = D_CheckAnimate(interpic_start, interpic_end);
-      if (InterpicAnimate)
+      if (Check_Interpic_Animate)
           nicename = interpic_start;
-      else if (InterpicWide)
-      {
+      else if (Check_Interpic_Wide)
           nicename = interpic_wide;
-          strcpy(name, interpic_wide);
-      }
       else
-      {
           nicename = "INTERPIC";
-          strcpy(name, "INTERPIC");
-      }
+      strcpy(name, nicename);
   }
   else
   {
-      int Map0Wide = D_CheckWide(e1map_wide);
-      int Map1Wide = D_CheckWide(e2map_wide);
-      int Map2Wide = D_CheckWide(e3map_wide);
-      int Map0Animate = D_CheckAnimate(e1map_start, e1map_end);
-      int Map1Animate = D_CheckAnimate(e2map_start, e2map_end);
-      int Map2Animate = D_CheckAnimate(e3map_start, e3map_end);
-
-      if ((gameepisode == 1) && Map0Animate)
+      if ((gameepisode == 1) && Check_E1map_Animate)
           nicename = e1map_start;
-      else if ((gameepisode == 1) && Map0Wide)
+      else if ((gameepisode == 1) && Check_E1map_Wide)
           nicename = e1map_wide;
-      else if ((gameepisode == 2) && Map1Animate)
+      else if ((gameepisode == 2) && Check_E2map_Animate)
           nicename = e2map_start;
-      else if ((gameepisode == 2) && Map1Wide)
+      else if ((gameepisode == 2) && Check_E2map_Wide)
           nicename = e2map_wide;
-      else if ((gameepisode == 3) && Map2Animate)
+      else if ((gameepisode == 3) && Check_E3map_Animate)
           nicename = e3map_start;
-      else if ((gameepisode == 3) && Map2Wide)
+      else if ((gameepisode == 3) && Check_E3map_Wide)
           nicename = e3map_wide;
       else
           snprintf(name, sizeof(name), "WIMAP%d", wbs->epsd);

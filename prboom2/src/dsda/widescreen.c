@@ -35,6 +35,22 @@ char* bunny1_wide = "PFUB1_WS";
 char* bunny2_wide = "PFUB2_WS";
 char* endpic_wide = "ENDPI_WS";
 
+extern int Check_Stbar_Wide;
+extern int Check_Titlepic_Wide;
+extern int Check_Interpic_Wide;
+extern int Check_Credit_Wide;
+extern int Check_Help0_Wide;
+extern int Check_Help1_Wide;
+extern int Check_Help2_Wide;
+extern int Check_Bossback_Wide;
+extern int Check_E1map_Wide;
+extern int Check_E2map_Wide;
+extern int Check_E3map_Wide;
+extern int Check_Victory_Wide;
+extern int Check_Bunny1_Wide;
+extern int Check_Bunny2_Wide;
+extern int Check_Endpic_Wide;
+
 extern int D_CheckWide(const char* lump) {
     static int ws = 0;
     static int last_numwadfiles = -1;
@@ -51,4 +67,22 @@ extern int D_CheckWide(const char* lump) {
         }
     }
     return ws;
+}
+
+extern int dsda_WideExistCheck(void) {
+  Check_Stbar_Wide = D_CheckWide(stbar_wide);
+  Check_Titlepic_Wide = D_CheckWide(titlepic_wide);
+  Check_Interpic_Wide = D_CheckWide(interpic_wide);
+  Check_Credit_Wide = D_CheckWide(credit_wide);
+  Check_Help0_Wide = D_CheckWide(help0_wide);
+  Check_Help1_Wide = D_CheckWide(help1_wide);
+  Check_Help2_Wide = D_CheckWide(help2_wide);
+  Check_Bossback_Wide = D_CheckWide(bossback_wide);
+  Check_E1map_Wide = D_CheckWide(e1map_wide);
+  Check_E2map_Wide = D_CheckWide(e2map_wide);
+  Check_E3map_Wide = D_CheckWide(e3map_wide);
+  Check_Victory_Wide = D_CheckWide(victory_wide);
+  Check_Bunny1_Wide = D_CheckWide(bunny1_wide);
+  Check_Bunny2_Wide = D_CheckWide(bunny2_wide);
+  Check_Endpic_Wide = D_CheckWide(endpic_wide);
 }

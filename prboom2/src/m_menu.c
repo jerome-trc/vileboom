@@ -213,6 +213,7 @@ char savegamestrings[10][SAVESTRINGSIZE];
 
 short itemOn;           // menu item skull is on (for Big Font menus)
 short skullAnimCounter; // skull animation counter
+short AnimateTime;
 short whichSkull;       // which skull to draw (he blinks)
 
 // graphic name of skulls
@@ -452,9 +453,7 @@ void M_DrawMainMenu(void)
 {
   if (raven) return MN_DrawMainMenu();
  
-  int Check;
-  Check = D_CheckAnimate("S_DOOM", "E_DOOM");
-  if (Check) return M_DrawMenuAnimate(94,2,"S_DOOM","E_DOOM");
+  if (Check_Doom_Animate) return M_DrawMenuAnimate(94,2,mdoom_start,mdoom_end);
 
   // CPhipps - patch drawing updated
   V_DrawNamePatch(94, 2, 0, "M_DOOM", CR_DEFAULT, VPT_STRETCH);
@@ -576,8 +575,7 @@ void M_DrawReadThis1(void)
   {
     // e6y: wide-res
     V_ClearBorder();
-    int CheckWide = D_CheckWide(help2_wide);
-    if (CheckWide)
+    if (Check_Help2_Wide)
       V_DrawNamePatch(0, 0, 0, help2_wide, CR_DEFAULT, VPT_STRETCH);
     else
       V_DrawNamePatch(0, 0, 0, "HELP2", CR_DEFAULT, VPT_STRETCH);
@@ -3876,23 +3874,20 @@ void M_ExtHelp(int choice)
 void M_DrawExtHelp(void)
 {
   char namebfr[10] = { "HELPnn" }; // CPhipps - make it local & writable
-  char wsnamebfr[10] = { "HELPnnWS" };
   namebfr[4] = extended_help_index / 10 + '0';
   namebfr[5] = extended_help_index % 10 + '0';
+  char wsnamebfr[10] = { "HELPnnWS" };
   wsnamebfr[4] = extended_help_index / 10 + '0';
   wsnamebfr[5] = extended_help_index % 10 + '0';
 
   inhelpscreens = true;              // killough 5/1/98
-  V_ClearBorder(); // Arsinikk - redraw background for every ext HELP screen
-  int CheckWide = D_CheckWide(help0_wide);
-  if (CheckWide) {
-      // Arsinikk - draw widescreen patch
+  V_ClearBorder(); // Arsinikk - redraw background for every ext HELP screen. Adds back for widescreen on sides.
+  if (Check_Help0_Wide)
       V_DrawNamePatch(0, 0, 0, wsnamebfr, CR_DEFAULT, VPT_STRETCH);
-  }
-  else {
+  else
       // CPhipps - patch drawing updated
       V_DrawNamePatch(0, 0, 0, namebfr, CR_DEFAULT, VPT_STRETCH);
-  }
+
 }
 
 //
@@ -4142,20 +4137,21 @@ static void M_DrawStringCentered(int cx, int cy, int color, const char* ch)
 void M_DrawHelp (void)
 {
   const int helplump = W_CheckNumForName("HELP");
-  const int helpwslump = W_CheckNumForName(help0_wide);
-  int CheckAnimate = D_CheckAnimate(help0_start, help0_end);
+  char* helplumpname = "HELP";
 
   M_ChangeMenu(NULL, mnact_full);
 
   if (helplump != LUMP_NOT_FOUND && lumpinfo[helplump].source != source_iwad)
   {
     V_ClearBorder();
-    if (CheckAnimate)
+    if (Check_Help0_Animate)
         D_DrawAnimate(help0_start, help0_end);
-    else if (helpwslump != LUMP_NOT_FOUND)
-        V_DrawNumPatch(0, 0, 0, helpwslump, CR_DEFAULT, VPT_STRETCH);
     else
-        V_DrawNumPatch(0, 0, 0, helplump, CR_DEFAULT, VPT_STRETCH);
+    {
+      if (Check_Help0_Wide)
+          helplumpname = help0_wide;
+      V_DrawNumPatch(0, 0, 0, helplumpname, CR_DEFAULT, VPT_STRETCH);
+    }
   }
   else
   {
@@ -4196,8 +4192,6 @@ void M_DrawCredits(void)     // killough 10/98: credit screen
 {
   const int creditlump = W_CheckNumForName("CREDIT");
   const int creditwslump = W_CheckNumForName(credit_wide);
-  int CheckAnimate = D_CheckAnimate(credit_start, credit_end);
-  int CreditWide = D_CheckWide(credit_wide);
 
   if (raven)
   {
@@ -4207,10 +4201,9 @@ void M_DrawCredits(void)     // killough 10/98: credit screen
 
   inhelpscreens = true;
 
-  if (CheckAnimate) {
+  if (Check_Credit_Animate)
       D_DrawAnimate(credit_start, credit_end);
-  }
-  else if (CreditWide && creditlump != LUMP_NOT_FOUND && lumpinfo[creditlump].source != source_iwad)
+  else if (Check_Credit_Wide && creditlump != LUMP_NOT_FOUND && lumpinfo[creditlump].source != source_iwad)
   {
     V_ClearBorder();
     V_DrawNumPatch(0, 0, 0, creditwslump, CR_DEFAULT, VPT_STRETCH);
@@ -5864,8 +5857,7 @@ void M_Drawer (void)
         int CheckSkull;
         int xSkull = x + SKULLXOFF;
         int ySkull = currentMenu->y - 5 + itemOn * LINEHEIGHT;
-        CheckSkull = D_CheckAnimate("S_SKULL", "E_SKULL");
-        if (CheckSkull)
+        if (Check_Skull_Animate)
             M_DrawMenuAnimate(xSkull,ySkull,"S_SKULL","E_SKULL");
         else
             V_DrawNamePatch(xSkull, ySkull, 0, skullName[whichSkull], CR_DEFAULT, VPT_STRETCH);
@@ -5928,9 +5920,8 @@ void M_Ticker (void)
   {
     whichSkull ^= 1;
     skullAnimCounter = 8;
+    AnimateTime++;
   }
-  if (menuactive)
-    Animate_Ticker();
 
   if (raven) return MN_Ticker();
 }

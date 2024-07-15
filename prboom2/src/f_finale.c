@@ -492,11 +492,9 @@ static void F_StartCastMusic(const char* music, dboolean loop_music)
 void F_StartCast (const char* background, const char* music, dboolean loop_music)
 {
   castorder = (gamemode == commercial ? castorder_d2 : castorder_d1);
-  int BossbackWide = D_CheckWide(bossback_wide);
-  if(BossbackWide)
-    castbackground = (background ? background : bossback_wide);
-  else
-    castbackground = (background ? background : bgcastcall);
+  if(Check_Bossback_Wide)
+    bgcastcall = bossback_wide;
+  castbackground = (background ? background : bgcastcall);
 
   wipegamestate = -1;         // force a screen wipe
   castnum = 0;
@@ -709,8 +707,7 @@ void F_CastDrawer (void)
   // erase the entire screen to a background
   // CPhipps - patch drawing updated
   
-  int CheckAnimate = D_CheckAnimate(bossback_start, bossback_end);
-  if (CheckAnimate)
+  if (Check_Bossback_Animate)
       D_DrawAnimate(bossback_start, bossback_end);
   else
       V_DrawNamePatch(0,0,0, castbackground, CR_DEFAULT, VPT_STRETCH); // Ty 03/30/98 bg texture extern
@@ -755,17 +752,14 @@ static dboolean end_patches_exist;
 
 void F_StartScroll (const char* right, const char* left, const char* music, dboolean loop_music)
 {
+  if (Check_Bunny1_Wide && Check_Bunny2_Wide)
+  {
+      pfub1 = bunny1_wide;
+      pfub2 = bunny2_wide;
+  }
   wipegamestate = -1; // force a wipe
-  int Bunny1Wide = D_CheckWide(bunny1_wide);
-  int Bunny2Wide = D_CheckWide(bunny2_wide);
-  if (Bunny1Wide)
-      scrollpic1 = right ? right : bunny1_wide;
-  else
-      scrollpic1 = right ? right : pfub1;
-  if (Bunny2Wide)
-      scrollpic2 = left ? left : bunny2_wide;
-  else
-      scrollpic2 = left ? left : pfub2;
+  scrollpic1 = right ? right : pfub1;
+  scrollpic2 = left ? left : pfub2;
   finalecount = 0;
   finalestage = 1;
 
@@ -821,10 +815,8 @@ void F_BunnyScroll (void)
 
 
 
-    // int Bunny1CheckAnimate = D_CheckAnimate("S_PFUB1", "E_PFUB1");
-    // int Bunny2CheckAnimate = D_CheckAnimate("S_PFUB2", "E_PFUB2");
     // int BunnyAnimate;
-    //if (Bunny2CheckAnimate && Bunny2CheckAnimate)
+    //if (Check_Bunny1_Animate && Check_Bunny2_Animate)
     //{
     //    BunnyAnimate = 1;
     //}
@@ -917,14 +909,6 @@ void F_Drawer (void)
     F_TextWrite ();
   else
   {
-    int CreditWide = D_CheckWide(credit_wide);
-    int Help2Wide = D_CheckWide(help2_wide);
-    int VictoryWide = D_CheckWide(victory_wide);
-    int EndpicWide = D_CheckWide(endpic_wide);
-    int CreditAnimate = D_CheckAnimate(credit_start, credit_end);
-    int Help2Animate = D_CheckAnimate(help2_start, help2_end);
-    int VictoryAnimate = D_CheckAnimate(victory_start, victory_end);
-    int EndpicAnimate = D_CheckAnimate(endpic_start, endpic_end);
     // e6y: wide-res
     V_ClearBorder();
 
@@ -933,24 +917,24 @@ void F_Drawer (void)
       // CPhipps - patch drawing updated
       case 1:
           if (gamemode == retail || gamemode == commercial)
-             if (CreditAnimate)
+             if (Check_Credit_Animate)
                 D_DrawAnimate(credit_start, credit_end);
-             else if (CreditWide)
+             else if (Check_Credit_Wide)
                 V_DrawNamePatch(0, 0, 0, credit_wide, CR_DEFAULT, VPT_STRETCH);
              else
                 V_DrawNamePatch(0, 0, 0, "CREDIT", CR_DEFAULT, VPT_STRETCH);
            else
-             if (Help2Animate)
+             if (Check_Help2_Animate)
                 D_DrawAnimate(help2_start, help2_end);
-             else if (Help2Wide)
+             else if (Check_Help2_Wide)
                 V_DrawNamePatch(0, 0, 0, help2_wide, CR_DEFAULT, VPT_STRETCH);
              else
                 V_DrawNamePatch(0, 0, 0, "HELP2", CR_DEFAULT, VPT_STRETCH);
            break;
       case 2:
-          if (VictoryAnimate)
+          if (Check_Victory_Animate)
             D_DrawAnimate(victory_start, victory_end);
-          else if (VictoryWide)
+          else if (Check_Victory_Wide)
             V_DrawNamePatch(0, 0, 0, victory_wide, CR_DEFAULT, VPT_STRETCH);
           else
             V_DrawNamePatch(0, 0, 0, "VICTORY2", CR_DEFAULT, VPT_STRETCH);
@@ -959,9 +943,9 @@ void F_Drawer (void)
            F_BunnyScroll ();
            break;
       case 4:
-           if (EndpicAnimate)
+           if (Check_Endpic_Animate)
              D_DrawAnimate(endpic_start, endpic_end);
-           else if (EndpicWide)
+           else if (Check_Endpic_Wide)
              V_DrawNamePatch(0, 0, 0, endpic_wide, CR_DEFAULT, VPT_STRETCH);
            else
              V_DrawNamePatch(0, 0, 0, "ENDPIC", CR_DEFAULT, VPT_STRETCH);

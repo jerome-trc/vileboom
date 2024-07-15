@@ -55,6 +55,9 @@ dboolean M_Responder (event_t *ev);
 // Called by main loop,
 // only used for menu (skull cursor) animation.
 
+short skullAnimCounter;
+short AnimateTime;
+
 void M_Ticker (void);
 
 // Called by main loop,

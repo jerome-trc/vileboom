@@ -22,6 +22,14 @@ char* titlepic_start;
 char* titlepic_end;
 char* interpic_start;
 char* interpic_end;
+char* mdoom_start;
+char* mdoom_end;
+char* mskull_start;
+char* mskull_end;
+char* stbar_start;
+char* stbar_end;
+char* starms_start;
+char* starms_end;
 char* credit_start;
 char* credit_end;
 char* help0_start;
@@ -43,9 +51,29 @@ char* victory_end;
 char* endpic_start;
 char* endpic_end;
 
+int Check_Doom_Animate;
+int Check_Skull_Animate;
+int Check_Stbar_Animate;
+int Check_Starms_Animate;
+int Check_Titlepic_Animate;
+int Check_Interpic_Animate;
+int Check_Credit_Animate;
+int Check_Help0_Animate;
+int Check_Help1_Animate;
+int Check_Help2_Animate;
+int Check_Bossback_Animate;
+int Check_E1map_Animate;
+int Check_E2map_Animate;
+int Check_E3map_Animate;
+int Check_Victory_Animate;
+int Check_Endpic_Animate;
+
+
 int D_CheckAnimate(const char* lump_s, const char* lump_e);
 void D_DrawAnimate(const char* lump_s, const char* lump_e);
 //void D_DrawAnimateBunny(const char* lump_x, const char* lump_y, const char* lump_s, const char* lump_e);
 void M_DrawMenuAnimate(const char* lump_x, const char* lump_y, const char* lump_s, const char* lump_e);
+void M_DrawStbarAnimate(const char* lump_x, const char* lump_y, const char* lump_z, const char* lump_s, const char* lump_e);
+int dsda_AnimateExistCheck(void);
 
 #endif
