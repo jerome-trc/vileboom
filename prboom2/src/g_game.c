@@ -190,7 +190,10 @@ dboolean coop_spawns;
 int shorttics;
 
 // automatic pistol start when advancing from one level to the next
-int pistolstart;
+int arg_pistolstart;
+
+/* Arsinikk - Set pistol start from config */
+cfg_pistolstart_t cfg_pistolstart;
 
 //
 // controls (have defaults)
@@ -1145,6 +1148,15 @@ static void G_ResetInventory(player_t *p)
 }
 
 //
+// Resets Pistol Start Cfg per session
+//
+
+void resetPistolStart(void) {
+  if(dsda_IntConfig(nyan_config_pistolstart)==1)
+    dsda_UpdateIntConfig(nyan_config_pistolstart, 0, true);
+}
+
+//
 // G_DoLoadLevel
 //
 
@@ -1196,7 +1208,7 @@ static void G_DoLoadLevel (void)
   }
 
   // automatic pistol start when advancing from one level to the next
-  if (pistolstart)
+  if (cfg_pistolstart > 0)
   {
     if (allow_incompatibility)
     {

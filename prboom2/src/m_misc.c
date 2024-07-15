@@ -310,7 +310,7 @@ cfg_def_t cfg_defs[] =
   MIGRATED_SETTING(nyan_config_intermission_pause),
   MIGRATED_SETTING(nyan_config_hud_berserk),
   MIGRATED_SETTING(nyan_config_hud_armoricon),
-
+  MIGRATED_SETTING(nyan_config_pistolstart),
 
   SETTING_HEADING("Scripts"),
   MIGRATED_SETTING(dsda_config_script_0),

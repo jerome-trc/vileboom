@@ -1802,7 +1802,14 @@ static void D_DoomMainSetup(void)
   e6y_InitCommandLine();
 
   // Automatic pistol start when advancing from one level to the next.
-  pistolstart = dsda_Flag(dsda_arg_pistolstart);
+  arg_pistolstart = dsda_Flag(dsda_arg_pistolstart);
+
+  // Arsinikk - set pistol start based off args and cfg
+  if (arg_pistolstart && !cfg_pistolstart)
+  {
+      dsda_UpdateIntConfig(nyan_config_pistolstart, 1, true);
+      !arg_pistolstart;
+  }
 
   // disables overflow warnings and errors for vanilla complevels
   limitremoving = dsda_Flag(dsda_arg_limitremoving);

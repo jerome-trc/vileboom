@@ -31,6 +31,7 @@
 #include "v_video.h"
 #include "z_zone.h"
 #include "st_stuff.h"
+#include "g_game.h"
 
 #include "dsda/args.h"
 #include "dsda/exhud.h"
@@ -369,6 +370,10 @@ dsda_config_t dsda_config[dsda_config_count] = {
     "nyan_armor_icon", nyan_config_hud_armoricon,
     dsda_config_int, ARMOR_ICON_OFF, ARMOR_ICON_2,
     { ARMOR_ICON_1 }, (int*) &armor_icon
+  },
+  [nyan_config_pistolstart] = {
+    "nyan_pistol_start", nyan_config_pistolstart,
+    dsda_config_int, PISTOL_START_OFF, PISTOL_START_ALWAYS, { PISTOL_START_OFF }, (int*) &cfg_pistolstart
   },
   [dsda_config_free_text] = {
     "dsda_free_text", dsda_config_free_text,

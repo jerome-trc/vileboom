@@ -2631,7 +2631,6 @@ setup_menu_t stat_settings1[] =  // Status Bar and HUD Settings screen
   { "SINGLE KEY DISPLAY", S_YESNO, m_conf, SB_X, dsda_config_sts_traditional_keys },
   EMPTY_LINE,
   { "STATUS INDICATORS", S_SKIP | S_TITLE, m_null, SB_X},
-//  { "BERSERK", S_YESNO, m_conf, SB_X, nyan_config_hud_berserk },
   { "BERSERK", S_CHOICE, m_conf, SB_X, nyan_config_hud_berserk, 0, berserk_icon_list },
   { "ARMOR", S_CHOICE, m_conf, SB_X, nyan_config_hud_armoricon, 0, armor_icon_list },
   EMPTY_LINE,
@@ -3062,12 +3061,21 @@ setup_menu_t display_settings[] = {
   FINAL_ENTRY
 };
 
+static const char* pistol_start_list[] = 
+{
+  [PISTOL_START_OFF] = "Off",
+  [PISTOL_START_SESSION] = "Session",
+  [PISTOL_START_ALWAYS] = "Always",
+  NULL
+};
+
 setup_menu_t misc2_settings[] = {
   { "Extra Options", S_SKIP | S_TITLE, m_null, G_X},
   { "Hide Weapon", S_YESNO, m_conf, G_X, dsda_config_hide_weapon },
   { "Hide Status Bar Horns", S_YESNO, m_conf, G_X, dsda_config_hide_horns },
   { "Pause After Intermission", S_YESNO, m_conf, G_X, nyan_config_intermission_pause },
   { "Play Demos While In Menus", S_YESNO, m_conf, G_X, nyan_config_menu_play_demo },
+  { "Pistol Start", S_CHOICE, m_conf, G_X, nyan_config_pistolstart, 0, pistol_start_list },
   { "Allow Jumping", S_YESNO, m_conf, G_X, dsda_config_allow_jumping },
   EMPTY_LINE,
   { "OpenGL Options", S_SKIP | S_TITLE, m_null, G_X},

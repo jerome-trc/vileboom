@@ -122,7 +122,17 @@ extern int shorttics;
 extern int longtics;
 
 // automatic pistol start when advancing from one level to the next
-extern int pistolstart;
+extern int arg_pistolstart;
+
+typedef enum
+{
+  PISTOL_START_OFF,
+  PISTOL_START_SESSION,
+  PISTOL_START_ALWAYS
+} cfg_pistolstart_t;
+
+/* Arsinikk - Set pistol start from config */
+extern cfg_pistolstart_t cfg_pistolstart;
 
 // disables overflow warnings and errors for vanilla complevels
 extern int limitremoving;
