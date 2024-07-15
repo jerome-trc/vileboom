@@ -472,7 +472,7 @@ static void ST_refreshBackground(void)
       if (!deathmatch)
       {
         if (Check_Starms_Animate)
-          M_DrawStbarAnimate(xStarms, yStbar, zStbar, stbar_start, stbar_end);
+          M_DrawStbarAnimate(xStarms, yStbar, zStbar, starms_start, starms_end);
         else
           V_DrawNumPatch(xStarms, yStbar, zStbar, armsbg.lumpnum, CR_DEFAULT, flags);
       }
