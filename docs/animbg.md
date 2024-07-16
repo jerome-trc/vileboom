@@ -11,10 +11,14 @@ The `start` lumps should be placed *above* or *before* the `end` lumps in the WA
 - `Start` Lumps with the prefix `S_` mark the start the animation
 - `End` Lumps with the prefix `E_` mark the end of animation
 
-### Animated Backgrounds
+### Animated Doom Patches
 
 | Original       | Start Animation         | End Animation           |
 |----------------|-------------------------|-------------------------|
+| M_DOOM         | S_DOOM                  | E_DOOM                  |
+| M_SKULL1/2     | S_SKULL                 | E_SKULL                 |
+| STBAR          | S_STBAR                 | E_STBAR                 |
+| STARMS         | S_STARMS                | E_STARMS                |
 | TITLEPIC       | S_TITLEP                | E_TITLEP                |
 | INTERPIC       | S_INTERP                | E_INTERP                |
 | CREDIT         | S_CREDIT                | E_CREDIT                |
@@ -28,16 +32,7 @@ The `start` lumps should be placed *above* or *before* the `end` lumps in the WA
 | VICTORY2       | S_VICTOR                | E_VICTOR                |
 | ENDPIC         | S_ENDPIC                | E_ENDPIC                |
 
-### Animated Menu / Statusbar Graphics
-
-| Original       | Animation Start         | Animation End           |
-|----------------|-------------------------|-------------------------|
-| M_DOOM         | S_DOOM                  | E_DOOM                  |
-| M_SKULL1/2     | S_SKULL                 | E_SKULL                 |
-| STBAR          | S_STBAR                 | E_STBAR                 |
-| STARMS         | S_STARMS                | E_STARMS                |
-
-### Boom Patches
+### Animated Boom Patches
 
 | Original       | Animation Start         | Animation End           |
 |----------------|-------------------------|-------------------------|
