@@ -249,6 +249,13 @@ set(COMMON_SRC
     dsda/widescreen.h
     dsda/zipfile.c
     dsda/zipfile.h
+    textscreen/doomkeys.h
+    textscreen/txt_font.h
+    textscreen/txt_largefont.h
+    textscreen/txt_main.h
+    textscreen/txt_sdl.c
+    textscreen/txt_sdl.h
+    textscreen/txt_smallfont.h
     dstrings.c
     dstrings.h
     d_deh.c

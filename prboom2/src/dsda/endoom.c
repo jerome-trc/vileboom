@@ -26,8 +26,13 @@
 #include "w_wad.h"
 
 #include "dsda/configuration.h"
+#include "textscreen/txt_main.h"
+#include "textscreen/txt_sdl.h"
 
 #include "endoom.h"
+
+#define ENDOOM_W 80
+#define ENDOOM_H 25
 
 static const char* cp437_to_utf8[256] = {
   " ",
@@ -304,13 +309,18 @@ static const char* cp437_to_utf8[256] = {
 };
 
 typedef enum {
-  format_null,
   format_cp437,
   format_utf8,
 } output_format_t;
 
+typedef enum {
+  endoom_full,
+  endoom_ansi,
+} endoom_type_t;
+
 static byte* endoom;
 static output_format_t output_format;
+static endoom_type_t endoom_type;
 
 #ifdef _WIN32
 static HANDLE hConsole;
@@ -343,10 +353,12 @@ static void RestoreOldMode(void) {
 
 void dsda_CacheEndoom(void) {
   int lump;
+  int show_endoom;
 
-  output_format = dsda_IntConfig(dsda_config_ansi_endoom);
+  output_format = dsda_IntConfig(nyan_config_ansi_endoom);
+  show_endoom = dsda_IntConfig(nyan_config_show_endoom);
 
-  if (!output_format)
+  if (show_endoom==0)
     return;
 
   if (hexen)
@@ -360,7 +372,7 @@ void dsda_CacheEndoom(void) {
       lump = W_CheckNumForName("ENDOOM");
   }
 
-  if (lump == LUMP_NOT_FOUND || W_LumpLength(lump) != 4000)
+  if (lump == LUMP_NOT_FOUND || W_LumpLength(lump) != 4000 || (show_endoom==2 && W_PWADLumpNumExists(lump)))
     return;
 
   endoom = Z_Malloc(4000);
@@ -368,51 +380,111 @@ void dsda_CacheEndoom(void) {
 }
 
 void dsda_DumpEndoom(void) {
-  if (endoom) {
-    int i;
-    const char* color_lookup[] = {
-      "0", "4", "2", "6", "1", "5", "3", "7",
-      "0;1", "4;1", "2;1", "6;1", "1;1", "5;1", "3;1", "7;1",
-    };
+  int show_endoom;
+  endoom_type = dsda_IntConfig(nyan_config_type_endoom);
+  show_endoom = dsda_IntConfig(nyan_config_show_endoom);
 
-#ifdef _WIN32
-    EnableVTMode();
-#endif
+  if(show_endoom > 0)
+  {
+    if (endoom && endoom_type == 1)
+    {
+      int i;
+      const char* color_lookup[] = {
+        "0", "4", "2", "6", "1", "5", "3", "7",
+        "0;1", "4;1", "2;1", "6;1", "1;1", "5;1", "3;1", "7;1",
+      };
 
-    for (i = 0; i < 2000; ++i) {
-      byte character;
-      byte data;
-      const char *foreground;
-      const char *background;
-      const char *blink;
+    #ifdef _WIN32
+        EnableVTMode();
+    #endif
 
-      character = endoom[i * 2];
-      data = endoom[i * 2 + 1];
-      foreground = color_lookup[data & 0x0f];
-      background = color_lookup[(data >> 4) & 0x07];
-      blink = ((data >> 7) & 0x01) ? "5" : "25";
+        for (i = 0; i < 2000; ++i) {
+          byte character;
+          byte data;
+          const char *foreground;
+          const char *background;
+          const char *blink;
 
-      if (!character)
-        character = ' ';
+          character = endoom[i * 2];
+          data = endoom[i * 2 + 1];
+          foreground = color_lookup[data & 0x0f];
+          background = color_lookup[(data >> 4) & 0x07];
+          blink = ((data >> 7) & 0x01) ? "5" : "25";
 
-      if (output_format == format_utf8)
-        lprintf(LO_INFO, "\033[3%sm\033[4%sm\033[%sm%s\033[0m",
-                foreground, background, blink, cp437_to_utf8[character]);
-      else
-        lprintf(LO_INFO, "\033[3%sm\033[4%sm\033[%sm%c\033[0m",
-                foreground, background, blink, character);
+          if (!character)
+            character = ' ';
 
-      if ((i + 1) % 80 == 0)
+          if (output_format == format_utf8)
+            lprintf(LO_INFO, "\033[3%sm\033[4%sm\033[%sm%s\033[0m",
+                    foreground, background, blink, cp437_to_utf8[character]);
+          else
+            lprintf(LO_INFO, "\033[3%sm\033[4%sm\033[%sm%c\033[0m",
+                    foreground, background, blink, character);
+
+          if ((i + 1) % 80 == 0)
+            lprintf(LO_INFO, "\n");
+        }
+
         lprintf(LO_INFO, "\n");
+
+        Z_Free(endoom);
+        endoom = NULL;
+
+    #ifdef _WIN32
+        RestoreOldMode();
+    #endif
+    }
+    else if (endoom && endoom_type == 0)
+      dsda_FullEndoom();
+ }
+}
+
+
+//
+// Full Screen ENDOOM
+//
+
+void dsda_FullEndoom(void)
+{
+    unsigned char *screendata;
+    int y;
+    int indent;
+
+    // Set up text mode screen
+
+    if (!TXT_Init())
+    {
+        lprintf(LO_ERROR, "Failed to initialize libtextscreen");
+        return;
     }
 
-    lprintf(LO_INFO, "\n");
+    // Write the data to the screen memory
 
-    Z_Free(endoom);
-    endoom = NULL;
+    screendata = TXT_GetScreenData();
 
-#ifdef _WIN32
-    RestoreOldMode();
-#endif
-  }
+    indent = (ENDOOM_W - TXT_SCREEN_W) / 2;
+
+    for (y = 0; y < TXT_SCREEN_H; ++y)
+    {
+        memcpy(screendata + (y * TXT_SCREEN_W * 2),
+               endoom + (y * ENDOOM_W + indent) * 2, TXT_SCREEN_W * 2);
+    }
+
+    // Wait for a keypress
+
+    while (true)
+    {
+        TXT_UpdateScreen();
+
+        if (TXT_GetChar() > 0)
+        {
+            break;
+        }
+
+        TXT_Sleep(0);
+    }
+
+    // Shut down text mode screen
+
+    TXT_Shutdown();
 }

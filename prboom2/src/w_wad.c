@@ -608,6 +608,11 @@ int W_LumpNumExists(int lump)
   return lump != LUMP_NOT_FOUND && lump < numlumps;
 }
 
+int W_PWADLumpNumExists(int lump)
+{
+  return lump != LUMP_NOT_FOUND && lump < numlumps && (lumpinfo[lump].source == source_iwad); // Arsinikk - Why does this work???
+}
+
 int W_LumpNameExists(const char *name)
 {
   return W_CheckNumForName(name) != LUMP_NOT_FOUND;

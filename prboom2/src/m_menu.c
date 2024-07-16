@@ -3045,6 +3045,9 @@ setup_menu_t misc_settings[] = {
   FINAL_ENTRY
 };
 
+static const char* endoom_list[] = { "Off", "On", "PWAD only", NULL };
+static const char* endoom_type_list[] = { "Window", "Terminal", NULL };
+
 setup_menu_t display_settings[] = {
   { "Display Options", S_SKIP | S_TITLE, m_null, G_X},
   { "Wipe Screen Effect", S_YESNO,  m_conf, G_X, dsda_config_render_wipescreen },
@@ -3053,6 +3056,9 @@ setup_menu_t display_settings[] = {
   { "Weapon Bobbing", S_YESNO, m_conf, G_X, dsda_config_weaponbob },
   { "Quake Intensity", S_NUM, m_conf, G_X, dsda_config_quake_intensity },
   { "Weapon Attack Alignment", S_CHOICE, m_conf, G_X, dsda_config_weapon_attack_alignment, 0, weapon_attack_alignment_strings },
+  EMPTY_LINE,
+  { "Endoom Screen", S_CHOICE, m_conf, G_X, nyan_config_show_endoom, 0, endoom_list },  
+  { "Endoom Type", S_CHOICE, m_conf, G_X, nyan_config_type_endoom, 0, endoom_type_list },
   EMPTY_LINE,
   { "Change Palette On Pain", S_YESNO, m_conf, G_X, dsda_config_palette_ondamage },
   { "Change Palette On Bonus", S_YESNO, m_conf, G_X, dsda_config_palette_onbonus },
