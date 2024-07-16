@@ -3911,7 +3911,7 @@ void M_DrawExtHelp(void)
 
   inhelpscreens = true;              // killough 5/1/98
   V_ClearBorder(); // Arsinikk - redraw background for every ext HELP screen. Adds back for widescreen on sides.
-  if ((D_CheckAnimate(snamebfr,enamebfr)) && (snamebfr[4] == enamebfr[4]) && (snamebfr[5] == enamebfr[5]))
+  if (D_CheckAnimate(snamebfr,enamebfr))
       D_DrawAnimate(snamebfr, enamebfr);
   else if (D_CheckWide(wsnamebfr))
       V_DrawNamePatch(0, 0, 0, wsnamebfr, CR_DEFAULT, VPT_STRETCH);

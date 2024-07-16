@@ -37,6 +37,15 @@ The `start` lumps should be placed *above* or *before* the `end` lumps in the WA
 | STBAR          | S_STBAR                 | E_STBAR                 |
 | STARMS         | S_STARMS                | E_STARMS                |
 
+### Boom Patches
+
+| Original       | Animation Start         | Animation End           |
+|----------------|-------------------------|-------------------------|
+| HELP01         | S_HELP01                | E_HELP01                |
+| HELP02         | S_HELP02                | E_HELP02                |
+| ...            | ...                     | ...                     |
+| HELP99         | S_HELP99                | E_HELP99                |
+
 ### Heretic/Hexen Animated Backgrounds
 
 Lumps not yet implimented.
