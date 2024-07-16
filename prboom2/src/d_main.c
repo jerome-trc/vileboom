@@ -1901,6 +1901,8 @@ static void D_DoomMainSetup(void)
 
   lprintf(LO_DEBUG, "G_ReloadDefaults: Checking OPTIONS.\n");
   dsda_ParseOptionsLump();
+  dsda_AnimateExistCheck();
+  dsda_WideExistCheck();
   G_ReloadDefaults();
 
   // e6y

@@ -2765,8 +2765,6 @@ void G_ReloadDefaults(void)
   nomonsters = clnomonsters;
 
   dsda_ClearPlaybackStream();
-  dsda_AnimateExistCheck();
-  dsda_WideExistCheck();
 
   // killough 2/21/98:
   memset(playeringame + 1, 0, sizeof(*playeringame) * (MAX_MAXPLAYERS - 1));
