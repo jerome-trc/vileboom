@@ -100,7 +100,7 @@ extern void D_DrawAnimate(const char* lump_s, const char* lump_e)
     V_DrawNumPatch(0, 0, 0, SLump + frame, CR_DEFAULT, VPT_STRETCH);
 }
 
-// Arsinik - Currently disabled due to Bunny sequence not working
+// Arsinikk - Currently disabled due to Bunny sequence not working
 //
 /* extern void D_DrawAnimateBunny(const char* lump_x, const char* lump_y, const char* lump_s, const char* lump_e)
 {
