@@ -3020,12 +3020,21 @@ setup_menu_t controller_settings[] = {
   FINAL_ENTRY
 };
 
+static const char* pistol_start_list[] = 
+{
+  [PISTOL_START_OFF] = "Off",
+  [PISTOL_START_SESSION] = "Session",
+  [PISTOL_START_ALWAYS] = "Always",
+  NULL
+};
+
 setup_menu_t misc_settings[] = {
   { "Miscellaneous", S_SKIP | S_TITLE, m_null, G_X},
   { "Default skill level", S_CHOICE, m_conf, G_X, dsda_config_default_skill, 0, gen_skillstrings },
   { "Default compatibility level", S_CHOICE, m_conf, G_X, dsda_config_default_complevel, 0, &gen_compstrings[1] },
   { "Enable Cheat Code Entry", S_YESNO, m_conf, G_X, dsda_config_cheat_codes },
   { "Announce Map On Entry", S_YESNO, m_conf, G_X, dsda_config_announce_map },
+  { "Pistol Start", S_CHOICE, m_conf, G_X, nyan_config_pistolstart, 0, pistol_start_list },
   EMPTY_LINE,
   { "Quality Of Life", S_SKIP | S_TITLE, m_null, G_X},
   { "Rewind Interval (s)", S_NUM, m_conf, G_X, dsda_config_auto_key_frame_interval },
@@ -3072,21 +3081,12 @@ setup_menu_t display_settings[] = {
   FINAL_ENTRY
 };
 
-static const char* pistol_start_list[] = 
-{
-  [PISTOL_START_OFF] = "Off",
-  [PISTOL_START_SESSION] = "Session",
-  [PISTOL_START_ALWAYS] = "Always",
-  NULL
-};
-
 setup_menu_t misc2_settings[] = {
   { "Extra Options", S_SKIP | S_TITLE, m_null, G_X},
   { "Hide Weapon", S_YESNO, m_conf, G_X, dsda_config_hide_weapon },
   { "Hide Status Bar Horns", S_YESNO, m_conf, G_X, dsda_config_hide_horns },
   { "Pause After Intermission", S_YESNO, m_conf, G_X, nyan_config_intermission_pause },
   { "Play Demos While In Menus", S_YESNO, m_conf, G_X, nyan_config_menu_play_demo },
-  { "Pistol Start", S_CHOICE, m_conf, G_X, nyan_config_pistolstart, 0, pistol_start_list },
   { "Allow Jumping", S_YESNO, m_conf, G_X, dsda_config_allow_jumping },
   EMPTY_LINE,
   { "OpenGL Options", S_SKIP | S_TITLE, m_null, G_X},
