@@ -309,6 +309,7 @@ static const char* cp437_to_utf8[256] = {
 };
 
 typedef enum {
+  format_null,
   format_cp437,
   format_utf8,
 } output_format_t;
@@ -355,7 +356,9 @@ void dsda_CacheEndoom(void) {
   int lump;
   int show_endoom;
 
-  output_format = dsda_IntConfig(nyan_config_ansi_endoom);
+  output_format = dsda_IntConfig(dsda_config_ansi_endoom);
+  if (output_format == format_null)
+    dsda_UpdateIntConfig(dsda_config_ansi_endoom,1,true);
   show_endoom = dsda_IntConfig(nyan_config_show_endoom);
 
   if (show_endoom==0)

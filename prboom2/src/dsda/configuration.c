@@ -1253,9 +1253,9 @@ dsda_config_t dsda_config[dsda_config_count] = {
     "type_endoom", nyan_config_type_endoom,
     dsda_config_int, 0, 1, { 0 }
   },
-  [nyan_config_ansi_endoom] = {
-    "ansi_endoom", nyan_config_ansi_endoom,
-    dsda_config_int, 0, 1, { 0 }
+  [dsda_config_ansi_endoom] = {
+    "ansi_endoom", dsda_config_ansi_endoom,
+    dsda_config_int, 0, 2, { 1 }
   },
   [dsda_config_announce_map] = {
     "announce_map", dsda_config_announce_map,
