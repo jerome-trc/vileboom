@@ -1087,7 +1087,7 @@ static void ST_loadGraphics(void)
   // Green cross for bfg edition (unity)
 
   if (gamemission == chex) R_SetPatchNum(&berserk, "CHXPSTR");
-  else if (bfgedition) R_SetPatchNum(&berserk, "STFPSTR2");
+  else if (unityedition) R_SetPatchNum(&berserk, "STFPSTR2");
   else R_SetPatchNum(&berserk, "STFPSTR");
 
   //e6y: status bar background

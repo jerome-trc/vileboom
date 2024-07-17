@@ -612,6 +612,7 @@ static int  demosequence;         // killough 5/2/98: made static
 static int  pagetic;
 static const char *pagename; // CPhipps - const
 dboolean bfgedition = 0;
+dboolean unityedition = 0;
 
 //
 // D_PageTicker
@@ -994,9 +995,11 @@ void CheckIWAD(const char *iwadname,GameMode_t *gmode,dboolean *hassec)
                   fileinfo[length].name[4] == '2')
                 ++sc;
           }
-          // Arsinikk - would be nice to have a unity wad check:
-          // (TITLEPIC, check for 320px wide or larger lump size)
-          if (!strncmp(fileinfo[length].name,"DMENUPIC",8))
+          // Arsinikk - Unity WAD Check!
+          // (Check if any iwad lump is >67kb)
+          if (fileinfo[length].size > 80000)
+            unityedition++;
+          if (!strncmp(fileinfo[length].name,"DMENUPIC",8) && !unityedition)
             bfgedition++;
           if (!strncmp(fileinfo[length].name,"HACX",4))
             hx++;
@@ -1679,6 +1682,17 @@ static void EvaluateDoomVerStr(void)
     tempverstr = Z_Malloc(sizeof(char) * (strlen(doomverstr)+strlen(bfgverstr)+1));
     strcpy (tempverstr, doomverstr);
     strcat (tempverstr, bfgverstr);
+    doomverstr = Z_Strdup (tempverstr);
+    Z_Free (tempverstr);
+  }
+
+  if (unityedition)
+  {
+    char *tempverstr;
+    const char unityverstr[]=" (Unity Edition)";
+    tempverstr = Z_Malloc(sizeof(char) * (strlen(doomverstr)+strlen(unityverstr)+1));
+    strcpy (tempverstr, doomverstr);
+    strcat (tempverstr, unityverstr);
     doomverstr = Z_Strdup (tempverstr);
     Z_Free (tempverstr);
   }

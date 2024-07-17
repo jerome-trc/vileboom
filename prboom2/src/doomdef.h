@@ -58,6 +58,7 @@
 #include "doomtype.h"
 
 extern dboolean bfgedition;
+extern dboolean unityedition;
 
 // Game mode handling - identify IWAD version
 //  to handle IWAD dependend animations etc.

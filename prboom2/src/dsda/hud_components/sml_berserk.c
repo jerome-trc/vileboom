@@ -37,7 +37,7 @@ static int patch_spacing;
 static const char* dsda_BerserkName(player_t* player) {
     if (player->powers[pw_strength])
         if (gamemission == chex) { return "CHXPSTR"; }
-        else if (bfgedition) { return "STFPSTR2"; }
+        else if (unityedition) { return "STFPSTR2"; }
         else { return "STFPSTR"; }
     else
         return NULL;
