@@ -1091,7 +1091,7 @@ static void ST_loadGraphics(void)
   else R_SetPatchNum(&berserk, "STFPSTR");
 
   //e6y: status bar background
-  if (Check_Stbar_Wide)
+  if (Check_Stbar_Wide && !Check_Stbar_Animate)
     R_SetPatchNum(&stbarbg, stbar_wide);
   else
     R_SetPatchNum(&stbarbg, "STBAR");
