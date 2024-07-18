@@ -3835,19 +3835,6 @@ void P_SetupLevel(int episode, int map, int playermask, int skill)
 
   P_InitThinkers();
 
-  // Must process musinfo to get default track before calling S_Start
-  if (gamemode != shareware)
-  {
-    S_ParseMusInfo(lumpname);
-  }
-
-  // Make sure all sounds are stopped before Z_FreeTag.
-  S_Start();
-
-  Z_FreeLevel();
-
-  P_InitThinkers();
-
   if (strlen(lumpname) < 6)
   {
     snprintf(gl_lumpname, sizeof(gl_lumpname), "GL_%s", lumpname);
