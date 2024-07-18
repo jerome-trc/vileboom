@@ -435,6 +435,12 @@ void dsda_DumpEndoom(void) {
 
     #ifdef _WIN32
         RestoreOldMode();
+        lprintf(LO_INFO, "Press any key to quit...");
+        while (true)
+        {
+          if (getch() > 0)
+              break;
+        }
     #endif
     }
     else if (endoom && endoom_type == 0)
