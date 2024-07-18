@@ -274,7 +274,7 @@ void S_Start(void)
     musinfo.items[0] = muslump;
   }
 
-if (musinfo.items[0] != -1)
+  if (musinfo.items[0] != -1)
   {
     if (!dsda_StartQueuedMusic())
       S_ChangeMusInfoMusic(musinfo.items[0], true);

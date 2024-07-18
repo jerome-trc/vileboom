@@ -25,4 +25,3 @@ CMakeUserPresets.json
 # Visual Studio Code
 /.vscode/**
 !/.vscode/extension.json
-/prboom2/build

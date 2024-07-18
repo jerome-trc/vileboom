@@ -904,7 +904,6 @@ void F_Drawer (void)
     return;
   }
 
-
   if (!finalestage)
     F_TextWrite ();
   else

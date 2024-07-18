@@ -22,7 +22,6 @@
 
 #include "dsda/configuration.h"
 
-
 static dboolean paused;
 
 dboolean dsda_Paused(void) {
