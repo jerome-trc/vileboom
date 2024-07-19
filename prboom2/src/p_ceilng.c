@@ -450,12 +450,13 @@ int EV_DoCeiling
       break;
   }
 
+  manual_ceiling://e6y
   // affects all sectors with the same tag as the linedef
   FIND_SECTORS(id_p, line->tag)
   {
-    sec = &sectors[*id_p];
+    if (!zerotag_manual)
+      sec = &sectors[*id_p];
 
-    manual_ceiling://e6y
     // if ceiling already moving, don't start a second function on it
     if (P_CeilingActive(sec)) { //jff 2/22/98
         if (!zerotag_manual) continue; else { return rtn; }

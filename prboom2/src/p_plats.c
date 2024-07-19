@@ -502,12 +502,13 @@ int EV_DoPlat
       break;
   }
 
+  manual_plat:
   // act on all sectors tagged the same as the activating linedef
   FIND_SECTORS(id_p, line->tag)
   {
-    sec = &sectors[*id_p];
+    if (!zerotag_manual)
+      sec = &sectors[*id_p];
 
-    manual_plat:
     // don't start a second floor function if already moving
     if (P_FloorActive(sec)) {//jff 2/23/98 multiple thinkers
         if (!zerotag_manual) continue; else { return rtn; }

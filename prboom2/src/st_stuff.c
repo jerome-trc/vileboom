@@ -454,6 +454,7 @@ static void ST_refreshBackground(void)
 {
   int y = ST_Y;
   enum patch_translation_e flags = VPT_ALIGN_LEFT_TOP;
+  dboolean fullmenu = (menuactive == mnact_full);
 
   if (st_statusbaron)
     {
@@ -493,8 +494,7 @@ static void ST_refreshBackground(void)
     }
 
       // Arsinikk - fullmenu is needed to hide indicators in complex menu screens
-      dboolean MainMenu = (menuactive == mnact_full);
-      if (!MainMenu)
+      if (fullmenu)
       {
           // Arsinikk - display berserk indicator
           if ((plyr->powers[pw_strength]) && (berserk_icon > 0))
