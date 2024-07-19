@@ -18,6 +18,8 @@
 #ifndef __DSDA_ANIMATE__
 #define __DSDA_ANIMATE__
 
+extern short AnimateTime;
+
 extern const char* titlepic_start;
 extern const char* titlepic_end;
 extern const char* interpic_start;

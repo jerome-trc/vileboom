@@ -5862,12 +5862,10 @@ void M_Drawer (void)
     if (max > 0)
     {
         // CPhipps - patch drawing updated
-        int xSkull = x + SKULLXOFF;
-        int ySkull = currentMenu->y - 5 + itemOn * LINEHEIGHT;
         if (Check_Skull_Animate)
-            M_DrawMenuAnimate(xSkull,ySkull,"S_SKULL","E_SKULL");
+            M_DrawMenuAnimate(x + SKULLXOFF,currentMenu->y - 5 + itemOn * LINEHEIGHT,mskull_start,mskull_end);
         else
-            V_DrawNamePatch(xSkull, ySkull, 0, skullName[whichSkull], CR_DEFAULT, VPT_STRETCH);
+            V_DrawNamePatch(x + SKULLXOFF, currentMenu->y - 5 + itemOn * LINEHEIGHT, 0, skullName[whichSkull], CR_DEFAULT, VPT_STRETCH);
     }
   }
 
