@@ -71,7 +71,7 @@ int Check_Endpic_Animate;
 
 int D_CheckAnimate(const char* lump_s, const char* lump_e);
 void D_DrawAnimate(const char* lump_s, const char* lump_e);
-void D_DrawAnimateBunny(const char* lump_x, const char* lump_y, const char* lump_s, const char* lump_e);
+//void D_DrawAnimateBunny(const char* lump_x, const char* lump_y, const char* lump_s, const char* lump_e);
 void M_DrawMenuAnimate(const char* lump_x, const char* lump_y, const char* lump_s, const char* lump_e);
 void M_DrawStbarAnimate(const char* lump_x, const char* lump_y, const char* lump_z, const char* lump_s, const char* lump_e);
 int dsda_AnimateExistCheck(void);
