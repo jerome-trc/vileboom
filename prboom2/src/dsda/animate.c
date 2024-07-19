@@ -102,7 +102,7 @@ extern void D_DrawAnimate(const char* lump_s, const char* lump_e)
 
 // Arsinikk - Currently disabled due to Bunny sequence not working
 //
-/* extern void D_DrawAnimateBunny(const char* lump_x, const char* lump_y, const char* lump_s, const char* lump_e)
+extern void D_DrawAnimateBunny(const char* lump_x, const char* lump_y, const char* lump_s, const char* lump_e)
 {
     int frameDiff;
     int frame;
@@ -111,9 +111,9 @@ extern void D_DrawAnimate(const char* lump_s, const char* lump_e)
     SLump = W_GetNumForName(lump_s);
     ELump = W_GetNumForName(lump_e);
     frameDiff = ELump - SLump;
-    frame = (frameTime / 12) % (frameDiff + 1);
+    frame = (AnimateTime) % (frameDiff + 1);
     V_DrawNumPatch(lump_x, lump_y, 0, SLump + frame, CR_DEFAULT, VPT_STRETCH);
-} */
+}
 
 extern void M_DrawMenuAnimate(const char* lump_x, const char* lump_y, const char* lump_s, const char* lump_e)
 {
