@@ -133,6 +133,7 @@ typedef enum
 
 /* Arsinikk - Set pistol start from config */
 extern cfg_pistolstart_t cfg_pistolstart;
+void resetPistolStart(void);
 
 // disables overflow warnings and errors for vanilla complevels
 extern int limitremoving;

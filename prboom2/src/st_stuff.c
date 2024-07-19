@@ -939,7 +939,7 @@ void ST_stbarRefresh(void)
     }
 }
 
-static void ST_drawWidgets(dboolean refresh)
+void ST_drawWidgets(dboolean refresh)
 {
   int i;
 
