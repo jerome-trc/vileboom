@@ -493,8 +493,8 @@ static void ST_refreshBackground(void)
     }
 
       // Arsinikk - fullmenu is needed to hide indicators in complex menu screens
-      dboolean SettingsMenu = !(menuactive == mnact_full);
-      if (SettingsMenu)
+      dboolean MainMenu = (menuactive == mnact_full);
+      if (!MainMenu)
       {
           // Arsinikk - display berserk indicator
           if ((plyr->powers[pw_strength]) && (berserk_icon > 0))

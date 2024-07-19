@@ -702,7 +702,6 @@ void e6y_G_Compatibility(void)
 
 dboolean zerotag_manual;
 int secnum;
-const int id_p;
 
 dboolean ProcessNoTagLines(line_t *line, sector_t **sec, int *secnum)
 {

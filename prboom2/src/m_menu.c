@@ -3888,15 +3888,13 @@ void M_ExtHelp(int choice)
 void M_DrawExtHelp(void)
 {
   char namebfr[10] = { "HELPnn" }; // CPhipps - make it local & writable
-  namebfr[4] = extended_help_index / 10 + '0';
-  namebfr[5] = extended_help_index % 10 + '0';
-
   char wsnamebfr[10] = { "HELPnnWS" };
-  wsnamebfr[4] = extended_help_index / 10 + '0';
-  wsnamebfr[5] = extended_help_index % 10 + '0';
-
   char snamebfr[10] = { "S_HELPnn" };
   char enamebfr[10] = { "E_HELPnn" };
+  namebfr[4] = extended_help_index / 10 + '0';
+  namebfr[5] = extended_help_index % 10 + '0';
+  wsnamebfr[4] = extended_help_index / 10 + '0';
+  wsnamebfr[5] = extended_help_index % 10 + '0';
   snamebfr[6] = extended_help_index / 10 + '0';
   snamebfr[7] = extended_help_index % 10 + '0';
   enamebfr[6] = extended_help_index / 10 + '0';
