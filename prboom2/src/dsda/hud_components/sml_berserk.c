@@ -19,20 +19,11 @@
 
 #include "sml_berserk.h"
 
-#define PATCH_DELTA_X 14
-#define PATCH_DELTA 10
-#define PATCH_SPACING 2
-#define PATCH_VERTICAL_SPACING 2
-
 typedef struct {
     dsda_patch_component_t component;
 } local_component_t;
 
 static local_component_t* local;
-
-static int strength_lump;
-static int patch_delta_x;
-static int patch_spacing;
 
 static const char* dsda_BerserkName(player_t* player) {
     if (player->powers[pw_strength])
@@ -62,21 +53,12 @@ static void dsda_DrawComponent(void) {
     y = local->component.y;
     if (!raven)
         drawBerserkIcon(player, &x, &y, dsda_BerserkName);
-    //V_DrawNumPatch(x, y, FG, strength_lump, CR_DEFAULT, local->component.vpt);
-    //x += 4;
 }
 
 void dsda_InitSmlBerserkHC(int x_offset, int y_offset, int vpt, int* args, int arg_count, void** data) {
     *data = Z_Calloc(1, sizeof(local_component_t));
     local = *data;
 
-    //hide_lump = return;
-    //strength_lump = R_NumPatchForSpriteIndex(SML_PSTR);
-    //strength_lump = W_CheckNumForName("SML_PSTR");
-    //patch_delta_x = 14;
-    //patch_vertical_spacing = 2;
-    //patch_spacing = 2;
-    //patch_spacing += R_NumPatchWidth(strength_lump);
     dsda_InitPatchHC(&local->component, x_offset, y_offset, vpt);
 }
 

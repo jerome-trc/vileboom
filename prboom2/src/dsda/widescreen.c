@@ -53,7 +53,8 @@ extern int Check_Endpic_Wide;
 
 extern int D_CheckWide(const char* lump) {
     static int widecheck;
-    static int widescreen = 0;
+    static int widescreen;
+    widescreen = 0;
 
     widecheck = W_CheckNumForName(lump);
 

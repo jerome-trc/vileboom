@@ -460,7 +460,8 @@ static int WI_secretLimit(int i)
 static void WI_slamBackground(void)
 {
   char  name[9];  // limited to 8 characters
-  const char* nicename;
+  const char* animate;
+  animate = "INTERPIC";
 
   if (state != StatCount && enterpic)
   {
@@ -473,41 +474,40 @@ static void WI_slamBackground(void)
   else if (gamemode == commercial || wbs->epsd < 0 || (gamemode == retail && wbs->epsd >= 3))
   {
       if (Check_Interpic_Animate)
-          nicename = interpic_start;
+        animate = interpic_start;
       else if (Check_Interpic_Wide)
-          nicename = interpic_wide;
+        strcpy(name, interpic_wide);
       else
-          nicename = "INTERPIC";
-      strcpy(name, nicename);
+        strcpy(name, "INTERPIC");
   }
   else
   {
       if ((gameepisode == 1) && Check_E1map_Animate)
-          nicename = e1map_start;
+        animate = e1map_start;
       else if ((gameepisode == 1) && Check_E1map_Wide)
-          nicename = e1map_wide;
+        strcpy(name, e1map_wide);
       else if ((gameepisode == 2) && Check_E2map_Animate)
-          nicename = e2map_start;
+        animate = e2map_start;
       else if ((gameepisode == 2) && Check_E2map_Wide)
-          nicename = e2map_wide;
+        strcpy(name, e2map_wide);
       else if ((gameepisode == 3) && Check_E3map_Animate)
-          nicename = e3map_start;
+        animate = e3map_start;
       else if ((gameepisode == 3) && Check_E3map_Wide)
-          nicename = e3map_wide;
+        strcpy(name, e3map_wide);
       else
-          snprintf(name, sizeof(name), "WIMAP%d", wbs->epsd);
+        snprintf(name, sizeof(name), "WIMAP%d", wbs->epsd);
   }
 
   // e6y: wide-res
   V_ClearBorder();
 
-  if (nicename == interpic_start)
+  if (animate == interpic_start)
       D_DrawAnimate(interpic_start, interpic_end);
-  else if (nicename == e1map_start)
+  else if (animate == e1map_start)
       D_DrawAnimate(e1map_start, e1map_end);
-  else if (nicename == e2map_start)
+  else if (animate == e2map_start)
       D_DrawAnimate(e2map_start, e2map_end);
-  else if (nicename == e3map_start)
+  else if (animate == e3map_start)
       D_DrawAnimate(e3map_start, e3map_end);
   else
       V_DrawNamePatch(0, 0, FB, name, CR_DEFAULT, VPT_STRETCH);   // background

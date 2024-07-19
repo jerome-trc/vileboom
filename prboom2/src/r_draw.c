@@ -516,15 +516,15 @@ void R_InitBuffer(int width, int height)
   drawvars.pitch = screens[0].pitch;
 
   if (!tallscreen)
-      fuzzcellsize = (SCREENHEIGHT + 100) / 200;
+    fuzzcellsize = (SCREENHEIGHT + 100) / 200;
   else
-      fuzzcellsize = (SCREENWIDTH + 160) / 320;
+    fuzzcellsize = (SCREENWIDTH + 160) / 320;
 
-      if (!fuzzintensitytables)
-      {
-          R_InitFuzzIntensityTables();
-          I_AtExit(R_FreeFuzzIntensityTables, true, "R_FreeFuzzIntensityTables", exit_priority_normal);
-      }
+  if (!fuzzintensitytables)
+  {
+    R_InitFuzzIntensityTables();
+    I_AtExit(R_FreeFuzzIntensityTables, true, "R_FreeFuzzIntensityTables", exit_priority_normal);
+  }
 }
 
 //

@@ -3840,18 +3840,11 @@ void M_InitExtendedHelp(void)
 {
   int index;
   char namebfr[] = { "HELPnn" };
-  char wsnamebfr[] = { "HELPnnWS" };
-  char snamebfr[] = { "S_HELPnn" };
-  char enamebfr[] = { "E_HELPnn" };
 
   extended_help_count = 0;
   for (index = 1 ; index < 100 ; index++) {
       namebfr[4] = index/10 + '0';
       namebfr[5] = index%10 + '0';
-      wsnamebfr[4] = index/10 + '0';
-      wsnamebfr[5] = index%10 + '0';
-      snamebfr[6] = index/10 + '0';
-      enamebfr[7] = index%10 + '0';
     if ((!W_LumpNameExists(namebfr))) {
         if (extended_help_count) {
             /* The Extended Help menu is accessed using the
@@ -3897,13 +3890,15 @@ void M_DrawExtHelp(void)
   char namebfr[10] = { "HELPnn" }; // CPhipps - make it local & writable
   namebfr[4] = extended_help_index / 10 + '0';
   namebfr[5] = extended_help_index % 10 + '0';
+
   char wsnamebfr[10] = { "HELPnnWS" };
   wsnamebfr[4] = extended_help_index / 10 + '0';
   wsnamebfr[5] = extended_help_index % 10 + '0';
+
   char snamebfr[10] = { "S_HELPnn" };
+  char enamebfr[10] = { "E_HELPnn" };
   snamebfr[6] = extended_help_index / 10 + '0';
   snamebfr[7] = extended_help_index % 10 + '0';
-  char enamebfr[10] = { "E_HELPnn" };
   enamebfr[6] = extended_help_index / 10 + '0';
   enamebfr[7] = extended_help_index % 10 + '0';
 
@@ -4166,7 +4161,6 @@ static void M_DrawStringCentered(int cx, int cy, int color, const char* ch)
 void M_DrawHelp (void)
 {
   const int helplump = W_CheckNumForName("HELP");
-  char* helplumpname = "HELP";
 
   M_ChangeMenu(NULL, mnact_full);
 
@@ -4178,8 +4172,9 @@ void M_DrawHelp (void)
     else
     {
       if (Check_Help0_Wide)
-          helplumpname = help0_wide;
-      V_DrawNamePatch(0, 0, 0, helplumpname, CR_DEFAULT, VPT_STRETCH);
+        V_DrawNamePatch(0, 0, 0, help0_wide, CR_DEFAULT, VPT_STRETCH);
+      else
+        V_DrawNumPatch(0, 0, 0, helplump, CR_DEFAULT, VPT_STRETCH);
     }
   }
   else
@@ -5869,7 +5864,6 @@ void M_Drawer (void)
     if (max > 0)
     {
         // CPhipps - patch drawing updated
-        int CheckSkull;
         int xSkull = x + SKULLXOFF;
         int ySkull = currentMenu->y - 5 + itemOn * LINEHEIGHT;
         if (Check_Skull_Animate)

@@ -283,6 +283,8 @@ static int veryfirsttime = 1;
 
 // CPhipps - no longer do direct PLAYPAL handling here
 
+dboolean fullmenu;
+
 // used for timing
 static unsigned int st_clock;
 
@@ -343,9 +345,6 @@ static st_number_t w_frags;
 
 // health widget
 static st_percent_t w_health;
-
-// berserk background
-static st_binicon_t	w_berserk;
 
 // weapon ownership widgets
 static st_multicon_t w_arms[6];
@@ -459,22 +458,18 @@ static void ST_refreshBackground(void)
   if (st_statusbaron)
     {
       flags = VPT_ALIGN_BOTTOM;
-      int xStbar = ST_X;
-      int xStarms = ST_ARMSBGX;
-      int yStbar = y;
-      int zStbar = BG;
       if (Check_Stbar_Animate)
-        M_DrawStbarAnimate(xStbar, yStbar, zStbar, stbar_start, stbar_end);
+        M_DrawStbarAnimate(ST_X, y, BG, stbar_start, stbar_end);
       else if (Check_Stbar_Wide)
-        V_DrawNamePatch(xStbar, yStbar, zStbar, stbar_wide, CR_DEFAULT, flags);
+        V_DrawNamePatch(ST_X, y, BG, stbar_wide, CR_DEFAULT, flags);
       else
-        V_DrawNumPatch(xStbar, yStbar, zStbar, stbarbg.lumpnum, CR_DEFAULT, flags);
+        V_DrawNumPatch(ST_X, y, BG, stbarbg.lumpnum, CR_DEFAULT, flags);
       if (!deathmatch)
       {
         if (Check_Starms_Animate)
-          M_DrawStbarAnimate(xStarms, yStbar, zStbar, starms_start, starms_end);
+          M_DrawStbarAnimate(ST_ARMSBGX, y, BG, starms_start, starms_end);
         else
-          V_DrawNumPatch(xStarms, yStbar, zStbar, armsbg.lumpnum, CR_DEFAULT, flags);
+          V_DrawNumPatch(ST_ARMSBGX, y, BG, armsbg.lumpnum, CR_DEFAULT, flags);
       }
 
     // Set armor hud indicators
@@ -498,8 +493,8 @@ static void ST_refreshBackground(void)
     }
 
       // Arsinikk - fullmenu is needed to hide indicators in complex menu screens
-      dboolean fullmenu = (menuactive == mnact_full);
-      if (!fullmenu)
+      dboolean SettingsMenu = !(menuactive == mnact_full);
+      if (SettingsMenu)
       {
           // Arsinikk - display berserk indicator
           if ((plyr->powers[pw_strength]) && (berserk_icon > 0))
@@ -914,31 +909,6 @@ int ST_HealthColor(int health)
     return cr_health_super;
 }
 
-// Arsinikk - This is the magic code that will keep
-// the statusbar background in software up-to-date.
-//
-// I haven't seen any downsides to keeping the software
-// statusbar up-to-date, to be the same as OpenGL.
-// 
-// This fixes a few issues like when status bar
-// numbers are too long and leave artefacts on the
-// background
-// (see https://www.doomworld.com/forum/topic/141819-200-line-christmas-mbf21-community-project-dev-thread/)
-// 
-// Also fixes the new armor and berserk stbar indicators!
-
-void ST_stbarRefresh(void)
-{
-    dboolean statusbaron = R_StatusBarVisible();
-    dboolean fullmenu = (menuactive == mnact_full);
-
-    if ((statusbaron) && !(V_IsOpenGLMode())) {
-        ST_refreshBackground();
-        if (!fullmenu)
-            ST_drawWidgets(true);
-    }
-}
-
 void ST_drawWidgets(dboolean refresh)
 {
   int i;
@@ -1026,10 +996,26 @@ void ST_Drawer(dboolean refresh)
   ST_doPaletteStuff();  // Do red-/gold-shifts from damage/items
 
   // Arsinikk - Refreshes status bar background for software
-  // See ST_stbarRefresh for more info
+  //
+  // Haven't seen any downsides to keeping the software
+  // statusbar up-to-date, to be the same as OpenGL.
+  // 
+  // This fixes a few issues like when status bar
+  // numbers are too long and leave artefacts on the
+  // background
+  //
+  // (see "200 Line Christmas" or the statusbar face
+  // from "Pirate Doom II")
+  // 
+  // Also fixes the new armor and berserk stbar indicators!
   if (!(V_IsOpenGLMode()))
-     ST_stbarRefresh();
-
+  {
+    if ((statusbaron) && !(V_IsOpenGLMode())) {
+        ST_refreshBackground();
+        if (!fullmenu)
+            ST_drawWidgets(true);
+    }
+  }
   if (statusbaron) {
     if (st_firsttime || (V_IsOpenGLMode()))
     {

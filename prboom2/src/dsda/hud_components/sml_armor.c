@@ -28,7 +28,7 @@ static local_component_t* local;
 static void dsda_DrawComponent(void) {
     player_t* player;
     int x, y;
-    char* lump;
+    int lump;
     int armor;
 
     player = &players[displayplayer];
@@ -38,23 +38,23 @@ static void dsda_DrawComponent(void) {
     if (!raven) {
         armor = player->armorpoints[ARMOR_ARMOR];
         if (armor <= 0) {
-            lump = NULL;
+            lump = 0;
         }
         else {
             if (gamemission == chex) {
                 if (player->armortype < 2)
-                    lump = "CHXARMS1";
+                    lump = W_CheckNumForName("CHXARMS1");
                 else
-                    lump = "CHXARMS2";
-                V_DrawNamePatch(x, y+2, FG, lump, CR_DEFAULT, local->component.vpt);
+                    lump = W_CheckNumForName("CHXARMS2");
+                V_DrawNumPatch(x, y+2, FG, lump, CR_DEFAULT, local->component.vpt);
 
             }
             else {
                 if (player->armortype < 2)
-                    lump = "STFARMS3";
+                    lump = W_CheckNumForName("STFARMS3");
                 else
-                    lump = "STFARMS4";
-                V_DrawNamePatch(x, y, FG, lump, CR_DEFAULT, local->component.vpt);
+                    lump = W_CheckNumForName("STFARMS4");
+                V_DrawNumPatch(x, y, FG, lump, CR_DEFAULT, local->component.vpt);
             }
         }
     }

@@ -75,7 +75,8 @@ extern int D_CheckAnimate(const char* lump_s, const char* lump_e)
 {
     static int SCheck;
     static int ECheck;
-    static int Animate = 0;
+    static int Animate;
+    Animate = 0;
 
     SCheck = W_CheckNumForName(lump_s);
     ECheck = W_CheckNumForName(lump_e);

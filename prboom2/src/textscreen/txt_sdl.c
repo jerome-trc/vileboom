@@ -52,12 +52,12 @@ SDL_Window *TXT_SDLWindow;
 static SDL_Surface *screenbuffer;
 static unsigned char *screendata;
 static int key_mapping = 1;
-static SDL_Renderer *renderer;
-static SDL_Texture *texture_upscaled;
+//static SDL_Renderer *renderer;
+//static SDL_Texture *texture_upscaled;
 
 // Dimensions of the screen image in screen coordinates (not pixels); this
 // is the value that was passed to SDL_CreateWindow().
-static int screen_image_w, screen_image_h;
+//static int screen_image_w, screen_image_h;
 
 
 static TxtSDLEventCallbackFunc event_callback;

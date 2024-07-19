@@ -58,6 +58,7 @@ static int dsda_WadCompatibilityLevel(void) {
   // This might be called before all wads are loaded
   if (numwadfiles != last_numwadfiles) {
       int num;
+      int gnum;
 
       last_numwadfiles = numwadfiles;
       num = W_CheckNumForName("COMPLVL");
@@ -68,8 +69,6 @@ static int dsda_WadCompatibilityLevel(void) {
 
           length = W_LumpLength(num);
           data = W_LumpByNum(num);
-
-          int gnum;
           gnum = W_CheckNumForName("GAMEVERS");
 
           if (length == 7 && !strncasecmp("vanilla", data, 7) && gnum != LUMP_NOT_FOUND) {
