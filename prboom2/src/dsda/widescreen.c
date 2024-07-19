@@ -35,21 +35,21 @@ const char* bunny1_wide = "PFUB1_WS";
 const char* bunny2_wide = "PFUB2_WS";
 const char* endpic_wide = "ENDPI_WS";
 
-extern int Check_Stbar_Wide;
-extern int Check_Titlepic_Wide;
-extern int Check_Interpic_Wide;
-extern int Check_Credit_Wide;
-extern int Check_Help0_Wide;
-extern int Check_Help1_Wide;
-extern int Check_Help2_Wide;
-extern int Check_Bossback_Wide;
-extern int Check_E1map_Wide;
-extern int Check_E2map_Wide;
-extern int Check_E3map_Wide;
-extern int Check_Victory_Wide;
-extern int Check_Bunny1_Wide;
-extern int Check_Bunny2_Wide;
-extern int Check_Endpic_Wide;
+int Check_Stbar_Wide;
+int Check_Titlepic_Wide;
+int Check_Interpic_Wide;
+int Check_Credit_Wide;
+int Check_Help0_Wide;
+int Check_Help1_Wide;
+int Check_Help2_Wide;
+int Check_Bossback_Wide;
+int Check_E1map_Wide;
+int Check_E2map_Wide;
+int Check_E3map_Wide;
+int Check_Victory_Wide;
+int Check_Bunny1_Wide;
+int Check_Bunny2_Wide;
+int Check_Endpic_Wide;
 
 extern int D_CheckWide(const char* lump) {
     static int widecheck;

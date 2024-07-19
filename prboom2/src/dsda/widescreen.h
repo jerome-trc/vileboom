@@ -18,39 +18,39 @@
 #ifndef __DSDA_WIDESCREEN__
 #define __DSDA_WIDESCREEN__
 
-const char* stbar_wide;
-const char* titlepic_wide;
-const char* interpic_wide;
-const char* credit_wide;
-const char* help0_wide;
-const char* help1_wide;
-const char* help2_wide;
-const char* bossback_wide;
-const char* e1map_wide;
-const char* e2map_wide;
-const char* e3map_wide;
-const char* victory_wide;
-const char* bunny1_wide;
-const char* bunny2_wide;
-const char* endpic_wide;
+extern const char* stbar_wide;
+extern const char* titlepic_wide;
+extern const char* interpic_wide;
+extern const char* credit_wide;
+extern const char* help0_wide;
+extern const char* help1_wide;
+extern const char* help2_wide;
+extern const char* bossback_wide;
+extern const char* e1map_wide;
+extern const char* e2map_wide;
+extern const char* e3map_wide;
+extern const char* victory_wide;
+extern const char* bunny1_wide;
+extern const char* bunny2_wide;
+extern const char* endpic_wide;
 
 int D_CheckWide(const char* lump);
 
 void dsda_WideExistCheck(void);
-int Check_Stbar_Wide;
-int Check_Titlepic_Wide;
-int Check_Interpic_Wide;
-int Check_Credit_Wide;
-int Check_Help0_Wide;
-int Check_Help1_Wide;
-int Check_Help2_Wide;
-int Check_Bossback_Wide;
-int Check_E1map_Wide;
-int Check_E2map_Wide;
-int Check_E3map_Wide;
-int Check_Victory_Wide;
-int Check_Bunny1_Wide;
-int Check_Bunny2_Wide;
-int Check_Endpic_Wide;
+extern int Check_Stbar_Wide;
+extern int Check_Titlepic_Wide;
+extern int Check_Interpic_Wide;
+extern int Check_Credit_Wide;
+extern int Check_Help0_Wide;
+extern int Check_Help1_Wide;
+extern int Check_Help2_Wide;
+extern int Check_Bossback_Wide;
+extern int Check_E1map_Wide;
+extern int Check_E2map_Wide;
+extern int Check_E3map_Wide;
+extern int Check_Victory_Wide;
+extern int Check_Bunny1_Wide;
+extern int Check_Bunny2_Wide;
+extern int Check_Endpic_Wide;
 
 #endif

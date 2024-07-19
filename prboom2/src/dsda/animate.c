@@ -54,22 +54,22 @@ const char* victory_end = "E_VICTOR";
 const char* endpic_start = "S_ENDPIC";
 const char* endpic_end = "E_ENDPIC";
 
-extern int Check_Doom_Animate;
-extern int Check_Skull_Animate;
-extern int Check_Stbar_Animate;
-extern int Check_Starms_Animate;
-extern int Check_Titlepic_Animate;
-extern int Check_Interpic_Animate;
-extern int Check_Credit_Animate;
-extern int Check_Help0_Animate;
-extern int Check_Help1_Animate;
-extern int Check_Help2_Animate;
-extern int Check_Bossback_Animate;
-extern int Check_E1map_Animate;
-extern int Check_E2map_Animate;
-extern int Check_E3map_Animate;
-extern int Check_Victory_Animate;
-extern int Check_Endpic_Animate;
+int Check_Doom_Animate;
+int Check_Skull_Animate;
+int Check_Stbar_Animate;
+int Check_Starms_Animate;
+int Check_Titlepic_Animate;
+int Check_Interpic_Animate;
+int Check_Credit_Animate;
+int Check_Help0_Animate;
+int Check_Help1_Animate;
+int Check_Help2_Animate;
+int Check_Bossback_Animate;
+int Check_E1map_Animate;
+int Check_E2map_Animate;
+int Check_E3map_Animate;
+int Check_Victory_Animate;
+int Check_Endpic_Animate;
 
 extern int D_CheckAnimate(const char* lump_s, const char* lump_e)
 {
