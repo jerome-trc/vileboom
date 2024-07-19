@@ -39,6 +39,8 @@
 
 #define MAXCOORD (32767.0f / MAP_COEFF)
 
+#define SMALLDELTA 0.001f
+
 typedef enum
 {
   GLDT_UNREGISTERED,

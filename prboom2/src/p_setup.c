@@ -3818,6 +3818,16 @@ void P_SetupLevel(int episode, int map, int playermask, int skill)
     players[i].maxkilldiscount = 0;//e6y
   }
 
+  // Make sure all sounds are stopped before Z_FreeTag.
+  S_Start();
+
+  Z_FreeLevel();
+
+  P_InitThinkers();
+
+  // if working with a devlopment map, reload it
+  //    W_Reload ();     killough 1/31/98: W_Reload obsolete
+
   // find map name
   snprintf(lumpname, sizeof(lumpname), "%s", dsda_MapLumpName(episode, map));
   lumpnum = W_GetNumForName(lumpname);
@@ -3827,7 +3837,7 @@ void P_SetupLevel(int episode, int map, int playermask, int skill)
   {
     S_ParseMusInfo(lumpname);
   }
-
+  
   // Make sure all sounds are stopped before Z_FreeTag.
   S_Start();
 
@@ -4067,6 +4077,11 @@ void P_SetupLevel(int episode, int map, int playermask, int skill)
   // killough 3/26/98: Spawn icon landings:
   if (gamemode == commercial && !hexen)
     P_SpawnBrainTargets();
+
+  if (gamemode != shareware)
+  {
+    S_ParseMusInfo(lumpname);
+  }
 
   // clear special respawning que
   iquehead = iquetail = 0;
