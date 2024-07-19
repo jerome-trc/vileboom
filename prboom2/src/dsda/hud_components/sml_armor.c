@@ -19,55 +19,44 @@
 
 #include "sml_armor.h"
 
-#define PATCH_DELTA_X 14
-#define PATCH_DELTA 10
-#define PATCH_SPACING 2
-#define PATCH_VERTICAL_SPACING 2
-
 typedef struct {
     dsda_patch_component_t component;
 } local_component_t;
 
 static local_component_t* local;
 
-static const char* dsda_ArmorName(player_t* player) {
-    int armor;
-
-    armor = player->armorpoints[ARMOR_ARMOR];
-
-    if (player->armortype >= 2)
-        if (gamemission == chex) { return "CHXARMS2"; }
-        else { return "STFARMS4"; }
-    else if (player->armortype == 1)
-        if (gamemission == chex) { return "CHXARMS1"; }
-        else { return "STFARMS3"; }
-    else
-        return NULL;
-}
-
-void drawArmorIcon(player_t* player, int* x, int* y, const char* (*armor)(player_t*)) {
-    const char* name;
-
-    name = armor(player);
-
-    if (name)
-        V_DrawNamePatch(*x, *y, FG, name, CR_DEFAULT, local->component.vpt);
-}
-
 static void dsda_DrawComponent(void) {
     player_t* player;
     int x, y;
+    char* lump;
+    int armor;
 
     player = &players[displayplayer];
-
     x = local->component.x;
     y = local->component.y;
-    if (!raven) 
-    {
-        if (gamemission == chex)
-            drawArmorIcon(player, &x, &y, dsda_ArmorName);
-        else
-            drawArmorIcon(player, &x, &y+2, dsda_ArmorName);
+
+    if (!raven) {
+        armor = player->armorpoints[ARMOR_ARMOR];
+        if (armor <= 0) {
+            lump = NULL;
+        }
+        else {
+            if (gamemission == chex) {
+                if (player->armortype < 2)
+                    lump = "CHXARMS1";
+                else
+                    lump = "CHXARMS2";
+                V_DrawNamePatch(x, y+2, FG, lump, CR_DEFAULT, local->component.vpt);
+
+            }
+            else {
+                if (player->armortype < 2)
+                    lump = "STFARMS3";
+                else
+                    lump = "STFARMS4";
+                V_DrawNamePatch(x, y, FG, lump, CR_DEFAULT, local->component.vpt);
+            }
+        }
     }
 }
 

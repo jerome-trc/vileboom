@@ -34,9 +34,9 @@ const char* bunny1_wide;
 const char* bunny2_wide;
 const char* endpic_wide;
 
-int D_CheckWide(const char *lump);
+int D_CheckWide(const char* lump);
 
-int dsda_WideExistCheck(void);
+void dsda_WideExistCheck(void);
 int Check_Stbar_Wide;
 int Check_Titlepic_Wide;
 int Check_Interpic_Wide;

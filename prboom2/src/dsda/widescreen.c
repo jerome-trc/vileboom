@@ -51,25 +51,18 @@ extern int Check_Bunny1_Wide;
 extern int Check_Bunny2_Wide;
 extern int Check_Endpic_Wide;
 
-extern int D_CheckWide(const char *lump) {
-    static int ws = 0;
-    static int last_numwadfiles = -1;
+extern int D_CheckWide(const char* lump) {
+    static int widecheck;
+    static int widescreen = 0;
 
-    // This might be called before all wads are loaded
-    if (numwadfiles != last_numwadfiles) {
-        int num;
+    widecheck = W_CheckNumForName(lump);
 
-        last_numwadfiles = numwadfiles;
-        num = W_CheckNumForName(lump);
-
-        if (num != LUMP_NOT_FOUND) {
-            ws = 1;
-        }
-    }
-    return ws;
+    if (widecheck != LUMP_NOT_FOUND)
+        widescreen = 1;
+    return widescreen;
 }
 
-extern int dsda_WideExistCheck(void) {
+extern void dsda_WideExistCheck(void) {
   Check_Stbar_Wide = D_CheckWide(stbar_wide);
   Check_Titlepic_Wide = D_CheckWide(titlepic_wide);
   Check_Interpic_Wide = D_CheckWide(interpic_wide);

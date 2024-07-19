@@ -69,11 +69,11 @@ int Check_Victory_Animate;
 int Check_Endpic_Animate;
 
 
-int D_CheckAnimate(const char *lump_s, const char *lump_e);
-void D_DrawAnimate(const char *lump_s, const char *lump_e);
+int D_CheckAnimate(const char* lump_s, const char* lump_e);
+void D_DrawAnimate(const char* lump_s, const char* lump_e);
 //void D_DrawAnimateBunny(const char *lump_x, const char *lump_y, const char *lump_s, const char *lump_e);
-void M_DrawMenuAnimate(const char *lump_x, const char *lump_y, const char *lump_s, const char *lump_e);
-void M_DrawStbarAnimate(const char *lump_x, const char *lump_y, const char *lump_z, const char *lump_s, const char *lump_e);
-int dsda_AnimateExistCheck(void);
+void M_DrawMenuAnimate(const int lump_x, const int lump_y, const char* lump_s, const char* lump_e);
+void M_DrawStbarAnimate(const int lump_x, const int lump_y, const int lump_z, const char* lump_s, const char* lump_e);
+void dsda_AnimateExistCheck(void);
 
 #endif

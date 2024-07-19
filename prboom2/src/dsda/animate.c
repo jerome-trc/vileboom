@@ -71,12 +71,10 @@ extern int Check_E3map_Animate;
 extern int Check_Victory_Animate;
 extern int Check_Endpic_Animate;
 
-extern int D_CheckAnimate(const char *lump_s, const char *lump_e)
+extern int D_CheckAnimate(const char* lump_s, const char* lump_e)
 {
-    static int SCheck = 0;
-    static int ECheck = 0;
-    static int SLump = 0;
-    static int ELump = 0;
+    static int SCheck;
+    static int ECheck;
     static int Animate = 0;
 
     SCheck = W_CheckNumForName(lump_s);
@@ -88,12 +86,12 @@ extern int D_CheckAnimate(const char *lump_s, const char *lump_e)
     return Animate;
 }
 
-extern void D_DrawAnimate(const char *lump_s, const char *lump_e)
+extern void D_DrawAnimate(const char* lump_s, const char* lump_e)
 {
-    int frameDiff = 0;
-    int frame = 0;
-    static int SLump = 0;
-    static int ELump = 0;
+    int frameDiff;
+    int frame;
+    static int SLump;
+    static int ELump;
     SLump = W_GetNumForName(lump_s);
     ELump = W_GetNumForName(lump_e);
     frameDiff = ELump - SLump;
@@ -116,12 +114,12 @@ extern void D_DrawAnimate(const char *lump_s, const char *lump_e)
     V_DrawNumPatch(lump_x, lump_y, 0, SLump + frame, CR_DEFAULT, VPT_STRETCH);
 }*/
 
-extern void M_DrawMenuAnimate(const char *lump_x, const char *lump_y, const char *lump_s, const char *lump_e)
+extern void M_DrawMenuAnimate(const int lump_x, const int lump_y, const char* lump_s, const char* lump_e)
 {
-    int frameDiff = 0;
-    int frame = 0;
-    static int SLump = 0;
-    static int ELump = 0;
+    int frameDiff;
+    int frame;
+    static int SLump;
+    static int ELump;
     SLump = W_GetNumForName(lump_s);
     ELump = W_GetNumForName(lump_e);
     frameDiff = ELump - SLump;
@@ -129,12 +127,12 @@ extern void M_DrawMenuAnimate(const char *lump_x, const char *lump_y, const char
     V_DrawNumPatch(lump_x, lump_y, 0, SLump + frame, CR_DEFAULT, VPT_STRETCH);
 }
 
-extern void M_DrawStbarAnimate(const char *lump_x, const char *lump_y, const char *lump_z, const char *lump_s, const char *lump_e)
+extern void M_DrawStbarAnimate(const int lump_x, const int lump_y, const int lump_z, const char* lump_s, const char* lump_e)
 {
-    int frameDiff = 0;
-    int frame = 0;
-    static int SLump = 0;
-    static int ELump = 0;
+    int frameDiff;
+    int frame;
+    static int SLump;
+    static int ELump;
     SLump = W_GetNumForName(lump_s);
     ELump = W_GetNumForName(lump_e);
     frameDiff = ELump - SLump;
@@ -142,7 +140,7 @@ extern void M_DrawStbarAnimate(const char *lump_x, const char *lump_y, const cha
     V_DrawNumPatch(lump_x, lump_y, lump_z, SLump + frame, CR_DEFAULT, VPT_ALIGN_BOTTOM);
 }
 
-extern int dsda_AnimateExistCheck(void) {
+extern void dsda_AnimateExistCheck(void) {
   Check_Doom_Animate = D_CheckAnimate(mdoom_start,mdoom_end);
   Check_Skull_Animate = D_CheckAnimate(mskull_start,mskull_end);
   Check_Stbar_Animate = D_CheckAnimate(stbar_start,stbar_end);
