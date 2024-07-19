@@ -18,23 +18,23 @@
 #ifndef __DSDA_WIDESCREEN__
 #define __DSDA_WIDESCREEN__
 
-char* stbar_wide;
-char* titlepic_wide;
-char* interpic_wide;
-char* credit_wide;
-char* help0_wide;
-char* help1_wide;
-char* help2_wide;
-char* bossback_wide;
-char* e1map_wide;
-char* e2map_wide;
-char* e3map_wide;
-char* victory_wide;
-char* bunny1_wide;
-char* bunny2_wide;
-char* endpic_wide;
+const char* stbar_wide;
+const char* titlepic_wide;
+const char* interpic_wide;
+const char* credit_wide;
+const char* help0_wide;
+const char* help1_wide;
+const char* help2_wide;
+const char* bossback_wide;
+const char* e1map_wide;
+const char* e2map_wide;
+const char* e3map_wide;
+const char* victory_wide;
+const char* bunny1_wide;
+const char* bunny2_wide;
+const char* endpic_wide;
 
-int D_CheckWide(const char* lump);
+int D_CheckWide(const char *lump);
 
 int dsda_WideExistCheck(void);
 int Check_Stbar_Wide;

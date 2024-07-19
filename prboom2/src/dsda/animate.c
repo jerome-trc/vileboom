@@ -21,38 +21,38 @@
 #include "animate.h"
 #include "v_video.h"
 
-char* mskull_start = "S_SKULL";
-char* mskull_end = "E_SKULL";
-char* mdoom_start = "S_DOOM";
-char* mdoom_end = "E_DOOM";
-char* stbar_start = "S_STBAR";
-char* stbar_end = "E_STBAR";
-char* starms_start = "S_STARMS";
-char* starms_end = "E_STARMS";
-char* titlepic_start = "S_TITLEP";
-char* titlepic_end = "E_TITLEP";
-char* interpic_start = "S_INTERP";
-char* interpic_end = "E_INTERP";
-char* credit_start = "S_CREDIT";
-char* credit_end = "E_CREDIT";
-char* help0_start = "S_HELP";
-char* help0_end = "E_HELP";
-char* help1_start = "S_HELP1";
-char* help1_end = "E_HELP1";
-char* help2_start = "S_HELP2";
-char* help2_end = "E_HELP2";
-char* bossback_start = "S_BOSSBA";
-char* bossback_end = "E_BOSSBA";
-char* e1map_start = "S_WIMAP0";
-char* e1map_end = "E_WIMAP0";
-char* e2map_start = "S_WIMAP1";
-char* e2map_end = "E_WIMAP1";
-char* e3map_start = "S_WIMAP2";
-char* e3map_end = "E_WIMAP2";
-char* victory_start = "S_VICTOR";
-char* victory_end = "E_VICTOR";
-char* endpic_start = "S_ENDPIC";
-char* endpic_end = "E_ENDPIC";
+const char* mskull_start = "S_SKULL";
+const char* mskull_end = "E_SKULL";
+const char* mdoom_start = "S_DOOM";
+const char* mdoom_end = "E_DOOM";
+const char* stbar_start = "S_STBAR";
+const char* stbar_end = "E_STBAR";
+const char* starms_start = "S_STARMS";
+const char* starms_end = "E_STARMS";
+const char* titlepic_start = "S_TITLEP";
+const char* titlepic_end = "E_TITLEP";
+const char* interpic_start = "S_INTERP";
+const char* interpic_end = "E_INTERP";
+const char* credit_start = "S_CREDIT";
+const char* credit_end = "E_CREDIT";
+const char* help0_start = "S_HELP";
+const char* help0_end = "E_HELP";
+const char* help1_start = "S_HELP1";
+const char* help1_end = "E_HELP1";
+const char* help2_start = "S_HELP2";
+const char* help2_end = "E_HELP2";
+const char* bossback_start = "S_BOSSBA";
+const char* bossback_end = "E_BOSSBA";
+const char* e1map_start = "S_WIMAP0";
+const char* e1map_end = "E_WIMAP0";
+const char* e2map_start = "S_WIMAP1";
+const char* e2map_end = "E_WIMAP1";
+const char* e3map_start = "S_WIMAP2";
+const char* e3map_end = "E_WIMAP2";
+const char* victory_start = "S_VICTOR";
+const char* victory_end = "E_VICTOR";
+const char* endpic_start = "S_ENDPIC";
+const char* endpic_end = "E_ENDPIC";
 
 extern int Check_Doom_Animate;
 extern int Check_Skull_Animate;
@@ -71,28 +71,29 @@ extern int Check_E3map_Animate;
 extern int Check_Victory_Animate;
 extern int Check_Endpic_Animate;
 
-extern int D_CheckAnimate(const char* lump_s, const char* lump_e)
+extern int D_CheckAnimate(const char *lump_s, const char *lump_e)
 {
-    static int SCheck;
-    static int ECheck;
-    static int SLump;
-    static int ELump;
-    static int Animate;
-    Animate = 0;
+    static int SCheck = 0;
+    static int ECheck = 0;
+    static int SLump = 0;
+    static int ELump = 0;
+    static int Animate = 0;
+
     SCheck = W_CheckNumForName(lump_s);
     ECheck = W_CheckNumForName(lump_e);
+
     if ((SCheck != LUMP_NOT_FOUND) && (ECheck != LUMP_NOT_FOUND))
         if ((W_GetNumForName(lump_s)) <= (W_GetNumForName(lump_e)))
             Animate = 1;
     return Animate;
 }
 
-extern void D_DrawAnimate(const char* lump_s, const char* lump_e)
+extern void D_DrawAnimate(const char *lump_s, const char *lump_e)
 {
-    int frameDiff;
-    int frame;
-    static int SLump;
-    static int ELump;
+    int frameDiff = 0;
+    int frame = 0;
+    static int SLump = 0;
+    static int ELump = 0;
     SLump = W_GetNumForName(lump_s);
     ELump = W_GetNumForName(lump_e);
     frameDiff = ELump - SLump;
@@ -102,12 +103,12 @@ extern void D_DrawAnimate(const char* lump_s, const char* lump_e)
 
 // Arsinikk - Currently disabled due to Bunny sequence not working
 //
-/* extern void D_DrawAnimateBunny(const char* lump_x, const char* lump_y, const char* lump_s, const char* lump_e)
+/* extern void D_DrawAnimateBunny(const char *lump_x, const char *lump_y, const char *lump_s, const char *lump_e)
 {
-    int frameDiff;
-    int frame;
-    static int SLump;
-    static int ELump;
+    int frameDiff = 0;
+    int frame = 0;
+    static int SLump = 0;
+    static int ELump = 0;
     SLump = W_GetNumForName(lump_s);
     ELump = W_GetNumForName(lump_e);
     frameDiff = ELump - SLump;
@@ -115,12 +116,12 @@ extern void D_DrawAnimate(const char* lump_s, const char* lump_e)
     V_DrawNumPatch(lump_x, lump_y, 0, SLump + frame, CR_DEFAULT, VPT_STRETCH);
 }*/
 
-extern void M_DrawMenuAnimate(const char* lump_x, const char* lump_y, const char* lump_s, const char* lump_e)
+extern void M_DrawMenuAnimate(const char *lump_x, const char *lump_y, const char *lump_s, const char *lump_e)
 {
-    int frameDiff;
-    int frame;
-    static int SLump;
-    static int ELump;
+    int frameDiff = 0;
+    int frame = 0;
+    static int SLump = 0;
+    static int ELump = 0;
     SLump = W_GetNumForName(lump_s);
     ELump = W_GetNumForName(lump_e);
     frameDiff = ELump - SLump;
@@ -128,12 +129,12 @@ extern void M_DrawMenuAnimate(const char* lump_x, const char* lump_y, const char
     V_DrawNumPatch(lump_x, lump_y, 0, SLump + frame, CR_DEFAULT, VPT_STRETCH);
 }
 
-extern void M_DrawStbarAnimate(const char* lump_x, const char* lump_y, const char* lump_z, const char* lump_s, const char* lump_e)
+extern void M_DrawStbarAnimate(const char *lump_x, const char *lump_y, const char *lump_z, const char *lump_s, const char *lump_e)
 {
-    int frameDiff;
-    int frame;
-    static int SLump;
-    static int ELump;
+    int frameDiff = 0;
+    int frame = 0;
+    static int SLump = 0;
+    static int ELump = 0;
     SLump = W_GetNumForName(lump_s);
     ELump = W_GetNumForName(lump_e);
     frameDiff = ELump - SLump;

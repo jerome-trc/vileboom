@@ -19,21 +19,21 @@
 
 #include "widescreen.h"
 
-char* stbar_wide = "STBAR_WS";
-char* titlepic_wide = "TITLE_WS";
-char* interpic_wide = "INTER_WS";
-char* credit_wide = "CREDI_WS";
-char* help0_wide = "HELP_WS";
-char* help1_wide = "HELP1_WS";
-char* help2_wide = "HELP2_WS";
-char* bossback_wide = "BOSSB_WS";
-char* e1map_wide = "WIMAP0WS";
-char* e2map_wide = "WIMAP1WS";
-char* e3map_wide = "WIMAP2WS";
-char* victory_wide = "VICTO_WS";
-char* bunny1_wide = "PFUB1_WS";
-char* bunny2_wide = "PFUB2_WS";
-char* endpic_wide = "ENDPI_WS";
+const char* stbar_wide = "STBAR_WS";
+const char* titlepic_wide = "TITLE_WS";
+const char* interpic_wide = "INTER_WS";
+const char* credit_wide = "CREDI_WS";
+const char* help0_wide = "HELP_WS";
+const char* help1_wide = "HELP1_WS";
+const char* help2_wide = "HELP2_WS";
+const char* bossback_wide = "BOSSB_WS";
+const char* e1map_wide = "WIMAP0WS";
+const char* e2map_wide = "WIMAP1WS";
+const char* e3map_wide = "WIMAP2WS";
+const char* victory_wide = "VICTO_WS";
+const char* bunny1_wide = "PFUB1_WS";
+const char* bunny2_wide = "PFUB2_WS";
+const char* endpic_wide = "ENDPI_WS";
 
 extern int Check_Stbar_Wide;
 extern int Check_Titlepic_Wide;
@@ -51,7 +51,7 @@ extern int Check_Bunny1_Wide;
 extern int Check_Bunny2_Wide;
 extern int Check_Endpic_Wide;
 
-extern int D_CheckWide(const char* lump) {
+extern int D_CheckWide(const char *lump) {
     static int ws = 0;
     static int last_numwadfiles = -1;
 
