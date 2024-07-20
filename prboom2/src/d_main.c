@@ -996,7 +996,7 @@ void CheckIWAD(const char *iwadname,GameMode_t *gmode,dboolean *hassec)
                 ++sc;
           }
           // Arsinikk - Unity WAD Check!
-          // (Check if any iwad lump (TITLEPIC) is 88.62kb)
+          // (Check if any iwad lump is 88.62kb)
           if ((fileinfo[length].size == 90746))
             unityedition++;
           if (!strncmp(fileinfo[length].name,"DMENUPIC",8) && !unityedition)
@@ -1069,6 +1069,27 @@ void AddIWAD(const char *iwad)
     haswolflevels = false;
   }
 
+  if (i >= 9 && !strnicmp(iwad + i - 9, "hexen.wad", 9))
+  {
+    if (!dsda_Flag(dsda_arg_hexen))
+      dsda_UpdateFlag(dsda_arg_hexen, true);
+
+    gamemode = commercial;
+    haswolflevels = false;
+  }
+
+  if (i >= 11 && !strnicmp(iwad + i - 11, "rekkrsa.wad", 11))
+  {
+    if (!dsda_Flag(dsda_arg_rekkr))
+      dsda_UpdateFlag(dsda_arg_rekkr, true);
+  }
+
+  if (i >= 8 && !strnicmp(iwad + i - 8, "chex.wad", 8))
+  {
+    if (!dsda_Flag(dsda_arg_chex))
+      dsda_UpdateFlag(dsda_arg_chex, true);
+  }
+
   switch(gamemode)
   {
     case retail:
@@ -1076,9 +1097,9 @@ void AddIWAD(const char *iwad)
     case shareware:
       gamemission = doom;
       if (i>=11 && !strnicmp(iwad+i-11,"rekkrsa.wad",11))
-          gamemission = rekkr;
+        gamemission = pack_rekkr;
       else if (i>=8 && !strnicmp(iwad+i-8,"chex.wad",8))
-        gamemission = chex;
+        gamemission = pack_chex;
       break;
     case commercial:
       gamemission = doom2;
@@ -1138,6 +1159,10 @@ static char *FindIWADFile(void)
       return I_FindWad("heretic.wad");
     else if (dsda_Flag(dsda_arg_hexen) || CheckExeSuffix("-hexen"))
       return I_FindWad("hexen.wad");
+    else if (dsda_Flag(dsda_arg_rekkr) || CheckExeSuffix("-rekkr"))
+      return I_FindWad("rekkrsa.wad");
+    else if (dsda_Flag(dsda_arg_chex) || CheckExeSuffix("-chex"))
+      return I_FindWad("chex.wad");
 
     for (i=0; !iwad && i<nstandard_iwads; i++)
       iwad = I_FindWad(standard_iwads[i]);
@@ -1465,6 +1490,8 @@ static const char *D_AutoLoadGameBase()
 {
   return hexen ? "hexen-all" :
          heretic ? "heretic-all" :
+         rekkr ? "rekkr-all" :
+         chex ? "chex-all" :
          "doom-all";
 }
 
@@ -1628,6 +1655,14 @@ static void EvaluateDoomVerStr(void)
   {
     doomverstr = "Hexen";
   }
+  else if (rekkr)
+  {
+    doomverstr = "REKKR";
+  }
+  else if (chex)
+  {
+    doomverstr = "Chex(R) Quest";
+  }
   else
   {
     switch ( gamemode )
@@ -1635,10 +1670,10 @@ static void EvaluateDoomVerStr(void)
       case retail:
         switch (gamemission)
         {
-          case chex:
+          case pack_chex:
             doomverstr = "Chex(R) Quest";
             break;
-          case rekkr:
+          case pack_rekkr:
             doomverstr = "REKKR";
             break;
           default:
@@ -1947,7 +1982,7 @@ static void D_DoomMainSetup(void)
         ProcessDehFile(NULL, D_dehout(), lump);
       }
     }
-    if (gamemission == chex)
+    if (chex)
     {
       int lump = W_CheckNumForName2("CHEXDEH", ns_prboom);
       if (lump != LUMP_NOT_FOUND)

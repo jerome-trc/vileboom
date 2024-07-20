@@ -283,8 +283,6 @@ static int veryfirsttime = 1;
 
 // CPhipps - no longer do direct PLAYPAL handling here
 
-dboolean fullmenu;
-
 // used for timing
 static unsigned int st_clock;
 
@@ -474,7 +472,7 @@ static void ST_refreshBackground(void)
       }
 
     // Set armor hud indicators
-    if (gamemission == chex)
+    if (chex)
     {
         R_SetPatchNum(&armor1icon, "CHXARMS1");
         R_SetPatchNum(&armor2icon, "CHXARMS2");
@@ -494,12 +492,12 @@ static void ST_refreshBackground(void)
     }
 
       // Arsinikk - fullmenu is needed to hide indicators in complex menu screens
-      if (fullmenu)
+      if (!fullmenu)
       {
           // Arsinikk - display berserk indicator
           if ((plyr->powers[pw_strength]) && (berserk_icon > 0))
           {
-              if (gamemission == chex)
+              if (chex)
                   V_DrawNumPatch(ST_BERSERKCHEXX, ST_BERSERKCHEXY, BG, berserk.lumpnum, CR_DEFAULT, flags);
               else
                   V_DrawNumPatch(ST_BERSERKX, ST_BERSERKY, BG, berserk.lumpnum, CR_DEFAULT, flags);
@@ -508,14 +506,14 @@ static void ST_refreshBackground(void)
           // (changes based on lack of armor or type)
           if ((plyr->armortype >= 2) && (armor_icon > 0))
           {
-              if (gamemission == chex)
+              if (chex)
                   V_DrawNumPatch(ST_ARMORCHEXX, ST_ARMORCHEXY, BG, armor2icon.lumpnum, CR_DEFAULT, flags);
               else
                   V_DrawNumPatch(ST_ARMORICONX, ST_ARMORICONY, BG, armor2icon.lumpnum, CR_DEFAULT, flags);
           }
           else if ((plyr->armortype == 1) && (armor_icon > 0))
           {
-              if (gamemission == chex)
+              if (chex)
                   V_DrawNumPatch(ST_ARMORCHEXX, ST_ARMORCHEXY, BG, armor1icon.lumpnum, CR_DEFAULT, flags);
               else
                   V_DrawNumPatch(ST_ARMORICONX, ST_ARMORICONY, BG, armor1icon.lumpnum, CR_DEFAULT, flags);
@@ -846,7 +844,7 @@ static void ST_doPaletteStuff(void)
       // radiation suit palette is used to tint the screen green,
       // as though the player is being covered in goo by an
       // attacking flemoid.
-      if (gamemission == chex)
+      if (chex)
       {
         palette = RADIATIONPAL;
       }
@@ -909,7 +907,7 @@ int ST_HealthColor(int health)
     return cr_health_super;
 }
 
-void ST_drawWidgets(dboolean refresh)
+static void ST_drawWidgets(dboolean refresh)
 {
   int i;
 
@@ -1008,29 +1006,10 @@ void ST_Drawer(dboolean refresh)
   // from "Pirate Doom II")
   // 
   // Also fixes the new armor and berserk stbar indicators!
-  if (!(V_IsOpenGLMode()))
-  {
-    if ((statusbaron) && !(V_IsOpenGLMode())) {
-        ST_refreshBackground();
-        if (!fullmenu)
-            ST_drawWidgets(true);
-    }
-  }
   if (statusbaron) {
-    if (st_firsttime || (V_IsOpenGLMode()))
-    {
-      /* If just after ST_Start(), refresh all */
-      st_firsttime = false;
-      ST_refreshBackground(); // draw status bar background to off-screen buff
-      if (!fullmenu)
-        ST_drawWidgets(true); // and refresh all widgets
-    }
-    else
-    {
-      /* Otherwise, update as little as possible */
-      if (!fullmenu)
-        ST_drawWidgets(false); // update all widgets
-    }
+    ST_refreshBackground();
+    if (!fullmenu)
+        ST_drawWidgets(true);
   }
 
   V_EndUIDraw();
@@ -1072,7 +1051,7 @@ static void ST_loadGraphics(void)
   // Set berserk hud indicators
   // Green cross for bfg edition (unity)
 
-  if (gamemission == chex) R_SetPatchNum(&berserk, "CHXPSTR");
+  if (chex) R_SetPatchNum(&berserk, "CHXPSTR");
   else if (unityedition) R_SetPatchNum(&berserk, "STFPSTR2");
   else R_SetPatchNum(&berserk, "STFPSTR");
 

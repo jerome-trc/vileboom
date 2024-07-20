@@ -202,7 +202,7 @@ int dsda_LegacyNextMap(int* episode, int* map) {
 int dsda_LegacyShowNextLocBehaviour(int* behaviour) {
   if (
     gamemode != commercial &&
-    (gamemap == 8 || (gamemission == chex && gamemap == 5))
+    (gamemap == 8 || (chex && gamemap == 5))
   )
     *behaviour = WI_SHOW_NEXT_DONE;
   else
@@ -261,7 +261,7 @@ int dsda_LegacyResolveCLEV(int* clev, int* episode, int* map) {
   if (dsda_CannotCLEV(*episode, *map))
     *clev = false;
   else {
-    if (gamemission == chex)
+    if (chex)
       *episode = 1;
 
     *clev = true;
@@ -410,7 +410,7 @@ int dsda_LegacyHUTitle(dsda_string_t* str) {
         case retail:
           // Chex.exe always uses the episode 1 level title
           // eg. E2M1 gives the title for E1M1
-          if (gamemission == chex && gamemap < 10)
+          if (chex && gamemap < 10)
             dsda_StringCat(str, *mapnames[gamemap - 1]);
           else if (gameepisode < 6 && gamemap < 10)
             dsda_StringCat(str, *mapnames[(gameepisode - 1) * 9 + gamemap - 1]);
@@ -609,7 +609,7 @@ int dsda_LegacyPrepareFinale(int* result) {
     *result = WD_START_FINALE;
   else if (gamemap == 8)
     *result = WD_VICTORY;
-  else if (gamemap == 5 && gamemission == chex)
+  else if (gamemap == 5 && chex)
     *result = WD_VICTORY;
 
   if (dsda_FinaleShortcut())

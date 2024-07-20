@@ -41,7 +41,7 @@ static void dsda_DrawComponent(void) {
             lump = 0;
         }
         else {
-            if (gamemission == chex) {
+            if (chex) {
                 if (player->armortype < 2)
                     lump = W_CheckNumForName("CHXARMS1");
                 else

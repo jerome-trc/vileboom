@@ -78,8 +78,8 @@ typedef enum {
   pack_plut,    // Plutonia pack
   pack_nerve,   // No Rest For The Living
   hacx,         // HACX - Twitch 'n Kill
-  chex,         // Chex Quest
-  rekkr,        // REKKR
+  pack_chex,    // Chex Quest
+  pack_rekkr,   // REKKR
   none
 } GameMission_t;
 
@@ -450,6 +450,8 @@ typedef enum {
 // TODO_HEXEN: BLINKTHRESHOLD is (4*35)
 
 extern dboolean heretic;
+extern dboolean rekkr;
+extern dboolean chex;
 
 //hexen
 
