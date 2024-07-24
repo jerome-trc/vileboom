@@ -1,6 +1,6 @@
 <img src="https://andrikarkane.com/doom/nyan-doom/nyan-doom-logo.png" width="500">
 
-# Arsinikk's Nyan Doom v1.1.6
+# Arsinikk's Nyan Doom v1.1.7
 This is Arsinikk's own personal fork of DSDA-Doom with new added features and improvements. It's kept relatively up to date with the original. Check it out on [Doomworld!](https://www.doomworld.com/forum/topic/145913/)
 
 ### New Features
