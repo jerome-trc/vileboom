@@ -22,6 +22,7 @@
 
 #include "doomdef.h"
 #include "doomtype.h"
+#include "args.h"
 #include "lprintf.h"
 #include "w_wad.h"
 
@@ -355,11 +356,16 @@ static void RestoreOldMode(void) {
 void dsda_CacheEndoom(void) {
   int lump;
   int show_endoom;
+  dboolean demo_check = dsda_Flag(dsda_arg_record) || dsda_Flag(dsda_arg_recordfromto) ||
+  dsda_Flag(dsda_arg_playdemo) || dsda_Flag(dsda_arg_timedemo) || dsda_Flag(dsda_arg_fastdemo);
 
   output_format = dsda_IntConfig(dsda_config_ansi_endoom);
   if (output_format == format_null)
     dsda_UpdateIntConfig(dsda_config_ansi_endoom,1,true);
   show_endoom = dsda_IntConfig(nyan_config_show_endoom);
+
+  if (demo_check > 0)
+    return;
 
   if (show_endoom==0)
     return;
@@ -383,77 +389,82 @@ void dsda_CacheEndoom(void) {
 }
 
 void dsda_DumpEndoom(void) {
-  int show_endoom;
   endoom_type = dsda_IntConfig(nyan_config_type_endoom);
-  show_endoom = dsda_IntConfig(nyan_config_show_endoom);
 
-  if(show_endoom > 0)
+  if(endoom)
   {
-    if (endoom && endoom_type == 1)
-    {
-      int i;
-      const char* color_lookup[] = {
-        "0", "4", "2", "6", "1", "5", "3", "7",
-        "0;1", "4;1", "2;1", "6;1", "1;1", "5;1", "3;1", "7;1",
-      };
-
-    #ifdef _WIN32
-        EnableVTMode();
-    #endif
-
-        for (i = 0; i < 2000; ++i) {
-          byte character;
-          byte data;
-          const char *foreground;
-          const char *background;
-          const char *blink;
-
-          character = endoom[i * 2];
-          data = endoom[i * 2 + 1];
-          foreground = color_lookup[data & 0x0f];
-          background = color_lookup[(data >> 4) & 0x07];
-          blink = ((data >> 7) & 0x01) ? "5" : "25";
-
-          if (!character)
-            character = ' ';
-
-          if (output_format == format_utf8)
-            lprintf(LO_INFO, "\033[3%sm\033[4%sm\033[%sm%s\033[0m",
-                    foreground, background, blink, cp437_to_utf8[character]);
-          else
-            lprintf(LO_INFO, "\033[3%sm\033[4%sm\033[%sm%c\033[0m",
-                    foreground, background, blink, character);
-
-          if ((i + 1) % 80 == 0)
-            lprintf(LO_INFO, "\n");
-        }
-
-        lprintf(LO_INFO, "\n");
-
-        Z_Free(endoom);
-        endoom = NULL;
-
-    #ifdef _WIN32
-        RestoreOldMode();
-        lprintf(LO_INFO, "Press any key to quit...");
-        while (true)
-        {
-          if (getch() > 0)
-              break;
-        }
-    #endif
-    }
-    else if (endoom && endoom_type == 0)
-      dsda_FullEndoom();
+    if (endoom_type == 1)
+      dsda_TerminalEndoom();
+    else if (endoom_type == 0)
+      dsda_WindowEndoom();
  }
+}
+
+//
+// DSDA Terminal ENDOOM
+//
+
+void dsda_TerminalEndoom(void)
+{
+    int i;
+    const char* color_lookup[] = {
+      "0", "4", "2", "6", "1", "5", "3", "7",
+      "0;1", "4;1", "2;1", "6;1", "1;1", "5;1", "3;1", "7;1",
+    };
+
+  #ifdef _WIN32
+      EnableVTMode();
+  #endif
+
+      for (i = 0; i < 2000; ++i) {
+        byte character;
+        byte data;
+        const char *foreground;
+        const char *background;
+        const char *blink;
+
+        character = endoom[i * 2];
+        data = endoom[i * 2 + 1];
+        foreground = color_lookup[data & 0x0f];
+        background = color_lookup[(data >> 4) & 0x07];
+        blink = ((data >> 7) & 0x01) ? "5" : "25";
+
+        if (!character)
+          character = ' ';
+
+        if (output_format == format_utf8)
+          lprintf(LO_INFO, "\033[3%sm\033[4%sm\033[%sm%s\033[0m",
+                  foreground, background, blink, cp437_to_utf8[character]);
+        else
+          lprintf(LO_INFO, "\033[3%sm\033[4%sm\033[%sm%c\033[0m",
+                  foreground, background, blink, character);
+
+        if ((i + 1) % 80 == 0)
+          lprintf(LO_INFO, "\n");
+      }
+
+      lprintf(LO_INFO, "\n");
+
+      Z_Free(endoom);
+      endoom = NULL;
+
+  #ifdef _WIN32
+      RestoreOldMode();
+      lprintf(LO_INFO, "Press any key to quit...");
+      while (true)
+      {
+        if (getch() > 0)
+            break;
+      }
+  #endif
 }
 
 
 //
-// Full Screen ENDOOM
+// PrBoom+ Window ENDOOM
 //
 
-void dsda_FullEndoom(void)
+void dsda_WindowEndoom(void)
 {
     unsigned char *screendata;
     int y;
