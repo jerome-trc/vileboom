@@ -71,54 +71,37 @@ static int dsda_WadCompatibilityLevel(void) {
           data = W_LumpByNum(num);
           gnum = W_CheckNumForName("GAMEVERS");
 
-          if (length == 7 && !strncasecmp("vanilla", data, 7) && gnum != LUMP_NOT_FOUND) {
+          if (length == 7 && !strncasecmp("vanilla", data, 7)) {
+            if (gnum != LUMP_NOT_FOUND) {
               int vlength;
               const char* vdata;
 
               vlength = W_LumpLength(gnum);
               vdata = W_LumpByNum(gnum);
 
-              if (vlength == 3 && !strncasecmp("1.2", vdata, 3))
+              if (vlength <= 9 && !strncasecmp("1.2", vdata, 3))
                   complvl = 0;
-              else if (vlength == 5 && !strncasecmp("1.666", vdata, 5))
+              else if (vlength <= 11 && !strncasecmp("1.666", vdata, 5))
                   complvl = 1;
-              else if (vlength == 3 && !strncasecmp("1.9", vdata, 3))
+              else if (vlength <= 9 && !strncasecmp("1.9", vdata, 3))
                   complvl = 2;
-              else if (vlength == 8 && !strncasecmp("ultimate", vdata, 8))
+              else if (vlength <= 14 && !strncasecmp("ultimate", vdata, 8))
                   complvl = 3;
-              else if (vlength == 5 && !strncasecmp("final", vdata, 5))
+              else if (vlength <= 11 && !strncasecmp("final", vdata, 5))
                   complvl = 4;
-              else if (vlength == 9 && !strncasecmp("1.2 limit", vdata, 9)) {
-                  complvl = 0;
+
+              if (vlength <= 14 && strstr(vdata, "limit"))
                   limitremoving = 1;
-              }
-              else if (vlength == 11 && !strncasecmp("1.666 limit", vdata, 11)) {
-                  complvl = 1;
-                  limitremoving = 1;
-              }
-              else if (vlength == 9 && !strncasecmp("1.9 limit", vdata, 9)) {
-                  complvl = 2;
-                  limitremoving = 1;
-              }
-              else if (vlength == 14 && !strncasecmp("ultimate limit", vdata, 14)) {
-                  complvl = 3;
-                  limitremoving = 1;
-              }
-              else if (vlength == 11 && !strncasecmp("final limit", vdata, 11)) {
-                  complvl = 4;
-                  limitremoving = 1;
-              }
-              else
-                  complvl = 2;
-          }
-          else if (length == 7 && !strncasecmp("vanilla", data, 7)) {
-              if (gamemode == commercial)
-                  if (gamemission == pack_plut || gamemission == pack_tnt)
-                      complvl = 4;
+            }
+            if (complvl == -1) {
+                if (gamemode == commercial)
+                      if (gamemission == pack_plut || gamemission == pack_tnt)
+                          complvl = 4;
+                      else
+                          complvl = 2;
                   else
-                      complvl = 2;
-              else
-                  complvl = 3;
+                      complvl = 3;
+            }
           }
           else if (length == 4 && !strncasecmp("boom", data, 4))
               complvl = 9;
