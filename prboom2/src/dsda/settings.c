@@ -90,7 +90,7 @@ static int dsda_WadCompatibilityLevel(void) {
               else if (vlength <= 11 && !strncasecmp("final", vdata, 5))
                   complvl = 4;
 
-              if (vlength <= 14 && strcasestr(vdata, "limit"))
+              if (vlength <= 14 && strstr(vdata, "limit"))
                   limitremoving = 1;
             }
             if (complvl == -1) {
