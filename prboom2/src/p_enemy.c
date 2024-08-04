@@ -984,6 +984,17 @@ static dboolean P_LookForMonsters(mobj_t *actor, dboolean allaround)
 
     current_actor = actor;
     current_allaround = allaround;
+    
+    // There is a bug in cl11+ that causes the player to get added
+    //   to the monster friend list when damaged to below 50% health.
+    // This causes all monsters to believe friend monsters exist.
+    // The search algorithm is expensive and massively so on maps with many monsters.
+    // We still need to match rng calls for demo sync, but PIT_FindTarget is a no op.
+    if (((mobj_t *) cap->cnext)->player && cap->cnext == cap->cprev)
+    {
+      P_Random(pr_friends);
+      return false;
+    }
 
     // Search first in the immediate vicinity.
 
@@ -2118,7 +2129,7 @@ void A_VileAttack(mobj_t *actor)
   // move the fire between the vile and the player
   fire->x = actor->target->x - FixedMul (24*FRACUNIT, finecosine[an]);
   fire->y = actor->target->y - FixedMul (24*FRACUNIT, finesine[an]);
-  P_RadiusAttack(fire, actor, 70, 70, true);
+  P_RadiusAttack(fire, actor, 70, 70, BF_DAMAGESOURCE | BF_HORIZONTAL);
 }
 
 //
@@ -2466,11 +2477,11 @@ void A_Explode(mobj_t *thingy)
 {
   int damage;
   int distance;
-  dboolean damageSelf;
+  int flags;
 
   damage = 128;
   distance = 128;
-  damageSelf = true;
+  flags = BF_DAMAGESOURCE;
 
   if (raven)
   {
@@ -2497,15 +2508,15 @@ void A_Explode(mobj_t *thingy)
         break;
       case HEXEN_MT_HAMMER_MISSILE:        // Fighter Hammer
         damage = 128;
-        damageSelf = false;
+        flags &= ~BF_DAMAGESOURCE;
         break;
       case HEXEN_MT_FSWORD_MISSILE:        // Fighter Runesword
         damage = 64;
-        damageSelf = false;
+        flags &= ~BF_DAMAGESOURCE;
         break;
       case HEXEN_MT_CIRCLEFLAME:   // Cleric Flame secondary flames
         damage = 20;
-        damageSelf = false;
+        flags &= ~BF_DAMAGESOURCE;
         break;
       case HEXEN_MT_SORCBALL1:     // Sorcerer balls
       case HEXEN_MT_SORCBALL2:
@@ -2525,17 +2536,17 @@ void A_Explode(mobj_t *thingy)
         break;
       case HEXEN_MT_DRAGON_FX2:
         damage = 80;
-        damageSelf = false;
+        flags &= ~BF_DAMAGESOURCE;
         break;
       case HEXEN_MT_MSTAFF_FX:
         damage = 64;
         distance = 192;
-        damageSelf = false;
+        flags &= ~BF_DAMAGESOURCE;
         break;
       case HEXEN_MT_MSTAFF_FX2:
         damage = 80;
         distance = 192;
-        damageSelf = false;
+        flags &= ~BF_DAMAGESOURCE;
         break;
       case HEXEN_MT_POISONCLOUD:
         damage = 4;
@@ -2551,7 +2562,7 @@ void A_Explode(mobj_t *thingy)
     }
   }
 
-  P_RadiusAttack(thingy, thingy->target, damage, distance, damageSelf);
+  P_RadiusAttack(thingy, thingy->target, damage, distance, flags);
   if (
     heretic ||
     (
@@ -3007,7 +3018,7 @@ void A_Detonate(mobj_t *mo)
       !prboom_comp[PC_APPLY_MBF_CODEPOINTERS_TO_ANY_COMPLEVEL].state)
     return;
 
-  P_RadiusAttack(mo, mo->target, mo->info->damage, mo->info->damage, true);
+  P_RadiusAttack(mo, mo->target, mo->info->damage, mo->info->damage, BF_DAMAGESOURCE);
 }
 
 //
@@ -3367,7 +3378,7 @@ void A_RadiusDamage(mobj_t *actor)
   if (!mbf21 || !actor->state)
     return;
 
-  P_RadiusAttack(actor, actor->target, actor->state->args[0], actor->state->args[1], true);
+  P_RadiusAttack(actor, actor->target, actor->state->args[0], actor->state->args[1], BF_DAMAGESOURCE);
 }
 
 //
@@ -4805,7 +4816,7 @@ void A_VolcBallImpact(mobj_t * ball)
         ball->z += 28 * FRACUNIT;
         //ball->momz = 3*FRACUNIT;
     }
-    P_RadiusAttack(ball, ball->target, 25, 25, true);
+    P_RadiusAttack(ball, ball->target, 25, 25, BF_DAMAGESOURCE);
     for (i = 0; i < 4; i++)
     {
         tiny = P_SpawnMobj(ball->x, ball->y, ball->z, HERETIC_MT_VOLCANOTBLAST);

@@ -247,6 +247,24 @@ int G_GotoNextLevel(void)
   return changed;
 }
 
+int G_GotoPrevLevel(void)
+{
+  int epsd, map;
+  int changed = false;
+
+  dsda_PrevMap(&epsd, &map);
+
+  if ((gamestate == GS_LEVEL) &&
+    allow_incompatibility &&
+    !menuactive)
+  {
+    G_DeferedInitNew(gameskill, epsd, map);
+    changed = true;
+  }
+
+  return changed;
+}
+
 void M_ChangeSpeed(void)
 {
   G_SetSpeed(true);
@@ -268,24 +286,8 @@ void M_ChangeSkyMode(void)
     gl_drawskys = gl_skymode;
 }
 
-static int upViewPitchLimit;
-static int downViewPitchLimit;
-
-void M_ChangeMaxViewPitch(void)
-{
-  if (raven || !V_IsOpenGLMode())
-  {
-    upViewPitchLimit = (int) raven_angle_up_limit;
-    downViewPitchLimit = (int) raven_angle_down_limit;
-  }
-  else
-  {
-    upViewPitchLimit = -ANG90 + (1 << ANGLETOFINESHIFT);
-    downViewPitchLimit = ANG90 - (1 << ANGLETOFINESHIFT);
-  }
-
-  CheckPitch(&viewpitch);
-}
+static const int upViewPitchLimit = -ANG90 + (1 << ANGLETOFINESHIFT);
+static const int downViewPitchLimit = ANG90 - (1 << ANGLETOFINESHIFT);
 
 void M_ChangeScreenMultipleFactor(void)
 {
@@ -800,7 +802,7 @@ int GetFullPath(const char* FileName, const char* ext, char *Buffer, size_t Buff
       strcpy(dir, M_getenv("DOOMWADDIR"));
       break;
     case 2:
-      strcpy(dir, I_DoomExeDir());
+      strcpy(dir, I_ConfigDir());
       break;
     }
 

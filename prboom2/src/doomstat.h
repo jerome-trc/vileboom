@@ -123,7 +123,6 @@ enum {
   comperr_passuse,
   comperr_hangsolid,
   comperr_blockmap,
-  comperr_freeaim,
 
   COMPERR_NUM
 };
@@ -351,7 +350,5 @@ extern int monster_infighting;
 extern int monkeys;
 
 extern int HelperThing;          // type of thing to use for helper
-
-extern dboolean forceOldBsp;
 
 #endif
