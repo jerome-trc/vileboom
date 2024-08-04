@@ -1962,7 +1962,7 @@ static void AM_DrawConnections(void)
       AM_SetMPointFloatValue(&l.b);
     }
 
-    AM_drawMline(&l, mapcolor_exit_p);
+    AM_drawMline(&l, *mapcolor_exit_p);
   }
 }
 
