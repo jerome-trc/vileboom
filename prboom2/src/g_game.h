@@ -137,6 +137,7 @@ void resetPistolStart(void);
 
 // disables overflow warnings and errors for vanilla complevels
 extern int limitremoving;
+extern int arg_complevel_limitremoving;
 
 // hexen
 

@@ -25,6 +25,7 @@
 
 int dsda_argc;
 char** dsda_argv;
+int arg_complevel_limitremoving;
 
 typedef enum {
   arg_null,
@@ -32,6 +33,7 @@ typedef enum {
   arg_string,
   arg_int_array,
   arg_string_array,
+  arg_complevel,
 } arg_type_t;
 
 typedef struct {
@@ -131,7 +133,7 @@ static arg_config_t arg_config[dsda_arg_count] = {
   [dsda_arg_complevel] = {
     "-complevel", "-cl", NULL,
     "sets the compatibility level",
-    arg_int, -1, mbf21_compatibility,
+    arg_complevel, -1, mbf21_compatibility,
   },
   [dsda_arg_fast] = {
     "-fast", NULL, NULL,
@@ -720,6 +722,12 @@ static void dsda_ParseIntArg(arg_config_t* config, int* value, const char* param
     I_Error("%s argument too high (max is %d)", config->name, config->upper_limit);
 }
 
+static void dsda_ParseLimitRemovingArg(arg_config_t* config, const char** value, const char* param) {
+  //lprintf(LO_INFO, "lr check: '%s'\n", param);
+  if ((!strcmp(param, "0r")) || (!strcmp(param, "1r")) || (!strcmp(param, "2r")) || (!strcmp(param, "3r")) || (!strcmp(param, "4r")))
+    arg_complevel_limitremoving = 1;
+}
+
 static void dsda_ParseStringArg(arg_config_t* config, const char** value, const char* param) {
   if (config->upper_limit && strlen(param) > config->upper_limit)
     I_Error("%s argument too long (max is %d)", config->name, config->upper_limit);
@@ -780,6 +788,24 @@ static void dsda_ParseArg(arg_config_t* config, dsda_arg_t* arg, int argv_i) {
       if (arg->count > 1)
         I_Error("%s takes only one argument", config->name);
 
+      dsda_ParseIntArg(config, &arg->value.v_int, dsda_argv[argv_i + 1]);
+
+      break;
+    case arg_complevel:
+      if (arg->count == 0) {
+        if (config->default_value) {
+          dsda_ParseLimitRemovingArg(config, &arg->value.v_string, config->default_value);
+          dsda_ParseIntArg(config, &arg->value.v_int, config->default_value);
+
+          break;
+        }
+
+        I_Error("%s requires an integer argument", config->name);
+      }
+      if (arg->count > 1)
+        I_Error("%s takes only one argument", config->name);
+
+      dsda_ParseLimitRemovingArg(config, &arg->value.v_string, dsda_argv[argv_i + 1]);
       dsda_ParseIntArg(config, &arg->value.v_int, dsda_argv[argv_i + 1]);
 
       break;

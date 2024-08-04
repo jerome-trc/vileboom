@@ -111,12 +111,14 @@ static int dsda_WadCompatibilityLevel(void) {
               complvl = 21;
 
           if (length == 7 && !strncasecmp("vanilla", data, 7) && gnum != LUMP_NOT_FOUND)
-              lprintf(LO_INFO, "Detected COMPLVL and GAMEVERS lump: %i\n", complvl);
+          {
+              if (limitremoving)
+                  lprintf(LO_INFO, "Detected COMPLVL and GAMEVERS lump: %i (limit-removing)\n", complvl);
+              else
+                  lprintf(LO_INFO, "Detected COMPLVL and GAMEVERS lump: %i\n", complvl);
+          }
           else
               lprintf(LO_INFO, "Detected COMPLVL lump: %i\n", complvl);
-
-          if (limitremoving)
-              lprintf(LO_INFO, "Limit-removing detected. Overflows disabled\n");
       }
 }
 

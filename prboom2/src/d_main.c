@@ -1855,12 +1855,12 @@ static void D_DoomMainSetup(void)
 
   // Arsinikk - set pistol start based off args and cfg
   if (arg_pistolstart && !cfg_pistolstart)
-  {
       dsda_UpdateIntConfig(nyan_config_pistolstart, 1, true);
-  }
 
   // disables overflow warnings and errors for vanilla complevels
-  limitremoving = dsda_Flag(dsda_arg_limitremoving);
+  if (arg_complevel_limitremoving || dsda_Flag(dsda_arg_limitremoving))
+    limitremoving = 1;
+  // lprintf(LO_INFO, "limitremoving: %i\n", limitremoving);
 
   // CPhipps - autoloading of wads
   autoload = !dsda_Flag(dsda_arg_noautoload);
@@ -1953,6 +1953,8 @@ static void D_DoomMainSetup(void)
   dsda_AnimateExistCheck();
   dsda_WideExistCheck();
   G_ReloadDefaults();
+  if (limitremoving)
+    lprintf(LO_INFO, "Limit-removing detected. Overflows disabled\n");
 
   // e6y
   // option to disable automatic loading of dehacked-in-wad lump
