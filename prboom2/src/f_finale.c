@@ -41,6 +41,7 @@
 #include "s_sound.h"
 #include "sounds.h"
 #include "d_deh.h"  // Ty 03/22/98 - externalizations
+#include "d_englsh.h"
 
 #include "heretic/f_finale.h"
 #include "hexen/f_finale.h"
@@ -81,6 +82,238 @@ void    F_CastDrawer (void);
 void WI_checkForAccelerate(void);    // killough 3/28/98: used to
 extern int acceleratestage;          // accelerate intermission screens
 int midstage;                 // whether we're in "mid-stage"
+
+int dsda_CheckInterTextPWAD(void)
+{
+    int lump;
+    int PWADlump;
+    PWADlump = 0;
+
+    switch (gamemode)
+    {
+        // DOOM 1 - E1, E3 or E4, but each nine missions
+    case shareware:
+    case registered:
+    case retail:
+    {
+        switch (gameepisode)
+        {
+        case 1:
+            lump = W_GetNumForName("E1M8");
+            PWADlump = !W_PWADLumpNumExists(lump);
+            break;
+        case 2:
+            lump = W_GetNumForName("E2M8");
+            PWADlump = !W_PWADLumpNumExists(lump);
+            break;
+        case 3:
+            lump = W_GetNumForName("E3M8");
+            PWADlump = !W_PWADLumpNumExists(lump);
+            break;
+        case 4:
+            lump = W_GetNumForName("E4M8");
+            PWADlump = !W_PWADLumpNumExists(lump);
+            break;
+        default:
+            // Ouch.
+            break;
+        }
+        break;
+    }
+
+    // DOOM II and missions packs with E1, M34
+    case commercial:
+    {
+        // Ty 08/27/98 - added the gamemission logic
+        switch (gamemap)
+        {
+        case 6:
+            lump = W_GetNumForName("MAP06");
+            PWADlump = !W_PWADLumpNumExists(lump);
+            break;
+        case 11:
+            lump = W_GetNumForName("MAP11");
+            PWADlump = !W_PWADLumpNumExists(lump);
+            break;
+        case 20:
+            lump = W_GetNumForName("MAP20");
+            PWADlump = !W_PWADLumpNumExists(lump);
+            break;
+        case 30:
+            lump = W_GetNumForName("MAP30");
+            PWADlump = !W_PWADLumpNumExists(lump);
+            break;
+        case 15:
+            lump = W_GetNumForName("MAP15");
+            PWADlump = !W_PWADLumpNumExists(lump);
+            break;
+        case 31:
+            lump = W_GetNumForName("MAP31");
+            PWADlump = !W_PWADLumpNumExists(lump);
+            break;
+        default:
+            // Ouch.
+            break;
+        }
+        if (gamemission == pack_nerve && gamemap == 8)
+        {
+            lump = W_GetNumForName("MAP08");
+            PWADlump = !W_PWADLumpNumExists(lump);
+        }
+        break;
+        // Ty 08/27/98 - end gamemission logic
+    }
+
+    // Indeterminate.
+    default:  // Ty 03/30/98 - not externalized
+        break;
+    }
+
+    return PWADlump;
+}
+
+int dsda_CheckInterText(void)
+{
+    int new_TEXT;
+    new_TEXT = 0;
+
+    switch (gamemode)
+    {
+        // DOOM 1 - E1, E3 or E4, but each nine missions
+    case shareware:
+    case registered:
+    case retail:
+    {
+        switch (gameepisode)
+        {
+        case 1:
+            if (E1TEXT != s_E1TEXT) new_TEXT = 1;
+            break;
+        case 2:
+            if (E2TEXT != s_E2TEXT) new_TEXT = 1;
+            break;
+        case 3:
+            if (E3TEXT != s_E3TEXT) new_TEXT = 1;
+            break;
+        case 4:
+            if (E4TEXT != s_E4TEXT) new_TEXT = 1;
+            break;
+        default:
+            // Ouch.
+            break;
+        }
+        break;
+    }
+
+    // DOOM II and missions packs with E1, M34
+    case commercial:
+    {
+        // Ty 08/27/98 - added the gamemission logic
+        switch (gamemap)
+        {
+        case 6:
+            if (gamemission == pack_tnt) {
+                if (T1TEXT != s_T1TEXT)
+                    new_TEXT = 1;
+            }
+            else if (gamemission == pack_plut) {
+                if (P1TEXT != s_P1TEXT)
+                    new_TEXT = 1;
+            }
+            else {
+                if (C1TEXT != s_C1TEXT)
+                    new_TEXT = 1;
+            }
+            break;
+        case 11:
+            if (gamemission == pack_tnt) {
+                if (T2TEXT != s_T2TEXT)
+                    new_TEXT = 1;
+            }
+            else if (gamemission == pack_plut) {
+                if (P2TEXT != s_P2TEXT)
+                    new_TEXT = 1;
+            }
+            else {
+                if (C2TEXT != s_C2TEXT)
+                    new_TEXT = 1;
+            }
+            break;
+        case 20:
+            if (gamemission == pack_tnt) {
+                if (T3TEXT != s_T3TEXT)
+                    new_TEXT = 1;
+            }
+            else if (gamemission == pack_plut) {
+                if (P3TEXT != s_P3TEXT)
+                    new_TEXT = 1;
+            }
+            else {
+                if (C3TEXT != s_C3TEXT)
+                    new_TEXT = 1;
+            }
+            break;
+        case 30:
+            if (gamemission == pack_tnt) {
+                if (T4TEXT != s_T4TEXT)
+                    new_TEXT = 1;
+            }
+            else if (gamemission == pack_plut) {
+                if (P4TEXT != s_P4TEXT)
+                    new_TEXT = 1;
+            }
+            else {
+                if (C4TEXT != s_C4TEXT)
+                    new_TEXT = 1;
+            }
+            break;
+        case 15:
+            if (gamemission == pack_tnt) {
+                if (T5TEXT != s_T5TEXT)
+                    new_TEXT = 1;
+            }
+            else if (gamemission == pack_plut) {
+                if (P5TEXT != s_P5TEXT)
+                    new_TEXT = 1;
+            }
+            else {
+                if (C5TEXT != s_C5TEXT)
+                    new_TEXT = 1;
+            }
+            break;
+        case 31:
+            if (gamemission == pack_tnt) {
+                if (T6TEXT != s_T6TEXT)
+                    new_TEXT = 1;
+            }
+            else if (gamemission == pack_plut) {
+                if (P6TEXT != s_P6TEXT)
+                    new_TEXT = 1;
+            }
+            else {
+                if (C6TEXT != s_C6TEXT)
+                    new_TEXT = 1;
+            }
+            break;
+        default:
+            // Ouch.
+            break;
+        }
+        if (gamemission == pack_nerve && gamemap == 8)
+        {
+            if (C6TEXT != s_C6TEXT) new_TEXT = 1;
+        }
+        break;
+        // Ty 08/27/98 - end gamemission logic
+    }
+
+    // Indeterminate.
+    default:  // Ty 03/30/98 - not externalized
+        break;
+    }
+
+    return new_TEXT;
+}
 
 //
 // F_StartFinale
@@ -292,6 +525,35 @@ static dboolean F_ShowCast(void)
   return gamemap == 30 ||
          (gamemission == pack_nerve && allow_incompatibility && gamemap == 8) ||
          dsda_FinaleShortcut();
+}
+
+
+
+void InterTextNextLevel(void)
+{
+  if (gamemode != commercial)       // Doom 1 / Ultimate Doom episode end
+  {                      
+    gameaction = ga_nothing;
+    gamestate = GS_FINALE;
+    automap_active = false;
+
+    if (gameepisode == 3)
+      F_StartScroll(NULL, NULL, NULL, true);
+    else
+      F_StartPostFinale();
+  }
+  else   // Doom 2 / Plutonia / TNT
+  {
+      if (F_ShowCast())
+      {
+        gameaction = ga_nothing;
+        gamestate = GS_FINALE;
+        automap_active = false;
+        F_StartCast(NULL, NULL, true); // cast of Doom 2 characters
+      }
+      else
+        gameaction = ga_worlddone;  // next level, e.g. MAP07
+    }
 }
 
 void F_Ticker(void)

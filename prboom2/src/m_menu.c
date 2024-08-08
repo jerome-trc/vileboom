@@ -3084,6 +3084,7 @@ setup_menu_t misc2_settings[] = {
   { "Hide Weapon", S_YESNO, m_conf, G_X, dsda_config_hide_weapon },
   { "Hide Status Bar Horns", S_YESNO, m_conf, G_X, dsda_config_hide_horns },
   { "Pause After Intermission", S_YESNO, m_conf, G_X, nyan_config_intermission_pause },
+  { "Skip IWAD Story Text", S_YESNO, m_conf, G_X, nyan_config_skip_default_text },
   { "Play Demos While In Menus", S_YESNO, m_conf, G_X, nyan_config_menu_play_demo },
   { "Allow Jumping", S_YESNO, m_conf, G_X, dsda_config_allow_jumping },
   EMPTY_LINE,

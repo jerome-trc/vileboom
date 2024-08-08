@@ -1010,7 +1010,7 @@ void WI_initNoState(void)
   acceleratestage = 0;
   if (gamemap == 30 || (gamemission == pack_nerve && allow_incompatibility && gamemap == 8) || dsda_FinaleShortcut())
       cnt = 10;
-  else if (allow_incompatibility && dsda_IntConfig(nyan_config_intermission_pause))
+  else if (!netgame && dsda_IntConfig(nyan_config_intermission_pause))
       cnt = 45;
   else
       cnt = 10;
