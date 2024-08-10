@@ -98,16 +98,15 @@ static dboolean F_ShowCast(void)
 int dsda_CheckInterText(void)
 {
     int SkipText;
+    int lump;
+    int PWADlump;
     SkipText = 0;
+    lump = 0;
+    PWADlump = 0;
 
     // Arsinikk - Essentially disable check for UMAPINFO an other conditions:
     if(netgame || W_LumpNameExists("UMAPINFO") || map_format.zdoom || dsda_UseMapinfo() || raven)
       return SkipText;
-
-    int lump;
-    int PWADlump;
-    lump = 0;
-    PWADlump = 0;
 
     switch (gamemode)
     {
