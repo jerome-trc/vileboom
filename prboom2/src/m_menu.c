@@ -302,8 +302,8 @@ void M_ChangeDemoSmoothTurns(void);
 void M_ChangeTextureParams(void);
 void M_General(int);      // killough 10/98
 void M_DrawGeneral(void); // killough 10/98
-void M_DemoTas(int);      // Arsinikk
-void M_DrawDemoTas(void); // Arsinikk
+void M_GameplayMenu(int);      // Arsinikk
+void M_DrawGameplayMenu(void); // Arsinikk
 void M_LevelTable(int);
 void M_DrawLevelTable(void);
 void M_ChangeFullScreen(void);
@@ -1140,7 +1140,7 @@ void M_SaveGame (int choice)
 enum
 {
   general, // killough 10/98
-  set_demotas,
+  set_gameplaymenu,
   set_key_bindings,
   set_weapons,
   set_statbar,
@@ -1155,7 +1155,7 @@ enum
 menuitem_t OptionsMenu[]=
 {
   { 1, "M_GENERL", M_General, 'g', "GENERAL" }, // killough 10/98
-  { 1, "M_DEMOTAS", M_DemoTas, 'd', "DEMOS / EMULATION" },
+  { 1, "M_GAMEPL", M_GameplayMenu, 'd', "GAMEPLAY / DEMOS" },
   { 1, "M_KEYBND", M_KeyBindings,'k', "KEY BINDINGS" },
   { 1, "M_WEAP", M_Weapons, 'w', "WEAPONS" },
   { 1, "M_STAT", M_StatusBar, 's', "STATUS BAR / HUD" },
@@ -1527,7 +1527,7 @@ dboolean setup_select      = false; // changing an item
 dboolean setup_gather      = false; // gathering keys for value
 dboolean colorbox_active   = false; // color palette being shown
 dboolean set_general_active = false;
-dboolean set_demotas_active = false;
+dboolean set_game_active = false;
 dboolean level_table_active = false;
 
 /////////////////////////////
@@ -1667,12 +1667,12 @@ menu_t GeneralDef =                                           // killough 10/98
   0
 };
 
-menu_t DemoTasDef =                                           // Arsinikk
+menu_t GameDef =                                           // Arsinikk
 {
   generic_setup_end,
   &OptionsDef,
   Generic_Setup,
-  M_DrawDemoTas,
+  M_DrawGameplayMenu,
   34,5,      // skull drawn here
   0
 };
@@ -2791,12 +2791,14 @@ void M_DrawStatusHUD(void)
 setup_menu_t auto_settings1[];
 setup_menu_t auto_settings2[];
 setup_menu_t auto_settings3[];
+setup_menu_t auto_settings4[];
 
 setup_menu_t* auto_settings[] =
 {
   auto_settings1,
   auto_settings2,
   auto_settings3,
+  auto_settings4,
   NULL
 };
 
@@ -2835,11 +2837,6 @@ setup_menu_t auto_settings1[] =  // 1st AutoMap Settings screen
   { "Enable textured display", S_YESNO, m_conf, AU_X, dsda_config_map_textured },
   { "Things appearance", S_CHOICE, m_conf, AU_X, dsda_config_map_things_appearance, 0, map_things_appearance_list },
   { "Show Minimap", S_YESNO, m_conf, AU_X, dsda_config_show_minimap },
-  EMPTY_LINE,
-  { "Translucency percentage", S_SKIP | S_TITLE, m_null, AU_X},
-  { "Textured automap", S_NUM, m_conf, AU_X, dsda_config_map_textured_trans },
-  { "Textured automap in overlay mode", S_NUM, m_conf, AU_X, dsda_config_map_textured_overlay_trans },
-  { "Lines in overlay mode", S_NUM, m_conf, AU_X, dsda_config_map_lines_overlay_trans },
 
   NEXT_PAGE(auto_settings2),
   FINAL_ENTRY
@@ -2849,11 +2846,22 @@ setup_menu_t auto_settings1[] =  // 1st AutoMap Settings screen
 
 setup_menu_t auto_settings2[] =  // 2st AutoMap Settings screen
 {
-  { "Tools", S_SKIP | S_TITLE, m_null, AU_X2},
-  { "Player Trail Mode", S_CHOICE, m_conf, AU_X2, dsda_config_map_trail_mode, 0, map_trail_mode_list },
-  { "Player Trail Size", S_NUM, m_conf, AU_X2, dsda_config_map_trail_size },
+  { "Translucency percentage", S_SKIP | S_TITLE, m_null, AU_X},
+  { "Textured automap", S_NUM, m_conf, AU_X, dsda_config_map_textured_trans },
+  { "Textured automap in overlay mode", S_NUM, m_conf, AU_X, dsda_config_map_textured_overlay_trans },
+  { "Lines in overlay mode", S_NUM, m_conf, AU_X, dsda_config_map_lines_overlay_trans },
   EMPTY_LINE,
-  EMPTY_LINE,
+  { "Tools", S_SKIP | S_TITLE, m_null, AU_X},
+  { "Player Trail Mode", S_CHOICE, m_conf, AU_X, dsda_config_map_trail_mode, 0, map_trail_mode_list },
+  { "Player Trail Size", S_NUM, m_conf, AU_X, dsda_config_map_trail_size },
+
+  PREV_PAGE(auto_settings1),
+  NEXT_PAGE(auto_settings3),
+  FINAL_ENTRY
+};
+
+setup_menu_t auto_settings3[] =  // 3nd AutoMap Settings screen
+{
   {"background", S_COLOR, m_conf, AU_X, dsda_config_mapcolor_back},
   {"grid lines", S_COLOR, m_conf, AU_X, dsda_config_mapcolor_grid},
   {"normal 1s wall", S_COLOR, m_conf,AU_X, dsda_config_mapcolor_wall},
@@ -2866,13 +2874,16 @@ setup_menu_t auto_settings2[] =  // 2st AutoMap Settings screen
   {"red door"                           ,S_COLOR,m_conf,AU_X, dsda_config_mapcolor_rdor},
   {"blue door"                          ,S_COLOR,m_conf,AU_X, dsda_config_mapcolor_bdor},
   {"yellow door"                        ,S_COLOR,m_conf,AU_X, dsda_config_mapcolor_ydor},
+  EMPTY_LINE,
+  {"player trail 1"     ,S_COLOR ,m_conf,AU_X, dsda_config_mapcolor_trail_1},
+  {"player trail 2"     ,S_COLOR ,m_conf,AU_X, dsda_config_mapcolor_trail_2},
 
-  PREV_PAGE(auto_settings1),
-  NEXT_PAGE(auto_settings3),
+  PREV_PAGE(auto_settings2),
+  NEXT_PAGE(auto_settings4),
   FINAL_ENTRY
 };
 
-setup_menu_t auto_settings3[] =  // 3nd AutoMap Settings screen
+setup_menu_t auto_settings4[] =  // 3nd AutoMap Settings screen
 {
   {"teleporter line"                ,S_COLOR ,m_conf,AU_X, dsda_config_mapcolor_tele},
   {"secret sector boundary"         ,S_COLOR ,m_conf,AU_X, dsda_config_mapcolor_secr},
@@ -2889,11 +2900,8 @@ setup_menu_t auto_settings3[] =  // 3nd AutoMap Settings screen
   {"your colour in multiplayer"     ,S_COLOR ,m_conf,AU_X, dsda_config_mapcolor_me},
   EMPTY_LINE,
   {"friends"                        ,S_COLOR ,m_conf,AU_X, dsda_config_mapcolor_frnd},        // killough 8/8/98
-  EMPTY_LINE,
-  {"player trail 1"     ,S_COLOR ,m_conf,AU_X, dsda_config_mapcolor_trail_1},
-  {"player trail 2"     ,S_COLOR ,m_conf,AU_X, dsda_config_mapcolor_trail_2},
 
-  PREV_PAGE(auto_settings2),
+  PREV_PAGE(auto_settings3),
   FINAL_ENTRY
 };
 
@@ -2978,11 +2986,13 @@ setup_menu_t* gen_settings[] =
   NULL
 };
 
+setup_menu_t gameplay_settings[], emulation_settings[];
 setup_menu_t demo_settings[], tas_settings[];
 
-setup_menu_t* demotas_settings[] =
+setup_menu_t* gameplaym_settings[] =
 {
-  mapping_settings,
+  gameplay_settings,
+  emulation_settings,
   demo_settings,
   tas_settings,
   NULL
@@ -3118,21 +3128,12 @@ setup_menu_t controller_settings[] = {
   FINAL_ENTRY
 };
 
-static const char* pistol_start_list[] = 
-{
-  [PISTOL_START_OFF] = "Off",
-  [PISTOL_START_SESSION] = "Session",
-  [PISTOL_START_ALWAYS] = "Always",
-  NULL
-};
-
 setup_menu_t misc_settings[] = {
   { "Miscellaneous", S_SKIP | S_TITLE, m_null, G_X},
   { "Default skill level", S_CHOICE, m_conf, G_X, dsda_config_default_skill, 0, gen_skillstrings },
   { "Default compatibility level", S_CHOICE, m_conf, G_X, dsda_config_default_complevel, 0, &gen_compstrings[1] },
   { "Enable Cheat Code Entry", S_YESNO, m_conf, G_X, dsda_config_cheat_codes },
   { "Announce Map On Entry", S_YESNO, m_conf, G_X, dsda_config_announce_map },
-  { "Pistol Start", S_CHOICE, m_conf, G_X, dsda_config_pistol_start, 0, pistol_start_list },
   EMPTY_LINE,
   { "Quality Of Life", S_SKIP | S_TITLE, m_null, G_X},
   { "Rewind Interval (s)", S_NUM, m_conf, G_X, dsda_config_auto_key_frame_interval },
@@ -3154,7 +3155,7 @@ setup_menu_t misc_settings[] = {
 };
 
 static const char* endoom_list[] = { "Off", "On", "PWAD only", NULL };
-static const char* endoom_type_list[] = { "Window", "Terminal", NULL };
+static const char* endoom_type_list[] = { "Terminal", "Window", NULL };
 
 setup_menu_t display_settings[] = {
   { "Display Options", S_SKIP | S_TITLE, m_null, G_X},
@@ -3165,8 +3166,8 @@ setup_menu_t display_settings[] = {
   { "Quake Intensity", S_NUM, m_conf, G_X, dsda_config_quake_intensity },
   { "Weapon Attack Alignment", S_CHOICE, m_conf, G_X, dsda_config_weapon_attack_alignment, 0, weapon_attack_alignment_strings },
   EMPTY_LINE,
-  { "Endoom Screen", S_CHOICE, m_conf, G_X, nyan_config_show_endoom, 0, endoom_list },  
-  { "Endoom Type", S_CHOICE, m_conf, G_X, nyan_config_type_endoom, 0, endoom_type_list },
+  { "Hide Weapon", S_YESNO, m_conf, G_X, dsda_config_hide_weapon },
+  { "Hide Status Bar Horns", S_YESNO, m_conf, G_X, dsda_config_hide_horns },
   EMPTY_LINE,
   { "Change Palette On Pain", S_YESNO, m_conf, G_X, dsda_config_palette_ondamage },
   { "Change Palette On Bonus", S_YESNO, m_conf, G_X, dsda_config_palette_onbonus },
@@ -3181,13 +3182,13 @@ setup_menu_t display_settings[] = {
 };
 
 setup_menu_t misc2_settings[] = {
-  { "Extra Options", S_SKIP | S_TITLE, m_null, G_X},
-  { "Hide Weapon", S_YESNO, m_conf, G_X, dsda_config_hide_weapon },
-  { "Hide Status Bar Horns", S_YESNO, m_conf, G_X, dsda_config_hide_horns },
+  { "Nyan Options", S_SKIP | S_TITLE, m_null, G_X},
+  { "Play Demos While In Menus", S_YESNO, m_conf, G_X, nyan_config_menu_play_demo },
   { "Pause After Intermission", S_YESNO, m_conf, G_X, nyan_config_intermission_pause },
   { "Skip IWAD Story Text", S_YESNO, m_conf, G_X, nyan_config_skip_default_text },
-  { "Play Demos While In Menus", S_YESNO, m_conf, G_X, nyan_config_menu_play_demo },
-  { "Allow Jumping", S_YESNO, m_conf, G_X, dsda_config_allow_jumping },
+  EMPTY_LINE,
+  { "Endoom Screen", S_CHOICE, m_conf, G_X, nyan_config_show_endoom, 0, endoom_list },
+  { "Endoom Type", S_CHOICE, m_conf, G_X, nyan_config_type_endoom, 0, endoom_type_list },
   EMPTY_LINE,
   { "OpenGL Options", S_SKIP | S_TITLE, m_null, G_X},
   { "Show Health Bars", S_YESNO, m_conf, G_X, dsda_config_gl_health_bar },
@@ -3197,7 +3198,35 @@ setup_menu_t misc2_settings[] = {
   FINAL_ENTRY
 };
 
-setup_menu_t mapping_settings[] = {
+static const char* pistol_start_list[] = 
+{
+  [PISTOL_START_OFF] = "Off",
+  [PISTOL_START_SESSION] = "Session",
+  [PISTOL_START_ALWAYS] = "Always",
+  NULL
+};
+
+setup_menu_t gameplay_settings[] = {
+  { "Game Modifiers", S_SKIP | S_TITLE, m_null, G_X},
+  { "Pistol Start", S_CHOICE, m_conf, G_X, dsda_config_pistol_start, 0, pistol_start_list },
+  { "Respawn Monsters", S_YESNO, m_conf, G_X, dsda_config_respawn_monsters },
+  { "Fast Monsters", S_YESNO, m_conf, G_X, dsda_config_fast_monsters },
+  { "No Monsters", S_YESNO, m_conf, G_X, dsda_config_no_monsters },
+  { "Coop Spawns", S_YESNO, m_conf, G_X, dsda_config_coop_spawns },
+  EMPTY_LINE,
+  { "Allow Jumping", S_YESNO, m_conf, G_X, dsda_config_allow_jumping },
+  EMPTY_LINE,
+  { "MAPPING ERROR FIXES", S_SKIP | S_TITLE, m_conf, G_X},
+  { "LINEDEFS W/O TAGS APPLY LOCALLY", S_YESNO, m_conf, G_X, dsda_config_comperr_zerotag },
+  { "USE PASSES THRU ALL SPECIAL LINES", S_YESNO, m_conf, G_X, dsda_config_comperr_passuse },
+  { "WALK UNDER SOLID HANGING BODIES", S_YESNO, m_conf, G_X, dsda_config_comperr_hangsolid },
+  { "FIX CLIPPING IN LARGE LEVELS", S_YESNO, m_conf, G_X, dsda_config_comperr_blockmap },
+
+  NEXT_PAGE(emulation_settings),
+  FINAL_ENTRY
+};
+
+setup_menu_t emulation_settings[] = {
   { "EMULATION", S_SKIP | S_TITLE, m_null, G_X},
   { "WARN ON SPECHITS OVERFLOW", S_YESNO, m_conf, G_X, dsda_config_overrun_spechit_warn },
   { "TRY TO EMULATE IT", S_YESNO, m_conf, G_X, dsda_config_overrun_spechit_emulate },
@@ -3207,13 +3236,8 @@ setup_menu_t mapping_settings[] = {
   { "TRY TO EMULATE IT", S_YESNO, m_conf, G_X, dsda_config_overrun_intercept_emulate },
   { "WARN ON PLAYERINGAME OVERFLOW", S_YESNO, m_conf, G_X, dsda_config_overrun_playeringame_warn },
   { "TRY TO EMULATE IT", S_YESNO, m_conf, G_X, dsda_config_overrun_playeringame_emulate },
-  EMPTY_LINE,
-  { "MAPPING ERROR FIXES", S_SKIP | S_TITLE, m_conf, G_X},
-  { "LINEDEFS W/O TAGS APPLY LOCALLY", S_YESNO, m_conf, G_X, dsda_config_comperr_zerotag },
-  { "USE PASSES THRU ALL SPECIAL LINES", S_YESNO, m_conf, G_X, dsda_config_comperr_passuse },
-  { "WALK UNDER SOLID HANGING BODIES", S_YESNO, m_conf, G_X, dsda_config_comperr_hangsolid },
-  { "FIX CLIPPING IN LARGE LEVELS", S_YESNO, m_conf, G_X, dsda_config_comperr_blockmap },
 
+  PREV_PAGE(gameplay_settings),
   NEXT_PAGE(demo_settings),
   FINAL_ENTRY
 };
@@ -3230,14 +3254,8 @@ setup_menu_t demo_settings[] = {
   { "Smooth Demo Playback Factor", S_NUM, m_conf, G_X, dsda_config_demo_smoothturnsfactor },
   { "Show Precise Intermission Time", S_YESNO,  m_conf, G_X, dsda_config_show_level_splits },
   { "Organize Failed Demos", S_YESNO,  m_conf, G_X, dsda_config_organize_failed_demos },
-  EMPTY_LINE,
-  { "Game Modifiers", S_SKIP | S_TITLE, m_null, G_X},
-  { "Respawn Monsters", S_YESNO, m_conf, G_X, dsda_config_respawn_monsters },
-  { "Fast Monsters", S_YESNO, m_conf, G_X, dsda_config_fast_monsters },
-  { "No Monsters", S_YESNO, m_conf, G_X, dsda_config_no_monsters },
-  { "Coop Spawns", S_YESNO, m_conf, G_X, dsda_config_coop_spawns },
 
-  PREV_PAGE(mapping_settings),
+  PREV_PAGE(emulation_settings),
   NEXT_PAGE(tas_settings),
   FINAL_ENTRY
 };
@@ -3310,22 +3328,22 @@ void M_DrawGeneral(void)
 // locate the first item on the screen where the cursor is allowed to
 // land.
 
-void M_DemoTas(int choice)
+void M_GameplayMenu(int choice)
 {
-  M_EnterSetup(&DemoTasDef, &set_demotas_active, demotas_settings[0]);
+  M_EnterSetup(&GameDef, &set_game_active, gameplaym_settings[0]);
 }
 
 // The drawing part of the Demo / TAS Setup initialization. Draw the
 // background, title, instruction line, and items.
 
-void M_DrawDemoTas(void)
+void M_DrawGameplayMenu(void)
 {
   M_ChangeMenu(NULL, mnact_full);
 
   M_DrawBackground(g_menu_flat, 0); // Draw background
 
   // proff/nicolas 09/20/98 -- changed for hi-res
-  M_DrawTitle(114, 2, "M_DEMOTAS", CR_DEFAULT, "DEMOS / EMULATION", cr_title);
+  M_DrawTitle(114, 2, "M_GAMEPL", CR_DEFAULT, "GAMEPLAY / DEMOS", cr_title);
   M_DrawInstructions();
   M_DrawScreenItems(current_setup_menu, DEFAULT_LIST_Y);
 }
@@ -5114,7 +5132,7 @@ static dboolean M_SetupResponder(int ch, int action, event_t* ev)
     if (M_StringResponder(ch, action, ev))
       return true;
 
-  if (set_demotas_active)
+  if (set_game_active)
       if (M_StringResponder(ch, action, ev))
           return true;
 

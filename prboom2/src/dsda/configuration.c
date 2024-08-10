@@ -1294,7 +1294,7 @@ dsda_config_t dsda_config[dsda_config_count] = {
   },
   [nyan_config_type_endoom] = {
     "type_endoom", nyan_config_type_endoom,
-    dsda_config_int, 0, 1, { 0 }
+    dsda_config_int, 0, 1, { 1 }
   },
   [dsda_config_ansi_endoom] = {
     "ansi_endoom", dsda_config_ansi_endoom,
