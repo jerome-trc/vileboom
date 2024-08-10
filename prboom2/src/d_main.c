@@ -997,7 +997,7 @@ void CheckIWAD(const char *iwadname,GameMode_t *gmode,dboolean *hassec)
           }
           // Arsinikk - Unity WAD Check!
           // (Check if any iwad lump is 88.62kb)
-          if ((fileinfo[length].size == 90746))
+          if (fileinfo[length].size == 90746)
             unityedition++;
           if (!strncmp(fileinfo[length].name,"DMENUPIC",8) && !unityedition)
             bfgedition++;

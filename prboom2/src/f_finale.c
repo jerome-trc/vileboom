@@ -106,6 +106,7 @@ int dsda_CheckInterText(void)
 
     int lump;
     int PWADlump;
+    lump = 0;
     PWADlump = 0;
 
     switch (gamemode)
@@ -119,19 +120,19 @@ int dsda_CheckInterText(void)
         {
         case 1:
             lump = W_GetNumForName("E1M8");
-            if (E1TEXT == s_E1TEXT) SkipText = 1;
+            if (!strcmp(E1TEXT, s_E1TEXT)) SkipText = 1;
             break;
         case 2:
             lump = W_GetNumForName("E2M8");
-            if (E2TEXT == s_E2TEXT) SkipText = 1;
+            if (!strcmp(E2TEXT, s_E2TEXT)) SkipText = 1;
             break;
         case 3:
             lump = W_GetNumForName("E3M8");
-            if (E3TEXT == s_E3TEXT) SkipText = 1;
+            if (!strcmp(E3TEXT, s_E3TEXT)) SkipText = 1;
             break;
         case 4:
             lump = W_GetNumForName("E4M8");
-            if (E4TEXT == s_E4TEXT) SkipText = 1;
+            if (!strcmp(E4TEXT, s_E4TEXT)) SkipText = 1;
             break;
         default:
             break;
@@ -148,90 +149,90 @@ int dsda_CheckInterText(void)
         case 6:
             lump = W_GetNumForName("MAP06");
             if (gamemission == pack_tnt) {
-                if (T1TEXT == s_T1TEXT)
+                if (!strcmp(T1TEXT, s_T1TEXT))
                     SkipText = 1;
             }
             else if (gamemission == pack_plut) {
-                if (P1TEXT == s_P1TEXT)
+                if (!strcmp(P1TEXT, s_P1TEXT))
                     SkipText = 1;
             }
             else {
-                if (C1TEXT == s_C1TEXT)
+                if (!strcmp(C1TEXT, s_C1TEXT))
                     SkipText = 1;
             }
             break;
         case 11:
             lump = W_GetNumForName("MAP11");
             if (gamemission == pack_tnt) {
-                if (T2TEXT == s_T2TEXT)
+                if (!strcmp(T2TEXT, s_T2TEXT))
                     SkipText = 1;
             }
             else if (gamemission == pack_plut) {
-                if (P2TEXT == s_P2TEXT)
+                if (!strcmp(P2TEXT, s_P2TEXT))
                     SkipText = 1;
             }
             else {
-                if (C2TEXT == s_C2TEXT)
+                if (!strcmp(C2TEXT, s_C2TEXT))
                     SkipText = 1;
             }
             break;
         case 20:
             lump = W_GetNumForName("MAP20");
             if (gamemission == pack_tnt) {
-                if (T3TEXT == s_T3TEXT)
+                if (!strcmp(T3TEXT, s_T3TEXT))
                     SkipText = 1;
             }
             else if (gamemission == pack_plut) {
-                if (P3TEXT == s_P3TEXT)
+                if (!strcmp(P3TEXT, s_P3TEXT))
                     SkipText = 1;
             }
             else {
-                if (C3TEXT == s_C3TEXT)
+                if (!strcmp(C3TEXT, s_C3TEXT))
                     SkipText = 1;
             }
             break;
         case 30:
             lump = W_GetNumForName("MAP30");
             if (gamemission == pack_tnt) {
-                if (T4TEXT == s_T4TEXT)
+                if (!strcmp(T4TEXT, s_T4TEXT))
                     SkipText = 1;
             }
             else if (gamemission == pack_plut) {
-                if (P4TEXT == s_P4TEXT)
+                if (!strcmp(P4TEXT, s_P4TEXT))
                     SkipText = 1;
             }
             else {
-                if (C4TEXT == s_C4TEXT)
+                if (!strcmp(C4TEXT, s_C4TEXT))
                     SkipText = 1;
             }
             break;
         case 15:
             lump = W_GetNumForName("MAP15");
             if (gamemission == pack_tnt) {
-                if (T5TEXT == s_T5TEXT)
+                if (!strcmp(T5TEXT, s_T5TEXT))
                     SkipText = 1;
             }
             else if (gamemission == pack_plut) {
-                if (P5TEXT == s_P5TEXT)
+                if (!strcmp(P5TEXT, s_P5TEXT))
                     SkipText = 1;
             }
             else {
-                if (C5TEXT == s_C5TEXT)
+                if (!strcmp(C5TEXT, s_C5TEXT))
                     SkipText = 1;
             }
             break;
         case 31:
             lump = W_GetNumForName("MAP31");
             if (gamemission == pack_tnt) {
-                if (T6TEXT == s_T6TEXT)
+                if (!strcmp(T6TEXT, s_T6TEXT))
                     SkipText = 1;
             }
             else if (gamemission == pack_plut) {
-                if (P6TEXT == s_P6TEXT)
+                if (!strcmp(P6TEXT, s_P6TEXT))
                     SkipText = 1;
             }
             else {
-                if (C6TEXT == s_C6TEXT)
+                if (!strcmp(C6TEXT, s_C6TEXT))
                     SkipText = 1;
             }
             break;
@@ -242,7 +243,7 @@ int dsda_CheckInterText(void)
         if (gamemission == pack_nerve && gamemap == 8)
         {
             lump = W_GetNumForName("MAP08");
-            if (C6TEXT == s_C6TEXT) SkipText = 1;
+            if (!strcmp(C6TEXT, s_C6TEXT)) SkipText = 1;
         }
         break;
         // Ty 08/27/98 - end gamemission logic
