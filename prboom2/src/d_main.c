@@ -1839,7 +1839,7 @@ static void D_DoomMainSetup(void)
   e6y_InitCommandLine();
 
   // Arsinikk - set pistol start based off args and cfg
-  if (dsda_Flag(dsda_config_pistol_start) && !pistolstart)
+  if (dsda_Flag(dsda_config_pistol_start) && !cfg_pistolstart)
       dsda_UpdateIntConfig(dsda_config_pistol_start, 1, true);
 
   // disables overflow warnings and errors for vanilla complevels

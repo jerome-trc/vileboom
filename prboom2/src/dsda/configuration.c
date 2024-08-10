@@ -371,8 +371,8 @@ dsda_config_t dsda_config[dsda_config_count] = {
     dsda_config_int, ARMOR_ICON_OFF, ARMOR_ICON_2,
     { ARMOR_ICON_1 }, (int*) &armor_icon
   },
-  [nyan_config_pistolstart] = {
-    "nyan_pistol_start", nyan_config_pistolstart,
+  [dsda_config_pistol_start] = {
+    "dsda_pistol_start", dsda_config_pistol_start,
     dsda_config_int, PISTOL_START_OFF, PISTOL_START_ALWAYS,
     { PISTOL_START_OFF }, (int*) &cfg_pistolstart
   },
@@ -996,10 +996,6 @@ dsda_config_t dsda_config[dsda_config_count] = {
   [dsda_config_allow_jumping] = {
     "dsda_allow_jumping", dsda_config_allow_jumping,
     CONF_BOOL(0), NULL, NOT_STRICT, dsda_ResetAirControl
-  },
-  [dsda_config_pistol_start] = {
-    "dsda_pistol_start", dsda_config_pistol_start,
-    CONF_BOOL(0)
   },
   [dsda_config_respawn_monsters] = {
     "dsda_respawn_monsters", dsda_config_respawn_monsters,

@@ -306,7 +306,6 @@ cfg_def_t cfg_defs[] =
   MIGRATED_SETTING(dsda_config_mute_unfocused_window),
   MIGRATED_SETTING(dsda_config_cheat_codes),
   MIGRATED_SETTING(dsda_config_allow_jumping),
-  MIGRATED_SETTING(dsda_config_pistol_start),
   MIGRATED_SETTING(dsda_config_respawn_monsters),
   MIGRATED_SETTING(dsda_config_fast_monsters),
   MIGRATED_SETTING(dsda_config_no_monsters),
@@ -326,7 +325,7 @@ cfg_def_t cfg_defs[] =
   MIGRATED_SETTING(nyan_config_skip_default_text),
   MIGRATED_SETTING(nyan_config_hud_berserk),
   MIGRATED_SETTING(nyan_config_hud_armoricon),
-  MIGRATED_SETTING(nyan_config_pistolstart),
+  MIGRATED_SETTING(dsda_config_pistol_start),
 
   SETTING_HEADING("Scripts"),
   MIGRATED_SETTING(dsda_config_script_0),
@@ -829,7 +828,7 @@ void M_LoadDefaults (void)
 
   dsda_InitSettings();
 
-  //e6y: Check on existence of dsda-doom.wad
+  //e6y: Check on existence of nyan-doom.wad
   port_wad_file = I_RequireFile(WAD_DATA, "");
 }
 

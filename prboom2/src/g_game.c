@@ -191,7 +191,7 @@ dboolean coop_spawns;
 int shorttics;
 
 /* Arsinikk - Set pistol start from config */
-pistolstart_t pistolstart;
+cfg_pistolstart_t cfg_pistolstart;
 
 //
 // controls (have defaults)
@@ -1176,7 +1176,7 @@ static void G_ResetInventory(player_t *p)
 //
 
 void dsda_ResetModifiers(void) {
-  if(pistolstart==1)
+  if(cfg_pistolstart==1)
     dsda_UpdateIntConfig(dsda_config_pistol_start, 0, true);
 }
 
@@ -1232,7 +1232,7 @@ static void G_DoLoadLevel (void)
   }
 
   // automatic pistol start when advancing from one level to the next
-  if (dsda_Flag(dsda_arg_pistolstart) || dsda_IntConfig(dsda_config_pistol_start))
+  if (dsda_Flag(dsda_arg_pistol_start) || (cfg_pistolstart > 0))
     if (allow_incompatibility)
       G_PlayerReborn(0);
 
@@ -3970,7 +3970,7 @@ void G_DoPlayDemo(void)
     lprintf(LO_INFO, "Playing demo:\n  Name: %s\n  Compatibility: %s\n%s",
                      defdemoname, comp_lev_str[compatibility_level], lrtext);
 
-    if((pistolstart==2) && !dsda_Flag(dsda_arg_pistolstart))
+    if((cfg_pistolstart==2) && !dsda_Flag(dsda_arg_pistol_start))
     {
       // ignore pistolstart "Aways" config setting when playing demo
       lprintf(LO_INFO, "  'Pistol Start' set to 'Always'. Disabled for demo playback.\n");

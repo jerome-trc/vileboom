@@ -315,7 +315,7 @@ const char *I_ConfigDir(void)
     char *home = M_getenv("HOME");
 
     // First, try legacy directory.
-    base = dsda_ConcatDir(home, ".dsda-doom");
+    base = dsda_ConcatDir(home, ".nyan-doom");
     if (access(base, F_OK) != 0)
     {
       // Legacy directory is not accessible. Use XDG directory.
@@ -325,10 +325,10 @@ const char *I_ConfigDir(void)
 
       xdg_data_home = M_getenv("XDG_DATA_HOME");
       if (xdg_data_home)
-        base = dsda_ConcatDir(xdg_data_home, "dsda-doom");
+        base = dsda_ConcatDir(xdg_data_home, "nyan-doom");
       else
         // $XDG_DATA_HOME should be $HOME/.local/share if not defined.
-        base = dsda_ConcatDir(home, ".local/share/dsda-doom");
+        base = dsda_ConcatDir(home, ".local/share/nyan-doom");
     }
 
     M_MakeDir(base, true); // Make sure it exists

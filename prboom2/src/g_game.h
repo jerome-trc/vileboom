@@ -126,10 +126,10 @@ typedef enum
   PISTOL_START_OFF,
   PISTOL_START_SESSION,
   PISTOL_START_ALWAYS
-} pistolstart_t;
+} cfg_pistolstart_t;
 
 /* Arsinikk - Set pistol start from config */
-extern pistolstart_t pistolstart;
+extern cfg_pistolstart_t cfg_pistolstart;
 void dsda_ResetModifiers(void);
 
 // disables overflow warnings and errors for vanilla complevels
