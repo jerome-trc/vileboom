@@ -1858,9 +1858,8 @@ static void D_DoomMainSetup(void)
       dsda_UpdateIntConfig(nyan_config_pistolstart, 1, true);
 
   // disables overflow warnings and errors for vanilla complevels
-  if (arg_complevel_limitremoving || dsda_Flag(dsda_arg_limitremoving))
+  if (arg_complevel_limitremoving)
     limitremoving = 1;
-  // lprintf(LO_INFO, "limitremoving: %i\n", limitremoving);
 
   // CPhipps - autoloading of wads
   autoload = !dsda_Flag(dsda_arg_noautoload);

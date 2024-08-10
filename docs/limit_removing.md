@@ -18,14 +18,10 @@ When playing/recording demos or just playing casual in "Limit-Removing" mode, th
 
 Note that `Boom` / `MBF` / `MBF21` features are ***NOT*** supported when running in "Limit-Removing" *(exceptions being sky transfers, music changes, and other non-demo breaking features)*
 
-### Parameters
-"Limit-Removing" can be toggled on in a few different ways:
+### Parameter
 - `-complevel #r`
   - The `#` can be `0-4` for vanilla complevels. The `r` is short for "removed"
-  - Examples: `-complevel 0r`, `-complevel 4r`
-- `-limitremoving` or `-lr`
-  - These parameters can be used with the classic `-complevel #` parameter
-  - Examples: `-complevel 2 -lr`, `-complevel 4 -limitremoving`
+  - Example: `-complevel 0r`, `-complevel 4r`
 
 ### Autoload via Lumps
 "Limit-Removing" can also be automatically toggled via lumps placed in a wad. Note that Parameters will overwrite the following lumps.
