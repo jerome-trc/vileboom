@@ -48,6 +48,8 @@
 
 #include "dsda/font.h"
 #include "dsda/mapinfo.h"
+#include "dsda/map_format.h"
+#include "dsda/configuration.h"
 #include "dsda/widescreen.h"
 #include "dsda/animate.h"
 
@@ -83,8 +85,17 @@ void WI_checkForAccelerate(void);    // killough 3/28/98: used to
 extern int acceleratestage;          // accelerate intermission screens
 int midstage;                 // whether we're in "mid-stage"
 
-int dsda_CheckInterTextPWAD(void)
+// Arsinikk - Checks whether intermission text matches original text and if new text is provided from PWAD.
+// used for the skip intermission config option.
+int dsda_CheckInterText(void)
 {
+    int SkipText;
+    SkipText = 0;
+
+    // Arsinikk - Essentially disable check for UMAPINFO an other conditions:
+    if(netgame || W_LumpNameExists("UMAPINFO") || map_format.zdoom || dsda_UseMapinfo() || raven)
+      return SkipText;
+
     int lump;
     int PWADlump;
     PWADlump = 0;
@@ -100,22 +111,21 @@ int dsda_CheckInterTextPWAD(void)
         {
         case 1:
             lump = W_GetNumForName("E1M8");
-            PWADlump = !W_PWADLumpNumExists(lump);
+            if (E1TEXT == s_E1TEXT) SkipText = 1;
             break;
         case 2:
             lump = W_GetNumForName("E2M8");
-            PWADlump = !W_PWADLumpNumExists(lump);
+            if (E2TEXT == s_E2TEXT) SkipText = 1;
             break;
         case 3:
             lump = W_GetNumForName("E3M8");
-            PWADlump = !W_PWADLumpNumExists(lump);
+            if (E3TEXT == s_E3TEXT) SkipText = 1;
             break;
         case 4:
             lump = W_GetNumForName("E4M8");
-            PWADlump = !W_PWADLumpNumExists(lump);
+            if (E4TEXT == s_E4TEXT) SkipText = 1;
             break;
         default:
-            // Ouch.
             break;
         }
         break;
@@ -129,27 +139,93 @@ int dsda_CheckInterTextPWAD(void)
         {
         case 6:
             lump = W_GetNumForName("MAP06");
-            PWADlump = !W_PWADLumpNumExists(lump);
+            if (gamemission == pack_tnt) {
+                if (T1TEXT == s_T1TEXT)
+                    SkipText = 1;
+            }
+            else if (gamemission == pack_plut) {
+                if (P1TEXT == s_P1TEXT)
+                    SkipText = 1;
+            }
+            else {
+                if (C1TEXT == s_C1TEXT)
+                    SkipText = 1;
+            }
             break;
         case 11:
             lump = W_GetNumForName("MAP11");
-            PWADlump = !W_PWADLumpNumExists(lump);
+            if (gamemission == pack_tnt) {
+                if (T2TEXT == s_T2TEXT)
+                    SkipText = 1;
+            }
+            else if (gamemission == pack_plut) {
+                if (P2TEXT == s_P2TEXT)
+                    SkipText = 1;
+            }
+            else {
+                if (C2TEXT == s_C2TEXT)
+                    SkipText = 1;
+            }
             break;
         case 20:
             lump = W_GetNumForName("MAP20");
-            PWADlump = !W_PWADLumpNumExists(lump);
+            if (gamemission == pack_tnt) {
+                if (T3TEXT == s_T3TEXT)
+                    SkipText = 1;
+            }
+            else if (gamemission == pack_plut) {
+                if (P3TEXT == s_P3TEXT)
+                    SkipText = 1;
+            }
+            else {
+                if (C3TEXT == s_C3TEXT)
+                    SkipText = 1;
+            }
             break;
         case 30:
             lump = W_GetNumForName("MAP30");
-            PWADlump = !W_PWADLumpNumExists(lump);
+            if (gamemission == pack_tnt) {
+                if (T4TEXT == s_T4TEXT)
+                    SkipText = 1;
+            }
+            else if (gamemission == pack_plut) {
+                if (P4TEXT == s_P4TEXT)
+                    SkipText = 1;
+            }
+            else {
+                if (C4TEXT == s_C4TEXT)
+                    SkipText = 1;
+            }
             break;
         case 15:
             lump = W_GetNumForName("MAP15");
-            PWADlump = !W_PWADLumpNumExists(lump);
+            if (gamemission == pack_tnt) {
+                if (T5TEXT == s_T5TEXT)
+                    SkipText = 1;
+            }
+            else if (gamemission == pack_plut) {
+                if (P5TEXT == s_P5TEXT)
+                    SkipText = 1;
+            }
+            else {
+                if (C5TEXT == s_C5TEXT)
+                    SkipText = 1;
+            }
             break;
         case 31:
             lump = W_GetNumForName("MAP31");
-            PWADlump = !W_PWADLumpNumExists(lump);
+            if (gamemission == pack_tnt) {
+                if (T6TEXT == s_T6TEXT)
+                    SkipText = 1;
+            }
+            else if (gamemission == pack_plut) {
+                if (P6TEXT == s_P6TEXT)
+                    SkipText = 1;
+            }
+            else {
+                if (C6TEXT == s_C6TEXT)
+                    SkipText = 1;
+            }
             break;
         default:
             // Ouch.
@@ -158,7 +234,7 @@ int dsda_CheckInterTextPWAD(void)
         if (gamemission == pack_nerve && gamemap == 8)
         {
             lump = W_GetNumForName("MAP08");
-            PWADlump = !W_PWADLumpNumExists(lump);
+            if (C6TEXT == s_C6TEXT) SkipText = 1;
         }
         break;
         // Ty 08/27/98 - end gamemission logic
@@ -169,150 +245,13 @@ int dsda_CheckInterTextPWAD(void)
         break;
     }
 
-    return PWADlump;
-}
+    PWADlump = W_PWADLumpNumExists(lump);
 
-int dsda_CheckInterText(void)
-{
-    int new_TEXT;
-    new_TEXT = 0;
+    // Arsinikk - only skip text if lump before story screen is replaced
+    if (PWADlump)
+      SkipText = 0;
 
-    switch (gamemode)
-    {
-        // DOOM 1 - E1, E3 or E4, but each nine missions
-    case shareware:
-    case registered:
-    case retail:
-    {
-        switch (gameepisode)
-        {
-        case 1:
-            if (E1TEXT != s_E1TEXT) new_TEXT = 1;
-            break;
-        case 2:
-            if (E2TEXT != s_E2TEXT) new_TEXT = 1;
-            break;
-        case 3:
-            if (E3TEXT != s_E3TEXT) new_TEXT = 1;
-            break;
-        case 4:
-            if (E4TEXT != s_E4TEXT) new_TEXT = 1;
-            break;
-        default:
-            // Ouch.
-            break;
-        }
-        break;
-    }
-
-    // DOOM II and missions packs with E1, M34
-    case commercial:
-    {
-        // Ty 08/27/98 - added the gamemission logic
-        switch (gamemap)
-        {
-        case 6:
-            if (gamemission == pack_tnt) {
-                if (T1TEXT != s_T1TEXT)
-                    new_TEXT = 1;
-            }
-            else if (gamemission == pack_plut) {
-                if (P1TEXT != s_P1TEXT)
-                    new_TEXT = 1;
-            }
-            else {
-                if (C1TEXT != s_C1TEXT)
-                    new_TEXT = 1;
-            }
-            break;
-        case 11:
-            if (gamemission == pack_tnt) {
-                if (T2TEXT != s_T2TEXT)
-                    new_TEXT = 1;
-            }
-            else if (gamemission == pack_plut) {
-                if (P2TEXT != s_P2TEXT)
-                    new_TEXT = 1;
-            }
-            else {
-                if (C2TEXT != s_C2TEXT)
-                    new_TEXT = 1;
-            }
-            break;
-        case 20:
-            if (gamemission == pack_tnt) {
-                if (T3TEXT != s_T3TEXT)
-                    new_TEXT = 1;
-            }
-            else if (gamemission == pack_plut) {
-                if (P3TEXT != s_P3TEXT)
-                    new_TEXT = 1;
-            }
-            else {
-                if (C3TEXT != s_C3TEXT)
-                    new_TEXT = 1;
-            }
-            break;
-        case 30:
-            if (gamemission == pack_tnt) {
-                if (T4TEXT != s_T4TEXT)
-                    new_TEXT = 1;
-            }
-            else if (gamemission == pack_plut) {
-                if (P4TEXT != s_P4TEXT)
-                    new_TEXT = 1;
-            }
-            else {
-                if (C4TEXT != s_C4TEXT)
-                    new_TEXT = 1;
-            }
-            break;
-        case 15:
-            if (gamemission == pack_tnt) {
-                if (T5TEXT != s_T5TEXT)
-                    new_TEXT = 1;
-            }
-            else if (gamemission == pack_plut) {
-                if (P5TEXT != s_P5TEXT)
-                    new_TEXT = 1;
-            }
-            else {
-                if (C5TEXT != s_C5TEXT)
-                    new_TEXT = 1;
-            }
-            break;
-        case 31:
-            if (gamemission == pack_tnt) {
-                if (T6TEXT != s_T6TEXT)
-                    new_TEXT = 1;
-            }
-            else if (gamemission == pack_plut) {
-                if (P6TEXT != s_P6TEXT)
-                    new_TEXT = 1;
-            }
-            else {
-                if (C6TEXT != s_C6TEXT)
-                    new_TEXT = 1;
-            }
-            break;
-        default:
-            // Ouch.
-            break;
-        }
-        if (gamemission == pack_nerve && gamemap == 8)
-        {
-            if (C6TEXT != s_C6TEXT) new_TEXT = 1;
-        }
-        break;
-        // Ty 08/27/98 - end gamemission logic
-    }
-
-    // Indeterminate.
-    default:  // Ty 03/30/98 - not externalized
-        break;
-    }
-
-    return new_TEXT;
+    return SkipText;
 }
 
 //
@@ -322,9 +261,20 @@ void F_StartFinale (void)
 {
   int mnum;
   int muslump;
+  int SkipText;
 
   if (heretic) return Heretic_F_StartFinale();
   if (hexen) return Hexen_F_StartFinale();
+
+  SkipText = dsda_CheckInterText() && dsda_IntConfig(nyan_config_skip_default_text);
+
+  // Arsinikk
+  // If iwad story text and option, move forward in Doom 2 / Plutonia / TNT
+  if (SkipText && (gamemode == commercial) && !F_ShowCast())
+  {
+    gameaction = ga_worlddone;
+    return;
+  }
 
   gameaction = ga_nothing;
   gamestate = GS_FINALE;
@@ -346,6 +296,24 @@ void F_StartFinale (void)
   else
   {
     S_ChangeMusic(mnum, true);
+  }
+
+  // Arsinikk
+  // If iwad story text and option, do actions for Doom 1
+  // Music change above is needed for Doom 1
+  // If Doom 2 cast, skip text and do cast
+  if (SkipText)
+  {
+    if (gamemode != commercial)
+    {
+      if (gameepisode == 3)
+        F_StartScroll(NULL, NULL, NULL, true);
+      else
+        F_StartPostFinale();
+    }
+    else if (F_ShowCast())
+      F_StartCast(NULL, NULL, true); // cast of Doom 2 characters
+    return;
   }
 
   // Okay - IWAD dependend stuff.
@@ -525,35 +493,6 @@ static dboolean F_ShowCast(void)
   return gamemap == 30 ||
          (gamemission == pack_nerve && allow_incompatibility && gamemap == 8) ||
          dsda_FinaleShortcut();
-}
-
-
-
-void InterTextNextLevel(void)
-{
-  if (gamemode != commercial)       // Doom 1 / Ultimate Doom episode end
-  {                      
-    gameaction = ga_nothing;
-    gamestate = GS_FINALE;
-    automap_active = false;
-
-    if (gameepisode == 3)
-      F_StartScroll(NULL, NULL, NULL, true);
-    else
-      F_StartPostFinale();
-  }
-  else   // Doom 2 / Plutonia / TNT
-  {
-      if (F_ShowCast())
-      {
-        gameaction = ga_nothing;
-        gamestate = GS_FINALE;
-        automap_active = false;
-        F_StartCast(NULL, NULL, true); // cast of Doom 2 characters
-      }
-      else
-        gameaction = ga_worlddone;  // next level, e.g. MAP07
-    }
 }
 
 void F_Ticker(void)

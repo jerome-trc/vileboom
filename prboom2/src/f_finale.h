@@ -40,7 +40,6 @@
 
 /* Called by main loop. */
 dboolean F_Responder (event_t* ev);
-void InterTextNextLevel(void);
 
 /* Called by main loop. */
 void F_Ticker (void);
@@ -48,8 +47,6 @@ void F_Ticker (void);
 /* Called by main loop. */
 void F_Drawer (void);
 
-int dsda_CheckInterText(void);
-int dsda_CheckInterTextPWAD(void);
 void F_StartFinale (void);
 void F_StartCast (const char* background, const char* music, dboolean loop_music);
 void F_StartScroll (const char* right, const char* left, const char* music, dboolean loop_music);

@@ -2230,40 +2230,14 @@ void G_WorldDone (void)
       }
     }
 
-    if (!netgame && dsda_IntConfig(nyan_config_skip_default_text) && !raven)
-    {
-      int NewInterText;
-      int PWADInterText;
-      NewInterText = dsda_CheckInterText();
-      PWADInterText = dsda_CheckInterTextPWAD();
-
-      if (NewInterText==0 && PWADInterText)
-        InterTextNextLevel();  // next level, e.g. MAP07      else
-      else
-        gameaction = ga_victory;
-    }
-    else
-      gameaction = ga_victory;
+    gameaction = ga_victory;
 
     return;
   }
 
   if (done_behaviour & WD_START_FINALE)
   {
-    if (!netgame && dsda_IntConfig(nyan_config_skip_default_text) && !raven)
-    {
-      int NewInterText;
-      int PWADInterText;
-      NewInterText = dsda_CheckInterText();
-      PWADInterText = dsda_CheckInterTextPWAD();
-
-      if (NewInterText==0 && PWADInterText)
-        InterTextNextLevel();  // next level, e.g. MAP07      else
-      else
-        F_StartFinale();
-    }
-    else
-      F_StartFinale();
+    F_StartFinale();
 
     return;
   }
