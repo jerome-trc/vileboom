@@ -1055,6 +1055,10 @@ dsda_config_t dsda_config[dsda_config_count] = {
     "map_scroll_speed", dsda_config_map_scroll_speed,
     dsda_config_int, 1, 32, { 32 }, NULL, NOT_STRICT, AM_InitParams
   },
+  [dsda_config_map_zoom_speed] = {
+    "map_zoom_speed", dsda_config_map_zoom_speed,
+    dsda_config_int, 1, 32, { 16 }, NULL, NOT_STRICT, AM_InitParams
+  },
   [dsda_config_map_wheel_zoom] = {
     "map_wheel_zoom", dsda_config_map_wheel_zoom,
     CONF_BOOL(1), NULL, NOT_STRICT, AM_InitParams

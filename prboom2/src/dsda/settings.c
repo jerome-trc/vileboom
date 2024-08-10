@@ -58,7 +58,11 @@ static int dsda_WadCompatibilityLevel(void) {
   // This might be called before all wads are loaded
   if (numwadfiles != last_numwadfiles) {
       int num;
-      int gnum;
+      char* gtext;
+      char* lrtext;
+
+      gtext = "";
+      lrtext = "";
 
       last_numwadfiles = numwadfiles;
       num = W_CheckNumForName("COMPLVL");
@@ -66,32 +70,37 @@ static int dsda_WadCompatibilityLevel(void) {
       if (num != LUMP_NOT_FOUND) {
           int length;
           const char* data;
+          int gnum;
 
           length = W_LumpLength(num);
           data = W_LumpByNum(num);
           gnum = W_CheckNumForName("GAMEVERS");
 
-          if (length == 7 && !strncasecmp("vanilla", data, 7)) {
+          if (length == 14 && !strncasecmp("limit-removing", data, 14)) {
+            limitremoving = 1;
+            gtext = " (limit-removing)";
+          }
+
+          if ((length == 7 && !strncasecmp("vanilla", data, 7)) || limitremoving) {
             if (gnum != LUMP_NOT_FOUND) {
               int vlength;
               const char* vdata;
 
+              gtext = " and GAMEVERS";
+
               vlength = W_LumpLength(gnum);
               vdata = W_LumpByNum(gnum);
 
-              if (vlength <= 9 && !strncasecmp("1.2", vdata, 3))
+              if (vlength == 3 && !strncasecmp("1.2", vdata, 3))
                   complvl = 0;
-              else if (vlength <= 11 && !strncasecmp("1.666", vdata, 5))
+              else if (vlength == 5 && !strncasecmp("1.666", vdata, 5))
                   complvl = 1;
-              else if (vlength <= 9 && !strncasecmp("1.9", vdata, 3))
+              else if (vlength == 3 && !strncasecmp("1.9", vdata, 3))
                   complvl = 2;
-              else if (vlength <= 14 && !strncasecmp("ultimate", vdata, 8))
+              else if (vlength == 8 && !strncasecmp("ultimate", vdata, 8))
                   complvl = 3;
-              else if (vlength <= 11 && !strncasecmp("final", vdata, 5))
+              else if (vlength == 5 && !strncasecmp("final", vdata, 5))
                   complvl = 4;
-
-              if (vlength <= 14 && strstr(vdata, "limit"))
-                  limitremoving = 1;
             }
             if (complvl == -1) {
                 if (gamemode == commercial)
@@ -110,15 +119,7 @@ static int dsda_WadCompatibilityLevel(void) {
           else if (length == 5 && !strncasecmp("mbf21", data, 5))
               complvl = 21;
 
-          if (length == 7 && !strncasecmp("vanilla", data, 7) && gnum != LUMP_NOT_FOUND)
-          {
-              if (limitremoving)
-                  lprintf(LO_INFO, "Detected COMPLVL and GAMEVERS lump: %i (limit-removing)\n", complvl);
-              else
-                  lprintf(LO_INFO, "Detected COMPLVL and GAMEVERS lump: %i\n", complvl);
-          }
-          else
-              lprintf(LO_INFO, "Detected COMPLVL lump: %i\n", complvl);
+          lprintf(LO_INFO, "Detected COMPLVL%s lump: %i%s\n", gtext, complvl, lrtext);
       }
 }
 

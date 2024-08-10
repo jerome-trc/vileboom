@@ -3975,13 +3975,19 @@ void G_DoPlayDemo(void)
 {
   if (LoadDemo(defdemoname, &demobuffer, &demolength))
   {
+    char* lrtext;
+    lrtext = "";
+
+    if (demo_compatibility && limitremoving)
+      lrtext = "  Limit-Removing: Enabled\n";
+
     G_StartDemoPlayback(demobuffer, demolength, PLAYBACK_NORMAL);
 
     if (dsda_Flag(dsda_arg_track_playback))
       dsda_ResetSplits();
 
-    lprintf(LO_INFO, "Playing demo:\n  Name: %s\n  Compatibility: %s\n",
-                     defdemoname, comp_lev_str[compatibility_level]);
+    lprintf(LO_INFO, "Playing demo:\n  Name: %s\n  Compatibility: %s\n%s",
+                     defdemoname, comp_lev_str[compatibility_level], lrtext);
     if((cfg_pistolstart==2) && !arg_pistolstart)
     {
       // ignore pistolstart "Aways" config setting when playing demo

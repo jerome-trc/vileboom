@@ -6,7 +6,7 @@ This is Arsinikk's own personal fork of DSDA-Doom with new added features and im
 ### New Features
 - Native [widescreen](./docs/ws.md) and [animated background / menu element](./docs/animbg.md) lump support
 - Support for [GAMEVERS](./docs/gamevers.md) lump in combination with [COMPLVL](./docs/complvl.md) to further specify Vanilla compatibility.
-- Support for `-limitremoving` or `-lr` to disable overflow errors and emulation under Vanilla compatibility
+- [Limit-Removing](./docs/limit_removing.md) Support to record/playback demos and/or play casually without overflow errors and emulation under Vanilla compatibility
 - added [Extended HELP](https://www.doomworld.com/forum/topic/111465-boom-extended-help-screens-an-undocumented-feature/) screens (`HELP01`-`HELP99`) for Doom2/Plutonia/TNT _(previously only accessible via Doom 1)_.
 - Added new scaled fuzz effect for Spectres and invisibility effects in the software renderer ([Thanks Lovey](https://github.com/kraflab/dsda-doom/pull/359))
 - New "berserk" and "armour" Statusbar elements *(Options > Status Bar / HUD > Status Indicators)*
