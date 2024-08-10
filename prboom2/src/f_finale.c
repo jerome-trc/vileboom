@@ -270,7 +270,7 @@ void F_StartFinale (void)
 
   // Arsinikk
   // If iwad story text and option, move forward in Doom 2 / Plutonia / TNT
-  if (SkipText && (gamemode == commercial) && !F_ShowCast())
+  if (SkipText && (gamemode == commercial) && (F_ShowCast() == FALSE))
   {
     gameaction = ga_worlddone;
     return;
