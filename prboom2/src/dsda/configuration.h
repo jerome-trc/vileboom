@@ -69,6 +69,7 @@ typedef enum {
   dsda_config_cheat_codes,
   dsda_config_organize_failed_demos,
   nyan_config_intermission_pause,
+  nyan_config_skip_default_text,
   dsda_config_script_0,
   dsda_config_script_1,
   dsda_config_script_2,
