@@ -97,8 +97,6 @@ const int tran_filter_pct = 66;
 GLfloat gl_texture_filter_anisotropic;
 
 extern int gld_paletteIndex;
-extern int playpal_black;
-extern int playpal_white;
 
 //sprites
 const float gl_spriteclip_threshold_f = 10.f / MAP_COEFF;
@@ -1647,7 +1645,8 @@ bottomtexture:
       wall.ybottom=-MAXCOORD*2;
       if (
           (backsector->ceilingheight==backsector->floorheight) &&
-          (backsector->floorpic==skyflatnum)
+          (backsector->floorpic==skyflatnum) &&
+          (bottomtexture == NO_TEXTURE)
          )
       {
         wall.ytop=(float)backsector->floorheight/MAP_SCALE;

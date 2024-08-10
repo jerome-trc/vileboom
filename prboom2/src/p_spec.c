@@ -1696,7 +1696,7 @@ void P_CrossCompatibleSpecialLine(line_t *line, int side, mobj_t *thing, dboolea
 
   if (!thing->player || bossaction)
   {
-    ok = 0;
+    ok = bossaction;
     switch(line->special)
     {
       // teleporters are blocked for boss actions.
@@ -3763,9 +3763,9 @@ void P_SpawnCompatibleScroller(line_t *l, int i)
         }
         else
         {
-            for (id_p = dsda_FindLinesFromID(l->tag); *id_p >= 0; id_p++)
-                if (*id_p != i)
-                    Add_WallScroller(dx, dy, lines + *id_p, control, accel);
+            FIND_LINES(id_p, l->tag)
+              if (*id_p != i)
+                Add_WallScroller(dx, dy, lines + *id_p, control, accel);
         }
         break;
 
@@ -3789,7 +3789,7 @@ void P_SpawnCompatibleScroller(line_t *l, int i)
       side = lines[i].sidenum[0];
       dx = -sides[side].textureoffset / 8;
       dy = sides[side].rowoffset / 8;
-      for (id_p = dsda_FindLinesFromID(l->tag); *id_p >= 0; id_p++)
+      FIND_LINES(id_p, l->tag)
         if (*id_p != i)
           dsda_AddControlSideScroller(dx, dy, control, lines[*id_p].sidenum[0], accel, 0);
 
@@ -3939,7 +3939,7 @@ void P_SpawnZDoomScroller(line_t *l, int i)
     case zl_scroll_texture_model:
       // killough 3/1/98: scroll wall according to linedef
       // (same direction and speed as scrolling floors)
-      for (id_p = dsda_FindLinesFromID(l->special_args[0]); *id_p >= 0; id_p++)
+      FIND_LINES(id_p, l->special_args[0])
         if (*id_p != i)
           Add_WallScroller(dx, dy, lines + *id_p, control, accel);
 
@@ -6489,7 +6489,7 @@ dboolean P_ExecuteZDoomLineSpecial(int special, int * args, line_t * line, int s
           if (args[2] & 1) clearflags |= flags[i];
         }
 
-        for (id_p = dsda_FindLinesFromID(args[0]); *id_p >= 0; id_p++)
+        FIND_LINES(id_p, args[0])
         {
           lines[*id_p].flags = (lines[*id_p].flags & ~clearflags) | setflags;
         }
@@ -6557,7 +6557,7 @@ dboolean P_ExecuteZDoomLineSpecial(int special, int * args, line_t * line, int s
           if (args[2] & 1) clearflags |= flags[i];
         }
 
-        for (id_p = dsda_FindLinesFromID(args[0]); *id_p >= 0; id_p++)
+        FIND_LINES(id_p, args[0])
         {
           lines[*id_p].flags = (lines[*id_p].flags & ~clearflags) | setflags;
         }
@@ -6570,7 +6570,7 @@ dboolean P_ExecuteZDoomLineSpecial(int special, int * args, line_t * line, int s
       {
         const int *id_p;
 
-        for (id_p = dsda_FindLinesFromID(args[0]); *id_p >= 0; id_p++)
+        FIND_LINES(id_p, args[0])
         {
           lines[*id_p].automap_style = args[1];
         }
@@ -6584,7 +6584,7 @@ dboolean P_ExecuteZDoomLineSpecial(int special, int * args, line_t * line, int s
         const int *id_p;
         int side = !!args[3];
 
-        for (id_p = dsda_FindLinesFromID(args[0]); *id_p >= 0; id_p++)
+        FIND_LINES(id_p, args[0])
         {
           dsda_AddSideScroller(args[1], args[2], lines[*id_p].sidenum[side], args[4]);
         }
@@ -6599,7 +6599,7 @@ dboolean P_ExecuteZDoomLineSpecial(int special, int * args, line_t * line, int s
         const int NO_CHANGE = 32767 << FRACBITS;
         int sidenum = !!args[3];
 
-        for (id_p = dsda_FindLinesFromID(args[0]); *id_p >= 0; id_p++)
+        FIND_LINES(id_p, args[0])
         {
           side_t *side = &sides[lines[*id_p].sidenum[sidenum]];
 
@@ -6673,7 +6673,7 @@ dboolean P_ExecuteZDoomLineSpecial(int special, int * args, line_t * line, int s
         if (!args[2])
           args[2] = FRACUNIT;
 
-        for (id_p = dsda_FindLinesFromID(args[0]); *id_p >= 0; id_p++)
+        FIND_LINES(id_p, args[0])
         {
           side_t *side = &sides[lines[*id_p].sidenum[sidenum]];
 
@@ -7682,6 +7682,23 @@ dboolean P_ExecuteZDoomLineSpecial(int special, int * args, line_t * line, int s
           sectors[*id_p].colormap = args[0];
       }
       buttonSuccess = 1;
+      break;
+    case zl_music_change_song:
+      if (args[0] != LUMP_NOT_FOUND)
+      {
+        if (!args[1] || (mo->player && mo->player->mo == mo))
+        {
+          S_ChangeMusInfoMusic(args[0], args[2]);
+          buttonSuccess = 1;
+        }
+      }
+      break;
+    case zl_music_stop:
+      if (!args[0] || (mo->player && mo->player->mo == mo))
+      {
+        S_StopMusic();
+        buttonSuccess = 1;
+      }
       break;
     default:
       break;

@@ -923,6 +923,8 @@ void CheckIWAD(const char *iwadname,GameMode_t *gmode,dboolean *hassec)
   if (M_ReadAccess(iwadname))
   {
     int ud=0,rg=0,sw=0,cm=0,sc=0,hx=0;
+    dboolean dmenupic = false;
+    dboolean large_titlepic = false;
     FILE* fp;
 
     // Identify IWAD correctly
@@ -980,12 +982,11 @@ void CheckIWAD(const char *iwadname,GameMode_t *gmode,dboolean *hassec)
                   fileinfo[length].name[4] == '2')
                 ++sc;
           }
-          // Arsinikk - Unity WAD Check!
-          // (Check if any iwad lump is 88.62kb)
-          if (fileinfo[length].size == 90746)
-            unityedition++;
-          if (!strncmp(fileinfo[length].name,"DMENUPIC",8) && !unityedition)
-            bfgedition++;
+
+          if (!strncmp(fileinfo[length].name,"DMENUPIC",8))
+            dmenupic = true;
+          if (!strncmp(fileinfo[length].name,"TITLEPIC",8) && fileinfo[length].size > 68168)
+            large_titlepic = true;
           if (!strncmp(fileinfo[length].name,"HACX",4))
             hx++;
         }
@@ -997,6 +998,12 @@ void CheckIWAD(const char *iwadname,GameMode_t *gmode,dboolean *hassec)
     }
     else // error from open call
       I_Error("CheckIWAD: Can't open IWAD %s", iwadname);
+
+    // unity iwad has dmenupic and a large titlepic
+    if (dmenupic && !large_titlepic)
+      bfgedition++;
+    if (dmenupic && large_titlepic)
+      unityedition++;
 
     // Determine game mode from levels present
     // Must be a full set for whichever mode is present
@@ -1831,12 +1838,9 @@ static void D_DoomMainSetup(void)
   //e6y: some stuff from command-line should be initialised before ProcessDehFile()
   e6y_InitCommandLine();
 
-  // Automatic pistol start when advancing from one level to the next.
-  arg_pistolstart = dsda_Flag(dsda_arg_pistolstart);
-
   // Arsinikk - set pistol start based off args and cfg
-  if (arg_pistolstart && !cfg_pistolstart)
-      dsda_UpdateIntConfig(nyan_config_pistolstart, 1, true);
+  if (dsda_Flag(dsda_config_pistol_start) && !pistolstart)
+      dsda_UpdateIntConfig(dsda_config_pistol_start, 1, true);
 
   // disables overflow warnings and errors for vanilla complevels
   if (arg_complevel_limitremoving)

@@ -190,11 +190,8 @@ dboolean coop_spawns;
 // but without having to be recording every time.
 int shorttics;
 
-// automatic pistol start when advancing from one level to the next
-int arg_pistolstart;
-
 /* Arsinikk - Set pistol start from config */
-cfg_pistolstart_t cfg_pistolstart;
+pistolstart_t pistolstart;
 
 //
 // controls (have defaults)
@@ -1178,9 +1175,9 @@ static void G_ResetInventory(player_t *p)
 // Resets Pistol Start Cfg per session
 //
 
-void resetPistolStart(void) {
-  if(cfg_pistolstart==1)
-    dsda_UpdateIntConfig(nyan_config_pistolstart, 0, true);
+void dsda_ResetModifiers(void) {
+  if(pistolstart==1)
+    dsda_UpdateIntConfig(dsda_config_pistol_start, 0, true);
 }
 
 //
@@ -1235,26 +1232,9 @@ static void G_DoLoadLevel (void)
   }
 
   // automatic pistol start when advancing from one level to the next
-  if (cfg_pistolstart)
-  {
+  if (dsda_Flag(dsda_arg_pistolstart) || dsda_IntConfig(dsda_config_pistol_start))
     if (allow_incompatibility)
-    {
       G_PlayerReborn(0);
-    }
-    else if (reelplayback || !arg_pistolstart)
-    {
-      // no-op - silently ignore pistolstart when playing demo from the
-      // demo reel
-    }
-    else
-    {
-      const char message[] = "The -pistolstart option is not supported"
-                             " for demos and\n"
-                             " network play.";
-      demorecording = false;
-      I_Error(message);
-    }
-  }
 
   // initialize the msecnode_t freelist.                     phares 3/25/98
   // any nodes in the freelist are gone by now, cleared
@@ -1476,9 +1456,9 @@ void G_Ticker (void)
   entry_leveltime = leveltime;
 
   // CPhipps - player colour changing
-  if (!demoplayback && mapcolor_plyr[consoleplayer] != mapcolor_me) {
+  if (!demoplayback && mapcolor.plyr[consoleplayer] != mapcolor.me) {
     // Changed my multiplayer colour - Inform the whole game
-    G_ChangedPlayerColour(consoleplayer, mapcolor_me);
+    G_ChangedPlayerColour(consoleplayer, mapcolor.me);
   }
   P_MapStart();
   // do player reborns if needed
@@ -1565,6 +1545,7 @@ void G_Ticker (void)
     int buf = gametic % BACKUPTICS;
 
     dsda_UpdateAutoKeyFrames();
+    dsda_UpdateAutoSaves();
 
     if (dsda_BruteForce())
     {
@@ -1844,7 +1825,7 @@ void G_ChangedPlayerColour(int pn, int cl)
 
   if (!netgame) return;
 
-  mapcolor_plyr[pn] = cl;
+  mapcolor.plyr[pn] = cl;
 
   // Rebuild colour translation tables accordingly
   R_InitTranslationTables();
@@ -1925,7 +1906,7 @@ void G_PlayerReborn (int player)
 static dboolean G_CheckSpot(int playernum, mapthing_t *mthing)
 {
   fixed_t     x,y;
-  subsector_t *ss;
+  sector_t *sec;
   int         i;
 
   if (!players[playernum].mo)
@@ -1954,11 +1935,11 @@ static dboolean G_CheckSpot(int playernum, mapthing_t *mthing)
     players[playernum].mo->flags2 |= MF2_PASSMOBJ;
 
     // spawn a teleport fog
-    ss = R_PointInSubsector(x, y);
+    sec = R_PointInSector(x, y);
     an = ((unsigned) ANG45 * (mthing->angle / 45)) >> ANGLETOFINESHIFT;
 
     mo = P_SpawnMobj(x + 20 * finecosine[an], y + 20 * finesine[an],
-                     ss->sector->floorheight + TELEFOGHEIGHT, g_mt_tfog);
+                     sec->floorheight + TELEFOGHEIGHT, g_mt_tfog);
 
     if (players[consoleplayer].viewz != 1)
       S_StartMobjSound(mo, g_sfx_telept);   // don't start sound on first frame
@@ -1986,7 +1967,7 @@ static dboolean G_CheckSpot(int playernum, mapthing_t *mthing)
   }
 
   // spawn a teleport fog
-  ss = R_PointInSubsector (x,y);
+  sec = R_PointInSector (x,y);
   { // Teleport fog at respawn point
     fixed_t xa,ya;
     int an;
@@ -2021,7 +2002,7 @@ static dboolean G_CheckSpot(int playernum, mapthing_t *mthing)
       default:  I_Error("G_CheckSpot: unexpected angle %d\n",an);
       }
 
-    mo = P_SpawnMobj(x+20*xa, y+20*ya, ss->sector->floorheight, MT_TFOG);
+    mo = P_SpawnMobj(x+20*xa, y+20*ya, sec->floorheight, MT_TFOG);
 
     if (players[consoleplayer].viewz != 1)
       S_StartMobjSound(mo, sfx_telept);  // don't start sound on first frame
@@ -3988,7 +3969,8 @@ void G_DoPlayDemo(void)
 
     lprintf(LO_INFO, "Playing demo:\n  Name: %s\n  Compatibility: %s\n%s",
                      defdemoname, comp_lev_str[compatibility_level], lrtext);
-    if((cfg_pistolstart==2) && !arg_pistolstart)
+
+    if((pistolstart==2) && !dsda_Flag(dsda_arg_pistolstart))
     {
       // ignore pistolstart "Aways" config setting when playing demo
       lprintf(LO_INFO, "  'Pistol Start' set to 'Always'. Disabled for demo playback.\n");
@@ -4181,8 +4163,8 @@ void P_WalkTicker()
         finesine[(walkcamera.angle - ANG90) >> ANGLETOFINESHIFT]);
 
   {
-    subsector_t *subsec = R_PointInSubsector (walkcamera.x, walkcamera.y);
-    walkcamera.z = subsec->sector->floorheight + 41 * FRACUNIT;
+    sector_t *sec = R_PointInSector (walkcamera.x, walkcamera.y);
+    walkcamera.z = sec->floorheight + 41 * FRACUNIT;
   }
 
   G_ResetMotion();

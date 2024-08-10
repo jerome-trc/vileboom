@@ -80,27 +80,12 @@ const byte *colrngs[CR_LIMIT];
 
 int usegamma;
 
-// [FG] translate between blood color value as per EE spec
-//      and actual color translation table index
-
-static const int bloodcolor[] = {
-  0,         // 0 - Red (normal)
-  CR_GRAY,   // 1 - Grey
-  CR_GREEN,  // 2 - Green
-  CR_BLUE,   // 3 - Blue
-  CR_YELLOW, // 4 - Yellow
-  CR_BLACK,  // 5 - Black
-  CR_PURPLE, // 6 - Purple
-  CR_WHITE,  // 7 - White
-  CR_ORANGE, // 8 - Orange
-};
-
 int V_BloodColor(int blood)
 {
-  if (blood < 0 || blood > 8)
-    blood = 0;
+  if (blood < 1 || blood > 8)
+    return 0;
 
-  return bloodcolor[blood];
+  return CR_BLOOD + blood - 1;
 }
 
 // haleyjd: DOSDoom-style single translucency lookup-up table
@@ -1288,9 +1273,12 @@ void SetRatio(int width, int height)
   tallscreen = (ratio_scale < ratio_multiplier);
   if (tallscreen)
   {
+    float ratio_quotient = (float)ratio_multiplier/ratio_scale;
+    float ratio_percentage = (ratio_quotient - 1) * 100.0;
+    psprite_offset = (int)(ratio_percentage*FRACUNIT);
+
     lprintf(LO_DEBUG, "SetRatio: tallscreen aspect recognized; flipping multiplier\n");
     swap(&ratio_multiplier, &ratio_scale);
-    psprite_offset = (int)(6.5*FRACUNIT);
   }
   else
   {

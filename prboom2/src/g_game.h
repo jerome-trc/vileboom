@@ -121,19 +121,16 @@ extern const char * comp_lev_str[];
 extern int shorttics;
 extern int longtics;
 
-// automatic pistol start when advancing from one level to the next
-extern int arg_pistolstart;
-
 typedef enum
 {
   PISTOL_START_OFF,
   PISTOL_START_SESSION,
   PISTOL_START_ALWAYS
-} cfg_pistolstart_t;
+} pistolstart_t;
 
 /* Arsinikk - Set pistol start from config */
-extern cfg_pistolstart_t cfg_pistolstart;
-void resetPistolStart(void);
+extern pistolstart_t pistolstart;
+void dsda_ResetModifiers(void);
 
 // disables overflow warnings and errors for vanilla complevels
 extern int limitremoving;
