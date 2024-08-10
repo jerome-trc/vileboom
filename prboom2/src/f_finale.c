@@ -49,6 +49,7 @@
 #include "dsda/font.h"
 #include "dsda/mapinfo.h"
 #include "dsda/map_format.h"
+#include "dsda/preferences.h"
 #include "dsda/configuration.h"
 #include "dsda/widescreen.h"
 #include "dsda/animate.h"
