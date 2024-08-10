@@ -13,7 +13,8 @@ When playing/recording demos or just playing casual in "Limit-Removing" mode, th
 - Spechits Overflow
 - Reject Overflow
 - Intercepts Overflow
-- PlayerInGame Overflow
+- Donut Overflow
+- Missing Backside Overflow
 
 Note that `Boom` / `MBF` / `MBF21` features are ***NOT*** supported when running in "Limit-Removing" *(exceptions being sky transfers, music changes, and other non-demo breaking features)*
 
