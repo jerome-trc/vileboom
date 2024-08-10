@@ -85,6 +85,13 @@ void WI_checkForAccelerate(void);    // killough 3/28/98: used to
 extern int acceleratestage;          // accelerate intermission screens
 int midstage;                 // whether we're in "mid-stage"
 
+static dboolean F_ShowCast(void)
+{
+  return gamemap == 30 ||
+         (gamemission == pack_nerve && allow_incompatibility && gamemap == 8) ||
+         dsda_FinaleShortcut();
+}
+
 // Arsinikk - Checks whether intermission text matches original text and if new text is provided from PWAD.
 // used for the skip intermission config option.
 int dsda_CheckInterText(void)
@@ -270,7 +277,7 @@ void F_StartFinale (void)
 
   // Arsinikk
   // If iwad story text and option, move forward in Doom 2 / Plutonia / TNT
-  if (SkipText && (gamemode == commercial) && (F_ShowCast() == FALSE))
+  if (SkipText && (gamemode == commercial) && !F_ShowCast())
   {
     gameaction = ga_worlddone;
     return;
@@ -487,13 +494,6 @@ float Get_TextSpeed(void)
 //
 // killough 5/10/98: add back v1.9 demo compatibility
 //
-
-static dboolean F_ShowCast(void)
-{
-  return gamemap == 30 ||
-         (gamemission == pack_nerve && allow_incompatibility && gamemap == 8) ||
-         dsda_FinaleShortcut();
-}
 
 void F_Ticker(void)
 {
