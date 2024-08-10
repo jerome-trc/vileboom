@@ -1,8 +1,10 @@
 ## GAMEVERS Lump
 
-The GAMEVERS lump can be used only when the [COMPLVL](complvl.md) lump has the key of `vanilla`, to specify an exact vanilla complevel.
+The GAMEVERS lump can be used only when the [COMPLVL](complvl.md) lump has the key of `vanilla`, to specify an exact vanilla complevel and turn on [limit-removing](limit_removing.md).
 
 GAMEVERS will not be read if COMPLVL is absent or if COMPLVL has any other key than `vanilla`.
+
+Regarding limit-removing, the order of precedence is highest to lowest: parameter > lump > config. This means that if a complevel is set through a parameter without limit-removing (example: `-complevel 2`), the GAMEVERS `limit` will be ignored and the game will run **without** limit-removing.
 
 ### Specification
 
@@ -24,8 +26,11 @@ The `key` defines the specific complevel, while the `value` defines limit-removi
   - Selects complevel 3, for Ultimate Doom compatibility.
 - `final`
   - Selects complevel 4, for Final Doom (Plutonia, TNT) compatibility.
+- `limit`
+  - Allows the port to automatically detect the vanilla complevel, while turning on [limit-removing](limit_removing.md) mode.
+  - When using this, the second `value` is not needed.
 
 ### Values
 
 - `limit`
-  - Runs complevel under limit-removing mode. Removes overflow errors and emulation. Omit to run in normal mode. (Note this can be overriden by parameters).
+  - Runs complevel under [limit-removing](limit_removing.md) mode. Removes overflow errors and emulation. Omit to run in normal mode. (Note this can be overriden by parameters).

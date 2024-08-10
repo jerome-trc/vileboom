@@ -1,0 +1,44 @@
+## Limit-Removing Functionality
+
+The term "limit-removing" has been used in the Doom Community for over a decade, and yet there hasn't been a definition ascribed to it. Some consider Boom wads to be limit-removing, while others see it more as a glorified vanilla complevel.
+
+*Nyan Doom* strives to define "limit-removing" as a standard (similar to a complevel) for the benefit of mappers, players, and speedrunners. 
+
+### Specification
+
+"Limit-Removing" is a Vanilla complevel that removes the all vanilla overflows. "Vanilla" refers to `complevels 0-4`.
+
+When playing/recording demos or just playing casual in "Limit-Removing" mode, the following overflows and warnings are disabled:
+
+- Spechits Overflow
+- Reject Overflow
+- Intercepts Overflow
+- PlayerInGame Overflow
+
+Note that `Boom` / `MBF` / `MBF21` features are ***NOT*** supported when running in "Limit-Removing" mode *(exceptions being sky transfers, music changes, and other non-demo breaking features)*
+
+### Parameters
+"Limit-Removing" can be toggled on in a few different ways:
+- `-complevel #r`
+  - The `#` can be `0-4` for vanilla complevels. The `r` is short for "removed"
+  - Examples: `-complevel 0r`, `-complevel 4r`
+- `-limitremoving` or `-lr`
+  - These parameters can be used with the classic `-complevel #` parameter
+  - Examples: `-complevel 2 -lr`, `-complevel 4 -limitremoving`
+
+### Autoload via Lumps
+"Limit-Removing" can be toggled via lumps placed in a wad. Note that Parameters will overwrite the following lumps.
+- The [`COMPLVL`](complvl.md) lump must use have the value of `vanilla`
+- The [`GAMEVERS`](gamevers.md) lump can then specify an exact complevel, with the value `limit` following after.
+  - A single value of `limit` can also be used, allowing for automatic choosing of the complevel based on the IWAD.
+
+### Final Notes
+Please note that the order of precedence is highest to lowest: parameter > lump > config.
+
+This means that if a complevel and/or "limit-removing" is (or is not) set through a parameter, that will take precedence over the contents of `COMPLVL` and `GAMEVERS`.
+
+### Example (Precedence)
+
+If a wad is loaded with the parameters `-complevel 2`, and has `GAMEVERS` (and `COMPLEVEL`) with the value of `final limit`, then the wad will be loaded with complevel 2 without "limit-removing" turned on.
+
+The `final` value for complevel 4 would be ignored for the complevel 2 parameter, and the `limit` value would be ignored since the parameter `-complevel 2` does not specify "limit-removing".
