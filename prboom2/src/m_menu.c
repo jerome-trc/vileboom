@@ -2973,7 +2973,7 @@ void M_DrawAutoMap(void)
 // killough 10/10/98
 
 setup_menu_t audiovideo_settings[], mouse_settings[], controller_settings[], misc_settings[];
-setup_menu_t misc2_settings[], display_settings[], mapping_settings[];
+setup_menu_t misc2_settings[], display_settings[];
 
 setup_menu_t* gen_settings[] =
 {

@@ -59,8 +59,8 @@ static int dsda_WadCompatibilityLevel(void) {
   // This might be called before all wads are loaded
   if (numwadfiles != last_numwadfiles) {
       int num;
-      char* gtext;
-      char* lrtext;
+      char * gtext;
+      char * lrtext;
 
       gtext = "";
       lrtext = "";

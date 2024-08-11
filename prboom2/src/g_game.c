@@ -3965,7 +3965,7 @@ void G_DoPlayDemo(void)
 {
   if (LoadDemo(defdemoname, &demobuffer, &demolength))
   {
-    char* lrtext;
+    char * lrtext;
     lrtext = "";
 
     if (demo_compatibility && limitremoving)
