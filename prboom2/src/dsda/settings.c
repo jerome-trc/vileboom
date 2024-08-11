@@ -59,11 +59,10 @@ static int dsda_WadCompatibilityLevel(void) {
   // This might be called before all wads are loaded
   if (numwadfiles != last_numwadfiles) {
       int num;
-      char * gtext;
-      char * lrtext;
-
-      gtext = "";
-      lrtext = "";
+      int lrcheck;
+      int gcheck;
+      const char* gtext;
+      const char* lrtext;
 
       last_numwadfiles = numwadfiles;
       num = W_CheckNumForName("COMPLVL");
@@ -79,7 +78,7 @@ static int dsda_WadCompatibilityLevel(void) {
 
           if (length == 14 && !strncasecmp("limit-removing", data, 14)) {
             limitremoving = 1;
-            gtext = " (limit-removing)";
+            lrcheck = 1;
           }
 
           if ((length == 7 && !strncasecmp("vanilla", data, 7)) || limitremoving) {
@@ -87,8 +86,7 @@ static int dsda_WadCompatibilityLevel(void) {
               int vlength;
               const char* vdata;
 
-              gtext = " and GAMEVERS";
-
+              gcheck = 1;
               vlength = W_LumpLength(gnum);
               vdata = W_LumpByNum(gnum);
 
@@ -119,6 +117,9 @@ static int dsda_WadCompatibilityLevel(void) {
               complvl = 11;
           else if (length == 5 && !strncasecmp("mbf21", data, 5))
               complvl = 21;
+
+          lrtext = (lrcheck ? " (limit-removing)" : "");
+          gtext = (gcheck ? " and GAMEVERS" : "");
 
           lprintf(LO_INFO, "Detected COMPLVL%s lump: %i%s\n", gtext, complvl, lrtext);
       }

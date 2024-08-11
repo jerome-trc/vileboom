@@ -3965,11 +3965,8 @@ void G_DoPlayDemo(void)
 {
   if (LoadDemo(defdemoname, &demobuffer, &demolength))
   {
-    char * lrtext;
-    lrtext = "";
-
-    if (demo_compatibility && limitremoving)
-      lrtext = "  Limit-Removing: Enabled\n";
+    const char* lrtext;
+    lrtext = ((demo_compatibility && limitremoving) ? "  Limit-Removing: Enabled\n" : "");
 
     G_StartDemoPlayback(demobuffer, demolength, PLAYBACK_NORMAL);
 
