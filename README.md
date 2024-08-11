@@ -1,21 +1,25 @@
 <img src="https://andrikarkane.com/doom/nyan-doom/nyan-doom-logo.png" width="500">
 
-# Arsinikk's Nyan Doom v1.1.7
+# Arsinikk's Nyan Doom v1.1.8
 This is Arsinikk's own personal fork of DSDA-Doom with new added features and improvements. It's kept relatively up to date with the original. Check it out on [Doomworld!](https://www.doomworld.com/forum/topic/145913/)
 
-### New Features
+### Exclusive Features
 - Native [widescreen](./docs/ws.md) and [animated background / menu element](./docs/animbg.md) lump support
 - Support for [GAMEVERS](./docs/gamevers.md) lump in combination with [COMPLVL](./docs/complvl.md) to further specify Vanilla compatibility.
-- [Limit-Removing](./docs/limit_removing.md) Support to record/playback demos and/or play casually without overflow errors and emulation under Vanilla compatibility
-- added [Extended HELP](https://www.doomworld.com/forum/topic/111465-boom-extended-help-screens-an-undocumented-feature/) screens (`HELP01`-`HELP99`) for Doom2/Plutonia/TNT _(previously only accessible via Doom 1)_.
-- Added new scaled fuzz effect for Spectres and invisibility effects in the software renderer ([Thanks Lovey](https://github.com/kraflab/dsda-doom/pull/359))
-- New "berserk" and "armour" Statusbar elements *(Options > Status Bar / HUD > Status Indicators)*
-- Support for single session "pistol start" menu option
-- Expanded ENDOOM support
+- [Limit-Removing Support](./docs/limit_removing.md) to record/playback demos and/or play casually without overflow errors and emulation under Vanilla compatibility
+- [Extended HELP Support](https://www.doomworld.com/forum/topic/111465-boom-extended-help-screens-an-undocumented-feature/) (`HELP01`-`HELP99`) for Doom 2 / Plutonia / TNT
+- Scaled fuzz effect for Spectres and invisibility effects in the software renderer ([Thanks Lovey](https://github.com/kraflab/dsda-doom/pull/359))
+- Quality-of-life features such as "Skipping IWAD Story text in PWADs" or "Extended Intermission Pause" so you can actually read the next map name
+- Native "berserk" and "armour" Statusbar elements *(Options > Status Bar / HUD > Status Indicators)*
+- Support for game modifier toggling per game "session" (`pistol start`, `respawn`, `fast monsters`, etc)
+- Improved ENDOOM support
 - and even more!
 
 ### Patch Notes
 - [v1.1](./patch_notes/v1.1.md)
+
+### Credits
+- The Nyan Doom logo designed by Andrik Powell (Arsinikk).
 
 # From the original dsda-doom project
 This is a successor of prboom+ with many new features, including:
