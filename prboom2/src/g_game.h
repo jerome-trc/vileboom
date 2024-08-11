@@ -121,15 +121,7 @@ extern const char * comp_lev_str[];
 extern int shorttics;
 extern int longtics;
 
-typedef enum
-{
-  PISTOL_START_OFF,
-  PISTOL_START_SESSION,
-  PISTOL_START_ALWAYS
-} cfg_pistolstart_t;
-
 /* Arsinikk - Set pistol start from config */
-extern cfg_pistolstart_t cfg_pistolstart;
 void dsda_ResetModifiers(void);
 
 // disables overflow warnings and errors for vanilla complevels

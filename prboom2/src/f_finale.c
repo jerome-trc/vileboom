@@ -274,7 +274,7 @@ void F_StartFinale (void)
   if (heretic) return Heretic_F_StartFinale();
   if (hexen) return Hexen_F_StartFinale();
 
-  SkipText = dsda_CheckInterText() && dsda_IntConfig(nyan_config_skip_default_text);
+  SkipText = allow_incompatibility && dsda_CheckInterText() && dsda_IntConfig(nyan_config_skip_default_text);
 
   // Arsinikk
   // If iwad story text and option, move forward in Doom 2 / Plutonia / TNT

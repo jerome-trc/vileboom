@@ -223,14 +223,24 @@ void dsda_InitSkills(void) {
 
 static void dsda_ResetGameFlags(void)
 {
-  respawnparm = dsda_Flag(dsda_arg_respawn) ||
-                (allow_incompatibility && dsda_IntConfig(dsda_config_respawn_monsters));
-  fastparm = dsda_Flag(dsda_arg_fast) ||
-             (allow_incompatibility && dsda_IntConfig(dsda_config_fast_monsters));
-  nomonsters = dsda_Flag(dsda_arg_nomonsters) ||
-             (allow_incompatibility && dsda_IntConfig(dsda_config_no_monsters));
-  coop_spawns = dsda_Flag(dsda_arg_coop_spawns) ||
-                (allow_incompatibility && dsda_IntConfig(dsda_config_coop_spawns));
+  if (allow_incompatibility && !demoplayback && !demorecording)
+  {
+    respawnparm = (dsda_IntConfig(dsda_config_respawn_monsters)>0) || (dsda_Flag(dsda_arg_respawn) &&
+                  (dsda_IntConfig(dsda_config_respawn_monsters)>0));
+    fastparm = (dsda_IntConfig(dsda_config_fast_monsters)>0) || (dsda_Flag(dsda_arg_fast) &&
+              (dsda_IntConfig(dsda_config_fast_monsters)>0));
+    nomonsters = (dsda_IntConfig(dsda_config_no_monsters)>0) || (dsda_Flag(dsda_arg_nomonsters) &&
+              (dsda_IntConfig(dsda_config_no_monsters)>0));
+    coop_spawns = (dsda_IntConfig(dsda_config_coop_spawns)>0) || (dsda_Flag(dsda_arg_coop_spawns) &&
+                  (dsda_IntConfig(dsda_config_coop_spawns)>0));
+  }
+  else
+  {
+    respawnparm = dsda_Flag(dsda_arg_respawn);
+    fastparm = dsda_Flag(dsda_arg_fast);
+    nomonsters = dsda_Flag(dsda_arg_nomonsters);
+    coop_spawns = dsda_Flag(dsda_arg_coop_spawns);
+  }
 }
 
 void dsda_RefreshGameSkill(void) {

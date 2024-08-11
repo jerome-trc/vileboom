@@ -1735,6 +1735,29 @@ static void EvaluateDoomVerStr(void)
 }
 
 //
+// dsda_SessionConfig
+//
+// Arsinikk - set session modifiers based off args and cfg
+
+static void dsda_InitModifiers(void)
+{
+  if (dsda_Flag(dsda_arg_pistol_start) && (dsda_Flag(dsda_config_pistol_start)==0))
+      dsda_UpdateIntConfig(dsda_config_pistol_start, 1, true);
+
+  if (dsda_Flag(dsda_arg_respawn) && (dsda_Flag(dsda_config_respawn_monsters)==0))
+    dsda_UpdateIntConfig(dsda_config_respawn_monsters, 1, true);
+
+  if (dsda_Flag(dsda_arg_fast) && (dsda_Flag(dsda_config_fast_monsters)==0))
+    dsda_UpdateIntConfig(dsda_config_fast_monsters, 1, true);
+
+  if (dsda_Flag(dsda_arg_nomonsters) && (dsda_Flag(dsda_config_no_monsters)==0))
+    dsda_UpdateIntConfig(dsda_config_no_monsters, 1, true);
+
+  if (dsda_Flag(dsda_arg_coop_spawns) && (dsda_Flag(dsda_config_coop_spawns)==0))
+    dsda_UpdateIntConfig(dsda_config_coop_spawns, 1, true);
+}
+
+//
 // D_DoomMainSetup
 //
 // CPhipps - the old contents of D_DoomMain, but moved out of the main
@@ -1838,9 +1861,8 @@ static void D_DoomMainSetup(void)
   //e6y: some stuff from command-line should be initialised before ProcessDehFile()
   e6y_InitCommandLine();
 
-  // Arsinikk - set pistol start based off args and cfg
-  if (dsda_Flag(dsda_config_pistol_start) && !cfg_pistolstart)
-      dsda_UpdateIntConfig(dsda_config_pistol_start, 1, true);
+  // Arsinikk - set session modifiers based off args and cfg
+  dsda_InitModifiers();
 
   // disables overflow warnings and errors for vanilla complevels
   if (arg_complevel_limitremoving)
