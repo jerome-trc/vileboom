@@ -456,17 +456,17 @@ void dsda_TerminalEndoom(void)
 
   #ifdef _WIN32
       RestoreOldMode();
-  #endif
 
-  if(!dsda_Flag(dsda_arg_launcher))
-  {
-    lprintf(LO_INFO, "Press any key to quit...");
-    while (true)
-    {
-      if (getch() > 0)
-          break;
-    }
-  }
+      if(!dsda_Flag(dsda_arg_launcher))
+      {
+        lprintf(LO_INFO, "Press any key to quit...");
+        while (true)
+        {
+          if (getch() > 0)
+              break;
+        }
+      }
+  #endif
 }
 
 
