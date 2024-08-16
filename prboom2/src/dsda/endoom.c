@@ -361,8 +361,13 @@ void dsda_CacheEndoom(void) {
   dsda_Flag(dsda_arg_playdemo) || dsda_Flag(dsda_arg_timedemo) || dsda_Flag(dsda_arg_fastdemo);
 
   output_format = dsda_IntConfig(dsda_config_ansi_endoom);
+
+  if (dsda_Flag(dsda_arg_launcher))
+    output_format = format_utf8;
+
   if (output_format == format_null)
-    dsda_UpdateIntConfig(dsda_config_ansi_endoom,1,true);
+    dsda_UpdateIntConfig(dsda_config_ansi_endoom,format_cp437,true);
+
   show_endoom = dsda_IntConfig(nyan_config_show_endoom);
 
   if (demo_check > 0)
@@ -394,11 +399,11 @@ void dsda_DumpEndoom(void) {
 
   if(endoom)
   {
-    if (endoom_type == 0)
-      dsda_TerminalEndoom();
-    else if (endoom_type == 1)
+    if (endoom_type==1 && !dsda_Flag(dsda_arg_launcher))
       dsda_WindowEndoom();
- }
+    else
+      dsda_TerminalEndoom();
+  }
 }
 
 //
@@ -451,13 +456,17 @@ void dsda_TerminalEndoom(void)
 
   #ifdef _WIN32
       RestoreOldMode();
-      lprintf(LO_INFO, "Press any key to quit...");
-      while (true)
-      {
-        if (getch() > 0)
-            break;
-      }
   #endif
+
+  if(!dsda_Flag(dsda_arg_launcher))
+  {
+    lprintf(LO_INFO, "Press any key to quit...");
+    while (true)
+    {
+      if (getch() > 0)
+          break;
+    }
+  }
 }
 
 
