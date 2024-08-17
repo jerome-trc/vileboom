@@ -1,6 +1,6 @@
-<img src="https://andrikarkane.com/doom/nyan-doom/nyan-doom-logo.png" width="500">
+<a href="#"><img src="https://andrikarkane.com/doom/nyan-doom/nyan-doom-logo.png" width="500"></a>
 
-# Arsinikk's Nyan Doom v1.1.8
+# Arsinikk's Nyan Doom
 This is Arsinikk's own personal fork of DSDA-Doom with new added features and improvements. It's kept relatively up to date with the original. Check it out on [Doomworld!](https://www.doomworld.com/forum/topic/145913/)
 
 ### Exclusive Features
@@ -18,8 +18,14 @@ This is Arsinikk's own personal fork of DSDA-Doom with new added features and im
 ### Patch Notes
 - [v1.1](./patch_notes/v1.1.md)
 
+### Nyan-Launcher
+- [Windows Version](https://github.com/andrikpowell/nyan-launcher/releases/latest)
+- MacOS Version [(in Releases)](https://github.com/andrikpowell/nyan-doom/releases/latest)
+
 ### Credits
 - The Nyan Doom logo designed by Andrik Powell (Arsinikk).
+
+___
 
 # From the original dsda-doom project
 This is a successor of prboom+ with many new features, including:
