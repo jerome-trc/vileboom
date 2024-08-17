@@ -18,9 +18,9 @@
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
 #include "windows.h"
-#include "conio.h"
 #endif
 
+#include "conio.h"
 #include "doomdef.h"
 #include "doomtype.h"
 #include "args.h"
@@ -456,17 +456,17 @@ void dsda_TerminalEndoom(void)
 
   #ifdef _WIN32
       RestoreOldMode();
-
-      if(!dsda_Flag(dsda_arg_launcher))
-      {
-        lprintf(LO_INFO, "Press any key to quit...");
-        while (true)
-        {
-          if (getch() > 0)
-              break;
-        }
-      }
   #endif
+
+  if(!dsda_Flag(dsda_arg_launcher))
+  {
+    lprintf(LO_INFO, "Press any key to quit...");
+    while (true)
+    {
+      if (getch() > 0)
+          break;
+    }
+  }
 }
 
 
