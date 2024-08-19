@@ -3143,7 +3143,7 @@ setup_menu_t misc_settings[] = {
   { "Autosave On Level Start", S_YESNO, m_conf, G_X, dsda_config_auto_save },
   { "Organize My Save Files", S_YESNO, m_conf, G_X, dsda_config_organized_saves },
   { "Skip Quit Prompt", S_YESNO, m_conf, G_X, dsda_config_skip_quit_prompt },
-  { "Quit Sounds", S_YESNO, m_conf, G_X, dsda_config_quit_sounds },
+  { "Play Quit Sounds", S_YESNO, m_conf, G_X, dsda_config_quit_sounds },
   { "Death Use Action", S_CHOICE, m_conf, G_X, dsda_config_death_use_action, 0, death_use_strings },
   { "Boom Weapon Auto Switch", S_YESNO, m_conf, G_X, dsda_config_switch_when_ammo_runs_out },
   { "Parallel Same-Sound Limit", S_NUM, m_conf, G_X, dsda_config_parallel_sfx_limit },
