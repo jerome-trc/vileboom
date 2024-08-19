@@ -405,7 +405,7 @@ dsda_config_t dsda_config[dsda_config_count] = {
   },
   [nyan_config_skip_default_text] = {
    "nyan_skip_default_text", nyan_config_skip_default_text,
-   CONF_BOOL(0), NULL, STRICT_INT(0)
+   CONF_BOOL(1), NULL, STRICT_INT(0)
   },
   [dsda_config_script_0] = {
     "dsda_script_0", dsda_config_script_0,
@@ -1301,7 +1301,7 @@ dsda_config_t dsda_config[dsda_config_count] = {
   },
   [dsda_config_quit_sounds] = {
     "quit_sounds", dsda_config_quit_sounds,
-    CONF_BOOL(0),
+    CONF_BOOL(1),
   },
   [dsda_config_announce_map] = {
     "announce_map", dsda_config_announce_map,
