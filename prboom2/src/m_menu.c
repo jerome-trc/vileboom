@@ -1155,12 +1155,12 @@ enum
 menuitem_t OptionsMenu[]=
 {
   { 1, "M_GENERL", M_General, 'g', "GENERAL" }, // killough 10/98
-  { 1, "M_GAMEPL", M_GameplayMenu, 'd', "GAMEPLAY / DEMOS" },
+  { 1, "M_GAMEPL", M_GameplayMenu, 'g', "GAMEPLAY / DEMOS" },
   { 1, "M_KEYBND", M_KeyBindings,'k', "KEY BINDINGS" },
   { 1, "M_WEAP", M_Weapons, 'w', "WEAPONS" },
   { 1, "M_STAT", M_StatusBar, 's', "STATUS BAR / HUD" },
   { 1, "M_AUTO", M_Automap, 'a', "AUTOMAP" },
-  { 1, "M_LVLTBL", M_LevelTable, 's', "LEVEL TABLE" },
+  { 1, "M_LVLTBL", M_LevelTable, 'l', "LEVEL TABLE" },
   { 1, "M_SVOL", M_Sound, 's', "SOUND VOLUME" },
 };
 

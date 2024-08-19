@@ -223,7 +223,7 @@ void dsda_InitSkills(void) {
 
 static void dsda_ResetGameFlags(void)
 {
-  if (allow_incompatibility && !demoplayback && !demorecording)
+  if (allow_incompatibility)
   {
     respawnparm = (dsda_IntConfig(dsda_config_respawn_monsters)>0) || (dsda_Flag(dsda_arg_respawn) &&
                   (dsda_IntConfig(dsda_config_respawn_monsters)>0));
