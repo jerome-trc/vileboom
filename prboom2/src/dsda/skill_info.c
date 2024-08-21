@@ -239,14 +239,10 @@ static void dsda_ResetGameFlags(void)
 {
   if (allow_incompatibility)
   {
-    respawnparm = (dsda_IntConfig(dsda_config_respawn_monsters)) || (dsda_Flag(dsda_arg_respawn) &&
-                  (dsda_IntConfig(dsda_config_respawn_monsters)));
-    fastparm = (dsda_IntConfig(dsda_config_fast_monsters)) || (dsda_Flag(dsda_arg_fast) &&
-              (dsda_IntConfig(dsda_config_fast_monsters)));
-    nomonsters = (dsda_IntConfig(dsda_config_no_monsters)) || (dsda_Flag(dsda_arg_nomonsters) &&
-              (dsda_IntConfig(dsda_config_no_monsters)));
-    coop_spawns = (dsda_IntConfig(dsda_config_coop_spawns)) || (dsda_Flag(dsda_arg_coop_spawns) &&
-                  (dsda_IntConfig(dsda_config_coop_spawns)));
+    respawnparm = dsda_IntConfig(dsda_config_respawn_monsters);
+    fastparm = dsda_IntConfig(dsda_config_fast_monsters);
+    nomonsters = dsda_IntConfig(dsda_config_no_monsters);
+    coop_spawns = dsda_IntConfig(dsda_config_coop_spawns);
   }
   else
   {
