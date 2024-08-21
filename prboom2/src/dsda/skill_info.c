@@ -237,20 +237,10 @@ void dsda_RefreshAlwaysPistolStart(void)
 
 static void dsda_ResetGameFlags(void)
 {
-  if (allow_incompatibility)
-  {
-    respawnparm = dsda_IntConfig(dsda_config_respawn_monsters);
-    fastparm = dsda_IntConfig(dsda_config_fast_monsters);
-    nomonsters = dsda_IntConfig(dsda_config_no_monsters);
-    coop_spawns = dsda_IntConfig(dsda_config_coop_spawns);
-  }
-  else
-  {
-    respawnparm = dsda_Flag(dsda_arg_respawn);
-    fastparm = dsda_Flag(dsda_arg_fast);
-    nomonsters = dsda_Flag(dsda_arg_nomonsters);
-    coop_spawns = dsda_Flag(dsda_arg_coop_spawns);
-  }
+  respawnparm = (allow_incompatibility ? dsda_IntConfig(dsda_config_respawn_monsters) : dsda_Flag(dsda_arg_respawn));
+  fastparm = (allow_incompatibility ? dsda_IntConfig(dsda_config_fast_monsters) : dsda_Flag(dsda_arg_fast));
+  nomonsters = (allow_incompatibility ? dsda_IntConfig(dsda_config_no_monsters) : dsda_Flag(dsda_arg_nomonsters));
+  coop_spawns = (allow_incompatibility ? dsda_IntConfig(dsda_config_coop_spawns) : dsda_Flag(dsda_arg_coop_spawns));
 }
 
 void dsda_RefreshGameSkill(void) {
