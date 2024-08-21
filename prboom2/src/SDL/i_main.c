@@ -217,7 +217,6 @@ static void I_EssentialQuit (void)
 
 static void I_Quit (void)
 {
-  dsda_ResetModifiers();
   M_SaveDefaults ();
   dsda_DumpEndoom();
 }

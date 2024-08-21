@@ -121,9 +121,6 @@ extern const char * comp_lev_str[];
 extern int shorttics;
 extern int longtics;
 
-/* Arsinikk - Set pistol start from config */
-void dsda_ResetModifiers(void);
-
 // disables overflow warnings and errors for vanilla complevels
 extern int limitremoving;
 extern int arg_complevel_limitremoving;

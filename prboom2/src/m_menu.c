@@ -3199,20 +3199,15 @@ setup_menu_t misc2_settings[] = {
   FINAL_ENTRY
 };
 
-static const char* pistol_start_list[] = { "Off", "Session", "Always", NULL };
-static const char* respawn_list[] = { "Off", "Session", "Always", NULL };
-static const char* fast_monsters_list[] = { "Off", "Session", "Always", NULL };
-static const char* no_monsters_list[] = { "Off", "Session", "Always", NULL };
-static const char* coop_spawns_list[] = { "Off", "Session", "Always", NULL };
-
 setup_menu_t gameplay_settings[] = {
   { "Game Modifiers", S_SKIP | S_TITLE, m_null, G_X},
-  { "Pistol Start", S_CHOICE, m_conf, G_X, dsda_config_pistol_start, 0, pistol_start_list },
-  { "Respawn Monsters", S_CHOICE, m_conf, G_X, dsda_config_respawn_monsters, 0, respawn_list },
-  { "Fast Monsters", S_CHOICE, m_conf, G_X, dsda_config_fast_monsters, 0, fast_monsters_list },
-  { "No Monsters", S_CHOICE, m_conf, G_X, dsda_config_no_monsters, 0, no_monsters_list },
-  { "Coop Spawns", S_CHOICE, m_conf, G_X, dsda_config_coop_spawns, 0, coop_spawns_list },
+  { "Pistol Start", S_YESNO, m_conf, G_X, dsda_config_pistol_start },
+  { "Respawn Monsters", S_YESNO, m_conf, G_X, dsda_config_respawn_monsters },
+  { "Fast Monsters", S_YESNO, m_conf, G_X, dsda_config_fast_monsters },
+  { "No Monsters", S_YESNO, m_conf, G_X, dsda_config_no_monsters },
+  { "Coop Spawns", S_YESNO, m_conf, G_X, dsda_config_coop_spawns },
   EMPTY_LINE,
+  { "Always Pistol Start", S_YESNO, m_conf, G_X, dsda_config_always_pistol_start },
   { "Allow Jumping", S_YESNO, m_conf, G_X, dsda_config_allow_jumping },
   EMPTY_LINE,
   { "MAPPING ERROR FIXES", S_SKIP | S_TITLE, m_conf, G_X},

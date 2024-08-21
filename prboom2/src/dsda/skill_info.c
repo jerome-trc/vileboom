@@ -221,18 +221,32 @@ void dsda_InitSkills(void) {
   }
 }
 
+void dsda_RefreshPistolStart(void)
+{
+  if (allow_incompatibility || in_game)
+    if(dsda_IntConfig(dsda_config_always_pistol_start) && !dsda_IntConfig(dsda_config_pistol_start))
+      dsda_UpdateIntConfig(dsda_config_always_pistol_start, 0, true);
+}
+
+void dsda_RefreshAlwaysPistolStart(void)
+{
+  if (allow_incompatibility || in_game)
+    if(dsda_IntConfig(dsda_config_always_pistol_start) && !dsda_IntConfig(dsda_config_pistol_start))
+      dsda_UpdateIntConfig(dsda_config_pistol_start, 1, true);
+}
+
 static void dsda_ResetGameFlags(void)
 {
   if (allow_incompatibility)
   {
-    respawnparm = (dsda_IntConfig(dsda_config_respawn_monsters)>0) || (dsda_Flag(dsda_arg_respawn) &&
-                  (dsda_IntConfig(dsda_config_respawn_monsters)>0));
-    fastparm = (dsda_IntConfig(dsda_config_fast_monsters)>0) || (dsda_Flag(dsda_arg_fast) &&
-              (dsda_IntConfig(dsda_config_fast_monsters)>0));
-    nomonsters = (dsda_IntConfig(dsda_config_no_monsters)>0) || (dsda_Flag(dsda_arg_nomonsters) &&
-              (dsda_IntConfig(dsda_config_no_monsters)>0));
-    coop_spawns = (dsda_IntConfig(dsda_config_coop_spawns)>0) || (dsda_Flag(dsda_arg_coop_spawns) &&
-                  (dsda_IntConfig(dsda_config_coop_spawns)>0));
+    respawnparm = (dsda_IntConfig(dsda_config_respawn_monsters)) || (dsda_Flag(dsda_arg_respawn) &&
+                  (dsda_IntConfig(dsda_config_respawn_monsters)));
+    fastparm = (dsda_IntConfig(dsda_config_fast_monsters)) || (dsda_Flag(dsda_arg_fast) &&
+              (dsda_IntConfig(dsda_config_fast_monsters)));
+    nomonsters = (dsda_IntConfig(dsda_config_no_monsters)) || (dsda_Flag(dsda_arg_nomonsters) &&
+              (dsda_IntConfig(dsda_config_no_monsters)));
+    coop_spawns = (dsda_IntConfig(dsda_config_coop_spawns)) || (dsda_Flag(dsda_arg_coop_spawns) &&
+                  (dsda_IntConfig(dsda_config_coop_spawns)));
   }
   else
   {

@@ -1169,27 +1169,6 @@ static void G_ResetInventory(player_t *p)
 }
 
 //
-// Arsinikk - Reset session modifier Cfgs
-//
-
-void dsda_ResetModifiers(void) {
-  if(dsda_IntConfig(dsda_config_pistol_start)==1)
-    dsda_UpdateIntConfig(dsda_config_pistol_start, 0, true);
-
-  if(dsda_IntConfig(dsda_config_respawn_monsters)==1)
-    dsda_UpdateIntConfig(dsda_config_respawn_monsters, 0, true);
-
-  if(dsda_IntConfig(dsda_config_fast_monsters)==1)
-    dsda_UpdateIntConfig(dsda_config_fast_monsters, 0, true);
-
-  if(dsda_IntConfig(dsda_config_no_monsters)==1)
-    dsda_UpdateIntConfig(dsda_config_no_monsters, 0, true);
-
-  if(dsda_IntConfig(dsda_config_coop_spawns)==1)
-    dsda_UpdateIntConfig(dsda_config_coop_spawns, 0, true);
-}
-
-//
 // G_DoLoadLevel
 //
 
@@ -1241,7 +1220,7 @@ static void G_DoLoadLevel (void)
   }
 
   // automatic pistol start when advancing from one level to the next
-  if (dsda_Flag(dsda_arg_pistol_start) || (dsda_IntConfig(dsda_config_pistol_start) > 0))
+  if (dsda_IntConfig(dsda_config_pistol_start))
     if (allow_incompatibility)
       G_PlayerReborn(0);
 

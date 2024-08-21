@@ -134,6 +134,8 @@ void dsda_InitExHud(void);
 void dsda_UpdateFreeText(void);
 void dsda_ResetAirControl(void);
 void dsda_AlterGameFlags(void);
+void dsda_RefreshPistolStart(void);
+void dsda_RefreshAlwaysPistolStart(void);
 
 void dsda_TrackConfigFeatures(void) {
   if (!demorecording)
@@ -370,10 +372,6 @@ dsda_config_t dsda_config[dsda_config_count] = {
     "nyan_armor_icon", nyan_config_hud_armoricon,
     dsda_config_int, ARMOR_ICON_OFF, ARMOR_ICON_2,
     { ARMOR_ICON_1 }, (int*) &armor_icon
-  },
-  [dsda_config_pistol_start] = {
-    "dsda_pistol_start", dsda_config_pistol_start,
-    dsda_config_int, 0, 2, {0}
   },
   [dsda_config_free_text] = {
     "dsda_free_text", dsda_config_free_text,
@@ -996,21 +994,29 @@ dsda_config_t dsda_config[dsda_config_count] = {
     "dsda_allow_jumping", dsda_config_allow_jumping,
     CONF_BOOL(0), NULL, NOT_STRICT, dsda_ResetAirControl
   },
+  [dsda_config_always_pistol_start] = {
+    "dsda_always_pistol_start", dsda_config_always_pistol_start,
+    CONF_BOOL(0), NULL, NOT_STRICT, dsda_RefreshAlwaysPistolStart
+  },
+  [dsda_config_pistol_start] = {
+    "dsda_pistol_start", dsda_config_pistol_start,
+    CONF_BOOL(0), NULL, NOT_STRICT, dsda_RefreshPistolStart
+  },
   [dsda_config_respawn_monsters] = {
     "dsda_respawn_monsters", dsda_config_respawn_monsters,
-    dsda_config_int, 0, 2, {0}, NULL, NOT_STRICT, dsda_AlterGameFlags
+    CONF_BOOL(0), NULL, NOT_STRICT, dsda_AlterGameFlags
   },
   [dsda_config_fast_monsters] = {
     "dsda_fast_monsters", dsda_config_fast_monsters,
-    dsda_config_int, 0, 2, {0}, NULL, NOT_STRICT, dsda_AlterGameFlags
+    CONF_BOOL(0), NULL, NOT_STRICT, dsda_AlterGameFlags
   },
   [dsda_config_no_monsters] = {
     "dsda_no_monsters", dsda_config_no_monsters,
-    dsda_config_int, 0, 2, {0}, NULL, NOT_STRICT, dsda_AlterGameFlags
+    CONF_BOOL(0), NULL, NOT_STRICT, dsda_AlterGameFlags
   },
   [dsda_config_coop_spawns] = {
     "dsda_coop_spawns", dsda_config_coop_spawns,
-    dsda_config_int, 0, 2, {0}, NULL, NOT_STRICT, dsda_AlterGameFlags
+    CONF_BOOL(0), NULL, NOT_STRICT, dsda_AlterGameFlags
   },
   [dsda_config_parallel_sfx_limit] = {
     "dsda_parallel_sfx_limit", dsda_config_parallel_sfx_limit,
