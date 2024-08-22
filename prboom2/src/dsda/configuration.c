@@ -1030,6 +1030,10 @@ dsda_config_t dsda_config[dsda_config_count] = {
     "dsda_movement_toggle_sfx", dsda_config_movement_toggle_sfx,
     CONF_BOOL(0)
   },
+  [dsda_config_quicksave_sfx] = {
+    "dsda_quicksave_sfx", dsda_config_quicksave_sfx,
+    CONF_BOOL(1)
+  },
   [dsda_config_switch_when_ammo_runs_out] = {
     "dsda_switch_when_ammo_runs_out", dsda_config_switch_when_ammo_runs_out,
     CONF_BOOL(1)

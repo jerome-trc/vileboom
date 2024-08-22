@@ -221,6 +221,10 @@ dboolean dsda_SkipQuitPrompt(void) {
   return dsda_IntConfig(dsda_config_skip_quit_prompt);
 }
 
+dboolean dsda_PlayQuicksaveSFX(void) {
+  return dsda_IntConfig(dsda_config_quicksave_sfx);
+}
+
 dboolean dsda_TrackSplits(void) {
   return demorecording || (demoplayback && dsda_Flag(dsda_arg_track_playback));
 }

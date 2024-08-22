@@ -3143,6 +3143,7 @@ setup_menu_t misc_settings[] = {
   { "Parallel Same-Sound Limit", S_NUM, m_conf, G_X, dsda_config_parallel_sfx_limit },
   { "Parallel Same-Sound Window", S_NUM, m_conf, G_X, dsda_config_parallel_sfx_window },
   { "Play SFX For Movement Toggles", S_YESNO, m_conf, G_X, dsda_config_movement_toggle_sfx },
+  { "Play SFX For Quicksave", S_YESNO, m_conf, G_X, dsda_config_quicksave_sfx },
   { "Play SFX After Quit", S_YESNO, m_conf, G_X, dsda_config_quit_sounds },
 
   PREV_PAGE(controller_settings),
@@ -5189,7 +5190,8 @@ static dboolean M_InactiveMenuResponder(int ch, int action, event_t* ev)
 
   if (dsda_InputActivated(dsda_input_quicksave))
   {
-    S_StartVoidSound(g_sfx_swtchn);
+    if(dsda_PlayQuicksaveSFX())
+      S_StartVoidSound(g_sfx_swtchn);
     M_QuickSave();
     return true;
   }
