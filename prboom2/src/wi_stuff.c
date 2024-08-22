@@ -1203,10 +1203,8 @@ void WI_drawShowNextLoc(void)
     return; // MAP08 end game
 
   // draws which level you are entering..
-  if ( (gamemode != commercial)
-     || (wbs->next != 30)  // check for MAP30 end game
-     || (wbs->next == 30 && wbs->last != 29))  // Arsinikk - allow for MAP31 entering screen, if not MAP30
-  WI_drawEL();
+  if ( (gamemode != commercial) || (gamemap != 30) )  // Arsinikk - allow for MAP31 entering screen, if not MAP30
+    WI_drawEL();
 }
 
 // ====================================================================
