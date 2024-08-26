@@ -2669,9 +2669,9 @@ static void deh_procCheat(DEHFILE *fpin, char *line) // done
 
     // killough 4/18/98: use main cheat code table in st_stuff.c now
     for (ix = 0; cheat[ix].cheat; ix++)
-      if (cheat[ix].deh_cheat)   // killough 4/18/98: skip non-deh
+      if (cheat[ix].deh_cheat_desc)   // killough 4/18/98: skip non-deh
       {
-        if (!stricmp(key,cheat[ix].deh_cheat))  // found the cheat, ignored case
+        if (!stricmp(key,cheat[ix].deh_cheat_desc))  // found the cheat, ignored case
         {
           // replace it but don't overflow it.  Use current length as limit.
           // Ty 03/13/98 - add 0xff code
@@ -2689,9 +2689,9 @@ static void deh_procCheat(DEHFILE *fpin, char *line) // done
           //e6y: ability to ignore cheats in dehacked files.
           if (dsda_IntConfig(dsda_config_deh_apply_cheats) && !dsda_Flag(dsda_arg_nocheats))
           {
-            cheat[iy].cheat = Z_Strdup(p);
+            cheat[iy].deh_cheat = Z_Strdup(p);
             deh_log("Assigned new cheat '%s' to cheat '%s'at index %d\n",
-                    p, cheat[ix].deh_cheat, iy); // killough 4/18/98
+                    p, cheat[ix].deh_cheat_desc, iy); // killough 4/18/98
           }
         }
       }

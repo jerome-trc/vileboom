@@ -393,6 +393,10 @@ dsda_config_t dsda_config[dsda_config_count] = {
     "dsda_cheat_codes", dsda_config_cheat_codes,
     CONF_BOOL(1)
   },
+  [dsda_config_deh_cheats_override] = {
+    "dsda_deh_cheats_override", dsda_config_deh_cheats_override,
+    CONF_BOOL(0)
+  },
   [dsda_config_organize_failed_demos] = {
     "dsda_organize_failed_demos", dsda_config_organize_failed_demos,
     CONF_BOOL(0)

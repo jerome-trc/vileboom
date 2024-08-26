@@ -67,6 +67,7 @@ typedef enum {
   dsda_config_mute_music,
   dsda_config_mute_unfocused_window,
   dsda_config_cheat_codes,
+  dsda_config_deh_cheats_override,
   dsda_config_organize_failed_demos,
   nyan_config_intermission_pause,
   nyan_config_skip_default_text,

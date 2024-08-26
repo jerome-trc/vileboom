@@ -36,8 +36,8 @@
 
 #include "d_event.h"
 
-#define CHEAT(cheat, deh_cheat, when, func, arg, repeatable) \
-  { cheat, deh_cheat, when, func, arg, repeatable, 0, 0, 0, 0, 0, "" }
+#define CHEAT(cheat, deh_cheat, deh_cheat_desc, when, func, arg, repeatable) \
+  { cheat, deh_cheat, deh_cheat_desc, when, func, arg, repeatable, 0, 0, 0, 0, 0, "" }
 
 #define CHEAT_ARGS_MAX 8  /* Maximum number of args at end of cheats */
 
@@ -52,7 +52,8 @@ typedef enum {
 
 typedef struct cheatseq_s {
   const char *	cheat;
-  const char *const deh_cheat;
+  const char *  deh_cheat;
+  const char *const deh_cheat_desc;
   const cheat_when_t when;
   void (*const func)();
   const int arg;
