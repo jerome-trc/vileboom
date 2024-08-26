@@ -106,6 +106,7 @@ cfg_def_t cfg_defs[] =
   MIGRATED_SETTING(dsda_config_show_messages),
   MIGRATED_SETTING(dsda_config_autorun),
   MIGRATED_SETTING(dsda_config_deh_apply_cheats),
+  MIGRATED_SETTING(dsda_config_deh_change_cheats),
   MIGRATED_SETTING(dsda_config_movement_strafe50),
   MIGRATED_SETTING(dsda_config_movement_strafe50onturns),
   MIGRATED_SETTING(dsda_config_movement_shorttics),

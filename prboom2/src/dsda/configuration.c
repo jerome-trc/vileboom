@@ -699,6 +699,10 @@ dsda_config_t dsda_config[dsda_config_count] = {
     "deh_apply_cheats", dsda_config_deh_apply_cheats,
     CONF_BOOL(1)
   },
+  [dsda_config_deh_change_cheats] = {
+    "dsda_deh_change_cheats", dsda_config_deh_change_cheats,
+    CONF_BOOL(1)
+  },
   [dsda_config_movement_strafe50] = {
     "movement_strafe50", dsda_config_movement_strafe50,
     CONF_BOOL(0), NULL, STRICT_INT(0), M_ChangeSpeed
