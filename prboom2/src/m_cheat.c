@@ -55,6 +55,7 @@
 #include "heretic/sb_bar.h"
 
 #include "dsda.h"
+#include "dsda/args.h"
 #include "dsda/configuration.h"
 #include "dsda/excmd.h"
 #include "dsda/exhud.h"
@@ -915,7 +916,9 @@ static int M_FindCheats(int key)
   int rc = 0;
   cheatseq_t* cht;
   char char_key;
-  #define WHICH_CHEAT (dsda_IntConfig(dsda_config_deh_cheats_override) ? cht->cheat : cht->deh_cheat)
+
+  // Arsinikk - allow ignoring cheats from dehacked files in-game
+  #define WHICH_CHEAT (dsda_IntConfig(dsda_config_deh_apply_cheats) && !dsda_Flag(dsda_arg_nocheats) ? cht->deh_cheat : cht->cheat)
 
   cht_InitCheats();
 

@@ -2686,13 +2686,10 @@ static void deh_procCheat(DEHFILE *fpin, char *line) // done
           p = strval;
           while (*p == ' ') ++p;
 
-          //e6y: ability to ignore cheats in dehacked files.
-          if (dsda_IntConfig(dsda_config_deh_apply_cheats) && !dsda_Flag(dsda_arg_nocheats))
-          {
-            cheat[iy].deh_cheat = Z_Strdup(p);
-            deh_log("Assigned new cheat '%s' to cheat '%s'at index %d\n",
-                    p, cheat[ix].deh_cheat_desc, iy); // killough 4/18/98
-          }
+          // Arsinikk - parse dehacked cheats separately
+          cheat[iy].deh_cheat = Z_Strdup(p);
+          deh_log("Assigned new cheat '%s' to cheat '%s'at index %d\n",
+                  p, cheat[ix].deh_cheat_desc, iy); // killough 4/18/98
         }
       }
     deh_log("- %s\n", inbuffer);
