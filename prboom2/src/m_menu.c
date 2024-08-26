@@ -1145,6 +1145,8 @@ enum
   set_weapons,
   set_statbar,
   set_automap,
+  option_1,
+  option_2,
   level_table,
   soundvol,
   opt_end
@@ -1160,6 +1162,8 @@ menuitem_t OptionsMenu[]=
   { 1, "M_WEAP", M_Weapons, 'w', "WEAPONS" },
   { 1, "M_STAT", M_StatusBar, 's', "STATUS BAR / HUD" },
   { 1, "M_AUTO", M_Automap, 'a', "AUTOMAP" },
+  { 1, "M_OPTION_1", M_General, 'q', "OPTION 1" },
+  { 1, "M_OPTION_2", M_General, 'q', "OPTION 2" },
   { 1, "M_LVLTBL", M_LevelTable, 'l', "LEVEL TABLE" },
   { 1, "M_SVOL", M_Sound, 's', "SOUND VOLUME" },
 };
@@ -1189,6 +1193,7 @@ void M_DrawOptions(void)
 
 void M_Options(int choice)
 {
+  M_ResetOptionsMenu();
   M_SetupNextMenu(&OptionsDef);
 }
 
@@ -3182,6 +3187,7 @@ setup_menu_t display_settings[] = {
 
 setup_menu_t misc2_settings[] = {
   { "Nyan Options", S_SKIP | S_TITLE, m_null, G_X},
+  { "DSDA-Doom Options Order", S_YESNO, m_conf, G_X, nyan_config_dsda_menu_format },
   { "Play Demos While In Menus", S_YESNO, m_conf, G_X, nyan_config_menu_play_demo },
   { "Pause After Intermission", S_YESNO, m_conf, G_X, nyan_config_intermission_pause },
   { "Skip IWAD Story Text", S_YESNO, m_conf, G_X, nyan_config_skip_default_text },
@@ -6353,6 +6359,21 @@ void M_InitHelpScreen(void)
       src->m_flags = S_SKIP; // Don't show setting or item
     if ((strncmp(src->m_text,"SSG",3) == 0) && (gamemode != commercial))
       src->m_flags = S_SKIP; // Don't show setting or item
+  }
+}
+
+void M_ResetOptionsMenu(void)
+{
+  OptionsDef.numitems = opt_end-2;
+  if (dsda_IntConfig(nyan_config_dsda_menu_format))
+  {
+    OptionsMenu[option_1] = OptionsMenu[soundvol];
+    OptionsMenu[option_2] = OptionsMenu[level_table];
+  }
+  else
+  {
+    OptionsMenu[option_1] = OptionsMenu[level_table];
+    OptionsMenu[option_2] = OptionsMenu[soundvol];
   }
 }
 

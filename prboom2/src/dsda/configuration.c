@@ -32,6 +32,7 @@
 #include "z_zone.h"
 #include "st_stuff.h"
 #include "g_game.h"
+#include "m_menu.h"
 
 #include "dsda/args.h"
 #include "dsda/exhud.h"
@@ -232,6 +233,10 @@ dsda_config_t dsda_config[dsda_config_count] = {
   [dsda_config_vanilla_keymap] = {
     "vanilla_keymap", dsda_config_vanilla_keymap,
     CONF_BOOL(0)
+  },
+  [nyan_config_dsda_menu_format] = {
+    "nyan_dsda_options_menu_format", nyan_config_dsda_menu_format,
+    CONF_BOOL(0), NULL, NOT_STRICT, M_ResetOptionsMenu
   },
   [nyan_config_menu_play_demo] = {
     "nyan_play_demos_in_menu", nyan_config_menu_play_demo,
