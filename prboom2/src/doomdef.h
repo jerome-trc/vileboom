@@ -78,8 +78,6 @@ typedef enum {
   pack_plut,    // Plutonia pack
   pack_nerve,   // No Rest For The Living
   hacx,         // HACX - Twitch 'n Kill
-  pack_chex,    // Chex Quest
-  pack_rekkr,   // REKKR
   none
 } GameMission_t;
 

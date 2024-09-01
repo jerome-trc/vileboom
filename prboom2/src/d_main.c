@@ -1088,10 +1088,6 @@ void AddIWAD(const char *iwad)
     case registered:
     case shareware:
       gamemission = doom;
-      if (i>=11 && !strnicmp(iwad+i-11,"rekkrsa.wad",11))
-        gamemission = pack_rekkr;
-      else if (i>=8 && !strnicmp(iwad+i-8,"chex.wad",8))
-        gamemission = pack_chex;
       break;
     case commercial:
       gamemission = doom2;
@@ -1150,6 +1146,16 @@ static char *FindIWADFile(void)
     if (!dsda_Flag(dsda_arg_hexen))
       dsda_UpdateFlag(dsda_arg_hexen, true);
   }
+  else if (CheckExeSuffix("-rekkr"))
+  {
+    if (!dsda_Flag(dsda_arg_rekkr))
+      dsda_UpdateFlag(dsda_arg_rekkr, true);
+  }
+  else if (CheckExeSuffix("-chex"))
+  {
+    if (!dsda_Flag(dsda_arg_chex))
+      dsda_UpdateFlag(dsda_arg_chex, true);
+  }
 
   arg = dsda_Arg(dsda_arg_iwad);
   if (arg->found)
@@ -1162,9 +1168,9 @@ static char *FindIWADFile(void)
       return I_FindWad("heretic.wad");
     else if (dsda_Flag(dsda_arg_hexen))
       return I_FindWad("hexen.wad");
-    else if (dsda_Flag(dsda_arg_rekkr) || CheckExeSuffix("-rekkr"))
+    else if (dsda_Flag(dsda_arg_rekkr))
       return I_FindWad("rekkrsa.wad");
-    else if (dsda_Flag(dsda_arg_chex) || CheckExeSuffix("-chex"))
+    else if (dsda_Flag(dsda_arg_chex))
       return I_FindWad("chex.wad");
 
     for (i=0; !iwad && i<nstandard_iwads; i++)
@@ -1658,14 +1664,6 @@ static void EvaluateDoomVerStr(void)
   {
     doomverstr = "Hexen";
   }
-  else if (rekkr)
-  {
-    doomverstr = "REKKR";
-  }
-  else if (chex)
-  {
-    doomverstr = "Chex(R) Quest";
-  }
   else
   {
     switch ( gamemode )
@@ -1673,15 +1671,13 @@ static void EvaluateDoomVerStr(void)
       case retail:
         switch (gamemission)
         {
-          case pack_chex:
+          if(chex)
             doomverstr = "Chex(R) Quest";
-            break;
-          case pack_rekkr:
+          else if(rekkr)
             doomverstr = "REKKR";
-            break;
-          default:
+          else
             doomverstr = "The Ultimate DOOM";
-            break;
+          break;
         }
         break;
       case shareware:
