@@ -34,7 +34,7 @@ endif()
 set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
 set(X_VCPKG_APPLOCAL_DEPS_INSTALL TRUE)
 
-project("nyan-doom" VERSION 1.1.9.1)
+project("nyan-doom" VERSION 1.1.9.2)
 
 # Set a default build type if none was specified
 set(default_build_type "RelWithDebInfo")
@@ -167,7 +167,7 @@ endif()
 if(WIN32)
     set(DEFAULT_WAD_DIR ".")
 else()
-    set(DEFAULT_WAD_DIR "${CMAKE_INSTALL_DATADIR}/games/doom")
+    set(DEFAULT_WAD_DIR "share/games/doom")
 endif()
 
 set(NYANPWADDIR "${DEFAULT_WAD_DIR}" CACHE STRING "Path to install Nyan-Doom internal WAD, relative to CMAKE_INSTALL_PREFIX or absolute.")
@@ -207,11 +207,103 @@ set(WAD_DATA_PATH "${DSDA_OUTPUT_PATH}/${WAD_DATA}")
 
 add_subdirectory(data)
 add_subdirectory(src)
+add_subdirectory(ICONS)
 
 if(NOT CMAKE_CROSSCOMPILING)
     export(TARGETS ${CROSS_EXPORTS} FILE "${CMAKE_BINARY_DIR}/ImportExecutables.cmake")
 endif()
 
 if(WIN32)
-    include(CPack)
+    install(FILES COPYING DESTINATION . RENAME COPYING.txt)
+else()
+    install(FILES COPYING DESTINATION "share/doc/${PROJECT_NAME}")
 endif()
+
+if(WIN32)
+    set(CPACK_GENERATOR ZIP)
+elseif(LINUX)
+    set(CPACK_GENERATOR External)
+    set(CPACK_EXTERNAL_ENABLE_STAGING YES)
+    set(CPACK_PACKAGING_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
+    set(CPACK_EXTERNAL_PACKAGE_SCRIPT "${PROJECT_BINARY_DIR}/appimage-generate.cmake")
+
+    file(GENERATE
+        OUTPUT "${PROJECT_BINARY_DIR}/appimage-generate.cmake"
+        CONTENT [[
+            find_program(LINUXDEPLOY_EXECUTABLE
+                NAMES linuxdeploy linuxdeploy-x86_64.AppImage
+                PATHS ${CPACK_PACKAGE_DIRECTORY}/linuxdeploy)
+
+            if(NOT LINUXDEPLOY_EXECUTABLE)
+                message(STATUS "Downloading linuxdeploy")
+                set(LINUXDEPLOY_EXECUTABLE ${CPACK_PACKAGE_DIRECTORY}/linuxdeploy/linuxdeploy)
+                file(DOWNLOAD
+                    https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
+                    ${LINUXDEPLOY_EXECUTABLE}
+                    INACTIVITY_TIMEOUT 10)
+                execute_process(COMMAND
+                    chmod +x ${LINUXDEPLOY_EXECUTABLE} COMMAND_ECHO STDOUT)
+            endif()
+
+            execute_process(COMMAND
+                ${CMAKE_COMMAND} -E env
+                OUTPUT=${CPACK_PACKAGE_FILE_NAME}.appimage
+                VERSION=$<IF:$<BOOL:${CPACK_PACKAGE_VERSION}>,${CPACK_PACKAGE_VERSION},0.1.0>
+                ${LINUXDEPLOY_EXECUTABLE}
+                --appimage-extract-and-run
+                --appdir=${CPACK_TEMPORARY_DIRECTORY}
+                --executable=$<TARGET_FILE:nyan-doom>
+                --desktop-file=${CPACK_TEMPORARY_DIRECTORY}/${CPACK_PACKAGING_INSTALL_PREFIX}/share/applications/nyan-doom.desktop
+                --icon-file=${CPACK_TEMPORARY_DIRECTORY}/${CPACK_PACKAGING_INSTALL_PREFIX}/share/icons/hicolor/scalable/apps/nyan-doom.svg
+                --output=appimage)
+            ]])
+elseif(APPLE)
+    set(CPACK_GENERATOR External)
+    set(CPACK_EXTERNAL_ENABLE_STAGING YES)
+    set(CPACK_PACKAGING_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
+    set(CPACK_EXTERNAL_PACKAGE_SCRIPT "${PROJECT_BINARY_DIR}/macbundle-generate.cmake")
+    set(CPACK_SYSTEM_NAME "mac-${CMAKE_SYSTEM_PROCESSOR}")
+    set(CPACK_SYSTEM_PROCESSOR "${CMAKE_SYSTEM_PROCESSOR}")
+    set(CPACK_BUILD_DIR "${PROJECT_BINARY_DIR}")
+
+    file(GENERATE
+        OUTPUT "${PROJECT_BINARY_DIR}/macbundle-generate.cmake"
+        CONTENT [[
+            set(CPACK_OUTPUT_DIR "${CPACK_BUILD_DIR}/${CPACK_PACKAGE_FILE_NAME}")
+            file(MAKE_DIRECTORY ${CPACK_OUTPUT_DIR})
+
+            find_program(DYLIBBUNDLER_EXECUTABLE NAMES dylibbundler)
+            if(NOT DYLIBBUNDLER_EXECUTABLE)
+                message(FATAL_ERROR "Missing dylibbundler (brew install dylibbundler)")
+            endif()
+
+            file(COPY_FILE
+                $<TARGET_FILE:nyan-doom>
+                ${CPACK_OUTPUT_DIR}/nyan-doom)
+
+            execute_process(COMMAND
+                ${CMAKE_COMMAND} -E env
+                OUTPUT=${CPACK_PACKAGE_FILE_NAME}.zip
+                VERSION=$<IF:$<BOOL:${CPACK_PACKAGE_VERSION}>,${CPACK_PACKAGE_VERSION},0.1.0>
+                ${DYLIBBUNDLER_EXECUTABLE}
+                --bundle-deps
+                --create-dir
+                --fix-file ${CPACK_OUTPUT_DIR}/nyan-doom
+                --install-path @executable_path/libs_${CPACK_SYSTEM_PROCESSOR}
+                --dest-dir ${CPACK_OUTPUT_DIR}/libs_${CPACK_SYSTEM_PROCESSOR})
+
+            file(COPY_FILE
+                ${CPACK_TEMPORARY_DIRECTORY}/${CPACK_PACKAGING_INSTALL_PREFIX}/share/games/doom/nyan-doom.wad
+                ${CPACK_OUTPUT_DIR}/nyan-doom.wad)
+            file(COPY_FILE
+                ${CPACK_TEMPORARY_DIRECTORY}/${CPACK_PACKAGING_INSTALL_PREFIX}/share/doc/nyan-doom/COPYING
+                ${CPACK_OUTPUT_DIR}/COPYING.txt)
+
+            file(CONFIGURE
+                OUTPUT ${CPACK_OUTPUT_DIR}/Troubleshooting.txt
+                CONTENT "If you are getting errors like 'libzip.5.5.dylib cant be opened because Apple cannot check it for malicious software.' Run the following command in the nyan-doom folder:\n\nxattr -dr com.apple.quarantine path/to/folder")
+
+            execute_process(COMMAND zip -r ${CPACK_PACKAGE_FILE_NAME}.zip ${CPACK_PACKAGE_FILE_NAME})
+            ]])
+endif()
+include(CPack)

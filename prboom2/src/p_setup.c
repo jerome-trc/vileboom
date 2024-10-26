@@ -908,7 +908,7 @@ static void P_LoadUDMFSectors(int lump)
                                    dsda_FloatToFixed(ms->yscrollceiling), i, ms->scrollceilingmode);
 
     if ((ms->xthrust || ms->ythrust) && ms->thrustgroup && ms->thrustlocation)
-      dsda_AddThruster(dsda_FloatToFixed(ms->xthrust), dsda_FloatToFixed(ms->ythrust),
+      dsda_AddThruster(dsda_StringToFixed(ms->xthrust), dsda_StringToFixed(ms->ythrust),
                        i, ms->thrustgroup + (ms->thrustlocation << THRUST_LOCATION_SHIFT));
 
     if (ms->flags & UDMF_SECF_DAMAGEHAZARD)
@@ -3677,11 +3677,8 @@ void P_SetupLevel(int episode, int map, int playermask, int skill)
   lumpnum = W_GetNumForName(lumpname);
 
   // Must process musinfo to get default track before calling S_Start
-  if (gamemode != shareware)
-  {
-    S_ParseMusInfo(lumpname);
-  }
-  
+  S_ParseMusInfo(lumpname);
+
   // Make sure all sounds are stopped before Z_FreeTag.
   S_Start();
 

@@ -421,4 +421,4 @@ add_custom_command(
     DEPENDS rdatawad ${WAD_SRC}
 )
 add_custom_target(nyan-doom-wad DEPENDS ${WAD_DATA_PATH})
-install(FILES ${WAD_DATA_PATH} DESTINATION ${NYANPWADDIR} COMPONENT "Nyan-Doom internal WAD")
+install(FILES ${WAD_DATA_PATH} DESTINATION ${NYANPWADDIR})
