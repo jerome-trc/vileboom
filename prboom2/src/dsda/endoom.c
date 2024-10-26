@@ -457,7 +457,7 @@ void dsda_TerminalEndoom(void)
   #ifdef _WIN32
       RestoreOldMode();
 
-      if(!dsda_Flag(dsda_arg_launcher))
+      if(dsda_IntConfig(nyan_config_endoom_wait) && !dsda_Flag(dsda_arg_launcher))
       {
         lprintf(LO_INFO, "Press any key to quit...");
         while (true)

@@ -1318,9 +1318,13 @@ dsda_config_t dsda_config[dsda_config_count] = {
     "ansi_endoom", dsda_config_ansi_endoom,
     dsda_config_int, 0, 2, { 1 }
   },
+  [nyan_config_endoom_wait] = {
+    "terminal_endoom_wait", nyan_config_endoom_wait,
+    CONF_BOOL(0),
+  },
   [dsda_config_quit_sounds] = {
     "quit_sounds", dsda_config_quit_sounds,
-    CONF_BOOL(1),
+    CONF_BOOL(0),
   },
   [dsda_config_announce_map] = {
     "announce_map", dsda_config_announce_map,
