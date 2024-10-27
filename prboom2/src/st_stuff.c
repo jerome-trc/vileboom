@@ -899,7 +899,7 @@ void M_ChangeApplyLiteAmp(void)
 {
   if (in_game && gamestate == GS_LEVEL)
   {
-      ST_doColormapStuff();
+      ST_doColormapStuff(plyr);
   }
 }
 
