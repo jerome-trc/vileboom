@@ -3,16 +3,21 @@
 # Arsinikk's Nyan Doom
 This is Arsinikk's own personal fork of DSDA-Doom with new added features and improvements. It's kept relatively up to date with the original. Check it out on [Doomworld!](https://www.doomworld.com/forum/topic/145913/)
 
-### Exclusive Features
-- Native [widescreen](./docs/ws.md) and [animated background / menu element](./docs/animbg.md) lump support
+### Nyan Features For Mappers
+- Native [widescreen](./docs/ws.md) lump support for widescreen assets (avoiding the need for separate WADs)
+- New [animated background / menu element](./docs/animbg.md) lump support (for animated M_DOOM, TITLEPIC, INTERPIC, and more!)
 - Support for [GAMEVERS](./docs/gamevers.md) lump in combination with [COMPLVL](./docs/complvl.md) to further specify Vanilla compatibility.
-- [Limit-Removing Support](./docs/limit_removing.md) to record/playback demos and/or play casually without overflow errors and emulation under Vanilla compatibility
+- [Limit-Removing Support](./docs/limit_removing.md) for Vanilla style maps to ignore overflow errors (such as all-ghosts, etc)
 - [Extended HELP Support](https://www.doomworld.com/forum/topic/111465-boom-extended-help-screens-an-undocumented-feature/) (`HELP01`-`HELP99`) for Doom 2 / Plutonia / TNT
+
+### Nyan Features For Players
 - Scaled fuzz effect for Spectres and invisibility effects in the software renderer ([Thanks Lovey](https://github.com/kraflab/dsda-doom/pull/359))
 - Quality-of-life features such as "Skipping IWAD Story text in PWADs" or "Extended Intermission Pause" so you can actually read the next map name
-- Native "berserk" and "armour" Statusbar elements *(Options > Status Bar / HUD > Status Indicators)*
-- Support for game modifier toggling per game "session" (`pistol start`, `respawn`, `fast monsters`, etc)
-- Improved ENDOOM support
+- [Limit-Removing Support](./docs/limit_removing.md) to record/playback demos and/or play casually without overflow errors and emulation under Vanilla compatibility
+- Native "berserk" and "armour" elements on the statusbar *(Options > Status Bar / HUD)*
+- "Status Widget" for the extended HUD, that shows currently active powerups *(Options > Status Bar / HUD > Status Widget)*
+- Support for game modifier toggles (`pistol start`, `respawn`, `fast monsters`, etc)
+- Enhanced ENDOOM support
 - and even more!
 
 ### Patch Notes
