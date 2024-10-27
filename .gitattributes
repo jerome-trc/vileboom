@@ -155,6 +155,12 @@ prboom2/data/graphics/stfarms1.ppm -text
 prboom2/data/graphics/stfarms2.ppm -text
 prboom2/data/graphics/stfarms3.ppm -text
 prboom2/data/graphics/stfarms4.ppm -text
+prboom2/data/graphics/stfpinv.ppm -text
+prboom2/data/graphics/stfpins.ppm -text
+prboom2/data/graphics/stfpvis.ppm -text
+prboom2/data/graphics/stfpmap.ppm -text
+prboom2/data/graphics/stfsuit.ppm -text
+prboom2/data/graphics/stfpbak.ppm -text
 prboom2/data/graphics/chxpstr.ppm -text
 prboom2/data/graphics/chxarms1.ppm -text
 prboom2/data/graphics/chxarms2.ppm -text

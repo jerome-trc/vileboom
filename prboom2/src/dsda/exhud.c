@@ -60,6 +60,7 @@ typedef enum {
   exhud_big_artifact,
   exhud_sml_berserk,
   exhud_sml_armor,
+  exhud_status_widget,
   exhud_big_health,
   exhud_big_health_text,
   exhud_composite_time,
@@ -146,6 +147,13 @@ exhud_component_t components_template[exhud_component_count] = {
     dsda_UpdateSmlArmorHC,
     dsda_DrawSmlArmorHC,
     "sml_armor",
+    .default_vpt = VPT_EX_TEXT | VPT_NOOFFSET,
+  },
+  [exhud_status_widget] = {
+    dsda_InitStatusHC,
+    dsda_UpdateStatusHC,
+    dsda_DrawStatusHC,
+    "status_widget",
     .default_vpt = VPT_EX_TEXT | VPT_NOOFFSET,
   },
   [exhud_big_health] = {

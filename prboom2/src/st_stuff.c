@@ -163,7 +163,7 @@ int ST_SCALED_OFFSETX;
 #define ST_ARMORCHEXX           (ST_X+168)
 #define ST_ARMORCHEXY           (ST_Y+1)
 #define ST_ARMORICONX           (ST_X+171)
-#define ST_ARMORICONY           (ST_Y+2)
+#define ST_ARMORICONY           (armor_icon == ARMOR_ICON_1 ? (ST_Y+2) : (ST_Y))
 
 // Weapon pos.
 // proff 08/18/98: Changed for high-res

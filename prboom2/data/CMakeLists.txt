@@ -188,6 +188,12 @@ set(GRAPHICS
     graphics/stfarms2.ppm
     graphics/stfarms3.ppm
     graphics/stfarms4.ppm
+    graphics/stfpinv.ppm
+    graphics/stfpins.ppm
+    graphics/stfpvis.ppm
+    graphics/stfpmap.ppm
+    graphics/stfsuit.ppm
+    graphics/stfbpak.ppm
     graphics/chxpstr.ppm
     graphics/chxarms1.ppm
     graphics/chxarms2.ppm

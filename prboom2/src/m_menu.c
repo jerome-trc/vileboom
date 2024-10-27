@@ -2512,6 +2512,7 @@ setup_menu_t dsda_keys_settings[] = {
   { "Strict Mode", S_INPUT, m_scrn, KB_X, 0, dsda_input_strict_mode },
   { "Coordinate Display", S_INPUT, m_scrn, KB_X, 0, dsda_input_coordinate_display },
   { "Extended HUD", S_INPUT, m_scrn, KB_X, 0, dsda_input_exhud },
+  { "Status Widget", S_INPUT, m_scrn, KB_X, 0, dsda_input_status_widget },
   { "SFX", S_INPUT, m_scrn, KB_X, 0, dsda_input_mute_sfx },
   { "Music", S_INPUT, m_scrn, KB_X, 0, dsda_input_mute_music },
   { "Cheat Code Entry", S_INPUT, m_scrn, KB_X, 0, dsda_input_cheat_codes },
@@ -2687,12 +2688,14 @@ void M_DrawWeapons(void)
 setup_menu_t stat_settings1[];
 //e6y
 setup_menu_t stat_settings2[];
+setup_menu_t stat_settings3[];
 
 setup_menu_t* stat_settings[] =
 {
   stat_settings1,
   //e6y
   stat_settings2,
+  stat_settings3,
   NULL
 };
 
@@ -2734,19 +2737,38 @@ setup_menu_t stat_settings1[] =  // Status Bar and HUD Settings screen
   FINAL_ENTRY
 };
 
+
+setup_menu_t stat_settings2[] =
+{
+  { "Extended Hud", S_SKIP | S_TITLE, m_null, SB_X},
+  { "Use Extended Hud", S_YESNO, m_conf, SB_X, dsda_config_exhud },
+  { "Ex Hud Scale %", S_NUM, m_conf, SB_X, dsda_config_ex_text_scale_x },
+  { "Ex Hud Ratio %", S_NUM, m_conf, SB_X, dsda_config_ex_text_ratio_y },
+  EMPTY_LINE,
+  { "Status Widget", S_SKIP | S_TITLE, m_null, SB_X},
+  { "Use Status Widget", S_YESNO, m_conf, SB_X, nyan_config_ex_status_widget },
+  { "Armor", S_YESNO, m_conf, SB_X, nyan_config_ex_status_armor },
+  { "Berserk", S_YESNO, m_conf, SB_X, nyan_config_ex_status_berserk },
+  { "Computer Area Map", S_YESNO, m_conf, SB_X, nyan_config_ex_status_areamap },
+  { "Backpack", S_YESNO, m_conf, SB_X, nyan_config_ex_status_backpack },
+  { "Radiation Suit", S_YESNO, m_conf, SB_X, nyan_config_ex_status_radsuit },
+  { "Partial Invisibility", S_YESNO, m_conf, SB_X, nyan_config_ex_status_invis },
+  { "Light Amplification", S_YESNO, m_conf, SB_X, nyan_config_ex_status_liteamp },
+  { "Invulnerability", S_YESNO, m_conf, SB_X, nyan_config_ex_status_invuln },
+
+  PREV_PAGE(stat_settings1),
+  NEXT_PAGE(stat_settings3),
+  FINAL_ENTRY
+};
+
 //e6y
 #define HUD_X 284
 
 static const char *crosshair_str[] =
   { "none", "cross", "angle", "dot", "small", "slim", "tiny", "big", NULL };
 
-setup_menu_t stat_settings2[] =
+setup_menu_t stat_settings3[] =
 {
-  { "Extended Hud", S_SKIP | S_TITLE, m_null, HUD_X},
-  { "Use Extended Hud", S_YESNO, m_conf, HUD_X, dsda_config_exhud },
-  { "Ex Hud Scale %", S_NUM, m_conf, HUD_X, dsda_config_ex_text_scale_x },
-  { "Ex Hud Ratio %", S_NUM, m_conf, HUD_X, dsda_config_ex_text_ratio_y },
-  EMPTY_LINE,
   { "CROSSHAIR SETTINGS", S_SKIP | S_TITLE, m_null, HUD_X},
   { "ENABLE CROSSHAIR", S_CHOICE, m_conf, HUD_X, dsda_config_hudadd_crosshair, 0, crosshair_str },
   { "SCALE CROSSHAIR", S_YESNO, m_conf, HUD_X, dsda_config_hudadd_crosshair_scale },
@@ -2756,7 +2778,7 @@ setup_menu_t stat_settings2[] =
   { "DEFAULT CROSSHAIR COLOR", S_CRITEM, m_conf, HUD_X, dsda_config_hudadd_crosshair_color },
   { "TARGET CROSSHAIR COLOR", S_CRITEM, m_conf, HUD_X, dsda_config_hudadd_crosshair_target_color },
 
-  PREV_PAGE(stat_settings1),
+  PREV_PAGE(stat_settings2),
   FINAL_ENTRY
 };
 
@@ -4419,6 +4441,7 @@ static toggle_input_t toggle_inputs[] = {
   { dsda_input_coordinate_display, dsda_config_coordinate_display, false, true, "Coordinate Display" },
   { dsda_input_fps, dsda_config_show_fps, true, true, "FPS" },
   { dsda_input_exhud, dsda_config_exhud, true, true, "Extended HUD" },
+  { dsda_input_status_widget, nyan_config_ex_status_widget, true, true, "Status Widget" },
   { dsda_input_mute_sfx, dsda_config_mute_sfx, true, true, "SFX", true },
   { dsda_input_mute_music, dsda_config_mute_music, true, true, "Music", true },
   { dsda_input_cheat_codes, dsda_config_cheat_codes, false, true, "Cheat Codes" },
