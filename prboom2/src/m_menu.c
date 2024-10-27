@@ -310,6 +310,7 @@ void M_ChangeFullScreen(void);
 void M_ChangeVideoMode(void);
 void M_ChangeUseGLSurface(void);
 void M_ChangeApplyPalette(void);
+void M_ChangeApplyLiteAmp(void);
 
 menu_t SkillDef;                                              // phares 5/04/98
 
@@ -3198,6 +3199,7 @@ setup_menu_t display_settings[] = {
   { "Change Palette On Pain", S_YESNO, m_conf, G_X, dsda_config_palette_ondamage },
   { "Change Palette On Bonus", S_YESNO, m_conf, G_X, dsda_config_palette_onbonus },
   { "Change Palette On Powers", S_YESNO, m_conf, G_X, dsda_config_palette_onpowers },
+  { "Change Colormap On Lite Amp", S_YESNO, m_conf, G_X, dsda_config_colormap_onliteamp },
   EMPTY_LINE,
   { "Status Bar and Menu Appearance", S_CHOICE, m_conf, G_X, dsda_config_render_stretch_hud, 0, render_stretch_list },
   { "Fullscreen Menu Background", S_YESNO, m_conf, G_X, dsda_config_menu_background },

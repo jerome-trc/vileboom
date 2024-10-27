@@ -895,6 +895,14 @@ void M_ChangeApplyPalette(void)
     V_SetPalette(0);
 }
 
+void M_ChangeApplyLiteAmp(void)
+{
+  if (in_game && gamestate == GS_LEVEL)
+  {
+      ST_doColormapStuff();
+  }
+}
+
 int ST_HealthColor(int health)
 {
   if (health < hud_health_red)

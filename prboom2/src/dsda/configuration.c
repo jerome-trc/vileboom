@@ -127,6 +127,7 @@ void M_ChangeUncappedFrameRate(void);
 void M_ChangeFullScreen(void);
 void R_SetViewSize(void);
 void M_ChangeApplyPalette(void);
+void M_ChangeApplyLiteAmp(void);
 void M_ChangeStretch(void);
 void M_ChangeAspectRatio(void);
 void deh_changeCompTranslucency(void);
@@ -181,6 +182,9 @@ void dsda_TrackConfigFeatures(void) {
   if (!dsda_IntConfig(dsda_config_palette_onpowers))
     dsda_TrackFeature(uf_powerpalette);
 
+  if (!dsda_IntConfig(dsda_config_colormap_onliteamp))
+    dsda_TrackFeature(uf_litecolormap);
+
   if (dsda_IntConfig(dsda_config_gl_health_bar))
     dsda_TrackFeature(uf_healthbar);
 
@@ -210,6 +214,7 @@ void dsda_UpdateStrictMode(void) {
   M_ChangeSkyMode(); // affected by mouselook setting
   HU_InitCrosshair();
   M_ChangeApplyPalette();
+  M_ChangeApplyLiteAmp();
   M_ChangeMapTextured();
   dsda_RefreshExHudCoordinateDisplay();
   dsda_RefreshExHudCommandDisplay();
@@ -1243,6 +1248,10 @@ dsda_config_t dsda_config[dsda_config_count] = {
   [dsda_config_palette_onpowers] = {
     "palette_onpowers", dsda_config_palette_onpowers,
     CONF_BOOL(1), NULL, STRICT_INT(1), M_ChangeApplyPalette
+  },
+  [dsda_config_colormap_onliteamp] = {
+    "colormap_liteamp", dsda_config_colormap_onliteamp,
+    CONF_BOOL(1), NULL, STRICT_INT(1), M_ChangeApplyLiteAmp
   },
   [dsda_config_render_wipescreen] = {
     "render_wipescreen", dsda_config_render_wipescreen,

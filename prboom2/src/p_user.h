@@ -67,4 +67,6 @@ void P_MorphPlayerThink(player_t * player);
 
 void P_PlayerEndFlight(player_t * player);
 
+void ST_doColormapStuff(player_t* player);
+
 #endif  /* __P_USER__ */

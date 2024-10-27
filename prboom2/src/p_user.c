@@ -1056,11 +1056,15 @@ void P_PlayerThink (player_t* player)
 
   // Handling colormaps.
   // killough 3/20/98: reformat to terse C syntax
+  ST_doColormapStuff(player);
+}
+
+void ST_doColormapStuff(player_t* player) {
   if (!raven)
     player->fixedcolormap = dsda_PowerPalette() &&
       (player->powers[pw_invulnerability] > 4*32 ||
       player->powers[pw_invulnerability] & 8) ? INVERSECOLORMAP :
-      player->powers[pw_infrared] > 4*32 || player->powers[pw_infrared] & 8;
+      dsda_LiteAmpColormap() && (player->powers[pw_infrared] > 4*32 || player->powers[pw_infrared] & 8);
   else
   {
     if (!hexen && player->powers[pw_invulnerability])
