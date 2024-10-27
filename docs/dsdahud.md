@@ -58,6 +58,8 @@ Unless otherwise specified, argument values are integers. For toggles, a 1 means
 - `composite_time`: shows the current level time and the total time
   - Supports 1 argument: `show_label`
   - `show_label`: shows the "time" label
+- `status_widget`: shows icons for armor type, backpack, and other powerups
+  - Supports 1 argument: `vetical`
 - `keys`: shows the acquired keys
   - Supports 1 argument: `horizontal`
   - `horizontal`: displays the component horizontally rather than vertically
