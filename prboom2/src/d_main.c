@@ -1664,21 +1664,20 @@ static void EvaluateDoomVerStr(void)
   {
     doomverstr = "Hexen";
   }
+  else if (chex)
+  {
+    doomverstr = "Chex(R) Quest";
+  }
+  else if(rekkr)
+  {
+    doomverstr = "REKKR";
+  }
   else
   {
     switch ( gamemode )
     {
       case retail:
-        switch (gamemission)
-        {
-          if(chex)
-            doomverstr = "Chex(R) Quest";
-          else if(rekkr)
-            doomverstr = "REKKR";
-          else
-            doomverstr = "The Ultimate DOOM";
-          break;
-        }
+        doomverstr = "The Ultimate DOOM";
         break;
       case shareware:
         doomverstr = "DOOM Shareware";

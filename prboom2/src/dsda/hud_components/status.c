@@ -35,13 +35,13 @@ static local_component_t* local;
 static int patch_vertical_spacing;
 static int patch_spacing;
 
-static char* drawBerserkName() {
+const char* drawBerserkName() {
     if (chex) { return "CHXPSTR"; }
     else if (unityedition) { return "STFPSTR2"; }
     else { return "STFPSTR"; }
 }
 
-static char* drawArmorName(player_t* player) {
+const char* drawArmorName(player_t* player) {
     if (chex) {
         if (player->armortype < 2)
             return "CHXARMS1";
