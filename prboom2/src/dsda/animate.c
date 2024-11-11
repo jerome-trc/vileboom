@@ -294,6 +294,7 @@ const char* AnimateCombine(const char *lump_prefix, const char *lump_main)
 {
     char lump_short[7];
     size_t main, prefix;
+    char *result;
     memcpy(lump_short, lump_main, strlen(lump_main));
 
     if (lump_prefix == NULL)
@@ -307,7 +308,7 @@ const char* AnimateCombine(const char *lump_prefix, const char *lump_main)
     main = strlen(lump_short);
     prefix = strlen(lump_prefix);
 
-    char *result = Z_Malloc(prefix + main + 1);
+    result = Z_Malloc(prefix + main + 1);
     memcpy(result, lump_prefix, prefix);
     memcpy(result + prefix, lump_short, main + 1);
     return result;
@@ -319,6 +320,7 @@ const char* WideCombine(const char *lump_main, const char *lump_suffix)
     //lprintf(LO_INFO, "widecombine lump_suffix = %s\n", lump_suffix);
     char lump_short[7];
     size_t main, suffix;
+    char *result;
     memcpy(lump_short, lump_main, strlen(lump_main));
 
     if (lump_suffix == NULL)
@@ -335,7 +337,7 @@ const char* WideCombine(const char *lump_main, const char *lump_suffix)
     main = strlen(lump_short);
     suffix = strlen(lump_suffix);
 
-    char *result = Z_Malloc(main + suffix + 1);
+    result = Z_Malloc(main + suffix + 1);
     memcpy(result, lump_short, main);
     memcpy(result + main, lump_suffix, suffix + 1);
     //lprintf(LO_INFO, "widecombine result = %s\n", result);
