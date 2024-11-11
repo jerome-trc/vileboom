@@ -83,6 +83,8 @@ void gld_FillRaw(int lump, int x, int y, int src_width, int src_height, int dst_
   gld_FillRaw((firstflat+lump), (x), (y), 64, 64, (width), (height), (flags))
 #define gld_FillFlatName(flatname, x, y, width, height, flags) \
   gld_FillFlat(R_FlatNumForName(flatname), (x), (y), (width), (height), (flags))
+#define gld_FillFlatNum(lump, x, y, width, height, flags) \
+  gld_FillFlat((lump), (x), (y), (width), (height), (flags))
 
 void gld_FillPatch(int lump, int x, int y, int width, int height, enum patch_translation_e flags);
 #define gld_FillPatchName(name, x, y, width, height, flags) \

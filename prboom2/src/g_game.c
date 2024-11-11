@@ -116,8 +116,8 @@
 #include "dsda/utility.h"
 #include "dsda/library.h"
 
-// checks whether to use HELP2 lump for complevel 1 and below
-int doom_1666_menu_check;
+// Arsinikk - allows use of HELP2 screen for PWADs under DOOM 1
+int doom_help2_check;
 
 struct
 {
@@ -2732,12 +2732,12 @@ void G_ReloadDefaults(void)
   if (compatibility_level == -1)
     compatibility_level = best_compatibility;
 
-  // Arsinikk - Jank complevel 1 check
-  // allows HELP2 screen for DOOM 1 wads under complevel 0-1
+  // Arsinikk - Jank complevel 2 check
+  // allows HELP2 screen for DOOM 1 wads under complevel 0-2
   // Needs to run a check at start, as the complevel check on the menu
   // only works during internal demos and not when displaying patches.
-  if (compatibility_level <= 1 && gamemode == retail)
-    doom_1666_menu_check = (W_LumpNameExists(help2));
+  if (compatibility_level <= 2 && gamemode == retail)
+    doom_help2_check = (W_LumpNameExists(help2));
 
   // killough 3/1/98: Initialize options based on config file
   // (allows functions above to load different values for demos

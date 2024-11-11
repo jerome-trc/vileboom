@@ -212,6 +212,8 @@ typedef void (*V_FillFlat_f)(int lump, int scrn, int x, int y, int width, int he
 extern V_FillFlat_f V_FillFlat;
 #define V_FillFlatName(flatname, scrn, x, y, width, height, flags) \
   V_FillFlat(R_FlatNumForName(flatname), (scrn), (x), (y), (width), (height), (flags))
+#define V_FillFlatNum(lump, scrn, x, y, width, height, flags) \
+  V_FillFlat((lump), (scrn), (x), (y), (width), (height), (flags))
 
 typedef void (*V_FillPatch_f)(int lump, int scrn, int x, int y, int width, int height, enum patch_translation_e flags);
 extern V_FillPatch_f V_FillPatch;
@@ -222,6 +224,10 @@ extern V_FillPatch_f V_FillPatch;
 /* cphipps 10/99: function to tile a flat over the screen */
 typedef void (*V_DrawBackground_f)(const char* flatname, int scrn);
 extern V_DrawBackground_f V_DrawBackground;
+
+/* cphipps 10/99: function to tile an animated flat over the screen */
+typedef void (*V_DrawBackgroundNum_f)(int lump, int scrn);
+extern V_DrawBackgroundNum_f V_DrawBackgroundNum;
 
 // CPhipps - function to set the palette to palette number pal.
 void V_TouchPalette(void);

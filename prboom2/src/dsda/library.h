@@ -18,6 +18,11 @@
 #ifndef __DSDA_LIBRARY__
 #define __DSDA_LIBRARY__
 
+#define ravenflat1 (raven ? "FLTWAWA1" : "FWATER1")
+#define ravenflat2 (raven ? "FLTWAWA3" : "FWATER4")
+#define aniflat1 (hexen ? "X_005" : ravenflat1)
+#define aniflat2 (hexen ? "X_008" : ravenflat2)
+
 extern const char* mskull1;
 extern const char* mskull2;
 extern const char* mdoom;

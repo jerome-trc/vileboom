@@ -290,6 +290,41 @@ extern void V_DrawNameMenuPatch(const int x, const int y, const int scrn, const 
     V_DrawNumPatch(x, y, scrn, lumpNum, color, flags);
 }
 
+extern void V_DrawNyanBackground(const char* lump_s, const char* lump_e, const int scrn)
+{
+    int frameDiff;
+    int frame;
+    int lumpNum;
+    static int SCheck;
+    static int ECheck;
+    static int SLump;
+    static int ELump;
+
+    SCheck = W_CheckNumForName2(lump_s, ns_flats);
+    ECheck = W_CheckNumForName2(lump_e, ns_flats);
+
+    if (SCheck)
+        lumpNum = R_FlatNumForName(lump_s);
+    else
+        lumpNum = R_FlatNumForName("FLOOR16");
+
+    if ((SCheck != LUMP_NOT_FOUND) && (ECheck != LUMP_NOT_FOUND))
+    {
+        SLump = R_FlatNumForName(lump_s);
+        ELump = R_FlatNumForName(lump_e);
+
+        if(SLump <= ELump)
+        {
+            frameDiff = ELump - SLump;
+            frame = (AnimateTime) % (frameDiff + 1);
+            lumpNum = SLump + frame;
+        }
+    }
+
+    V_DrawBackgroundNum(lumpNum, scrn);
+}
+
+
 const char* AnimateCombine(const char *lump_prefix, const char *lump_main)
 {
     char lump_short[7];

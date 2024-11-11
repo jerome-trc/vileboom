@@ -29,6 +29,7 @@ extern int Check_Stbar_Animate;
 const int D_CheckAnimate(const char* lump);
 const char* D_CheckAnimateNyanPatch(const char* lump);
 const char* D_CheckWideNyanPatch(const char* lump);
+void V_DrawNyanBackground(const char* lump_s, const char* lump_e, const int scrn);
 
 const int D_CheckWide(const char* lump, const char *suffix);
 const char* D_ApplyWide(const char* lump, const char* suffix);

@@ -125,8 +125,8 @@ extern int longtics;
 extern int limitremoving;
 extern int arg_complevel_limitremoving;
 
-// checks whether to use HELP2 lump for complevel 1 and below
-extern int doom_1666_menu_check;
+// checks whether to use HELP2 lump for Doom 1 complevel 2 and below
+extern int doom_help2_check;
 
 // hexen
 

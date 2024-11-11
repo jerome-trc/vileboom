@@ -316,6 +316,16 @@ static void FUNC_V_DrawBackground(const char* flatname, int scrn)
   V_FillFlatName(flatname, scrn, 0, 0, SCREENWIDTH, SCREENHEIGHT, VPT_STRETCH);
 }
 
+/*
+ * V_DrawBackgroundNum tiles a 64x64 animated patch (via number for animated lumps)
+ * over the entire screen, providing the background for the Help and Setup screens,
+ * and plot text between levels.
+ */
+static void FUNC_V_DrawBackgroundNum(int lump, int scrn)
+{
+  V_FillFlatNum(lump, scrn, 0, 0, SCREENWIDTH, SCREENHEIGHT, VPT_STRETCH);
+}
+
 //
 // V_Init
 //
@@ -715,6 +725,10 @@ static void WRAP_gld_DrawBackground(const char *flatname, int n)
 {
   gld_FillFlatName(flatname, 0, 0, SCREENWIDTH, SCREENHEIGHT, VPT_STRETCH);
 }
+static void WRAP_gld_DrawBackgroundNum(int lump, int n)
+{
+  gld_FillFlatNum(lump, 0, 0, SCREENWIDTH, SCREENHEIGHT, VPT_STRETCH);
+}
 static void WRAP_gld_FillFlat(int lump, int n, int x, int y, int width, int height, enum patch_translation_e flags)
 {
   gld_FillFlat(lump, x, y, width, height, flags);
@@ -752,6 +766,7 @@ static void NULL_CopyRect(int srcscrn, int destscrn, int x, int y, int width, in
 static void NULL_FillFlat(int lump, int n, int x, int y, int width, int height, enum patch_translation_e flags) {}
 static void NULL_FillPatch(int lump, int n, int x, int y, int width, int height, enum patch_translation_e flags) {}
 static void NULL_DrawBackground(const char *flatname, int n) {}
+static void NULL_DrawBackgroundNum(int lump, int n) {}
 static void NULL_DrawNumPatch(int x, int y, int scrn, int lump, int cm, enum patch_translation_e flags) {}
 static void NULL_DrawNumPatchPrecise(float x, float y, int scrn, int lump, int cm, enum patch_translation_e flags) {}
 static void NULL_PlotPixel(int scrn, int x, int y, byte color) {}
@@ -772,6 +787,7 @@ V_DrawNumPatchPrecise_f V_DrawNumPatchPrecise = NULL_DrawNumPatchPrecise;
 V_FillFlat_f V_FillFlat = NULL_FillFlat;
 V_FillPatch_f V_FillPatch = NULL_FillPatch;
 V_DrawBackground_f V_DrawBackground = NULL_DrawBackground;
+V_DrawBackgroundNum_f V_DrawBackgroundNum = NULL_DrawBackgroundNum;
 V_PlotPixel_f V_PlotPixel = NULL_PlotPixel;
 V_PlotPixelWu_f V_PlotPixelWu = NULL_PlotPixelWu;
 V_DrawLine_f V_DrawLine = NULL_DrawLine;
@@ -795,6 +811,7 @@ void V_InitMode(video_mode_t mode) {
       V_FillFlat = FUNC_V_FillFlat;
       V_FillPatch = FUNC_V_FillPatch;
       V_DrawBackground = FUNC_V_DrawBackground;
+      V_DrawBackgroundNum = FUNC_V_DrawBackgroundNum;
       V_PlotPixel = V_PlotPixel8;
       V_PlotPixelWu = V_PlotPixelWu8;
       V_DrawLine = WRAP_V_DrawLine;
@@ -814,6 +831,7 @@ void V_InitMode(video_mode_t mode) {
       V_FillFlat = WRAP_gld_FillFlat;
       V_FillPatch = WRAP_gld_FillPatch;
       V_DrawBackground = WRAP_gld_DrawBackground;
+      V_DrawBackgroundNum = WRAP_gld_DrawBackgroundNum;
       V_PlotPixel = V_PlotPixelGL;
       V_PlotPixelWu = V_PlotPixelWuGL;
       V_DrawLine = WRAP_gld_DrawLine;

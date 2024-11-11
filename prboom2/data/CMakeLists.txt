@@ -197,6 +197,7 @@ set(GRAPHICS
     graphics/chxpstr.ppm
     graphics/chxarms1.ppm
     graphics/chxarms2.ppm
+    graphics/nyanlogo.ppm
     graphics/m_butt1.ppm
     graphics/m_butt2.ppm
     graphics/m_colors.ppm

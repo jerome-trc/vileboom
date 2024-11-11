@@ -263,6 +263,7 @@ void M_DrawSound(void);
 void M_DrawLoad(void);
 void M_DrawSave(void);
 void M_DrawHelp (void);                                     // phares 5/04/98
+void M_DrawHelp2(void);
 
 void M_DrawSaveLoadBorder(int x,int y);
 void M_DrawThermo(int x,int y,int thermWidth,int thermDot);
@@ -356,6 +357,7 @@ const char shiftxform[] =
   '{', '|', '}', '~', 127
 };
 
+static int cr_logo;
 static int cr_title;
 static int cr_label;
 static int cr_label_highlight;
@@ -369,6 +371,7 @@ static int cr_warning;
 
 static void M_LoadTextColors(void)
 {
+  cr_logo = dsda_TextCR(dsda_tc_menu_logo);
   cr_title = dsda_TextCR(dsda_tc_menu_title);
   cr_label = dsda_TextCR(dsda_tc_menu_label);
   cr_label_highlight = dsda_TextCR(dsda_tc_menu_label_highlight);
@@ -563,11 +566,9 @@ void M_DrawReadThis1(void)
     V_DrawRawScreen("HELP2");
   }
   // Arsinikk - allows use of HELP2 screen for PWADs under DOOM 1
-  else if (gamemode == shareware || doom_1666_menu_check)
+  else if (gamemode < commercial || doom_help2_check)
   {
-    // e6y: wide-res
-    V_ClearBorder();
-    V_DrawNameNyanPatch(0, 0, 0, help2, CR_DEFAULT, VPT_STRETCH);
+    M_DrawHelp2();
   }
   else
     M_DrawCredits();
@@ -581,7 +582,7 @@ void M_DrawReadThis1(void)
 void M_DrawReadThis2(void)
 {
   inhelpscreens = true;
-  M_DrawCredits();
+  M_DrawHelp();
 }
 
 /////////////////////////////
@@ -3216,6 +3217,7 @@ setup_menu_t misc2_settings[] = {
   { "Nyan Lumps", S_SKIP | S_TITLE, m_null, G_X},
   { "Animate Lumps", S_YESNO, m_conf, G_X, nyan_config_enable_animate_lumps },
   { "Widescreen Lumps", S_YESNO, m_conf, G_X, nyan_config_enable_widescreen_lumps },
+  { "Boom Credit/Help Screens", S_YESNO, m_conf, G_X, nyan_config_boom_credit_help },
   EMPTY_LINE,
   { "OpenGL Options", S_SKIP | S_TITLE, m_null, G_X},
   { "Show Health Bars", S_YESNO, m_conf, G_X, dsda_config_gl_health_bar },
@@ -4004,9 +4006,6 @@ void M_InitExtendedHelp(void)
              *
              * See also: https://www.doomworld.com/forum/topic/111465-boom-extended-help-screens-an-undocumented-feature/
              */
-
-             // Arsinikk - Allowed Extended Help menu items in Doom 2
-
             HelpMenu[0].routine = M_ExtHelp;
             if (gamemode == commercial) {
                 ExtHelpDef.prevMenu  = &ReadDef1; /* previous menu */
@@ -4292,19 +4291,49 @@ static void M_DrawStringCentered(int cx, int cy, int color, const char* ch)
 
 void M_DrawHelp (void)
 {
-  const int lump = W_CheckNumForName(help0);
+  const char* lump;
+  if(gamemode == commercial)
+    lump = help0;
+  else
+    lump = help1;
+  const int lumpNum = W_CheckNumForName(lump);
 
   M_ChangeMenu(NULL, mnact_full);
 
-  if (lump != LUMP_NOT_FOUND && lumpinfo[lump].source == source_pwad)
+  if (lumpNum != LUMP_NOT_FOUND && (lumpinfo[lumpNum].source == source_pwad || !dsda_IntConfig(nyan_config_boom_credit_help)))
   {
     V_ClearBorder();
-    V_DrawNameNyanPatch(0, 0, 0, help0, CR_DEFAULT, VPT_STRETCH);
+    V_DrawNameNyanPatch(0, 0, 0, lump, CR_DEFAULT, VPT_STRETCH);
   }
   else
   {
-    M_DrawBackground(g_menu_flat, 0);
+    // Use V_DrawBackground here deliberately to force drawing a background
+    //V_DrawBackground(gamemode==shareware ? "CEIL5_1" : "MFLR8_4", 0);
+    //M_DrawBackground(g_menu_flat, 0);
+    V_DrawNyanBackground(aniflat1, aniflat2, 0);
     M_DrawScreenItems(helpstrings, 2);
+  }
+}
+
+//
+// M_DrawHelp2
+//
+// This displays the help2 screen
+
+void M_DrawHelp2 (void)
+{
+  const int lump = W_CheckNumForName(help2);
+
+  M_ChangeMenu(NULL, mnact_full);
+
+  if (gamemode == shareware || (lump != LUMP_NOT_FOUND && lumpinfo[lump].source == source_pwad))
+  {
+    V_ClearBorder();
+    V_DrawNameNyanPatch(0, 0, 0, help2, CR_DEFAULT, VPT_STRETCH);
+  }
+  else
+  {
+    M_DrawCredits();
   }
 }
 
@@ -4331,8 +4360,8 @@ setup_menu_t cred_settings[]={
   {"Marisa Heit for ZDOOM",S_SKIP|S_CREDIT|S_LEFTJUST,m_null, CR_X2},
   {"Michael 'Kodak' Ryssen for DOOMGL",S_SKIP|S_CREDIT|S_LEFTJUST,m_null, CR_X2},
   {"Jess Haas for lSDLDoom",S_SKIP|S_CREDIT|S_LEFTJUST,m_null, CR_X2},
-  {"kraflab for DSDA-Doom",S_SKIP|S_CREDIT|S_LEFTJUST,m_null, CR_X2},
-  {"all others who helped (see AUTHORS file)",S_SKIP|S_CREDIT|S_LEFTJUST,m_null, CR_X2},
+  {"Ryan 'kraflab' Krafnick for DSDA-Doom",S_SKIP|S_CREDIT|S_LEFTJUST,m_null, CR_X2},
+  {"(see AUTHORS file for more)",S_SKIP|S_CREDIT|S_LEFTJUST,m_null, CR_X2},
 
   FINAL_ENTRY
 };
@@ -4350,14 +4379,16 @@ void M_DrawCredits(void)     // killough 10/98: credit screen
   inhelpscreens = true;
 
   V_ClearBorder();
-  if (lump != LUMP_NOT_FOUND && lumpinfo[lump].source == source_pwad)
+  if (lump != LUMP_NOT_FOUND && (lumpinfo[lump].source == source_pwad || !dsda_IntConfig(nyan_config_boom_credit_help)))
     V_DrawNameNyanPatch(0, 0, 0, credit, CR_DEFAULT, VPT_STRETCH);
   else
   {
     // Use V_DrawBackground here deliberately to force drawing a background
-    V_DrawBackground(gamemode==shareware ? "CEIL5_1" : "MFLR8_4", 0);
-    M_DrawTitle(81, 9, "PRBOOM", cr_title, PACKAGE_NAME " v" PACKAGE_VERSION, cr_title);
-    M_DrawScreenItems(cred_settings, 32);
+    //V_DrawBackground(gamemode==shareware ? "CEIL5_1" : "MFLR8_4", 0);
+    V_DrawNyanBackground(aniflat1, aniflat2, 0);
+    M_DrawTitle(91, 6, "NYANLOGO", cr_logo, PACKAGE_NAME " v" PACKAGE_VERSION, cr_title);
+    M_DrawTitle(91,25, "NYANNAME", cr_logo, "by Andrik 'Arsinikk' Powell", cr_logo);
+    M_DrawScreenItems(cred_settings, 48);
   }
 }
 
@@ -5148,7 +5179,10 @@ static dboolean M_InactiveMenuResponder(int ch, int action, event_t* ev)
   if (ch == KEYD_F1)                                         // phares
   {
     M_StartControlPanel ();
-    M_ChangeMenu(&HelpDef, mnact_nochange);
+    if(!raven && (gamemode < commercial) || doom_help2_check)// || gamemode == retail))
+      M_ChangeMenu(&ReadDef1, mnact_nochange);
+    else
+      M_ChangeMenu(&HelpDef, mnact_nochange);
 
     itemOn = 0;
     S_StartVoidSound(g_sfx_swtchn);
@@ -6059,7 +6093,7 @@ void M_Drawer (void)
     if (max > 0)
     {
         // CPhipps - patch drawing updated
-        if (Check_Skull_Animate)
+        if (Check_Skull_Animate && animateLumps)
             V_DrawNameMenuPatch(x + SKULLXOFF,currentMenu->y - 5 + itemOn * LINEHEIGHT, 0, mskull1, CR_DEFAULT, VPT_STRETCH);
         else
             V_DrawNamePatch(x + SKULLXOFF, currentMenu->y - 5 + itemOn * LINEHEIGHT, 0, skullName[whichSkull], CR_DEFAULT, VPT_STRETCH);
@@ -6396,13 +6430,21 @@ void M_Init(void)
       // This is used because DOOM 2 had only one HELP
       //  page. I use CREDIT as second page now, but
       //  kept this hack for educational purposes.
-      MainMenu[readthis] = MainMenu[quitdoom];
-      MainDef.numitems--;
+
       MainDef.y += 8;
-      ReadDef1.routine = M_DrawReadThis1;
       ReadDef1.x = 330;
       ReadDef1.y = 165;
-      ReadMenu1[0].routine = M_FinishReadThis;
+      ReadDef1.routine = M_DrawReadThis2;
+
+      // Arsinikk - allowed "Read Me!" in the menu in
+      // DOOM 2 if Extended Help screens are found
+      if(W_CheckNumForName("HELP01") == LUMP_NOT_FOUND)
+      {
+        ReadMenu1[0].routine = M_FinishReadThis;
+        ReadDef1.routine = M_DrawReadThis1;
+        MainMenu[readthis] = MainMenu[quitdoom];
+        MainDef.numitems--;
+      }
       break;
     case registered:
       // Episode 2 and 3 are handled,
@@ -6410,10 +6452,15 @@ void M_Init(void)
 
       // killough 2/21/98: Fix registered Doom help screen
       // killough 10/98: moved to second screen, moved up to the top
-      ReadDef2.y = 15;
+      HelpDef.routine = M_DrawHelp2;
+      ReadDef1.y = 15;
       break;
     case shareware:
+      HelpDef.routine = M_DrawHelp2;
+      ReadDef1.y = 15;
     case retail:
+      if (doom_help2_check)
+        ReadDef1.y = 15;
     default:
       break;
   }

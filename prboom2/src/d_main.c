@@ -785,8 +785,8 @@ void D_DoAdvanceDemo(void)
   pagetic = TICRATE * 11;         /* killough 11/98: default behavior */
   gamestate = GS_DEMOSCREEN;
 
-  // Arsinikk - allows use of HELP2 screen for DOOM 1 wads under complevel 0-1
-  if (doom_1666_menu_check)
+  // Arsinikk - allows use of HELP2 screen for PWADs under DOOM 1
+  if (doom_help2_check)
     demoorder = registered;
 
   if (netgame && !demoplayback)
