@@ -18,20 +18,20 @@
 #ifndef __DSDA_LIBRARY__
 #define __DSDA_LIBRARY__
 
-const char* mskull1;
-const char* mskull2;
-const char* mdoom;
-const char* stbar;
-const char* starms;
-const char* titlepic;
-const char* interpic;
-const char* credit;
-const char* help0;
-const char* help1;
-const char* help2;
-const char* e2victory;
-const char* e4endpic;
-const char* e3bunny1;
-const char* e3bunny2;
+extern const char* mskull1;
+extern const char* mskull2;
+extern const char* mdoom;
+extern const char* stbar;
+extern const char* starms;
+extern const char* titlepic;
+extern const char* interpic;
+extern const char* credit;
+extern const char* help0;
+extern const char* help1;
+extern const char* help2;
+extern const char* e2victory;
+extern const char* e4endpic;
+extern const char* e3bunny1;
+extern const char* e3bunny2;
 
 #endif

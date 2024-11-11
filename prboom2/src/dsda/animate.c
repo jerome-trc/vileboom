@@ -294,7 +294,7 @@ extern void V_DrawNameMenuPatch(const int x, const int y, const int scrn, const 
 const char* AnimateCombine(const char *lump_prefix, const char *lump_main)
 {
     char lump_short[7];
-    strncpy(lump_short, lump_main, strlen(lump_main));
+    memcpy(lump_short, lump_main, strlen(lump_main));
 
     if (lump_prefix == NULL)
         lump_prefix = "S_";
@@ -308,8 +308,8 @@ const char* AnimateCombine(const char *lump_prefix, const char *lump_main)
     size_t prefix = strlen(lump_prefix);
 
     char *result = Z_Malloc(prefix + main + 1);
-    strncpy(result, lump_prefix, prefix);
-    strncpy(result + prefix, lump_short, main + 1);
+    memcpy(result, lump_prefix, prefix);
+    memcpy(result + prefix, lump_short, main + 1);
     return result;
 }
 
@@ -318,7 +318,7 @@ const char* WideCombine(const char *lump_main, const char *lump_suffix)
     //lprintf(LO_INFO, "widecombine lump_main = %s\n", lump_main);
     //lprintf(LO_INFO, "widecombine lump_suffix = %s\n", lump_suffix);
     char lump_short[7];
-    strncpy(lump_short, lump_main, strlen(lump_main));
+    memcpy(lump_short, lump_main, strlen(lump_main));
 
     if (lump_suffix == NULL)
         lump_suffix = "WS";
@@ -335,8 +335,8 @@ const char* WideCombine(const char *lump_main, const char *lump_suffix)
     size_t suffix = strlen(lump_suffix);
 
     char *result = Z_Malloc(main + suffix + 1);
-    strncpy(result, lump_short, main);
-    strncpy(result + main, lump_suffix, suffix + 1);
+    memcpy(result, lump_short, main);
+    memcpy(result + main, lump_suffix, suffix + 1);
     //lprintf(LO_INFO, "widecombine result = %s\n", result);
     return result;
 }
