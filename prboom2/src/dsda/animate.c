@@ -33,6 +33,8 @@ int Check_Stbar_Wide;
 int Check_Skull_Animate;
 int Check_Stbar_Animate;
 
+extern void ST_SetScaledWidth();
+
 extern void dsda_CheckNyanLumps(void) {
     Check_Skull_Animate = D_CheckAnimate(mskull1);
     Check_Stbar_Animate = D_CheckAnimate(stbar);
@@ -46,7 +48,7 @@ extern void dsda_ReloadNyanLumps(void)
   ST_SetScaledWidth();
 }
 
-extern int D_CheckAnimate(char* lump)
+extern const int D_CheckAnimate(const char* lump)
 {
     static int SCheck;
     static int ECheck;
@@ -82,7 +84,7 @@ extern int D_CheckAnimate(char* lump)
     return Animate;
 }
 
-extern int D_CheckWide(const char* lump, char *suffix) {
+extern const int D_CheckWide(const char* lump, const char *suffix) {
     static int widecheck;
     static int widescreen;
     const char* lump_w;
@@ -106,11 +108,11 @@ extern int D_CheckWide(const char* lump, char *suffix) {
     return widescreen;
 }
 
-extern char* D_ApplyWide(char* lump, const char* suffix)
+extern const char* D_ApplyWide(const char* lump, const char* suffix)
 {
     static int widecheck;
     static int widescreen;
-    char* lump_w;
+    const char* lump_w;
 
     if(!widescreenLumps)
       return lump;
@@ -132,7 +134,7 @@ extern char* D_ApplyWide(char* lump, const char* suffix)
     }
 }
 
-extern void V_DrawNameNyanPatch(const int x, const int y, const int scrn, char* lump, const int color, const int flags)
+extern void V_DrawNameNyanPatch(const int x, const int y, const int scrn, const char* lump, const int color, const int flags)
 {
     int frameDiff;
     int frame;
@@ -140,9 +142,9 @@ extern void V_DrawNameNyanPatch(const int x, const int y, const int scrn, char* 
     static int MCheck;
     static int SCheck;
     static int ECheck;
-    char* lump_s;
-    char* lump_e;
-    char* lump_w;
+    const char* lump_s;
+    const char* lump_e;
+    const char* lump_w;
     static int SLump;
     static int ELump;
     static int WCheck;
@@ -194,12 +196,12 @@ extern void V_DrawNameNyanPatch(const int x, const int y, const int scrn, char* 
     V_DrawNumPatch(x, y, scrn, lumpNum, color, flags);
 }
 
-extern char* D_CheckAnimateNyanPatch(char* lump)
+extern const char* D_CheckAnimateNyanPatch(const char* lump)
 {
     static int SCheck;
     static int ECheck;
-    char* lump_s;
-    char* lump_e;
+    const char* lump_s;
+    const char* lump_e;
     static int SLump;
     static int ELump;
 
@@ -223,9 +225,9 @@ extern char* D_CheckAnimateNyanPatch(char* lump)
         return lump;
 }
 
-extern char* D_CheckWideNyanPatch(char* lump)
+extern const char* D_CheckWideNyanPatch(const char* lump)
 {
-    char* lump_w;
+    const char* lump_w;
     static int WCheck;
 
     lump_w = D_ApplyWide(lump, "_WS");
@@ -237,7 +239,7 @@ extern char* D_CheckWideNyanPatch(char* lump)
         return lump;
 }
 
-extern void V_DrawNameMenuPatch(const int x, const int y, const int scrn, char* lump, const int color, const int flags)
+extern void V_DrawNameMenuPatch(const int x, const int y, const int scrn, const char* lump, const int color, const int flags)
 {
     int frameDiff;
     int frame;
@@ -245,8 +247,8 @@ extern void V_DrawNameMenuPatch(const int x, const int y, const int scrn, char* 
     static int SCheck;
     static int ECheck;
     static int MCheck;
-    char* lump_s;
-    char* lump_e;
+    const char* lump_s;
+    const char* lump_e;
     static int SLump;
     static int ELump;
 
@@ -289,10 +291,13 @@ extern void V_DrawNameMenuPatch(const int x, const int y, const int scrn, char* 
     V_DrawNumPatch(x, y, scrn, lumpNum, color, flags);
 }
 
-char* AnimateCombine(const char *lump_prefix, const char *lump_main)
+const char* AnimateCombine(const char *lump_prefix, const char *lump_main)
 {
     char lump_short[7];
     strncpy(lump_short, lump_main, strlen(lump_main));
+
+    if (lump_prefix == NULL)
+        lump_prefix = "S_";
 
     if (strlen(lump_main) > 6)
         lump_short[6] = 0;
@@ -308,16 +313,19 @@ char* AnimateCombine(const char *lump_prefix, const char *lump_main)
     return result;
 }
 
-char* WideCombine(const char *lump_main, char *lump_suffix)
+const char* WideCombine(const char *lump_main, const char *lump_suffix)
 {
     //lprintf(LO_INFO, "widecombine lump_main = %s\n", lump_main);
     //lprintf(LO_INFO, "widecombine lump_suffix = %s\n", lump_suffix);
     char lump_short[7];
     strncpy(lump_short, lump_main, strlen(lump_main));
 
-    if (strlen(lump_main) > 5 && lump_suffix == "_WS")
+    if (lump_suffix == NULL)
+        lump_suffix = "WS";
+
+    if (strlen(lump_main) > 5 && (lump_suffix == "_WS"))
         lump_short[5] = 0;
-    else if (strlen(lump_main) > 6 && lump_suffix == "WS")
+    else if (strlen(lump_main) > 6 && (lump_suffix == "WS"))
         lump_short[6] = 0;
     else
         lump_short[strlen(lump_main)] = 0;

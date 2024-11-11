@@ -26,22 +26,22 @@ extern int Check_Stbar_Wide;
 extern int Check_Skull_Animate;
 extern int Check_Stbar_Animate;
 
-int D_CheckAnimate(char* lump);
-char* D_CheckAnimateNyanPatch(char* lump);
-char* D_CheckWideNyanPatch(char* lump);
+const int D_CheckAnimate(const char* lump);
+const char* D_CheckAnimateNyanPatch(const char* lump);
+const char* D_CheckWideNyanPatch(const char* lump);
 
-int D_CheckWide(const char* lump, char *suffix);
-char* D_ApplyWide(char* lump, const char* suffix);
+const int D_CheckWide(const char* lump, const char *suffix);
+const char* D_ApplyWide(const char* lump, const char* suffix);
 
 void dsda_CheckNyanLumps(void);
 void dsda_ReloadNyanLumps(void);
 
-void V_DrawNameNyanPatch(const int x, const int y, const int scrn, char* lump, const int color, const int flags);
-void V_DrawNameMenuPatch(const int x, const int y, const int scrn, char* lump, const int color, const int flags);
+void V_DrawNameNyanPatch(const int x, const int y, const int scrn, const char* lump, const int color, const int flags);
+void V_DrawNameMenuPatch(const int x, const int y, const int scrn, const char* lump, const int color, const int flags);
 
 
-char* AnimateCombine(const char *lump_prefix, const char *lump_main);
-char* WideCombine(const char *lump_main, const char *lump_suffix);
+const char* AnimateCombine(const char *lump_prefix, const char *lump_main);
+const char* WideCombine(const char *lump_main, const char *lump_suffix);
 
 
 #endif
