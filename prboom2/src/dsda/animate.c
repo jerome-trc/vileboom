@@ -111,7 +111,6 @@ extern const int D_CheckWide(const char* lump, const char *suffix) {
 extern const char* D_ApplyWide(const char* lump, const char* suffix)
 {
     static int widecheck;
-    static int widescreen;
     const char* lump_w;
 
     if(!widescreenLumps)
@@ -139,7 +138,7 @@ extern void V_DrawNameNyanPatch(const int x, const int y, const int scrn, const 
     int frameDiff;
     int frame;
     int lumpNum;
-    static int MCheck;
+    //static int MCheck;
     static int SCheck;
     static int ECheck;
     const char* lump_s;
@@ -246,7 +245,7 @@ extern void V_DrawNameMenuPatch(const int x, const int y, const int scrn, const 
     int lumpNum;
     static int SCheck;
     static int ECheck;
-    static int MCheck;
+    //static int MCheck;
     const char* lump_s;
     const char* lump_e;
     static int SLump;
@@ -294,6 +293,7 @@ extern void V_DrawNameMenuPatch(const int x, const int y, const int scrn, const 
 const char* AnimateCombine(const char *lump_prefix, const char *lump_main)
 {
     char lump_short[7];
+    size_t main, prefix;
     memcpy(lump_short, lump_main, strlen(lump_main));
 
     if (lump_prefix == NULL)
@@ -304,8 +304,8 @@ const char* AnimateCombine(const char *lump_prefix, const char *lump_main)
     else
         lump_short[strlen(lump_main)] = 0;
 
-    size_t main = strlen(lump_short);
-    size_t prefix = strlen(lump_prefix);
+    main = strlen(lump_short);
+    prefix = strlen(lump_prefix);
 
     char *result = Z_Malloc(prefix + main + 1);
     memcpy(result, lump_prefix, prefix);
@@ -318,21 +318,22 @@ const char* WideCombine(const char *lump_main, const char *lump_suffix)
     //lprintf(LO_INFO, "widecombine lump_main = %s\n", lump_main);
     //lprintf(LO_INFO, "widecombine lump_suffix = %s\n", lump_suffix);
     char lump_short[7];
+    size_t main, suffix;
     memcpy(lump_short, lump_main, strlen(lump_main));
 
     if (lump_suffix == NULL)
         lump_suffix = "WS";
 
-    if (strlen(lump_main) > 5 && (lump_suffix == "_WS"))
+    if (strlen(lump_main) > 5 && !strcmp(lump_suffix, "_WS"))
         lump_short[5] = 0;
-    else if (strlen(lump_main) > 6 && (lump_suffix == "WS"))
+    else if (strlen(lump_main) > 6 && !strcmp(lump_suffix, "WS"))
         lump_short[6] = 0;
     else
         lump_short[strlen(lump_main)] = 0;
     //lprintf(LO_INFO, "widecombine lump_short = %s\n", lump_short);
 
-    size_t main = strlen(lump_short);
-    size_t suffix = strlen(lump_suffix);
+    main = strlen(lump_short);
+    suffix = strlen(lump_suffix);
 
     char *result = Z_Malloc(main + suffix + 1);
     memcpy(result, lump_short, main);
