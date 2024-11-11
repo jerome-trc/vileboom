@@ -34,6 +34,7 @@
 #include "dsda/map_format.h"
 #include "dsda/mapinfo.h"
 #include "dsda/preferences.h"
+#include "dsda/animate.h"
 
 #include "u.h"
 
@@ -318,7 +319,7 @@ void dsda_UFDrawer(void) {
   else {
     // e6y: wide-res
     V_ClearBorder();
-    V_DrawNamePatch(0, 0, 0, gamemapinfo->endpic, CR_DEFAULT, VPT_STRETCH);
+    V_DrawNameNyanPatch(0, 0, 0, gamemapinfo->endpic, CR_DEFAULT, VPT_STRETCH);
   }
 }
 

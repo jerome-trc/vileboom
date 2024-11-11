@@ -63,7 +63,6 @@
 #include "dsda/sprite.h"
 #include "dsda/state.h"
 #include "dsda/utility.h"
-#include "dsda/widescreen.h"
 
 #define TRUE 1
 #define FALSE 0

@@ -19,63 +19,29 @@
 #define __DSDA_ANIMATE__
 
 extern short AnimateTime;
+extern int animateLumps;
+extern int widescreenLumps;
 
-extern const char* titlepic_start;
-extern const char* titlepic_end;
-extern const char* interpic_start;
-extern const char* interpic_end;
-extern const char* mdoom_start;
-extern const char* mdoom_end;
-extern const char* mskull_start;
-extern const char* mskull_end;
-extern const char* stbar_start;
-extern const char* stbar_end;
-extern const char* starms_start;
-extern const char* starms_end;
-extern const char* credit_start;
-extern const char* credit_end;
-extern const char* help0_start;
-extern const char* help0_end;
-extern const char* help1_start;
-extern const char* help1_end;
-extern const char* help2_start;
-extern const char* help2_end;
-extern const char* bossback_start;
-extern const char* bossback_end;
-extern const char* e1map_start;
-extern const char* e1map_end;
-extern const char* e2map_start;
-extern const char* e2map_end;
-extern const char* e3map_start;
-extern const char* e3map_end;
-extern const char* victory_start;
-extern const char* victory_end;
-extern const char* endpic_start;
-extern const char* endpic_end;
-
-extern int Check_Doom_Animate;
+extern int Check_Stbar_Wide;
 extern int Check_Skull_Animate;
 extern int Check_Stbar_Animate;
-extern int Check_Starms_Animate;
-extern int Check_Titlepic_Animate;
-extern int Check_Interpic_Animate;
-extern int Check_Credit_Animate;
-extern int Check_Help0_Animate;
-extern int Check_Help1_Animate;
-extern int Check_Help2_Animate;
-extern int Check_Bossback_Animate;
-extern int Check_E1map_Animate;
-extern int Check_E2map_Animate;
-extern int Check_E3map_Animate;
-extern int Check_Victory_Animate;
-extern int Check_Endpic_Animate;
+
+int D_CheckAnimate(char* lump);
+char* D_CheckAnimateNyanPatch(char* lump);
+char* D_CheckWideNyanPatch(char* lump);
+
+int D_CheckWide(const char* lump, char *suffix);
+char* D_ApplyWide(char* lump, const char* suffix);
+
+void dsda_CheckNyanLumps(void);
+void dsda_ReloadNyanLumps(void);
+
+void V_DrawNameNyanPatch(const int x, const int y, const int scrn, char* lump, const int color, const int flags);
+void V_DrawNameMenuPatch(const int x, const int y, const int scrn, char* lump, const int color, const int flags);
 
 
-int D_CheckAnimate(const char* lump_s, const char* lump_e);
-void D_DrawAnimate(const char* lump_s, const char* lump_e);
-//void D_DrawAnimateBunny(const char *lump_x, const char *lump_y, const char *lump_s, const char *lump_e);
-void M_DrawMenuAnimate(const int lump_x, const int lump_y, const char* lump_s, const char* lump_e);
-void M_DrawStbarAnimate(const int lump_x, const int lump_y, const int lump_z, const char* lump_s, const char* lump_e);
-void dsda_AnimateExistCheck(void);
+char* AnimateCombine(const char *lump_prefix, const char *lump_main);
+char* WideCombine(const char *lump_main, const char *lump_suffix);
+
 
 #endif

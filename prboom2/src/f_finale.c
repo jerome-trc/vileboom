@@ -51,8 +51,8 @@
 #include "dsda/map_format.h"
 #include "dsda/preferences.h"
 #include "dsda/configuration.h"
-#include "dsda/widescreen.h"
 #include "dsda/animate.h"
+#include "dsda/library.h"
 
 #include "f_finale.h" // CPhipps - hmm...
 
@@ -568,7 +568,7 @@ void F_TextWrite (void)
   if (finalepatch)
   {
     V_ClearBorder();
-    V_DrawNamePatch(0, 0, 0, finalepatch, CR_DEFAULT, VPT_STRETCH);
+    V_DrawNameNyanPatch(0, 0, 0, finalepatch, CR_DEFAULT, VPT_STRETCH);
   }
   else
     V_DrawBackground(finaleflat, 0);
@@ -694,8 +694,6 @@ static void F_StartCastMusic(const char* music, dboolean loop_music)
 void F_StartCast (const char* background, const char* music, dboolean loop_music)
 {
   castorder = (gamemode == commercial ? castorder_d2 : castorder_d1);
-  if(Check_Bossback_Wide)
-    bgcastcall = bossback_wide;
   castbackground = (background ? background : bgcastcall);
 
   wipegamestate = -1;         // force a screen wipe
@@ -908,11 +906,7 @@ void F_CastDrawer (void)
   V_ClearBorder();
   // erase the entire screen to a background
   // CPhipps - patch drawing updated
-  
-  if (Check_Bossback_Animate)
-      D_DrawAnimate(bossback_start, bossback_end);
-  else
-      V_DrawNamePatch(0,0,0, castbackground, CR_DEFAULT, VPT_STRETCH); // Ty 03/30/98 bg texture extern
+  V_DrawNameNyanPatch(0,0,0, castbackground, CR_DEFAULT, VPT_STRETCH); // Ty 03/30/98 bg texture extern
 
   F_CastPrint (*(castorder[castnum].name));
 
@@ -930,8 +924,6 @@ void F_CastDrawer (void)
 //
 // F_BunnyScroll
 //
-static const char* pfub1 = "PFUB1";
-static const char* pfub2 = "PFUB2";
 
 static const char* scrollpic1;
 static const char* scrollpic2;
@@ -954,14 +946,9 @@ static dboolean end_patches_exist;
 
 void F_StartScroll (const char* right, const char* left, const char* music, dboolean loop_music)
 {
-  if (Check_Bunny1_Wide && Check_Bunny2_Wide)
-  {
-      pfub1 = bunny1_wide;
-      pfub2 = bunny2_wide;
-  }
   wipegamestate = -1; // force a wipe
-  scrollpic1 = right ? right : pfub1;
-  scrollpic2 = left ? left : pfub2;
+  scrollpic1 = right ? right : e3bunny1;
+  scrollpic2 = left ? left : e3bunny2;
   finalecount = 0;
   finalestage = 1;
 
@@ -982,12 +969,45 @@ void F_BunnyScroll (void)
   int         stage;
   static int  laststage;
   static int  p1offset, p2width;
+  int BunnyAnimate1 = 0;
+  int BunnyAnimate2 = 0;
 
   if (finalecount == 0)
   {
     const rpatch_t *p1, *p2;
     p1 = R_PatchByName(scrollpic1);
     p2 = R_PatchByName(scrollpic2);
+
+    if (animateLumps)
+    {
+      if(D_CheckAnimate(scrollpic1))
+      {
+        p1 = R_PatchByName(AnimateCombine("S_", scrollpic1));
+        BunnyAnimate1 = 1;
+      }
+      if(D_CheckAnimate(scrollpic2))
+      {
+        p2 = R_PatchByName(AnimateCombine("S_", scrollpic2));
+        BunnyAnimate2 = 1;
+      }
+    }
+    if (widescreenLumps)
+    {
+      if(D_CheckWide(scrollpic1, "WS") && !BunnyAnimate1)
+      {
+        if (scrollpic1 == e3bunny1)
+          p1 = R_PatchByName(WideCombine(scrollpic1, "_WS"));
+        else
+          p1 = R_PatchByName(WideCombine(scrollpic1, "WS"));
+      }
+      if(D_CheckWide(scrollpic2, "WS") && !BunnyAnimate2)
+      {
+        if (scrollpic2 == e3bunny2)
+          p1 = R_PatchByName(WideCombine(scrollpic1, "_WS"));
+        else
+          p1 = R_PatchByName(WideCombine(scrollpic1, "WS"));
+      }
+    }
 
     p2width = p2->width;
     if (p1->width == 320)
@@ -1002,52 +1022,17 @@ void F_BunnyScroll (void)
     }
   }
 
-//////////////////////////////////////////////////////////////////////
-//
-// Arsinikk - note that while the code is sound for the animated
-// bunny sequence, Nyan Doom + DSDA Doom have visual errors/artefacts.
-//
-// Therefore until this is fixed, I'm going to leave the code
-// commented out :)
-// 
-/////////////////////////////////////////////////////////////////////
-
   {
     int scrolled = 320 - (finalecount-230)/2;
-
-
-
-    // int BunnyAnimate;
-    //if (Check_Bunny1_Animate && Check_Bunny2_Animate)
-    //{
-    //    BunnyAnimate = 1;
-    //}
     if (scrolled <= 0) {
-        //if (BunnyAnimate)
-        //    D_DrawAnimateBunny(0,0,"S_PFUB2", "E_PFUB2");
-        //else
-            V_DrawNamePatch(0, 0, 0, scrollpic2, CR_DEFAULT, VPT_STRETCH);
+      V_DrawNameNyanPatch(0, 0, 0, scrollpic2, CR_DEFAULT, VPT_STRETCH);
     } else if (scrolled >= 320) {
-        //if (BunnyAnimate)
-        //    D_DrawAnimateBunny(p1offset, 0, "S_PFUB1", "E_PFUB1");
-        //else
-            V_DrawNamePatch(p1offset, 0, 0, scrollpic1, CR_DEFAULT, VPT_STRETCH);
+      V_DrawNameNyanPatch(p1offset, 0, 0, scrollpic1, CR_DEFAULT, VPT_STRETCH);
       if (p1offset > 0)
-        //if (BunnyAnimate)
-        //    D_DrawAnimateBunny(-320, 0, "S_PFUB2", "E_PFUB2");
-        //else
-            V_DrawNamePatch(-320, 0, 0, scrollpic2, CR_DEFAULT, VPT_STRETCH);
+        V_DrawNameNyanPatch(-320, 0, 0, scrollpic2, CR_DEFAULT, VPT_STRETCH);
     } else {
-        // if (BunnyAnimate)
-        // {
-        //     D_DrawAnimateBunny(p1offset + 320 - scrolled, 0, "S_PFUB1", "E_PFUB1");
-        //     D_DrawAnimateBunny(-scrolled, 0, "S_PFUB2", "E_PFUB2");
-        // }
-        // else
-        // {
-            V_DrawNamePatch(p1offset + 320 - scrolled, 0, 0, scrollpic1, CR_DEFAULT, VPT_STRETCH);
-            V_DrawNamePatch(-scrolled, 0, 0, scrollpic2, CR_DEFAULT, VPT_STRETCH);
-        // }
+      V_DrawNameNyanPatch(p1offset + 320 - scrolled, 0, 0, scrollpic1, CR_DEFAULT, VPT_STRETCH);
+      V_DrawNameNyanPatch(-scrolled, 0, 0, scrollpic2, CR_DEFAULT, VPT_STRETCH);
     }
     if (p2width == 320)
       V_ClearBorder();
@@ -1118,38 +1103,18 @@ void F_Drawer (void)
       // CPhipps - patch drawing updated
       case 1:
           if (gamemode == retail || gamemode == commercial)
-             if (Check_Credit_Animate)
-                D_DrawAnimate(credit_start, credit_end);
-             else if (Check_Credit_Wide)
-                V_DrawNamePatch(0, 0, 0, credit_wide, CR_DEFAULT, VPT_STRETCH);
-             else
-                V_DrawNamePatch(0, 0, 0, "CREDIT", CR_DEFAULT, VPT_STRETCH);
-           else
-             if (Check_Help2_Animate)
-                D_DrawAnimate(help2_start, help2_end);
-             else if (Check_Help2_Wide)
-                V_DrawNamePatch(0, 0, 0, help2_wide, CR_DEFAULT, VPT_STRETCH);
-             else
-                V_DrawNamePatch(0, 0, 0, "HELP2", CR_DEFAULT, VPT_STRETCH);
+            V_DrawNameNyanPatch(0, 0, 0, credit, CR_DEFAULT, VPT_STRETCH);
+          else
+            V_DrawNameNyanPatch(0, 0, 0, help2, CR_DEFAULT, VPT_STRETCH);
            break;
       case 2:
-          if (Check_Victory_Animate)
-            D_DrawAnimate(victory_start, victory_end);
-          else if (Check_Victory_Wide)
-            V_DrawNamePatch(0, 0, 0, victory_wide, CR_DEFAULT, VPT_STRETCH);
-          else
-            V_DrawNamePatch(0, 0, 0, "VICTORY2", CR_DEFAULT, VPT_STRETCH);
+            V_DrawNameNyanPatch(0, 0, 0, e2victory, CR_DEFAULT, VPT_STRETCH);
            break;
       case 3:
            F_BunnyScroll ();
            break;
       case 4:
-           if (Check_Endpic_Animate)
-             D_DrawAnimate(endpic_start, endpic_end);
-           else if (Check_Endpic_Wide)
-             V_DrawNamePatch(0, 0, 0, endpic_wide, CR_DEFAULT, VPT_STRETCH);
-           else
-             V_DrawNamePatch(0, 0, 0, "ENDPIC", CR_DEFAULT, VPT_STRETCH);
+             V_DrawNameNyanPatch(0, 0, 0, e4endpic, CR_DEFAULT, VPT_STRETCH);
            break;
     }
   }

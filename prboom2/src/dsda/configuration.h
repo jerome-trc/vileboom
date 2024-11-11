@@ -80,6 +80,8 @@ typedef enum {
   dsda_config_organize_failed_demos,
   nyan_config_intermission_pause,
   nyan_config_skip_default_text,
+  nyan_config_enable_widescreen_lumps,
+  nyan_config_enable_animate_lumps,
   dsda_config_script_0,
   dsda_config_script_1,
   dsda_config_script_2,

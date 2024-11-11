@@ -109,8 +109,8 @@
 #include "dsda/wad_stats.h"
 #include "dsda/zipfile.h"
 #include "dsda/gl/render_scale.h"
-#include "dsda/widescreen.h"
 #include "dsda/animate.h"
+#include "dsda/library.h"
 
 #include "heretic/mn_menu.h"
 #include "heretic/sb_bar.h"
@@ -647,18 +647,7 @@ static void D_PageDrawer(void)
     // e6y: wide-res
     V_ClearBorder();
 
-    if (pagename == titlepic_start)
-        D_DrawAnimate(titlepic_start,titlepic_end);
-    else if (pagename == help0_start)
-        D_DrawAnimate(help0_start, help0_end);
-    else if (pagename == help1_start)
-        D_DrawAnimate(help1_start, help1_end);
-    else if (pagename == help2_start)
-        D_DrawAnimate(help2_start, help2_end);
-    else if (pagename == credit_start)
-        D_DrawAnimate(credit_start, credit_end);
-    else
-        V_DrawNamePatch(0, 0, 0, pagename, CR_DEFAULT, VPT_STRETCH);
+    V_DrawNameNyanPatch(0, 0, 0, pagename, CR_DEFAULT, VPT_STRETCH);
   }
   else
     M_DrawCredits();
@@ -679,9 +668,9 @@ void D_AdvanceDemo (void)
 
 static void D_SetPageName(const char *name)
 {
-    //if ((bfgedition) && name && !strncmp(name,"TITLEPIC",8))
-    //  pagename = "DMENUPIC";
-    //else
+  if ((bfgedition) && name && !strncmp(name,titlepic,8))
+    pagename = "DMENUPIC";
+  else
     pagename = name;
 }
 
@@ -698,49 +687,12 @@ void D_SetPage(const char* name, int tics, int music)
 
 static void D_DrawTitle1(const char *name)
 {
-  if (Check_Titlepic_Animate)
-    name = titlepic_start;
-  else if (Check_Titlepic_Wide)
-    name = titlepic_wide;
   D_SetPage(name, TICRATE * 170 / 35, mus_intro);
 }
 
 static void D_DrawTitle2(const char *name)
 {
-    if (Check_Titlepic_Animate)
-      name = titlepic_start;
-    else if (Check_Titlepic_Wide)
-      name = titlepic_wide;
-    else if (bfgedition)
-      name = "DMENUPIC";
     D_SetPage(name, 0, mus_dm2ttl);
-}
-
-static void D_DrawCredits(const char* name)
-{
-    if (Check_Credit_Animate)
-      name = credit_start;
-    else if (Check_Credit_Wide)
-      name = credit_wide;
-    D_SetPage(name, 200, 0);
-}
-
-static void D_DrawHelp1(const char* name)
-{
-    if (Check_Help1_Animate)
-      name = help1_start;
-    else if (Check_Help1_Wide)
-      name = help1_wide;
-    D_SetPage(name, 200, 0);
-}
-
-static void D_DrawHelp2(const char* name)
-{
-    if (Check_Help2_Animate)
-      name = help2_start;
-    else if (Check_Help2_Wide)
-      name = help2_wide;
-    D_SetPage(name, 200, 0);
 }
 
 /* killough 11/98: tabulate demo sequences
@@ -765,10 +717,10 @@ const demostate_t doom_demostates[][4] =
   },
 
   {
-    {D_DrawCredits, NULL},
-    {D_DrawCredits, NULL},
-    {D_DrawCredits, NULL},
-    {D_DrawCredits, NULL},
+    {D_SetPageName, NULL},
+    {D_SetPageName, NULL},
+    {D_SetPageName, NULL},
+    {D_SetPageName, NULL},
   },
 
   {
@@ -779,9 +731,9 @@ const demostate_t doom_demostates[][4] =
   },
 
   {
-    {D_DrawHelp2, "HELP2"},
-    {D_DrawHelp2, "HELP2"},
-    {D_DrawCredits, "CREDIT"},
+    {D_SetPageName, "HELP2"},
+    {D_SetPageName, "HELP2"},
+    {D_SetPageName, "CREDIT"},
     {D_DrawTitle1,  "TITLEPIC"},
   },
 
@@ -799,7 +751,7 @@ const demostate_t doom_demostates[][4] =
     // Both Plutonia and TNT are commercial like Doom2,
     // but in difference from  Doom2, they have demo4 in demo cycle.
     {G_DeferedPlayDemo, "demo4"},
-    {D_DrawCredits, "CREDIT"},
+    {D_SetPageName, "CREDIT"},
   },
 
   {
@@ -1958,9 +1910,9 @@ static void D_DoomMainSetup(void)
 
   lprintf(LO_DEBUG, "G_ReloadDefaults: Checking OPTIONS.\n");
   dsda_ParseOptionsLump();
-  dsda_AnimateExistCheck();
-  dsda_WideExistCheck();
   G_ReloadDefaults();
+  dsda_ReloadNyanLumps();
+  dsda_CheckNyanLumps();
   if (limitremoving)
     lprintf(LO_INFO, "Limit-removing detected. Overflows disabled\n");
 

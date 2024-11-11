@@ -30,6 +30,8 @@ The `start` lumps should be placed *above* or *before* the `end` lumps in the WA
 | WIMAP1         | S_WIMAP1                | E_WIMAP1                |
 | WIMAP2         | S_WIMAP2                | E_WIMAP2                |
 | VICTORY2       | S_VICTOR                | E_VICTOR                |
+| PFUB1          | S_PFUB1                 | E_PFUB1                 |
+| PFUB2          | S_PFUB2                 | E_PFUB2                 |
 | ENDPIC         | S_ENDPIC                | E_ENDPIC                |
 
 ### Animated Boom Patches
@@ -41,12 +43,16 @@ The `start` lumps should be placed *above* or *before* the `end` lumps in the WA
 | ...            | ...                     | ...                     |
 | HELP99         | S_HELP99                | E_HELP99                |
 
+### Animated UMAPINFO Patches
+Nyan Doom automatically truncates strings larger than 6 characters to fit the prefix `S_` or `E_` in the 8 character limit. Strings under than 6 characters won't be truncated.
+
+| UMAPINFO KEY   | Example        | Start Example           | End Example             |
+|----------------|----------------|-------------------------|-------------------------|
+| ENTERPIC       | INTER1EN       | S_INTER1                | E_INTER1                |
+| EXITPIC        | EXIT1          | S_EXIT1                 | E_EXIT1                 |
+| ENDPIC         | EXAMP1PC       | S_EXAMP1                | E_EXAMP1                |
+| INTERBACKDROP  | MEOW1          | S_MEOW1                 | E_MEOW1                 |
+
 ### Heretic/Hexen Animated Backgrounds
 
 Lumps not yet implimented.
-
-### Unsupported
-
-The following lumps have visual or technical issues and therefore do not have animations:
-- PFUB1
-- PFUB2

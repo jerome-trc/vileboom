@@ -40,6 +40,7 @@
 #include "dsda/input.h"
 #include "dsda/stretch.h"
 #include "dsda/utility.h"
+#include "dsda/animate.h"
 
 #include "configuration.h"
 
@@ -448,6 +449,14 @@ dsda_config_t dsda_config[dsda_config_count] = {
   [nyan_config_skip_default_text] = {
    "nyan_skip_default_text", nyan_config_skip_default_text,
    CONF_BOOL(1), NULL, STRICT_INT(0)
+  },
+  [nyan_config_enable_widescreen_lumps] = {
+   "nyan_enable_widescreen_lumps", nyan_config_enable_widescreen_lumps,
+   CONF_BOOL(1), NULL, NOT_STRICT, dsda_ReloadNyanLumps
+  },
+  [nyan_config_enable_animate_lumps] = {
+   "nyan_enable_animate_lumps", nyan_config_enable_animate_lumps,
+   CONF_BOOL(1), NULL, NOT_STRICT, dsda_ReloadNyanLumps
   },
   [dsda_config_script_0] = {
     "dsda_script_0", dsda_config_script_0,

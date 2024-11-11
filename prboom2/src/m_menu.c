@@ -100,8 +100,8 @@
 #include "dsda/text_color.h"
 #include "dsda/utility.h"
 #include "dsda/wad_stats.h"
-#include "dsda/widescreen.h"
 #include "dsda/animate.h"
+#include "dsda/library.h"
 
 #include "heretic/mn_menu.h"
 #include "heretic/sb_bar.h"
@@ -446,11 +446,8 @@ menu_t MainDef =
 void M_DrawMainMenu(void)
 {
   if (raven) return MN_DrawMainMenu();
- 
-  if (Check_Doom_Animate) return M_DrawMenuAnimate(94,2,mdoom_start,mdoom_end);
-
   // CPhipps - patch drawing updated
-  V_DrawNamePatch(94, 2, 0, "M_DOOM", CR_DEFAULT, VPT_STRETCH);
+  V_DrawNameMenuPatch(94, 2, 0, mdoom, CR_DEFAULT, VPT_STRETCH);
 }
 
 /////////////////////////////
@@ -569,10 +566,7 @@ void M_DrawReadThis1(void)
   {
     // e6y: wide-res
     V_ClearBorder();
-    if (Check_Help2_Wide)
-      V_DrawNamePatch(0, 0, 0, help2_wide, CR_DEFAULT, VPT_STRETCH);
-    else
-      V_DrawNamePatch(0, 0, 0, "HELP2", CR_DEFAULT, VPT_STRETCH);
+    V_DrawNameNyanPatch(0, 0, 0, help2, CR_DEFAULT, VPT_STRETCH);
   }
   else
     M_DrawCredits();
@@ -3218,6 +3212,10 @@ setup_menu_t misc2_settings[] = {
   { "Endoom Screen", S_CHOICE, m_conf, G_X, nyan_config_show_endoom, 0, endoom_list },
   { "Endoom Type", S_CHOICE, m_conf, G_X, nyan_config_type_endoom, 0, endoom_type_list },
   EMPTY_LINE,
+  { "Nyan Lumps", S_SKIP | S_TITLE, m_null, G_X},
+  { "Animate Lumps", S_YESNO, m_conf, G_X, nyan_config_enable_animate_lumps },
+  { "Widescreen Lumps", S_YESNO, m_conf, G_X, nyan_config_enable_widescreen_lumps },
+  EMPTY_LINE,
   { "OpenGL Options", S_SKIP | S_TITLE, m_null, G_X},
   { "Show Health Bars", S_YESNO, m_conf, G_X, dsda_config_gl_health_bar },
   { "Blend Animations", S_YESNO, m_conf, G_X, dsda_config_gl_blend_animations },
@@ -4009,13 +4007,13 @@ void M_InitExtendedHelp(void)
              // Arsinikk - Allowed Extended Help menu items in Doom 2
 
             HelpMenu[0].routine = M_ExtHelp;
-            //if (gamemode == commercial) {
-            //    ExtHelpDef.prevMenu  = &ReadDef1; /* previous menu */
-            //    ReadMenu1[0].routine = M_ExtHelp;
-            //} else {
+            if (gamemode == commercial) {
+                ExtHelpDef.prevMenu  = &ReadDef1; /* previous menu */
+                ReadMenu1[0].routine = M_ExtHelp;
+            } else {
                 ExtHelpDef.prevMenu  = &ReadDef2; /* previous menu */
                 ReadMenu2[0].routine = M_ExtHelp;
-            //}
+            }
         }
         return;
     }
@@ -4037,27 +4035,13 @@ void M_ExtHelp(int choice)
 void M_DrawExtHelp(void)
 {
   char namebfr[10] = { "HELPnn" }; // CPhipps - make it local & writable
-  char wsnamebfr[10] = { "HELPnnWS" };
-  char snamebfr[10] = { "S_HELPnn" };
-  char enamebfr[10] = { "E_HELPnn" };
   namebfr[4] = extended_help_index / 10 + '0';
   namebfr[5] = extended_help_index % 10 + '0';
-  wsnamebfr[4] = extended_help_index / 10 + '0';
-  wsnamebfr[5] = extended_help_index % 10 + '0';
-  snamebfr[6] = extended_help_index / 10 + '0';
-  snamebfr[7] = extended_help_index % 10 + '0';
-  enamebfr[6] = extended_help_index / 10 + '0';
-  enamebfr[7] = extended_help_index % 10 + '0';
 
   inhelpscreens = true;              // killough 5/1/98
-  V_ClearBorder(); // Arsinikk - redraw background for every ext HELP screen. Adds back for widescreen on sides.
-  if (D_CheckAnimate(snamebfr,enamebfr))
-      D_DrawAnimate(snamebfr, enamebfr);
-  else if (D_CheckWide(wsnamebfr))
-      V_DrawNamePatch(0, 0, 0, wsnamebfr, CR_DEFAULT, VPT_STRETCH);
-  else
-      // CPhipps - patch drawing updated
-      V_DrawNamePatch(0, 0, 0, namebfr, CR_DEFAULT, VPT_STRETCH);
+  V_ClearBorder(); // Arsinikk - redraw background for every ext HELP screen. Adds background for widescreen on sides.
+  // CPhipps - patch drawing updated
+  V_DrawNameNyanPatch(0, 0, 0, namebfr, CR_DEFAULT, VPT_STRETCH);
 
 }
 
@@ -4307,22 +4291,14 @@ static void M_DrawStringCentered(int cx, int cy, int color, const char* ch)
 
 void M_DrawHelp (void)
 {
-  const int helplump = W_CheckNumForName("HELP");
+  const int helplump = W_CheckNumForName(help0);
 
   M_ChangeMenu(NULL, mnact_full);
 
   if (helplump != LUMP_NOT_FOUND && lumpinfo[helplump].source != source_iwad)
   {
     V_ClearBorder();
-    if (Check_Help0_Animate)
-        D_DrawAnimate(help0_start, help0_end);
-    else
-    {
-      if (Check_Help0_Wide)
-        V_DrawNamePatch(0, 0, 0, help0_wide, CR_DEFAULT, VPT_STRETCH);
-      else
-        V_DrawNumPatch(0, 0, 0, helplump, CR_DEFAULT, VPT_STRETCH);
-    }
+    V_DrawNameNyanPatch(0, 0, 0, help0, CR_DEFAULT, VPT_STRETCH);
   }
   else
   {
@@ -4354,6 +4330,7 @@ setup_menu_t cred_settings[]={
   {"Marisa Heit for ZDOOM",S_SKIP|S_CREDIT|S_LEFTJUST,m_null, CR_X2},
   {"Michael 'Kodak' Ryssen for DOOMGL",S_SKIP|S_CREDIT|S_LEFTJUST,m_null, CR_X2},
   {"Jess Haas for lSDLDoom",S_SKIP|S_CREDIT|S_LEFTJUST,m_null, CR_X2},
+  {"kraflab for DSDA-Doom",S_SKIP|S_CREDIT|S_LEFTJUST,m_null, CR_X2},
   {"all others who helped (see AUTHORS file)",S_SKIP|S_CREDIT|S_LEFTJUST,m_null, CR_X2},
 
   FINAL_ENTRY
@@ -4361,8 +4338,7 @@ setup_menu_t cred_settings[]={
 
 void M_DrawCredits(void)     // killough 10/98: credit screen
 {
-  const int creditlump = W_CheckNumForName("CREDIT");
-  const int creditwslump = W_CheckNumForName(credit_wide);
+  int lump = W_CheckNumForName(credit);
 
   if (raven)
   {
@@ -4372,18 +4348,9 @@ void M_DrawCredits(void)     // killough 10/98: credit screen
 
   inhelpscreens = true;
 
-  if (Check_Credit_Animate)
-      D_DrawAnimate(credit_start, credit_end);
-  else if (Check_Credit_Wide && creditlump != LUMP_NOT_FOUND && lumpinfo[creditlump].source != source_iwad)
-  {
-    V_ClearBorder();
-    V_DrawNumPatch(0, 0, 0, creditwslump, CR_DEFAULT, VPT_STRETCH);
-  }
-  else if (creditlump != LUMP_NOT_FOUND && lumpinfo[creditlump].source != source_iwad)
-  {
-      V_ClearBorder();
-      V_DrawNumPatch(0, 0, 0, creditlump, CR_DEFAULT, VPT_STRETCH);
-  }
+  V_ClearBorder();
+  if (lump != LUMP_NOT_FOUND && lumpinfo[lump].source != source_iwad)
+    V_DrawNameNyanPatch(0, 0, 0, credit, CR_DEFAULT, VPT_STRETCH);
   else
   {
     // Use V_DrawBackground here deliberately to force drawing a background
@@ -6092,7 +6059,7 @@ void M_Drawer (void)
     {
         // CPhipps - patch drawing updated
         if (Check_Skull_Animate)
-            M_DrawMenuAnimate(x + SKULLXOFF,currentMenu->y - 5 + itemOn * LINEHEIGHT,mskull_start,mskull_end);
+            V_DrawNameMenuPatch(x + SKULLXOFF,currentMenu->y - 5 + itemOn * LINEHEIGHT, 0, mskull1, CR_DEFAULT, VPT_STRETCH);
         else
             V_DrawNamePatch(x + SKULLXOFF, currentMenu->y - 5 + itemOn * LINEHEIGHT, 0, skullName[whichSkull], CR_DEFAULT, VPT_STRETCH);
     }

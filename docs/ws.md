@@ -35,6 +35,16 @@ Note there are no widescreen versions for [animated lumps](animbg.md) as the ani
 | ...            | ...                     |
 | HELP99         | HELP99WS                |
 
+### UMAPINFO Patches
+Nyan Doom automatically truncates strings larger than 6 characters to fit the suffix `WS` in the 8 character limit. Strings under than 6 characters won't be truncated.
+
+| UMAPINFO KEY   | Example        | WS Example              |
+|----------------|----------------|-------------------------|
+| ENTERPIC       | INTER1EN       | INTER1WS                |
+| EXITPIC        | EXIT1          | EXIT1WS                 |
+| ENDPIC         | EXAMP1PC       | EXAMP1WS                |
+| INTERBACKDROP  | MEOW1          | MEOW1WS                 |
+
 ### Heretic/Hexen Patches
 
-_WS Lumps not yet implimented.
+Lumps not yet implimented.

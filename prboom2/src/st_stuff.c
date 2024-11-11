@@ -54,8 +54,8 @@
 #include "dsda/settings.h"
 #include "dsda/stretch.h"
 #include "dsda/text_color.h"
-#include "dsda/widescreen.h"
 #include "dsda/animate.h"
+#include "dsda/library.h"
 
 #include "heretic/sb_bar.h"
 
@@ -326,6 +326,8 @@ static patchnum_t faceback; // CPhipps - single background, translated for diffe
 
 //e6y: status bar background
 patchnum_t stbarbg;
+patchnum_t stbarbg_ws;
+patchnum_t stbarbg_ani;
 patchnum_t grnrock;
 patchnum_t brdr_b;
 
@@ -422,7 +424,17 @@ void ST_LoadTextColors(void)
 
 void ST_SetScaledWidth(void)
 {
-  int width = stbarbg.width;
+  int width;
+  int width_og = stbarbg.width;
+  int width_ani = stbarbg_ani.width;
+  int width_ws = stbarbg_ws.width;
+
+  if (Check_Stbar_Animate && animateLumps)
+      width = width_ani;
+  else if (Check_Stbar_Wide && widescreenLumps)
+      width = width_ws;
+  else
+      width = width_og;
 
   if (width == 0)
       width = ST_WIDTH;
@@ -457,18 +469,10 @@ static void ST_refreshBackground(void)
   if (st_statusbaron)
     {
       flags = VPT_ALIGN_BOTTOM;
-      if (Check_Stbar_Animate)
-        M_DrawStbarAnimate(ST_X, y, BG, stbar_start, stbar_end);
-      else if (Check_Stbar_Wide)
-        V_DrawNamePatch(ST_X, y, BG, stbar_wide, CR_DEFAULT, flags);
-      else
-        V_DrawNumPatch(ST_X, y, BG, stbarbg.lumpnum, CR_DEFAULT, flags);
+      V_DrawNameNyanPatch(ST_X, y, BG, stbar, CR_DEFAULT, flags);
       if (!deathmatch)
       {
-        if (Check_Starms_Animate)
-          M_DrawStbarAnimate(ST_ARMSBGX, y, BG, starms_start, starms_end);
-        else
-          V_DrawNumPatch(ST_ARMSBGX, y, BG, armsbg.lumpnum, CR_DEFAULT, flags);
+        V_DrawNameMenuPatch(ST_ARMSBGX, y, BG, starms, CR_DEFAULT, flags);
       }
 
     // Set armor hud indicators
@@ -1056,10 +1060,11 @@ static void ST_loadGraphics(void)
   else R_SetPatchNum(&berserk, "STFPSTR");
 
   //e6y: status bar background
-  if (Check_Stbar_Wide && !Check_Stbar_Animate)
-    R_SetPatchNum(&stbarbg, stbar_wide);
-  else
-    R_SetPatchNum(&stbarbg, "STBAR");
+  if(Check_Stbar_Animate)
+    R_SetPatchNum(&stbarbg_ani, "S_STBAR");
+  if (Check_Stbar_Wide)
+    R_SetPatchNum(&stbarbg_ws, "STBAR_WS");
+  R_SetPatchNum(&stbarbg, stbar);
   R_SetPatchNum(&brdr_b, "brdr_b");
 
   // arms background

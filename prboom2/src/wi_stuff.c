@@ -48,9 +48,9 @@
 #include "dsda/exhud.h"
 #include "dsda/font.h"
 #include "dsda/mapinfo.h"
-#include "dsda/widescreen.h"
 #include "dsda/configuration.h"
 #include "dsda/animate.h"
+#include "dsda/library.h"
 
 #include "heretic/in_lude.h"
 #include "hexen/in_lude.h"
@@ -460,57 +460,28 @@ static int WI_secretLimit(int i)
 static void WI_slamBackground(void)
 {
   char  name[9];  // limited to 8 characters
-  const char* animate;
-  animate = "INTERPIC";
 
   if (state != StatCount && enterpic)
   {
-    strcpy(name, enterpic);
+      strcpy(name, enterpic);
   }
   else if (exitpic)
   {
-    strcpy(name, exitpic);
+      strcpy(name, exitpic);
   }
   else if (gamemode == commercial || wbs->epsd < 0 || (gamemode == retail && wbs->epsd >= 3))
   {
-      if (Check_Interpic_Animate)
-        animate = interpic_start;
-      else if (Check_Interpic_Wide)
-        strcpy(name, interpic_wide);
-      else
-        strcpy(name, "INTERPIC");
+        strcpy(name, interpic);
   }
   else
   {
-      if ((gameepisode == 1) && Check_E1map_Animate)
-        animate = e1map_start;
-      else if ((gameepisode == 1) && Check_E1map_Wide)
-        strcpy(name, e1map_wide);
-      else if ((gameepisode == 2) && Check_E2map_Animate)
-        animate = e2map_start;
-      else if ((gameepisode == 2) && Check_E2map_Wide)
-        strcpy(name, e2map_wide);
-      else if ((gameepisode == 3) && Check_E3map_Animate)
-        animate = e3map_start;
-      else if ((gameepisode == 3) && Check_E3map_Wide)
-        strcpy(name, e3map_wide);
-      else
         snprintf(name, sizeof(name), "WIMAP%d", wbs->epsd);
   }
 
   // e6y: wide-res
   V_ClearBorder();
 
-  if (animate == interpic_start)
-      D_DrawAnimate(interpic_start, interpic_end);
-  else if (animate == e1map_start)
-      D_DrawAnimate(e1map_start, e1map_end);
-  else if (animate == e2map_start)
-      D_DrawAnimate(e2map_start, e2map_end);
-  else if (animate == e3map_start)
-      D_DrawAnimate(e3map_start, e3map_end);
-  else
-      V_DrawNamePatch(0, 0, FB, name, CR_DEFAULT, VPT_STRETCH);   // background
+      V_DrawNameNyanPatch(0, 0, FB, name, CR_DEFAULT, VPT_STRETCH);   // background
 }
 
 #define SPACEWIDTH 4

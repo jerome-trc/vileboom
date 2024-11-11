@@ -19,6 +19,8 @@ set(COMMON_SRC
     dsda/analysis.h
     dsda/animate.c
     dsda/animate.h
+    dsda/library.c
+    dsda/library.h
     dsda/args.c
     dsda/args.h
     dsda/brute_force.c
@@ -249,8 +251,6 @@ set(COMMON_SRC
     dsda/utility/string_view.h
     dsda/wad_stats.c
     dsda/wad_stats.h
-    dsda/widescreen.c
-    dsda/widescreen.h
     dsda/zipfile.c
     dsda/zipfile.h
     textscreen/doomkeys.h

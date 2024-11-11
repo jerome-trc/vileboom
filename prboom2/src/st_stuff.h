@@ -76,6 +76,9 @@ void ST_Start(void);
 // Called by startup code.
 void ST_Init(void);
 
+// Called by NyanLumpsRefresh()
+void ST_SetScaledWidth(void);
+
 // After changing videomode;
 void ST_SetResolution(void);
 
