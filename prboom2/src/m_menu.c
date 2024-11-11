@@ -4292,11 +4292,11 @@ static void M_DrawStringCentered(int cx, int cy, int color, const char* ch)
 
 void M_DrawHelp (void)
 {
-  const int helplump = W_CheckNumForName(help0);
+  const int lump = W_CheckNumForName(help0);
 
   M_ChangeMenu(NULL, mnact_full);
 
-  if (helplump != LUMP_NOT_FOUND && lumpinfo[helplump].source != source_iwad)
+  if (lump != LUMP_NOT_FOUND && lumpinfo[lump].source == source_pwad)
   {
     V_ClearBorder();
     V_DrawNameNyanPatch(0, 0, 0, help0, CR_DEFAULT, VPT_STRETCH);
@@ -4350,7 +4350,7 @@ void M_DrawCredits(void)     // killough 10/98: credit screen
   inhelpscreens = true;
 
   V_ClearBorder();
-  if (lump != LUMP_NOT_FOUND && lumpinfo[lump].source != source_iwad)
+  if (lump != LUMP_NOT_FOUND && lumpinfo[lump].source == source_pwad)
     V_DrawNameNyanPatch(0, 0, 0, credit, CR_DEFAULT, VPT_STRETCH);
   else
   {
