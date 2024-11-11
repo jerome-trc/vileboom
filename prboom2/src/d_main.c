@@ -776,6 +776,7 @@ const demostate_t doom_demostates[][4] =
 
 void D_DoAdvanceDemo(void)
 {
+  int demoorder = gamemode;
   players[consoleplayer].playerstate = PST_LIVE;  /* not reborn */
   advancedemo = false;
   dsda_ResetPauseMode();
@@ -784,16 +785,20 @@ void D_DoAdvanceDemo(void)
   pagetic = TICRATE * 11;         /* killough 11/98: default behavior */
   gamestate = GS_DEMOSCREEN;
 
+  // Arsinikk - allows use of HELP2 screen for DOOM 1 wads under complevel 0-1
+  if (doom_1666_menu_check)
+    demoorder = registered;
+
   if (netgame && !demoplayback)
     demosequence = 0;
-  else if (!demostates[++demosequence][gamemode].func)
+  else if (!demostates[++demosequence][demoorder].func)
     demosequence = 0;
 
   // do not even attempt to play DEMO4 if it is not available
   if (demosequence == 6 && gamemode == commercial && !W_LumpNameExists("demo4"))
     demosequence = 0;
 
-  demostates[demosequence][gamemode].func(demostates[demosequence][gamemode].name);
+  demostates[demosequence][demoorder].func(demostates[demosequence][demoorder].name);
 }
 
 //

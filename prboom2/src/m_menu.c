@@ -562,7 +562,8 @@ void M_DrawReadThis1(void)
   {
     V_DrawRawScreen("HELP2");
   }
-  else if (gamemode == shareware)
+  // Arsinikk - allows use of HELP2 screen for PWADs under DOOM 1
+  else if (gamemode == shareware || doom_1666_menu_check)
   {
     // e6y: wide-res
     V_ClearBorder();

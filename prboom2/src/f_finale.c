@@ -1102,7 +1102,8 @@ void F_Drawer (void)
     {
       // CPhipps - patch drawing updated
       case 1:
-          if (gamemode == retail || gamemode == commercial)
+          // Arsinikk - allows use of HELP2 screen for DOOM 1 wads under complevel 0-1
+          if ((gamemode == retail && !doom_1666_menu_check) || gamemode == commercial)
             V_DrawNameNyanPatch(0, 0, 0, credit, CR_DEFAULT, VPT_STRETCH);
           else
             V_DrawNameNyanPatch(0, 0, 0, help2, CR_DEFAULT, VPT_STRETCH);

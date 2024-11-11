@@ -125,6 +125,9 @@ extern int longtics;
 extern int limitremoving;
 extern int arg_complevel_limitremoving;
 
+// checks whether to use HELP2 lump for complevel 1 and below
+extern int doom_1666_menu_check;
+
 // hexen
 
 void G_Completed(int map, int position, int flags, angle_t angle);
