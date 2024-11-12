@@ -147,6 +147,8 @@
 //
 //---------------------------------------------------------------------------
 
+#define HERETIC_SWSTRING "ONLY AVAILABLE IN THE REGISTERED VERSION"
+
 #define HERETIC_E1TEXT	"with the destruction of the iron\n"\
 					"liches and their minions, the last\n"\
 					"of the undead are cleared from this\n"\

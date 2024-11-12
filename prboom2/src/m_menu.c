@@ -105,6 +105,7 @@
 
 #include "heretic/mn_menu.h"
 #include "heretic/sb_bar.h"
+#include "heretic/dstrings.h"
 
 /****************************
  *
@@ -235,6 +236,9 @@ void M_Options(int choice);
 void M_EndGame(int choice);
 void M_ReadThis(int choice);
 void M_ReadThis2(int choice);
+void M_ReadThis3(int choice);
+void M_ReadThis4(int choice);
+void M_GameFiles(int choice);
 void M_QuitDOOM(int choice);
 
 void M_ChangeSensitivity(int choice);
@@ -254,8 +258,10 @@ void M_QuickSave(void);
 void M_QuickLoad(void);
 
 void M_DrawMainMenu(void);
-void M_DrawReadThis1(void);
-void M_DrawReadThis2(void);
+void M_DrawReadAdCredits(void);
+void M_DrawReadHelp(void);
+void M_DrawReadRavenHelp2(void);
+void M_DrawReadCredits(void);
 void M_DrawSkillMenu(void);
 void M_DrawEpisode(void);
 void M_DrawOptions(void);
@@ -263,7 +269,8 @@ void M_DrawSound(void);
 void M_DrawLoad(void);
 void M_DrawSave(void);
 void M_DrawHelp (void);                                     // phares 5/04/98
-void M_DrawHelp2(void);
+void M_DrawAdscreen(void);
+void M_DrawRavenHelp2(void);
 
 void M_DrawSaveLoadBorder(int x,int y);
 void M_DrawThermo(int x,int y,int thermWidth,int thermDot);
@@ -455,6 +462,60 @@ void M_DrawMainMenu(void)
 
 /////////////////////////////
 //
+// RavenMainMenu (Heretic and Hexen use this)
+//
+/////////////////////////////
+
+
+enum
+{
+  rnewgame = 0,
+  roptions,
+  rgamefiles,
+  rinfo,
+  rquitdoom,
+  rmain_end
+} rmain_e;
+
+menuitem_t RavenMainMenu[]=
+{
+  {1,"M_NGAME", M_NewGame, 'n', "NEW GAME"},
+  {1,"M_OPTION",M_Options, 'o', "OPTIONS"},
+  {1,"M_GFILES", M_GameFiles,'g', "GAME FILES"},
+  {1,"M_RDTHIS",M_ReadThis,'r', "INFO"},
+  {1,"M_QUITG", M_QuitDOOM,'q', "QUIT GAME"}
+};
+
+enum
+{
+  rloadgame,
+  rsavegame,
+  rsaveload_end
+} saveload_e;
+
+menuitem_t SaveLoadMenu[]=
+{
+  {1,"M_LOADG", M_LoadGame,'l', "LOAD GAME"},
+  {1,"M_SAVEG", M_SaveGame,'s', "SAVE GAME"},
+};
+
+menu_t SaveLoadDef =
+{
+  rsaveload_end,       // number of menu items
+  &MainDef,           // previous menu screen
+  SaveLoadMenu,       // table that defines menu items
+  NULL, // drawing routine
+  97,64,          // initial cursor position
+  0               // last menu item the user was on
+};
+
+void M_GameFiles(int choice)
+{
+  M_SetupNextMenu(&SaveLoadDef);
+}
+
+/////////////////////////////
+//
 // Read This! MENU 1 & 2
 //
 
@@ -473,6 +534,18 @@ enum
   read2_end
 } read_e2;
 
+enum
+{
+  rdthsempty3,
+  read3_end
+} read_e3;
+
+enum
+{
+  rdthsempty4,
+  read4_end
+} read_e4;
+
 enum               // killough 10/98
 {
   helpempty,
@@ -489,6 +562,16 @@ menuitem_t ReadMenu1[] =
 
 menuitem_t ReadMenu2[]=
 {
+  {1,"",M_ReadThis3,0}
+};
+
+menuitem_t ReadMenu3[] =
+{
+  {1,"",M_ReadThis4,0}
+};
+
+menuitem_t ReadMenu4[]=
+{
   {1,"",M_FinishReadThis,0}
 };
 
@@ -502,7 +585,7 @@ menu_t ReadDef1 =
   read1_end,
   &MainDef,
   ReadMenu1,
-  M_DrawReadThis1,
+  M_DrawReadAdCredits,
   330,175,
   //280,185,              // killough 2/21/98: fix help screens
   0
@@ -513,7 +596,27 @@ menu_t ReadDef2 =
   read2_end,
   &ReadDef1,
   ReadMenu2,
-  M_DrawReadThis2,
+  M_DrawReadHelp,
+  330,175,
+  0
+};
+
+menu_t ReadDef3 =
+{
+  read3_end,
+  &ReadDef2,
+  ReadMenu3,
+  M_DrawReadRavenHelp2,
+  330,175,
+  0
+};
+
+menu_t ReadDef4 =
+{
+  read4_end,
+  &ReadDef3,
+  ReadMenu4,
+  M_DrawReadCredits,
   330,175,
   0
 };
@@ -542,6 +645,16 @@ void M_ReadThis2(int choice)
   M_SetupNextMenu(&ReadDef2);
 }
 
+void M_ReadThis3(int choice)
+{
+  M_SetupNextMenu(&ReadDef3);
+}
+
+void M_ReadThis4(int choice)
+{
+  M_SetupNextMenu(&ReadDef4);
+}
+
 void M_FinishReadThis(int choice)
 {
   M_SetupNextMenu(&MainDef);
@@ -558,18 +671,12 @@ void M_FinishHelp(int choice)        // killough 10/98
 //
 // killough 10/98: updated with new screens
 
-void M_DrawReadThis1(void)
+void M_DrawReadAdCredits(void)
 {
   inhelpscreens = true;
-  if (hexen)
-  {
-    V_DrawRawScreen("HELP2");
-  }
   // Arsinikk - allows use of HELP2 screen for PWADs under DOOM 1
-  else if (gamemode < commercial || doom_help2_check)
-  {
-    M_DrawHelp2();
-  }
+  if (gamemode < commercial || doom_help2_check || raven)
+    M_DrawAdscreen();
   else
     M_DrawCredits();
 }
@@ -579,10 +686,22 @@ void M_DrawReadThis1(void)
 //
 // killough 10/98: updated with new screens
 
-void M_DrawReadThis2(void)
+void M_DrawReadHelp(void)
 {
   inhelpscreens = true;
   M_DrawHelp();
+}
+
+void M_DrawReadRavenHelp2(void)
+{
+  inhelpscreens = true;
+  M_DrawRavenHelp2();
+}
+
+void M_DrawReadCredits(void)
+{
+  inhelpscreens = true;
+  M_DrawCredits();
 }
 
 /////////////////////////////
@@ -616,6 +735,16 @@ void M_DrawEpisode(void)
 
 void M_Episode(int choice)
 {
+  // Arsinikk - Heretic shareware is different than Doom shareware in that
+  // it shows the episode select, but will display a message when selecting
+  // the other episodes. This code shows that message and avoids a crash.
+  //
+  if (heretic && gamemode == shareware && choice && episodes[choice].vanilla) {
+    M_StartMessage(HERETIC_SWSTRING, NULL, false); // Ty 03/27/98 - externalized
+    M_SetupNextMenu(&ReadDef1);
+    return;
+  }
+
   if (gamemode == shareware && choice && !episodes[choice].vanilla) {
     M_StartMessage(s_SWSTRING, NULL, false); // Ty 03/27/98 - externalized
     M_SetupNextMenu(&ReadDef1);
@@ -4006,8 +4135,10 @@ void M_InitExtendedHelp(void)
              *
              * See also: https://www.doomworld.com/forum/topic/111465-boom-extended-help-screens-an-undocumented-feature/
              */
-            HelpMenu[0].routine = M_ExtHelp;
-            if (gamemode == commercial) {
+            if (raven) {
+                ExtHelpDef.prevMenu  = &ReadDef4; /* previous menu */
+                ReadMenu4[0].routine = M_ExtHelp;
+            } else if (gamemode == commercial) {
                 ExtHelpDef.prevMenu  = &ReadDef1; /* previous menu */
                 ReadMenu1[0].routine = M_ExtHelp;
             } else {
@@ -4292,19 +4423,26 @@ static void M_DrawStringCentered(int cx, int cy, int color, const char* ch)
 void M_DrawHelp (void)
 {
   const char* lump;
+  int lumpNum;
+
+  M_ChangeMenu(NULL, mnact_full);
+
+  if (raven)
+  {
+    V_DrawRawScreen("HELP1");
+    return;
+  }
+
   if(gamemode == commercial)
     lump = help0;
   else
     lump = help1;
-  const int lumpNum = W_CheckNumForName(lump);
 
-  M_ChangeMenu(NULL, mnact_full);
+  lumpNum = W_CheckNumForName(lump);
 
+  V_ClearBorder();
   if (lumpNum != LUMP_NOT_FOUND && (lumpinfo[lumpNum].source == source_pwad || !dsda_IntConfig(nyan_config_boom_credit_help)))
-  {
-    V_ClearBorder();
-    V_DrawNameNyanPatch(0, 0, 0, lump, CR_DEFAULT, VPT_STRETCH);
-  }
+      V_DrawNameNyanPatch(0, 0, 0, lump, CR_DEFAULT, VPT_STRETCH);
   else
   {
     // Use V_DrawBackground here deliberately to force drawing a background
@@ -4318,24 +4456,52 @@ void M_DrawHelp (void)
 //
 // M_DrawHelp2
 //
-// This displays the help2 screen
+// This displays the second Raven HELP screen
 
-void M_DrawHelp2 (void)
+void M_DrawRavenHelp2 (void)
 {
   const int lump = W_CheckNumForName(help2);
 
   M_ChangeMenu(NULL, mnact_full);
 
-  if (gamemode == shareware || (lump != LUMP_NOT_FOUND && lumpinfo[lump].source == source_pwad))
+  if (raven)
   {
-    V_ClearBorder();
+    V_DrawRawScreen("HELP2");
+    return;
+  }
+
+  V_ClearBorder();
+  if (lump != LUMP_NOT_FOUND && (lumpinfo[lump].source == source_pwad || !dsda_IntConfig(nyan_config_boom_credit_help)))
     V_DrawNameNyanPatch(0, 0, 0, help2, CR_DEFAULT, VPT_STRETCH);
-  }
   else
-  {
     M_DrawCredits();
-  }
 }
+
+//
+// M_DrawAdScreen
+//
+// This displays the help2 screen / first Raven HELP screen
+
+void M_DrawAdscreen (void)
+{
+  int lump = W_CheckNumForName(help2);
+  const char* ravenlump;
+  M_ChangeMenu(NULL, mnact_full);
+
+  if (raven)
+  {
+    ravenlump = (gamemode == shareware) ? "ORDER" : "CREDIT";
+    V_DrawRawScreen(ravenlump);
+    return;
+  }
+
+  V_ClearBorder();
+  if (gamemode == shareware || (lump != LUMP_NOT_FOUND && lumpinfo[lump].source == source_pwad))
+      V_DrawNameNyanPatch(0, 0, 0, help2, CR_DEFAULT, VPT_STRETCH);
+  else
+    M_DrawCredits();
+}
+
 
 //
 // End of Dynamic HELP screen                // phares 3/2/98
@@ -5179,10 +5345,7 @@ static dboolean M_InactiveMenuResponder(int ch, int action, event_t* ev)
   if (ch == KEYD_F1)                                         // phares
   {
     M_StartControlPanel ();
-    if(!raven && (gamemode < commercial) || doom_help2_check)// || gamemode == retail))
-      M_ChangeMenu(&ReadDef1, mnact_nochange);
-    else
-      M_ChangeMenu(&HelpDef, mnact_nochange);
+    M_ChangeMenu(&ReadDef1, mnact_nochange);
 
     itemOn = 0;
     S_StartVoidSound(g_sfx_swtchn);
@@ -6408,7 +6571,26 @@ void M_ResetOptionsMenu(void)
 //
 void M_Init(void)
 {
-  if (raven) MN_Init();
+  if (raven)
+  {
+    MN_Init();
+
+    // Arsinikk - Use exclusive Heretic
+    // and Hexen "Game Files" Menu.
+    MainDef.menuitems = RavenMainMenu;
+    MainDef.numitems = rmain_end;
+    SaveDef.prevMenu = &SaveLoadDef;
+    LoadDef.prevMenu = &SaveLoadDef;
+
+    // Arsinikk - remove "ORDER" screen in
+    // HELP / INFO routine if not Heretic shareware
+    if (raven && (gamemode != shareware))
+    {
+      ReadDef2.prevMenu = &MainDef;
+      ReadMenu1[0].routine = M_ReadThis3;
+      ReadDef1.routine = M_DrawReadHelp;
+    }
+  }
 
   M_LoadTextColors();
   M_LoadMenuFont();
@@ -6423,46 +6605,46 @@ void M_Init(void)
 
   // Here we could catch other version dependencies,
   //  like HELP1/2, and four episodes.
+  if(!raven) {
+    if (gamemode == commercial) {
+        // This is used because DOOM 2 had only one HELP
+        //  page. I use CREDIT as second page now, but
+        //  kept this hack for educational purposes.
 
-  switch(gamemode)
-  {
-    case commercial:
-      // This is used because DOOM 2 had only one HELP
-      //  page. I use CREDIT as second page now, but
-      //  kept this hack for educational purposes.
+        // Arsinikk - expanded routine to 4 screens to
+        // allow for Heretic / Hexen 3-4 screen support.
+        //
+        // "Help" and "ReadMe!"" now use the same routine
+        // to match Vanilla routines.
+        MainDef.y += 8;
+        ReadDef1.x = 330;
+        ReadDef1.y = 165;
+        ReadDef1.routine = M_DrawReadHelp;
 
-      MainDef.y += 8;
-      ReadDef1.x = 330;
-      ReadDef1.y = 165;
-      ReadDef1.routine = M_DrawReadThis2;
-
-      // Arsinikk - allowed "Read Me!" in the menu in
-      // DOOM 2 if Extended Help screens are found
-      if(W_CheckNumForName("HELP01") == LUMP_NOT_FOUND)
-      {
-        ReadMenu1[0].routine = M_FinishReadThis;
-        ReadDef1.routine = M_DrawReadThis1;
-        MainMenu[readthis] = MainMenu[quitdoom];
-        MainDef.numitems--;
-      }
-      break;
-    case registered:
+        // Arsinikk - allowed "Read Me!" in the Doom II
+        // by default if Extended Help screens are found.
+        //
+        // If check fails, the code below removes the menu
+        // item and shortens the routine.
+        if(W_CheckNumForName("HELP01") == LUMP_NOT_FOUND)
+        {
+          ReadMenu1[0].routine = M_FinishReadThis;
+          MainMenu[readthis] = MainMenu[quitdoom];
+          MainDef.numitems--;
+        }
+    }
+    else
+    {
       // Episode 2 and 3 are handled,
       //  branching to an ad screen.
 
       // killough 2/21/98: Fix registered Doom help screen
       // killough 10/98: moved to second screen, moved up to the top
-      HelpDef.routine = M_DrawHelp2;
-      ReadDef1.y = 15;
-      break;
-    case shareware:
-      HelpDef.routine = M_DrawHelp2;
-      ReadDef1.y = 15;
-    case retail:
-      if (doom_help2_check)
+
+      ReadMenu2[0].routine = M_FinishReadThis;
+      if (gamemode <= registered || doom_help2_check)
         ReadDef1.y = 15;
-    default:
-      break;
+    }
   }
 
   M_InitHelpScreen();   // init the help screen       // phares 4/08/98
