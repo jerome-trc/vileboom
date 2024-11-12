@@ -63,6 +63,10 @@ extern menu_t SoundDef;
 extern menu_t LoadDef;
 extern menu_t SaveDef;
 extern menuitem_t SoundMenu[];
+extern menu_t ReadDef1;
+extern menu_t ReadDef2;
+extern menu_t ReadDef3;
+extern menu_t ReadDef4;
 
 void M_DrawThermo(int x, int y, int thermWidth, int thermDot);
 
@@ -217,6 +221,10 @@ void MN_Drawer(void)
       MN_DrTextB(text, x, y);
     y += ITEM_HEIGHT;
   }
+
+  // Arsinikk - Don't draw selector on INFO screens for Heretic / Hexen
+  if(currentMenu == &ReadDef1 || currentMenu == &ReadDef2 || currentMenu == &ReadDef3 || currentMenu == &ReadDef4)
+    return;
 
   if (max)
   {
