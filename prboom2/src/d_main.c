@@ -1921,6 +1921,7 @@ static void D_DoomMainSetup(void)
   lprintf(LO_DEBUG, "G_ReloadDefaults: Checking OPTIONS.\n");
   dsda_ParseOptionsLump();
   G_ReloadDefaults();
+  lprintf(LO_DEBUG, "dsda_ReloadNyanLumps: Loading NYAN lumps.\n");
   dsda_ReloadNyanLumps();
   dsda_InitNyanLumps();
   if (limitremoving)

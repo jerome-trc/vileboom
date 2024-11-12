@@ -291,7 +291,7 @@ const char* AnimateCombine(const char *lump_prefix, const char *lump_main)
     char lump_short[7];
     size_t main, prefix;
     char *result;
-    memcpy(lump_short, lump_main, strlen(lump_main));
+    memcpy(lump_short, lump_main, strnlen(lump_main,7));
 
     if (lump_prefix == NULL)
         lump_prefix = "S_";
@@ -317,7 +317,7 @@ const char* WideCombine(const char *lump_main, const char *lump_suffix)
     char lump_short[7];
     size_t main, suffix;
     char *result;
-    memcpy(lump_short, lump_main, strlen(lump_main));
+    memcpy(lump_short, lump_main, strnlen(lump_main,7));
 
     if (lump_suffix == NULL)
         lump_suffix = "WS";
