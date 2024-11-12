@@ -1922,7 +1922,7 @@ static void D_DoomMainSetup(void)
   dsda_ParseOptionsLump();
   G_ReloadDefaults();
   dsda_ReloadNyanLumps();
-  dsda_CheckNyanLumps();
+  dsda_InitNyanLumps();
   if (limitremoving)
     lprintf(LO_INFO, "Limit-removing detected. Overflows disabled\n");
 

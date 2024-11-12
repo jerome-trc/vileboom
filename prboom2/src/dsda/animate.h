@@ -27,14 +27,12 @@ extern int Check_Skull_Animate;
 extern int Check_Stbar_Animate;
 
 const int D_CheckAnimate(const char* lump);
-const char* D_CheckAnimateNyanPatch(const char* lump);
-const char* D_CheckWideNyanPatch(const char* lump);
 void V_DrawNyanBackground(const char* lump_s, const char* lump_e, const int scrn);
 
 const int D_CheckWide(const char* lump, const char *suffix);
 const char* D_ApplyWide(const char* lump, const char* suffix);
 
-void dsda_CheckNyanLumps(void);
+void dsda_InitNyanLumps(void);
 void dsda_ReloadNyanLumps(void);
 
 void V_DrawNameNyanPatch(const int x, const int y, const int scrn, const char* lump, const int color, const int flags);

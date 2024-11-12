@@ -35,17 +35,21 @@ int Check_Stbar_Animate;
 
 extern void ST_SetScaledWidth();
 
-extern void dsda_CheckNyanLumps(void) {
-    Check_Skull_Animate = D_CheckAnimate(mskull1);
-    Check_Stbar_Animate = D_CheckAnimate(stbar);
-    Check_Stbar_Wide = D_CheckWide(stbar, "_WS");
+extern void dsda_InitNyanLumps(void) {
+    if(!raven) {
+        Check_Skull_Animate = D_CheckAnimate(mskull1);
+        Check_Stbar_Animate = D_CheckAnimate(stbar);
+        Check_Stbar_Wide = D_CheckWide(stbar, "_WS");
+    }
 }
 
 extern void dsda_ReloadNyanLumps(void)
 {
-  animateLumps = (dsda_IntConfig(nyan_config_enable_animate_lumps) ? 1 : 0);
-  widescreenLumps = (dsda_IntConfig(nyan_config_enable_widescreen_lumps) ? 1 : 0);
-  ST_SetScaledWidth();
+    if(!raven) {
+        animateLumps = (dsda_IntConfig(nyan_config_enable_animate_lumps) ? 1 : 0);
+        widescreenLumps = (dsda_IntConfig(nyan_config_enable_widescreen_lumps) ? 1 : 0);
+        ST_SetScaledWidth();
+    }
 }
 
 extern const int D_CheckAnimate(const char* lump)
@@ -193,49 +197,6 @@ extern void V_DrawNameNyanPatch(const int x, const int y, const int scrn, const 
     }
 
     V_DrawNumPatch(x, y, scrn, lumpNum, color, flags);
-}
-
-extern const char* D_CheckAnimateNyanPatch(const char* lump)
-{
-    static int SCheck;
-    static int ECheck;
-    const char* lump_s;
-    const char* lump_e;
-    static int SLump;
-    static int ELump;
-
-    lump_s = AnimateCombine("S_", lump);
-    lump_e = AnimateCombine("E_", lump);
-    SCheck = W_CheckNumForName(lump_s);
-    ECheck = W_CheckNumForName(lump_e);
-
-    if ((SCheck != LUMP_NOT_FOUND) && (ECheck != LUMP_NOT_FOUND))
-    {
-        SLump = W_GetNumForName(lump_s);
-        ELump = W_GetNumForName(lump_e);
-
-        if (SLump <= ELump)
-            return lump_s;
-        else
-            return lump;
-
-    }
-    else
-        return lump;
-}
-
-extern const char* D_CheckWideNyanPatch(const char* lump)
-{
-    const char* lump_w;
-    static int WCheck;
-
-    lump_w = D_ApplyWide(lump, "_WS");
-    WCheck = W_CheckNumForName(lump_w);
-
-    if (WCheck)
-        return lump_w;
-    else
-        return lump;
 }
 
 extern void V_DrawNameMenuPatch(const int x, const int y, const int scrn, const char* lump, const int color, const int flags)
