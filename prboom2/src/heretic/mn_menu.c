@@ -82,6 +82,7 @@ void M_DrawRavenCredits(void);
 void M_DrawRavenHelp1(void);
 void M_DrawRavenHelp2(void);
 
+extern void M_ChangeMenu(menu_t *menu, menuactive_t mnact);
 extern dboolean inhelpscreens;
 extern void M_NewGame(int choice);
 extern void M_Options(int choice);

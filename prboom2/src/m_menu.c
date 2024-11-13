@@ -4331,7 +4331,7 @@ void M_DrawHelp (void)
 void M_DrawAdscreen (void)
 {
   int lump = W_CheckNumForName(help2);
-  const char* ravenlump;
+
   M_ChangeMenu(NULL, mnact_full);
 
   V_ClearBorder();
