@@ -224,6 +224,10 @@ const char skullName[2][/*8*/9] = {"M_SKULL1","M_SKULL2"};
 
 menu_t* currentMenu; // current menudef
 
+extern menu_t InfoDef1;
+extern menu_t InfoDef4;
+extern menuitem_t InfoMenu4[];
+
 //
 // PROTOTYPES
 //
@@ -236,9 +240,6 @@ void M_Options(int choice);
 void M_EndGame(int choice);
 void M_ReadThis(int choice);
 void M_ReadThis2(int choice);
-void M_ReadThis3(int choice);
-void M_ReadThis4(int choice);
-void M_GameFiles(int choice);
 void M_QuitDOOM(int choice);
 
 void M_ChangeSensitivity(int choice);
@@ -260,8 +261,6 @@ void M_QuickLoad(void);
 void M_DrawMainMenu(void);
 void M_DrawReadAdCredits(void);
 void M_DrawReadHelp(void);
-void M_DrawReadRavenHelp2(void);
-void M_DrawReadCredits(void);
 void M_DrawSkillMenu(void);
 void M_DrawEpisode(void);
 void M_DrawOptions(void);
@@ -270,7 +269,6 @@ void M_DrawLoad(void);
 void M_DrawSave(void);
 void M_DrawHelp (void);                                     // phares 5/04/98
 void M_DrawAdscreen(void);
-void M_DrawRavenHelp2(void);
 
 void M_DrawSaveLoadBorder(int x,int y);
 void M_DrawThermo(int x,int y,int thermWidth,int thermDot);
@@ -462,60 +460,6 @@ void M_DrawMainMenu(void)
 
 /////////////////////////////
 //
-// RavenMainMenu (Heretic and Hexen use this)
-//
-/////////////////////////////
-
-
-enum
-{
-  rnewgame = 0,
-  roptions,
-  rgamefiles,
-  rinfo,
-  rquitdoom,
-  rmain_end
-} rmain_e;
-
-menuitem_t RavenMainMenu[]=
-{
-  {1,"M_NGAME", M_NewGame, 'n', "NEW GAME"},
-  {1,"M_OPTION",M_Options, 'o', "OPTIONS"},
-  {1,"M_GFILES", M_GameFiles,'g', "GAME FILES"},
-  {1,"M_RDTHIS",M_ReadThis,'r', "INFO"},
-  {1,"M_QUITG", M_QuitDOOM,'q', "QUIT GAME"}
-};
-
-enum
-{
-  rloadgame,
-  rsavegame,
-  rsaveload_end
-} saveload_e;
-
-menuitem_t SaveLoadMenu[]=
-{
-  {1,"M_LOADG", M_LoadGame,'l', "LOAD GAME"},
-  {1,"M_SAVEG", M_SaveGame,'s', "SAVE GAME"},
-};
-
-menu_t SaveLoadDef =
-{
-  rsaveload_end,       // number of menu items
-  &MainDef,           // previous menu screen
-  SaveLoadMenu,       // table that defines menu items
-  NULL, // drawing routine
-  97,64,          // initial cursor position
-  0               // last menu item the user was on
-};
-
-void M_GameFiles(int choice)
-{
-  M_SetupNextMenu(&SaveLoadDef);
-}
-
-/////////////////////////////
-//
 // Read This! MENU 1 & 2
 //
 
@@ -534,18 +478,6 @@ enum
   read2_end
 } read_e2;
 
-enum
-{
-  rdthsempty3,
-  read3_end
-} read_e3;
-
-enum
-{
-  rdthsempty4,
-  read4_end
-} read_e4;
-
 enum               // killough 10/98
 {
   helpempty,
@@ -561,16 +493,6 @@ menuitem_t ReadMenu1[] =
 };
 
 menuitem_t ReadMenu2[]=
-{
-  {1,"",M_ReadThis3,0}
-};
-
-menuitem_t ReadMenu3[] =
-{
-  {1,"",M_ReadThis4,0}
-};
-
-menuitem_t ReadMenu4[]=
 {
   {1,"",M_FinishReadThis,0}
 };
@@ -601,26 +523,6 @@ menu_t ReadDef2 =
   0
 };
 
-menu_t ReadDef3 =
-{
-  read3_end,
-  &ReadDef2,
-  ReadMenu3,
-  M_DrawReadRavenHelp2,
-  330,175,
-  0
-};
-
-menu_t ReadDef4 =
-{
-  read4_end,
-  &ReadDef3,
-  ReadMenu4,
-  M_DrawReadCredits,
-  330,175,
-  0
-};
-
 menu_t HelpDef =           // killough 10/98
 {
   help_end,
@@ -643,16 +545,6 @@ void M_ReadThis(int choice)
 void M_ReadThis2(int choice)
 {
   M_SetupNextMenu(&ReadDef2);
-}
-
-void M_ReadThis3(int choice)
-{
-  M_SetupNextMenu(&ReadDef3);
-}
-
-void M_ReadThis4(int choice)
-{
-  M_SetupNextMenu(&ReadDef4);
 }
 
 void M_FinishReadThis(int choice)
@@ -690,18 +582,6 @@ void M_DrawReadHelp(void)
 {
   inhelpscreens = true;
   M_DrawHelp();
-}
-
-void M_DrawReadRavenHelp2(void)
-{
-  inhelpscreens = true;
-  M_DrawRavenHelp2();
-}
-
-void M_DrawReadCredits(void)
-{
-  inhelpscreens = true;
-  M_DrawCredits();
 }
 
 /////////////////////////////
@@ -4136,8 +4016,8 @@ void M_InitExtendedHelp(void)
              * See also: https://www.doomworld.com/forum/topic/111465-boom-extended-help-screens-an-undocumented-feature/
              */
             if (raven) {
-                ExtHelpDef.prevMenu  = &ReadDef4; /* previous menu */
-                ReadMenu4[0].routine = M_ExtHelp;
+                ExtHelpDef.prevMenu  = &InfoDef4; /* previous menu */
+                InfoMenu4[0].routine = M_ExtHelp;
             } else if (gamemode == commercial) {
                 ExtHelpDef.prevMenu  = &ReadDef1; /* previous menu */
                 ReadMenu1[0].routine = M_ExtHelp;
@@ -4427,17 +4307,7 @@ void M_DrawHelp (void)
 
   M_ChangeMenu(NULL, mnact_full);
 
-  if (raven)
-  {
-    V_DrawRawScreen("HELP1");
-    return;
-  }
-
-  if(gamemode == commercial)
-    lump = help0;
-  else
-    lump = help1;
-
+  lump = (gamemode == commercial) ? help0 : help1;
   lumpNum = W_CheckNumForName(lump);
 
   V_ClearBorder();
@@ -4454,30 +4324,6 @@ void M_DrawHelp (void)
 }
 
 //
-// M_DrawHelp2
-//
-// This displays the second Raven HELP screen
-
-void M_DrawRavenHelp2 (void)
-{
-  const int lump = W_CheckNumForName(help2);
-
-  M_ChangeMenu(NULL, mnact_full);
-
-  if (raven)
-  {
-    V_DrawRawScreen("HELP2");
-    return;
-  }
-
-  V_ClearBorder();
-  if (lump != LUMP_NOT_FOUND && (lumpinfo[lump].source == source_pwad || !dsda_IntConfig(nyan_config_boom_credit_help)))
-    V_DrawNameNyanPatch(0, 0, 0, help2, CR_DEFAULT, VPT_STRETCH);
-  else
-    M_DrawCredits();
-}
-
-//
 // M_DrawAdScreen
 //
 // This displays the help2 screen / first Raven HELP screen
@@ -4487,13 +4333,6 @@ void M_DrawAdscreen (void)
   int lump = W_CheckNumForName(help2);
   const char* ravenlump;
   M_ChangeMenu(NULL, mnact_full);
-
-  if (raven)
-  {
-    ravenlump = (gamemode == shareware) ? "ORDER" : "CREDIT";
-    V_DrawRawScreen(ravenlump);
-    return;
-  }
 
   V_ClearBorder();
   if (gamemode == shareware || (lump != LUMP_NOT_FOUND && lumpinfo[lump].source == source_pwad))
@@ -4535,12 +4374,6 @@ setup_menu_t cred_settings[]={
 void M_DrawCredits(void)     // killough 10/98: credit screen
 {
   int lump = W_CheckNumForName(credit);
-
-  if (raven)
-  {
-    V_DrawRawScreen("CREDIT");
-    return;
-  }
 
   inhelpscreens = true;
 
@@ -5345,7 +5178,10 @@ static dboolean M_InactiveMenuResponder(int ch, int action, event_t* ev)
   if (ch == KEYD_F1)                                         // phares
   {
     M_StartControlPanel ();
-    M_ChangeMenu(&ReadDef1, mnact_nochange);
+    if(raven)
+      M_ChangeMenu(&InfoDef1, mnact_nochange);
+    else
+      M_ChangeMenu(&ReadDef1, mnact_nochange);
 
     itemOn = 0;
     S_StartVoidSound(g_sfx_swtchn);
@@ -6572,25 +6408,7 @@ void M_ResetOptionsMenu(void)
 void M_Init(void)
 {
   if (raven)
-  {
     MN_Init();
-
-    // Arsinikk - Use exclusive Heretic
-    // and Hexen "Game Files" Menu.
-    MainDef.menuitems = RavenMainMenu;
-    MainDef.numitems = rmain_end;
-    SaveDef.prevMenu = &SaveLoadDef;
-    LoadDef.prevMenu = &SaveLoadDef;
-
-    // Arsinikk - remove "ORDER" screen in
-    // HELP / INFO routine if not Heretic shareware
-    if (raven && (gamemode != shareware))
-    {
-      ReadDef2.prevMenu = &MainDef;
-      ReadMenu1[0].routine = M_ReadThis3;
-      ReadDef1.routine = M_DrawReadHelp;
-    }
-  }
 
   M_LoadTextColors();
   M_LoadMenuFont();
@@ -6641,7 +6459,6 @@ void M_Init(void)
       // killough 2/21/98: Fix registered Doom help screen
       // killough 10/98: moved to second screen, moved up to the top
 
-      ReadMenu2[0].routine = M_FinishReadThis;
       if (gamemode <= registered || doom_help2_check)
         ReadDef1.y = 15;
     }
