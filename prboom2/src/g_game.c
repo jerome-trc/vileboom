@@ -2737,7 +2737,7 @@ void G_ReloadDefaults(void)
   // Needs to run a check at start, as the complevel check on the menu
   // only works during internal demos and not when displaying patches.
   if (compatibility_level <= 2 && gamemode == retail && !raven)
-    doom_help2_check = (W_LumpNameExists(help2));
+    doom_help2_check = W_PWADLumpNameExists(help2);
 
   // killough 3/1/98: Initialize options based on config file
   // (allows functions above to load different values for demos

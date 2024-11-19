@@ -169,6 +169,7 @@ void M_SetupNextMenu(menu_t *menudef);
 void M_DrawDelVerify(void);
 void M_ChangeMessages(void);
 void M_ResetOptionsMenu(void);
+void M_ResetBoomHelp(void);
 
 extern dboolean delete_verify;
 

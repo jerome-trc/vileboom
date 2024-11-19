@@ -567,7 +567,7 @@ void M_DrawReadAdCredits(void)
 {
   inhelpscreens = true;
   // Arsinikk - allows use of HELP2 screen for PWADs under DOOM 1
-  if (gamemode < commercial || doom_help2_check || raven)
+  if (gamemode <= registered || doom_help2_check)
     M_DrawAdscreen();
   else
     M_DrawCredits();
@@ -4018,7 +4018,7 @@ void M_InitExtendedHelp(void)
             if (raven) {
                 ExtHelpDef.prevMenu  = &InfoDef4; /* previous menu */
                 InfoMenu4[0].routine = M_ExtHelp;
-            } else if (gamemode == commercial) {
+            } else if (gamemode >= commercial) {
                 ExtHelpDef.prevMenu  = &ReadDef1; /* previous menu */
                 ReadMenu1[0].routine = M_ExtHelp;
             } else {
@@ -4303,15 +4303,15 @@ static void M_DrawStringCentered(int cx, int cy, int color, const char* ch)
 void M_DrawHelp (void)
 {
   const char* lump;
-  int lumpNum;
+  int PWAD_help;
 
   M_ChangeMenu(NULL, mnact_full);
 
   lump = (gamemode == commercial) ? help0 : help1;
-  lumpNum = W_CheckNumForName(lump);
+  PWAD_help = W_PWADLumpNameExists(lump);
 
   V_ClearBorder();
-  if (lumpNum != LUMP_NOT_FOUND && (lumpinfo[lumpNum].source == source_pwad || !dsda_IntConfig(nyan_config_boom_credit_help)))
+  if (PWAD_help || !dsda_IntConfig(nyan_config_boom_credit_help) || extended_help_count)
       V_DrawNameNyanPatch(0, 0, 0, lump, CR_DEFAULT, VPT_STRETCH);
   else
   {
@@ -4330,12 +4330,12 @@ void M_DrawHelp (void)
 
 void M_DrawAdscreen (void)
 {
-  int lump = W_CheckNumForName(help2);
+  int PWAD_help2 = W_PWADLumpNameExists(help2);
 
   M_ChangeMenu(NULL, mnact_full);
 
   V_ClearBorder();
-  if (gamemode == shareware || (lump != LUMP_NOT_FOUND && lumpinfo[lump].source == source_pwad))
+  if (gamemode == shareware || PWAD_help2 || (extended_help_count && gamemode < commercial))
       V_DrawNameNyanPatch(0, 0, 0, help2, CR_DEFAULT, VPT_STRETCH);
   else
     M_DrawCredits();
@@ -4352,6 +4352,7 @@ void M_DrawAdscreen (void)
 
 setup_menu_t cred_settings[]={
   {"Programmers",S_SKIP|S_CREDIT|S_LEFTJUST,m_null, CR_X},
+  {"Ryan 'kraflab' Krafnick",S_SKIP|S_CREDIT|S_LEFTJUST,m_null, CR_X2},
   {"Florian 'Proff' Schulze",S_SKIP|S_CREDIT|S_LEFTJUST,m_null, CR_X2},
   {"Colin Phipps",S_SKIP|S_CREDIT|S_LEFTJUST,m_null, CR_X2},
   {"Neil Stevens",S_SKIP|S_CREDIT|S_LEFTJUST,m_null, CR_X2},
@@ -4365,7 +4366,6 @@ setup_menu_t cred_settings[]={
   {"Marisa Heit for ZDOOM",S_SKIP|S_CREDIT|S_LEFTJUST,m_null, CR_X2},
   {"Michael 'Kodak' Ryssen for DOOMGL",S_SKIP|S_CREDIT|S_LEFTJUST,m_null, CR_X2},
   {"Jess Haas for lSDLDoom",S_SKIP|S_CREDIT|S_LEFTJUST,m_null, CR_X2},
-  {"Ryan 'kraflab' Krafnick for DSDA-Doom",S_SKIP|S_CREDIT|S_LEFTJUST,m_null, CR_X2},
   {"(see AUTHORS file for more)",S_SKIP|S_CREDIT|S_LEFTJUST,m_null, CR_X2},
 
   FINAL_ENTRY
@@ -4373,12 +4373,12 @@ setup_menu_t cred_settings[]={
 
 void M_DrawCredits(void)     // killough 10/98: credit screen
 {
-  int lump = W_CheckNumForName(credit);
+  int PWAD_credit = W_PWADLumpNameExists(credit);
 
   inhelpscreens = true;
 
   V_ClearBorder();
-  if (lump != LUMP_NOT_FOUND && (lumpinfo[lump].source == source_pwad || !dsda_IntConfig(nyan_config_boom_credit_help)))
+  if (PWAD_credit || !dsda_IntConfig(nyan_config_boom_credit_help))
     V_DrawNameNyanPatch(0, 0, 0, credit, CR_DEFAULT, VPT_STRETCH);
   else
   {
@@ -6402,13 +6402,94 @@ void M_ResetOptionsMenu(void)
   }
 }
 
+  // Arsinikk - This is where we will make changes
+  // to the HELP and Read Me routines.
+  //
+  // This is different than the old method, as this allows for
+  // screens to change via the "Boom Credit / Help" config option.
+  //
+  // Note that these change based on certain factors:
+  // - Which doom version
+  // - Whether dynamic boom screens are active (config)
+  // - Whether extended help screens are detected
+  // - Whether running Doom 1 under complevel 2 with HELP2
+  //
+
+void M_ResetBoomHelp(void)
+{
+  const char* helpscreen = (gamemode == commercial) ? help0 : help1;
+  int PWAD_help = W_PWADLumpNameExists(helpscreen);
+  int Dynamic_help = dsda_IntConfig(nyan_config_boom_credit_help);
+
+  if(raven) return;
+
+  // Arsinikk - allowed "Read Me!" in the Doom II
+  // by default if Extended Help screens are found.
+  //
+  // Otherwise remove "Read Me!" menu option
+  if(!extended_help_count && (gamemode == commercial))
+  {
+    //ReadMenu1[0].routine = M_FinishReadThis;
+    MainMenu[readthis] = MainMenu[quitdoom];
+    MainDef.numitems = quitdoom;
+  }
+
+
+  // Arsinikk - Cut HELP / README screen down to
+  // 1 screen only when dynamic screens are not
+  // used or overriden by PWAD HELP lumps
+  if ((!doom_help2_check && !Dynamic_help && gamemode > registered)
+        || (!doom_help2_check && PWAD_help))
+  {
+    // Only 1 help screen
+    ReadMenu1[0].routine = M_FinishReadThis;
+    ReadDef1.routine = M_DrawReadHelp;
+    if(gamemode == commercial)
+      ReadDef1.y = 165;
+    else
+      ReadDef1.y = 175;
+  }
+  // killough 2/21/98: Fix registered Doom help screen
+  // killough 10/98: moved to second screen, moved up to the top
+  else
+  {
+    // 2 help screens (for Shareware/Registered
+    // and when Dynamic screens are active)
+    ReadMenu1[0].routine = M_ReadThis2;
+    ReadDef1.routine = M_DrawReadAdCredits;
+    if(doom_help2_check || (!Dynamic_help && gamemode < commercial))
+      ReadDef1.y = 15;
+    else
+      ReadDef1.y = 175;
+  }
+
+
+  // Arsinikk - when extended HELP screens are used,
+  // dynamic screens are disabled (regardless of settings)
+  // and only the vanilla number of screens are used
+  if(extended_help_count)
+  {
+    if (gamemode >= commercial) {
+        ReadDef1.routine = M_DrawReadHelp;
+        ExtHelpDef.prevMenu  = &ReadDef1; /* previous menu */
+        ReadMenu1[0].routine = M_ExtHelp;
+        if(gamemode == commercial)
+          ReadDef1.y = 165;
+    } else {
+        ReadDef1.routine = M_DrawReadAdCredits;
+        ExtHelpDef.prevMenu  = &ReadDef2; /* previous menu */
+        ReadMenu2[0].routine = M_ExtHelp;
+        ReadDef1.y = 15;
+    }
+  }
+}
+
 //
 // M_Init
 //
 void M_Init(void)
 {
-  if (raven)
-    MN_Init();
+  if (raven) MN_Init();
 
   M_LoadTextColors();
   M_LoadMenuFont();
@@ -6423,49 +6504,20 @@ void M_Init(void)
 
   // Here we could catch other version dependencies,
   //  like HELP1/2, and four episodes.
-  if(!raven) {
-    if (gamemode == commercial) {
+  if(!raven && gamemode == commercial) {
         // This is used because DOOM 2 had only one HELP
         //  page. I use CREDIT as second page now, but
         //  kept this hack for educational purposes.
 
-        // Arsinikk - expanded routine to 4 screens to
-        // allow for Heretic / Hexen 3-4 screen support.
-        //
-        // "Help" and "ReadMe!"" now use the same routine
-        // to match Vanilla routines.
         MainDef.y += 8;
         ReadDef1.x = 330;
         ReadDef1.y = 165;
         ReadDef1.routine = M_DrawReadHelp;
-
-        // Arsinikk - allowed "Read Me!" in the Doom II
-        // by default if Extended Help screens are found.
-        //
-        // If check fails, the code below removes the menu
-        // item and shortens the routine.
-        if(W_CheckNumForName("HELP01") == LUMP_NOT_FOUND)
-        {
-          ReadMenu1[0].routine = M_FinishReadThis;
-          MainMenu[readthis] = MainMenu[quitdoom];
-          MainDef.numitems--;
-        }
-    }
-    else
-    {
-      // Episode 2 and 3 are handled,
-      //  branching to an ad screen.
-
-      // killough 2/21/98: Fix registered Doom help screen
-      // killough 10/98: moved to second screen, moved up to the top
-
-      if (gamemode <= registered || doom_help2_check)
-        ReadDef1.y = 15;
-    }
   }
 
   M_InitHelpScreen();   // init the help screen       // phares 4/08/98
   M_InitExtendedHelp(); // init extended help screens // phares 3/30/98
+  M_ResetBoomHelp();
 
   //e6y
   M_ChangeSpeed();

@@ -256,7 +256,7 @@ int dsda_CheckInterText(void)
     PWADlump = W_PWADLumpNumExists(lump);
 
     // Arsinikk - only skip text if lump before story screen is replaced
-    if (PWADlump)
+    if (!PWADlump)
       SkipText = 0;
 
     return SkipText;

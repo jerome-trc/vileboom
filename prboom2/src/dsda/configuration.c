@@ -460,7 +460,7 @@ dsda_config_t dsda_config[dsda_config_count] = {
   },
   [nyan_config_boom_credit_help] = {
    "nyan_boom_credit_help", nyan_config_boom_credit_help,
-   CONF_BOOL(1), NULL, NOT_STRICT
+   CONF_BOOL(1), NULL, NOT_STRICT, M_ResetBoomHelp
   },
   [dsda_config_script_0] = {
     "dsda_script_0", dsda_config_script_0,

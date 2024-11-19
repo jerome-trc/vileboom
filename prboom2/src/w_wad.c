@@ -604,7 +604,7 @@ int W_LumpNumExists(int lump)
 
 int W_PWADLumpNumExists(int lump)
 {
-  return W_LumpNumExists(lump) != LUMP_NOT_FOUND && lumpinfo[lump].source != source_pwad; // Arsinikk - from PWAD
+  return (W_LumpNumExists(lump) != LUMP_NOT_FOUND) && (lumpinfo[lump].source == source_pwad); // Arsinikk - from PWAD
 }
 
 int W_LumpNameExists(const char *name)
@@ -615,6 +615,14 @@ int W_LumpNameExists(const char *name)
 int W_LumpNameExists2(const char *name, int ns)
 {
   return W_CheckNumForName2(name, ns) != LUMP_NOT_FOUND;
+}
+
+int W_PWADLumpNameExists(const char *name)
+{
+  int lump = W_CheckNumForName(name);
+  if (lump != LUMP_NOT_FOUND)
+    lump = W_GetNumForName(name);
+  return (lump != LUMP_NOT_FOUND) && (lumpinfo[lump].source == source_pwad); // Arsinikk - from PWAD
 }
 
 void W_Shutdown(void)

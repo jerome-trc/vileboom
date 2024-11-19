@@ -640,6 +640,10 @@ static void D_PageDrawer(void)
     return;
   }
 
+  // Arsinikk - allows use of HELP2 screen for PWADs under DOOM 1
+  if (demosequence == 4 && doom_help2_check)
+    pagename = help2;
+
   // proff/nicolas 09/14/98 -- now stretchs bitmaps to fullscreen!
   // CPhipps - updated for new patch drawing
   // proff - added M_DrawCredits
@@ -777,7 +781,6 @@ const demostate_t doom_demostates[][4] =
 
 void D_DoAdvanceDemo(void)
 {
-  int demoorder = gamemode;
   players[consoleplayer].playerstate = PST_LIVE;  /* not reborn */
   advancedemo = false;
   dsda_ResetPauseMode();
@@ -786,20 +789,16 @@ void D_DoAdvanceDemo(void)
   pagetic = TICRATE * 11;         /* killough 11/98: default behavior */
   gamestate = GS_DEMOSCREEN;
 
-  // Arsinikk - allows use of HELP2 screen for PWADs under DOOM 1
-  if (doom_help2_check)
-    demoorder = registered;
-
   if (netgame && !demoplayback)
     demosequence = 0;
-  else if (!demostates[++demosequence][demoorder].func)
+  else if (!demostates[++demosequence][gamemode].func)
     demosequence = 0;
 
   // do not even attempt to play DEMO4 if it is not available
   if (demosequence == 6 && gamemode == commercial && !W_LumpNameExists("demo4"))
     demosequence = 0;
 
-  demostates[demosequence][demoorder].func(demostates[demosequence][demoorder].name);
+  demostates[demosequence][gamemode].func(demostates[demosequence][gamemode].name);
 }
 
 //
