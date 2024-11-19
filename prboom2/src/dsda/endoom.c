@@ -24,6 +24,7 @@
 #include "doomdef.h"
 #include "doomtype.h"
 #include "args.h"
+#include "i_system.h"
 #include "lprintf.h"
 #include "w_wad.h"
 
