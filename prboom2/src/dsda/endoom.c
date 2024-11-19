@@ -460,12 +460,16 @@ void dsda_TerminalEndoom(void)
       if(dsda_IntConfig(nyan_config_endoom_wait) && !dsda_Flag(dsda_arg_launcher))
       {
         lprintf(LO_INFO, "Press any key to quit...");
-        while (true)
-        {
-          if (getch() > 0)
-              break;
+        for (int i = 0; i < 30; i++)
+        { // Wait for 30 seconds of no user activity, and then quit
+          I_uSleep(1000); // wait 1 second (30 times)
+          if (kbhit())
+          {
+            break; // Exit the program after key press
+          }
         }
       }
+
   #endif
 }
 
