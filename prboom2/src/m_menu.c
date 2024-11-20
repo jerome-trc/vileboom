@@ -5170,7 +5170,7 @@ static dboolean M_InactiveMenuResponder(int ch, int action, event_t* ev)
 {
   if (ch == KEYD_F1)                                         // phares
   {
-    const char* F1_menu = raven ? &InfoDef1 : &ReadDef1;
+    menu_t* F1_menu = raven ? &InfoDef1 : &ReadDef1;
     M_StartControlPanel ();
     M_ChangeMenu(F1_menu, mnact_nochange);
 
