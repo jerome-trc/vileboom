@@ -641,7 +641,7 @@ static void D_PageDrawer(void)
   }
 
   // Arsinikk - allows use of HELP2 screen for PWADs under DOOM 1
-  if (demosequence == 4 && doom_help2_check)
+  if (demosequence == 4 && pwad_help2_check)
     pagename = help2;
 
   // proff/nicolas 09/14/98 -- now stretchs bitmaps to fullscreen!
@@ -1120,8 +1120,6 @@ static char *FindIWADFile(void)
   {
     if (dsda_Flag(dsda_arg_heretic))
       return I_FindWad("heretic.wad");
-    else if (dsda_Flag(dsda_arg_heretic))
-      return I_FindWad("heretic1.wad");
     else if (dsda_Flag(dsda_arg_hexen))
       return I_FindWad("hexen.wad");
     else if (dsda_Flag(dsda_arg_rekkr))

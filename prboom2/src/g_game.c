@@ -117,7 +117,7 @@
 #include "dsda/library.h"
 
 // Arsinikk - allows use of HELP2 screen for PWADs under DOOM 1
-int doom_help2_check;
+int pwad_help2_check;
 
 struct
 {
@@ -2732,12 +2732,11 @@ void G_ReloadDefaults(void)
   if (compatibility_level == -1)
     compatibility_level = best_compatibility;
 
-  // Arsinikk - Jank complevel 2 check
-  // allows HELP2 screen for DOOM 1 wads under complevel 0-2
-  // Needs to run a check at start, as the complevel check on the menu
-  // only works during internal demos and not when displaying patches.
-  if (compatibility_level <= 2 && gamemode == retail && !raven)
-    doom_help2_check = W_PWADLumpNameExists(help2);
+  // Arsinikk - allows PWAD HELP2 screen for DOOM 1 wads
+  // there's no easy way to set it only to complevel 0-2, so
+  // I just allowed it for complevel 3 if HELP2 is present
+  if ((compatibility_level <= 3) && (gamemode != commercial) && (gamemode != shareware) && !raven)
+    pwad_help2_check = W_PWADLumpNameExists(help2);
 
   // killough 3/1/98: Initialize options based on config file
   // (allows functions above to load different values for demos

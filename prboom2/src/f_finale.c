@@ -1103,7 +1103,7 @@ void F_Drawer (void)
       // CPhipps - patch drawing updated
       case 1:
           // Arsinikk - allows use of HELP2 screen for PWADs under DOOM 1
-          if ((gamemode == retail && !doom_help2_check) || gamemode == commercial)
+          if ((gamemode == retail && !pwad_help2_check) || gamemode == commercial)
             V_DrawNameNyanPatch(0, 0, 0, credit, CR_DEFAULT, VPT_STRETCH);
           else
             V_DrawNameNyanPatch(0, 0, 0, help2, CR_DEFAULT, VPT_STRETCH);

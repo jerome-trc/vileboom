@@ -259,8 +259,8 @@ void M_QuickSave(void);
 void M_QuickLoad(void);
 
 void M_DrawMainMenu(void);
-void M_DrawReadAdCredits(void);
-void M_DrawReadHelp(void);
+void M_DrawReadThis1(void);
+void M_DrawReadThis2(void);
 void M_DrawSkillMenu(void);
 void M_DrawEpisode(void);
 void M_DrawOptions(void);
@@ -268,7 +268,7 @@ void M_DrawSound(void);
 void M_DrawLoad(void);
 void M_DrawSave(void);
 void M_DrawHelp (void);                                     // phares 5/04/98
-void M_DrawAdscreen(void);
+void M_DrawAd(void);
 
 void M_DrawSaveLoadBorder(int x,int y);
 void M_DrawThermo(int x,int y,int thermWidth,int thermDot);
@@ -507,7 +507,7 @@ menu_t ReadDef1 =
   read1_end,
   &MainDef,
   ReadMenu1,
-  M_DrawReadAdCredits,
+  M_DrawReadThis1,
   330,175,
   //280,185,              // killough 2/21/98: fix help screens
   0
@@ -518,7 +518,7 @@ menu_t ReadDef2 =
   read2_end,
   &ReadDef1,
   ReadMenu2,
-  M_DrawReadHelp,
+  M_DrawReadThis2,
   330,175,
   0
 };
@@ -563,12 +563,12 @@ void M_FinishHelp(int choice)        // killough 10/98
 //
 // killough 10/98: updated with new screens
 
-void M_DrawReadAdCredits(void)
+void M_DrawReadThis1(void)
 {
   inhelpscreens = true;
   // Arsinikk - allows use of HELP2 screen for PWADs under DOOM 1
-  if (gamemode <= registered || doom_help2_check)
-    M_DrawAdscreen();
+  if (pwad_help2_check || gamemode == shareware)
+    M_DrawAd();
   else
     M_DrawCredits();
 }
@@ -578,7 +578,7 @@ void M_DrawReadAdCredits(void)
 //
 // killough 10/98: updated with new screens
 
-void M_DrawReadHelp(void)
+void M_DrawReadThis2(void)
 {
   inhelpscreens = true;
   M_DrawHelp();
@@ -4015,15 +4015,16 @@ void M_InitExtendedHelp(void)
              *
              * See also: https://www.doomworld.com/forum/topic/111465-boom-extended-help-screens-an-undocumented-feature/
              */
+              HelpMenu[0].routine = M_ExtHelp;
             if (raven) {
-                ExtHelpDef.prevMenu  = &InfoDef4; /* previous menu */
-                InfoMenu4[0].routine = M_ExtHelp;
-            } else if (gamemode >= commercial) {
-                ExtHelpDef.prevMenu  = &ReadDef1; /* previous menu */
-                ReadMenu1[0].routine = M_ExtHelp;
+              ExtHelpDef.prevMenu  = &InfoDef4; /* previous menu */
+              InfoMenu4[0].routine = M_ExtHelp;
+            } else if (gamemode == commercial || !pwad_help2_check) {
+              ExtHelpDef.prevMenu  = &ReadDef1; /* previous menu */
+              ReadMenu1[0].routine = M_ExtHelp;
             } else {
-                ExtHelpDef.prevMenu  = &ReadDef2; /* previous menu */
-                ReadMenu2[0].routine = M_ExtHelp;
+              ExtHelpDef.prevMenu  = &ReadDef2; /* previous menu */
+              ReadMenu2[0].routine = M_ExtHelp;
             }
         }
         return;
@@ -4050,8 +4051,8 @@ void M_DrawExtHelp(void)
   namebfr[5] = extended_help_index % 10 + '0';
 
   inhelpscreens = true;              // killough 5/1/98
-  V_ClearBorder(); // Arsinikk - redraw background for every ext HELP screen. Adds background for widescreen on sides.
   // CPhipps - patch drawing updated
+  V_ClearBorder(); // Arsinikk - redraw background for every ext HELP screen. Adds background for widescreen on sides.
   V_DrawNameNyanPatch(0, 0, 0, namebfr, CR_DEFAULT, VPT_STRETCH);
 
 }
@@ -4302,40 +4303,33 @@ static void M_DrawStringCentered(int cx, int cy, int color, const char* ch)
 
 void M_DrawHelp (void)
 {
-  const char* lump;
-  int PWAD_help;
+  const char* helplump = (gamemode == commercial) ? help0 : help1;
+  const int PWADhelp = W_PWADLumpNameExists(helplump);
 
   M_ChangeMenu(NULL, mnact_full);
 
-  lump = (gamemode == commercial) ? help0 : help1;
-  PWAD_help = W_PWADLumpNameExists(lump);
-
   V_ClearBorder();
-  if (PWAD_help || !dsda_IntConfig(nyan_config_boom_credit_help) || extended_help_count)
-      V_DrawNameNyanPatch(0, 0, 0, lump, CR_DEFAULT, VPT_STRETCH);
+  if (PWADhelp || !dsda_IntConfig(nyan_config_boom_credit_help))
+      V_DrawNameNyanPatch(0, 0, 0, helplump, CR_DEFAULT, VPT_STRETCH);
   else
   {
-    // Use V_DrawBackground here deliberately to force drawing a background
-    //V_DrawBackground(gamemode==shareware ? "CEIL5_1" : "MFLR8_4", 0);
-    //M_DrawBackground(g_menu_flat, 0);
+    // force drawing an animated background
     V_DrawNyanBackground(aniflat1, aniflat2, 0);
     M_DrawScreenItems(helpstrings, 2);
   }
 }
 
 //
-// M_DrawAdScreen
+// M_DrawAd
 //
-// This displays the help2 screen / first Raven HELP screen
+// This displays the help2 screen
 
-void M_DrawAdscreen (void)
+void M_DrawAd (void)
 {
-  int PWAD_help2 = W_PWADLumpNameExists(help2);
-
   M_ChangeMenu(NULL, mnact_full);
 
   V_ClearBorder();
-  if (gamemode == shareware || PWAD_help2 || (extended_help_count && gamemode < commercial))
+  if (pwad_help2_check || gamemode == shareware)
       V_DrawNameNyanPatch(0, 0, 0, help2, CR_DEFAULT, VPT_STRETCH);
   else
     M_DrawCredits();
@@ -4373,17 +4367,16 @@ setup_menu_t cred_settings[]={
 
 void M_DrawCredits(void)     // killough 10/98: credit screen
 {
-  int PWAD_credit = W_PWADLumpNameExists(credit);
+  int PWADcredit = W_PWADLumpNameExists(credit);
 
   inhelpscreens = true;
 
   V_ClearBorder();
-  if (PWAD_credit || !dsda_IntConfig(nyan_config_boom_credit_help))
+  if (PWADcredit || !dsda_IntConfig(nyan_config_boom_credit_help))
     V_DrawNameNyanPatch(0, 0, 0, credit, CR_DEFAULT, VPT_STRETCH);
   else
   {
-    // Use V_DrawBackground here deliberately to force drawing a background
-    //V_DrawBackground(gamemode==shareware ? "CEIL5_1" : "MFLR8_4", 0);
+    // force drawing an animated background
     V_DrawNyanBackground(aniflat1, aniflat2, 0);
     M_DrawTitle(91, 6, "NYANLOGO", cr_logo, PACKAGE_NAME " v" PACKAGE_VERSION, cr_title);
     M_DrawTitle(91,25, "NYANNAME", cr_logo, "by Andrik 'Arsinikk' Powell", cr_logo);
@@ -5177,11 +5170,9 @@ static dboolean M_InactiveMenuResponder(int ch, int action, event_t* ev)
 {
   if (ch == KEYD_F1)                                         // phares
   {
+    const char* F1_menu = raven ? &InfoDef1 : &ReadDef1;
     M_StartControlPanel ();
-    if(raven)
-      M_ChangeMenu(&InfoDef1, mnact_nochange);
-    else
-      M_ChangeMenu(&ReadDef1, mnact_nochange);
+    M_ChangeMenu(F1_menu, mnact_nochange);
 
     itemOn = 0;
     S_StartVoidSound(g_sfx_swtchn);
@@ -6423,27 +6414,32 @@ void M_ResetBoomHelp(void)
 
   if(raven) return;
 
-  // Arsinikk - allowed "Read Me!" in the Doom II
-  // by default if Extended Help screens are found.
-  //
-  // Otherwise remove "Read Me!" menu option
-  if(!extended_help_count && (gamemode == commercial))
+  // Doom II menu setup
+  if (gamemode == commercial)
   {
-    //ReadMenu1[0].routine = M_FinishReadThis;
-    MainMenu[readthis] = MainMenu[quitdoom];
-    MainDef.numitems = quitdoom;
-  }
+    MainDef.y = 72;
+    ReadDef1.routine = M_DrawReadThis2;
 
+    // Arsinikk - allowed "Read Me!" in the Doom II
+    // by default if Extended Help screens are found.
+    //
+    // Otherwise remove "Read Me!" menu option
+    if(!extended_help_count)
+    {
+      ReadMenu1[0].routine = M_FinishReadThis;
+      MainMenu[readthis] = MainMenu[quitdoom];
+      MainDef.numitems = quitdoom;
+    }
+  }
 
   // Arsinikk - Cut HELP / README screen down to
   // 1 screen only when dynamic screens are not
   // used or overriden by PWAD HELP lumps
-  if ((!doom_help2_check && !Dynamic_help && gamemode > registered)
-        || (!doom_help2_check && PWAD_help))
+  if ((!pwad_help2_check && !Dynamic_help && gamemode > registered) || (!pwad_help2_check && PWAD_help))
   {
     // Only 1 help screen
     ReadMenu1[0].routine = M_FinishReadThis;
-    ReadDef1.routine = M_DrawReadHelp;
+    ReadDef1.routine = M_DrawReadThis2;
     if(gamemode == commercial)
       ReadDef1.y = 165;
     else
@@ -6456,8 +6452,8 @@ void M_ResetBoomHelp(void)
     // 2 help screens (for Shareware/Registered
     // and when Dynamic screens are active)
     ReadMenu1[0].routine = M_ReadThis2;
-    ReadDef1.routine = M_DrawReadAdCredits;
-    if(doom_help2_check || (!Dynamic_help && gamemode < commercial))
+    ReadDef1.routine = M_DrawReadThis1;
+    if(pwad_help2_check || (!Dynamic_help && gamemode <= registered))
       ReadDef1.y = 15;
     else
       ReadDef1.y = 175;
@@ -6469,14 +6465,13 @@ void M_ResetBoomHelp(void)
   // and only the vanilla number of screens are used
   if(extended_help_count)
   {
-    if (gamemode >= commercial) {
-        ReadDef1.routine = M_DrawReadHelp;
+    if (gamemode >= registered) {
+        ReadDef1.routine = M_DrawReadThis2;
         ExtHelpDef.prevMenu  = &ReadDef1; /* previous menu */
         ReadMenu1[0].routine = M_ExtHelp;
-        if(gamemode == commercial)
-          ReadDef1.y = 165;
+        ReadDef1.y = 165;
     } else {
-        ReadDef1.routine = M_DrawReadAdCredits;
+        ReadDef1.routine = M_DrawReadThis1;
         ExtHelpDef.prevMenu  = &ReadDef2; /* previous menu */
         ReadMenu2[0].routine = M_ExtHelp;
         ReadDef1.y = 15;
@@ -6502,22 +6497,10 @@ void M_Init(void)
   messageString = NULL;
   messageLastMenuActive = menuactive;
 
-  // Here we could catch other version dependencies,
-  //  like HELP1/2, and four episodes.
-  if(!raven && gamemode == commercial) {
-        // This is used because DOOM 2 had only one HELP
-        //  page. I use CREDIT as second page now, but
-        //  kept this hack for educational purposes.
-
-        MainDef.y += 8;
-        ReadDef1.x = 330;
-        ReadDef1.y = 165;
-        ReadDef1.routine = M_DrawReadHelp;
-  }
-
   M_InitHelpScreen();   // init the help screen       // phares 4/08/98
   M_InitExtendedHelp(); // init extended help screens // phares 3/30/98
-  M_ResetBoomHelp();
+  M_ResetBoomHelp();   // Here we could catch other version dependencies,
+                        // like HELP1/2, and four episodes.
 
   //e6y
   M_ChangeSpeed();
