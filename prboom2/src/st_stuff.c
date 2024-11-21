@@ -156,14 +156,10 @@ int ST_SCALED_OFFSETX;
 //#define ST_HEALTHX              90
 //#define ST_HEALTHY              171
 
-#define ST_BERSERKX             (ST_X+171)
-#define ST_BERSERKY             (ST_Y+25)
-#define ST_BERSERKCHEXX         (ST_X+164)
-#define ST_BERSERKCHEXY         (ST_Y+1)
-#define ST_ARMORCHEXX           (ST_X+168)
-#define ST_ARMORCHEXY           (ST_Y+1)
-#define ST_ARMORICONX           (ST_X+171)
-#define ST_ARMORICONY           (armor_icon == ARMOR_ICON_1 ? (ST_Y+2) : (ST_Y))
+#define ST_BERSERKX             (chex ? ST_X+164 : ST_X+171)
+#define ST_BERSERKY             (chex ? ST_Y+1 : ST_Y+25)
+#define ST_ARMORICONX           (chex ? ST_X+168 : ST_X+171)
+#define ST_ARMORICONY           (chex ? ST_Y+1 : ST_Y+2)
 
 // Weapon pos.
 // proff 08/18/98: Changed for high-res
@@ -311,6 +307,28 @@ static patchnum_t shortnum[10];
 // jff 2/24/98 extend number of patches by three skull/card combos
 static patchnum_t keys[DOOM_NUMCARDS+3];
 
+// Armor icon types
+typedef enum {
+  armornone,
+  armortype1,
+  armortype2,
+  DOOM_ARMORICON
+} armoricon_t;
+
+static patchnum_t armoricon[DOOM_ARMORICON];
+static patchnum_t armoricon1[DOOM_ARMORICON];
+static patchnum_t armoricon2[DOOM_ARMORICON];
+
+// Berserk icon types
+typedef enum {
+  berserkoff,
+  berserkon,
+  berserkunity,
+  DOOM_BERSERKICON
+} berserkicon_t;
+
+static patchnum_t berserkicon[DOOM_BERSERKICON];
+
 // face status patches
 static patchnum_t faces[ST_NUMFACES];
 
@@ -355,6 +373,12 @@ static st_multicon_t w_faces;
 // keycard widgets
 static st_multicon_t w_keyboxes[3];
 
+// armor icon widget
+static st_multicon_t w_armoricon;
+
+// berserk icon widget
+static st_multicon_t w_berserkicon;
+
 // armor widget
 static st_percent_t  w_armor;
 
@@ -381,6 +405,12 @@ static int      st_faceindex = 0;
 
 // holds key-type for each key box on bar
 static int      keyboxes[3];
+
+// decides when to show armor icon or not
+static int      armoriconbox;
+
+// decides when to show berserk icon or not
+static int      berserkiconbox;
 
 // a random number per tick
 static int      st_randomnumber;
@@ -473,55 +503,6 @@ static void ST_refreshBackground(void)
       if (!deathmatch)
       {
         V_DrawNameMenuPatch(ST_ARMSBGX, y, BG, starms, CR_DEFAULT, flags);
-      }
-
-    // Set armor hud indicators
-    if (chex)
-    {
-        R_SetPatchNum(&armor1icon, "CHXARMS1");
-        R_SetPatchNum(&armor2icon, "CHXARMS2");
-    }
-    else
-    {
-      if (armor_icon == ARMOR_ICON_1)
-      {
-        R_SetPatchNum(&armor1icon, "STFARMS1");
-        R_SetPatchNum(&armor2icon, "STFARMS2");
-      }
-      else
-      {
-        R_SetPatchNum(&armor1icon, "STFARMS3");
-        R_SetPatchNum(&armor2icon, "STFARMS4");
-      }
-    }
-
-      // Arsinikk - fullmenu is needed to hide indicators in complex menu screens
-      if (!fullmenu)
-      {
-          // Arsinikk - display berserk indicator
-          if ((plyr->powers[pw_strength]) && (berserk_icon > 0))
-          {
-              if (chex)
-                  V_DrawNumPatch(ST_BERSERKCHEXX, ST_BERSERKCHEXY, BG, berserk.lumpnum, CR_DEFAULT, flags);
-              else
-                  V_DrawNumPatch(ST_BERSERKX, ST_BERSERKY, BG, berserk.lumpnum, CR_DEFAULT, flags);
-          }
-          // Arsinikk - display armor indicator
-          // (changes based on lack of armor or type)
-          if ((plyr->armortype >= 2) && (armor_icon > 0))
-          {
-              if (chex)
-                  V_DrawNumPatch(ST_ARMORCHEXX, ST_ARMORCHEXY, BG, armor2icon.lumpnum, CR_DEFAULT, flags);
-              else
-                  V_DrawNumPatch(ST_ARMORICONX, ST_ARMORICONY, BG, armor2icon.lumpnum, CR_DEFAULT, flags);
-          }
-          else if ((plyr->armortype == 1) && (armor_icon > 0))
-          {
-              if (chex)
-                  V_DrawNumPatch(ST_ARMORCHEXX, ST_ARMORCHEXY, BG, armor1icon.lumpnum, CR_DEFAULT, flags);
-              else
-                  V_DrawNumPatch(ST_ARMORICONX, ST_ARMORICONY, BG, armor1icon.lumpnum, CR_DEFAULT, flags);
-          }
       }
 
       // killough 3/7/98: make face background change with displayplayer
@@ -795,6 +776,30 @@ static void ST_updateWidgets(void)
         keyboxes[i] = keyboxes[i]==-1 || sts_traditional_keys ? i+3 : i+6;
     }
 
+  // update armor icon
+  if (armor_icon)
+  {
+    armoriconbox = plyr->armortype;
+    if(plyr->armortype > 2)
+      armoriconbox = 2;
+    for (i=0;i<3;i++)
+    {
+      if(armor_icon==2)
+        armoricon[i] = armoricon2[i];
+      else
+        armoricon[i] = armoricon1[i];
+    }
+  }
+
+  // update berserk icon
+  if (plyr->powers[pw_strength] && berserk_icon)
+    if(unityedition && !chex)
+      berserkiconbox = 2;
+    else
+      berserkiconbox = 1;
+  else
+    berserkiconbox = 0;
+
   // refresh everything if this is him coming back to life
   ST_updateFaceWidget();
 
@@ -957,6 +962,13 @@ static void ST_drawWidgets(dboolean refresh)
 
   STlib_updateMultIcon(&w_faces, refresh);
 
+  // Update armor icon
+  if(armor_icon)
+    STlib_updateMultIcon(&w_armoricon, refresh);
+
+  if(berserk_icon)
+    STlib_updateMultIcon(&w_berserkicon, refresh);
+
   for (i=0;i<3;i++)
     STlib_updateMultIcon(&w_keyboxes[i], refresh);
 
@@ -1052,12 +1064,36 @@ static void ST_loadGraphics(void)
       R_SetPatchNum(&keys[i], namebuf);
     }
 
+  // Armor Icon
+  for (i=0;i<DOOM_ARMORICON;i++)
+    {
+      if (!chex)
+      {
+        sprintf(namebuf, "STFARMS%d", i);
+        R_SetPatchNum(&armoricon1[i], namebuf);
+        sprintf(namebuf, "STFARM2%d", i);
+        R_SetPatchNum(&armoricon2[i], namebuf);
+      }
+      else
+      {
+        sprintf(namebuf, "CHXARMS%d", i);
+        R_SetPatchNum(&armoricon1[i], namebuf);
+        R_SetPatchNum(&armoricon2[i], namebuf);
+      }
+    }
+
+  // Berserk Icon
+  for (i=0;i<DOOM_BERSERKICON;i++)
+    {
+      if (!chex)
+        sprintf(namebuf, "STFPSTR%d", i);
+      else
+        sprintf(namebuf, "CHXPSTR%d", i);
+      R_SetPatchNum(&berserkicon[i], namebuf);
+    }
+
   // Set berserk hud indicators
   // Green cross for bfg edition (unity)
-
-  if (chex) R_SetPatchNum(&berserk, "CHXPSTR");
-  else if (unityedition) R_SetPatchNum(&berserk, "STFPSTR2");
-  else R_SetPatchNum(&berserk, "STFPSTR");
 
   //e6y: status bar background
   if(Check_Stbar_Animate)
@@ -1201,6 +1237,22 @@ static void ST_createWidgets(void)
                     tallnum,
                     &plyr->armorpoints[ARMOR_ARMOR],
                     &st_statusbaron, &tallpercent);
+
+  // Armor Icon
+  STlib_initMultIcon(&w_armoricon,
+                     ST_ARMORICONX,
+                     ST_ARMORICONY,
+                     armoricon,
+                     &armoriconbox,
+                     &st_statusbaron);
+
+  // Berserk Icon
+  STlib_initMultIcon(&w_berserkicon,
+                     ST_BERSERKX,
+                     ST_BERSERKY,
+                     berserkicon,
+                     &berserkiconbox,
+                     &st_statusbaron);
 
   // keyboxes 0-2
   STlib_initMultIcon(&w_keyboxes[0],

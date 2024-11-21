@@ -27,9 +27,9 @@ static local_component_t* local;
 
 static const char* dsda_BerserkName(player_t* player) {
     if (player->powers[pw_strength])
-        if (chex) { return "CHXPSTR"; }
-        else if (unityedition) { return "STFPSTR2"; }
-        else { return "STFPSTR"; }
+        if (chex) { return "CHXPPSTR"; }
+        else if (unityedition) { return "STFPPSTU"; }
+        else { return "STFPPSTR"; }
     else
         return NULL;
 }

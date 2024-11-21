@@ -36,25 +36,13 @@ static int patch_vertical_spacing;
 static int patch_spacing;
 
 const char* drawBerserkName() {
-    if (chex) { return "CHXPSTR"; }
-    else if (unityedition) { return "STFPSTR2"; }
-    else { return "STFPSTR"; }
+    if (unityedition) { return "STFPPSTU"; }
+    else { return "STFPPSTR"; }
 }
 
 const char* drawArmorName(player_t* player) {
-    if (chex) {
-        if (player->armortype < 2)
-            return "CHXARMS1";
-        else
-            return "CHXARMS2";
-    }
-    else {
-        if (player->armortype < 2)
-            return "STFARMS3";
-        else
-            return "STFARMS4";
-    }
-
+    if (player->armortype < 2) { return "STFPARM1"; }
+    else { return "STFPARM2"; }
 }
 
 void drawPowerupStatusIcon(player_t* player, int* x, int* y, int powerup, const char* lumpname, int blinking) {
@@ -92,10 +80,10 @@ static void dsda_DrawComponent(void) {
         drawPowerupStatusIcon(player, &x, &y, player->powers[pw_allmap], "STFPMAP", NOT_BLINKING);
 
     if (player->backpack && dsda_IntConfig(nyan_config_ex_status_backpack))
-        drawPowerupStatusIcon(player, &x, &y, player->backpack, "STFBPAK", NOT_BLINKING);
+        drawPowerupStatusIcon(player, &x, &y, player->backpack, "STFPBPAK", NOT_BLINKING);
 
     if (player->powers[pw_ironfeet] && dsda_IntConfig(nyan_config_ex_status_radsuit))
-        drawPowerupStatusIcon(player, &x, &y, player->powers[pw_ironfeet], "STFSUIT", BLINKING);
+        drawPowerupStatusIcon(player, &x, &y, player->powers[pw_ironfeet], "STFPSUIT", BLINKING);
 
     if (player->powers[pw_invisibility] && dsda_IntConfig(nyan_config_ex_status_invis))
         drawPowerupStatusIcon(player, &x, &y, player->powers[pw_invisibility], "STFPINS", BLINKING);

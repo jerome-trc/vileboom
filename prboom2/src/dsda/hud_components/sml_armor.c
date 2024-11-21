@@ -43,17 +43,17 @@ static void dsda_DrawComponent(void) {
         else {
             if (chex) {
                 if (player->armortype < 2)
-                    lump = W_CheckNumForName("CHXARMS1");
+                    lump = W_CheckNumForName("CHXPARM1");
                 else
-                    lump = W_CheckNumForName("CHXARMS2");
+                    lump = W_CheckNumForName("CHXPARM2");
                 V_DrawNumPatch(x, y+2, FG, lump, CR_DEFAULT, local->component.vpt);
 
             }
             else {
                 if (player->armortype < 2)
-                    lump = W_CheckNumForName("STFARMS3");
+                    lump = W_CheckNumForName("STFPARM1");
                 else
-                    lump = W_CheckNumForName("STFARMS4");
+                    lump = W_CheckNumForName("STFPARM2");
                 V_DrawNumPatch(x, y, FG, lump, CR_DEFAULT, local->component.vpt);
             }
         }
