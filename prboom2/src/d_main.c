@@ -708,10 +708,10 @@ extern const demostate_t (*demostates)[4];
 const demostate_t doom_demostates[][4] =
 {
   {
-    {D_DrawTitle1, "TITLEPIC"},
-    {D_DrawTitle1, "TITLEPIC"},
-    {D_DrawTitle2, "TITLEPIC"},
-    {D_DrawTitle1, "TITLEPIC"},
+    {D_DrawTitle1, titlepic},
+    {D_DrawTitle1, titlepic},
+    {D_DrawTitle2, titlepic},
+    {D_DrawTitle1, titlepic},
   },
 
   {
@@ -736,10 +736,10 @@ const demostate_t doom_demostates[][4] =
   },
 
   {
-    {D_SetPageName, "HELP2"},
-    {D_SetPageName, "HELP2"},
-    {D_SetPageName, "CREDIT"},
-    {D_DrawTitle1,  "TITLEPIC"},
+    {D_SetPageName, help2},
+    {D_SetPageName, help2},
+    {D_SetPageName, credit},
+    {D_DrawTitle1,  titlepic},
   },
 
   {
@@ -756,7 +756,7 @@ const demostate_t doom_demostates[][4] =
     // Both Plutonia and TNT are commercial like Doom2,
     // but in difference from  Doom2, they have demo4 in demo cycle.
     {G_DeferedPlayDemo, "demo4"},
-    {D_SetPageName, "CREDIT"},
+    {D_SetPageName, credit},
   },
 
   {

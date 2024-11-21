@@ -19,7 +19,6 @@ set(COMMON_SRC
     dsda/analysis.h
     dsda/animate.c
     dsda/animate.h
-    dsda/library.c
     dsda/library.h
     dsda/args.c
     dsda/args.h

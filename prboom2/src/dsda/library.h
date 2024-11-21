@@ -18,25 +18,29 @@
 #ifndef __DSDA_LIBRARY__
 #define __DSDA_LIBRARY__
 
-#define ravenflat1 (raven ? "FLTWAWA1" : "FWATER1")
-#define ravenflat2 (raven ? "FLTWAWA3" : "FWATER4")
-#define aniflat1 (hexen ? "X_005" : ravenflat1)
-#define aniflat2 (hexen ? "X_008" : ravenflat2)
+// Define menu animated background
+#define doomflat1   (gamemode == shareware ? "NUKAGE1" : "FWATER1")
+#define doomflat2   (gamemode == shareware ? "NUKAGE3" : "FWATER4")
+#define ravenflat1  (hexen ? "X_005" : "FLTWAWA1")
+#define ravenflat2  (hexen ? "X_008" : "FLTWAWA3")
+#define aniflat1    (raven ? ravenflat1 : doomflat1)
+#define aniflat2    (raven ? ravenflat2 : doomflat2)
 
-extern const char* mskull1;
-extern const char* mskull2;
-extern const char* mdoom;
-extern const char* stbar;
-extern const char* starms;
-extern const char* titlepic;
-extern const char* interpic;
-extern const char* credit;
-extern const char* help0;
-extern const char* help1;
-extern const char* help2;
-extern const char* e2victory;
-extern const char* e4endpic;
-extern const char* e3bunny1;
-extern const char* e3bunny2;
+// Define standard Doom lumps
+#define mskull1     "M_SKULL1"
+#define mskull2     "M_SKULL2"
+#define mdoom       "M_DOOM"
+#define stbar       "STBAR"
+#define starms      "STARMS"
+#define titlepic    "TITLEPIC"
+#define interpic    "INTERPIC"
+#define credit      "CREDIT"
+#define help0       "HELP"
+#define help1       "HELP1"
+#define help2       "HELP2"
+#define e2victory   "VICTORY2"
+#define e4endpic    "ENDPIC"
+#define e3bunny1    "PFUB1"
+#define e3bunny2    "PFUB2"
 
 #endif

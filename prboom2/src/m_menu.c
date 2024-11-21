@@ -220,7 +220,7 @@ short whichSkull;       // which skull to draw (he blinks)
 
 // graphic name of skulls
 
-const char skullName[2][/*8*/9] = {"M_SKULL1","M_SKULL2"};
+const char skullName[2][/*8*/9] = {mskull1,mskull2};
 
 menu_t* currentMenu; // current menudef
 
