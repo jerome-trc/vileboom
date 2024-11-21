@@ -291,7 +291,7 @@ void STlib_updateMultIcon
         I_Error("STlib_updateMultIcon: y - ST_Y < 0");
 #endif
 
-      V_CopyRect(BG, FG, x, y, w, h, VPT_STRETCH | VPT_ALIGN_BOTTOM);
+      //V_CopyRect(BG, FG, x, y, w, h, VPT_STRETCH | VPT_ALIGN_BOTTOM);
     }
     if (*mi->inum != -1)  // killough 2/16/98: redraw only if != -1
       V_DrawNumPatch(mi->x, mi->y, FG, mi->p[*mi->inum].lumpnum, CR_DEFAULT, VPT_ALIGN_BOTTOM);
