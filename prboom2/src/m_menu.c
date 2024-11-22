@@ -269,6 +269,8 @@ void M_DrawLoad(void);
 void M_DrawSave(void);
 void M_DrawHelp (void);                                     // phares 5/04/98
 void M_DrawAd(void);
+void M_DrawCreditsDynamic(void);
+void M_DrawHelpDynamic(void);
 
 void M_DrawSaveLoadBorder(int x,int y);
 void M_DrawThermo(int x,int y,int thermWidth,int thermDot);
@@ -570,7 +572,7 @@ void M_DrawReadThis1(void)
   if (pwad_help2_check || gamemode == shareware)
     M_DrawAd();
   else
-    M_DrawCredits();
+    M_DrawCreditsDynamic();
 }
 
 //
@@ -4313,9 +4315,7 @@ void M_DrawHelp (void)
       V_DrawNameNyanPatch(0, 0, 0, helplump, CR_DEFAULT, VPT_STRETCH);
   else
   {
-    // force drawing an animated background
-    V_DrawNyanBackground(aniflat1, aniflat2, 0);
-    M_DrawScreenItems(helpstrings, 2);
+    M_DrawHelpDynamic();
   }
 }
 
@@ -4375,13 +4375,27 @@ void M_DrawCredits(void)     // killough 10/98: credit screen
   if (PWADcredit || !dsda_IntConfig(nyan_config_boom_credit_help))
     V_DrawNameNyanPatch(0, 0, 0, credit, CR_DEFAULT, VPT_STRETCH);
   else
-  {
-    // force drawing an animated background
-    V_DrawNyanBackground(aniflat1, aniflat2, 0);
-    M_DrawTitle(91, 6, "NYANLOGO", cr_logo, PACKAGE_NAME " v" PACKAGE_VERSION, cr_title);
-    M_DrawTitle(91,25, "NYANNAME", cr_logo, "by Andrik 'Arsinikk' Powell", cr_logo);
-    M_DrawScreenItems(cred_settings, 48);
-  }
+    M_DrawCreditsDynamic();
+}
+
+void M_DrawCreditsDynamic(void)     // Dynamic Credits
+{
+  inhelpscreens = true;
+
+  // force drawing an animated background
+  V_DrawNyanBackground(aniflat1, aniflat2, 0);
+  M_DrawTitle(91, 6, "NYANLOGO", cr_logo, PACKAGE_NAME " v" PACKAGE_VERSION, cr_title);
+  M_DrawTitle(91,25, "NYANNAME", cr_logo, "by Andrik 'Arsinikk' Powell", cr_logo);
+  M_DrawScreenItems(cred_settings, 48);
+}
+
+void M_DrawHelpDynamic(void)     // Dynamic Credits
+{
+  inhelpscreens = true;
+
+  // force drawing an animated background
+  V_DrawNyanBackground(aniflat1, aniflat2, 0);
+  M_DrawScreenItems(helpstrings, 2);
 }
 
 static int M_IndexInChoices(const char *str, const char **choices) {
