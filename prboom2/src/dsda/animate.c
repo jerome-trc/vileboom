@@ -64,9 +64,9 @@ extern const int D_CheckAnimate(const char* lump)
     //if(!animateLumps)
       //return Animate;
 
-    if(lump == mskull1)
+    if (!strcmp(lump, mskull1))
         lump = "SKULL";
-    if(lump == mdoom)
+    if (!strcmp(lump, mdoom))
         lump = "DOOM";
 
     lump_s = AnimateCombine("S_", lump);
@@ -97,7 +97,7 @@ extern const int D_CheckWide(const char* lump, const char *suffix) {
     //if(!widescreenLumps)
       //return widescreen;
 
-    if (lump == e3bunny1 || lump == e3bunny2)
+    if (!strcmp(lump, e3bunny1) || !strcmp(lump, e3bunny2))
         suffix = "_WS";
 
     //lprintf(LO_INFO, "lump = %s\n", lump);
@@ -183,9 +183,9 @@ extern void V_DrawNameNyanPatch(const int x, const int y, const int scrn, const 
     }
     if (widescreenLumps && !AniCheck)
     {
-        if(lump == stbar || lump == titlepic || lump == interpic || lump == credit ||
-            lump == help0 || lump == help1 || lump == help2 || lump == e2victory ||
-            lump == e4endpic || lump == e3bunny1 || lump == e3bunny2)
+        if (!strcmp(lump, stbar) || !strcmp(lump, titlepic) || !strcmp(lump, interpic) || !strcmp(lump, credit) ||
+            !strcmp(lump, help0) || !strcmp(lump, help1) || !strcmp(lump, help2) || !strcmp(lump, e2victory) ||
+            !strcmp(lump, e4endpic) || !strcmp(lump, e3bunny1) || !strcmp(lump, e3bunny2))
             lump_w = D_ApplyWide(lump, "_WS");
         else
             lump_w = D_ApplyWide(lump, "WS");
@@ -221,9 +221,9 @@ extern void V_DrawNameMenuPatch(const int x, const int y, const int scrn, const 
     //}
     if (animateLumps)
     {
-        if(lump == mskull1)
+        if (!strcmp(lump, mskull1))
             lump = "SKULL";
-        if(lump == mdoom)
+        if (!strcmp(lump, mdoom))
             lump = "DOOM";
         lump_s = AnimateCombine("S_", lump);
         lump_e = AnimateCombine("E_", lump);
