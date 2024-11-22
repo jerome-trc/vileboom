@@ -995,14 +995,14 @@ void F_BunnyScroll (void)
     {
       if(D_CheckWide(scrollpic1, "WS") && !BunnyAnimate1)
       {
-        if (scrollpic1 == e3bunny1)
+        if (!strcmp(scrollpic1, e3bunny1))
           p1 = R_PatchByName(WideCombine(scrollpic1, "_WS"));
         else
           p1 = R_PatchByName(WideCombine(scrollpic1, "WS"));
       }
       if(D_CheckWide(scrollpic2, "WS") && !BunnyAnimate2)
       {
-        if (scrollpic2 == e3bunny2)
+        if (!strcmp(scrollpic1, e3bunny2))
           p1 = R_PatchByName(WideCombine(scrollpic1, "_WS"));
         else
           p1 = R_PatchByName(WideCombine(scrollpic1, "WS"));
