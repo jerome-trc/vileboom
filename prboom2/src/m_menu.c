@@ -572,7 +572,7 @@ void M_DrawReadThis1(void)
   if (pwad_help2_check || gamemode == shareware)
     M_DrawAd();
   else
-    M_DrawCreditsDynamic();
+    M_DrawCredits();
 }
 
 //
@@ -4367,12 +4367,10 @@ setup_menu_t cred_settings[]={
 
 void M_DrawCredits(void)     // killough 10/98: credit screen
 {
-  int PWADcredit = W_PWADLumpNameExists(credit);
-
   inhelpscreens = true;
 
   V_ClearBorder();
-  if (PWADcredit || !dsda_IntConfig(nyan_config_boom_credit_help))
+  if (!dsda_IntConfig(nyan_config_boom_credit_help))
     V_DrawNameNyanPatch(0, 0, 0, credit, CR_DEFAULT, VPT_STRETCH);
   else
     M_DrawCreditsDynamic();
@@ -6449,7 +6447,7 @@ void M_ResetBoomHelp(void)
   // Arsinikk - Cut HELP / README screen down to
   // 1 screen only when dynamic screens are not
   // used or overriden by PWAD HELP lumps
-  if ((!pwad_help2_check && !Dynamic_help && gamemode > registered) || (!pwad_help2_check && PWAD_help))
+  if ((!pwad_help2_check && !Dynamic_help && gamemode != shareware) || (!pwad_help2_check && PWAD_help))
   {
     // Only 1 help screen
     ReadMenu1[0].routine = M_FinishReadThis;
