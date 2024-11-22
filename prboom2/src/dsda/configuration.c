@@ -446,6 +446,10 @@ dsda_config_t dsda_config[dsda_config_count] = {
    "nyan_intermission_pause", nyan_config_intermission_pause,
    CONF_BOOL(1), NULL, STRICT_INT(0)
   },
+  [nyan_config_play_pwad_only_demos] = {
+   "nyan_play_pwad_only_demos", nyan_config_play_pwad_only_demos,
+   CONF_BOOL(1), NULL, STRICT_INT(0)
+  },
   [nyan_config_skip_default_text] = {
    "nyan_skip_default_text", nyan_config_skip_default_text,
    CONF_BOOL(1), NULL, STRICT_INT(0)

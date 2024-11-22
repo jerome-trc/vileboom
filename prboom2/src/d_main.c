@@ -700,6 +700,13 @@ static void D_DrawTitle2(const char *name)
     D_SetPage(name, 0, mus_dm2ttl);
 }
 
+void D_PlayDemoName(const char *name)
+{
+  if (dsda_SkipIwadDemos(name))
+    name = "DEMONULL";
+  G_DeferedPlayDemo(name);
+}
+
 /* killough 11/98: tabulate demo sequences
  */
 
@@ -715,10 +722,10 @@ const demostate_t doom_demostates[][4] =
   },
 
   {
-    {G_DeferedPlayDemo, "demo1"},
-    {G_DeferedPlayDemo, "demo1"},
-    {G_DeferedPlayDemo, "demo1"},
-    {G_DeferedPlayDemo, "demo1"},
+    {D_PlayDemoName, "demo1"},
+    {D_PlayDemoName, "demo1"},
+    {D_PlayDemoName, "demo1"},
+    {D_PlayDemoName, "demo1"},
   },
 
   {
@@ -729,10 +736,10 @@ const demostate_t doom_demostates[][4] =
   },
 
   {
-    {G_DeferedPlayDemo, "demo2"},
-    {G_DeferedPlayDemo, "demo2"},
-    {G_DeferedPlayDemo, "demo2"},
-    {G_DeferedPlayDemo, "demo2"},
+    {D_PlayDemoName, "demo2"},
+    {D_PlayDemoName, "demo2"},
+    {D_PlayDemoName, "demo2"},
+    {D_PlayDemoName, "demo2"},
   },
 
   {
@@ -743,10 +750,10 @@ const demostate_t doom_demostates[][4] =
   },
 
   {
-    {G_DeferedPlayDemo, "demo3"},
-    {G_DeferedPlayDemo, "demo3"},
-    {G_DeferedPlayDemo, "demo3"},
-    {G_DeferedPlayDemo, "demo3"},
+    {D_PlayDemoName, "demo3"},
+    {D_PlayDemoName, "demo3"},
+    {D_PlayDemoName, "demo3"},
+    {D_PlayDemoName, "demo3"},
   },
 
   {
@@ -755,7 +762,7 @@ const demostate_t doom_demostates[][4] =
     // e6y
     // Both Plutonia and TNT are commercial like Doom2,
     // but in difference from  Doom2, they have demo4 in demo cycle.
-    {G_DeferedPlayDemo, "demo4"},
+    {D_PlayDemoName, "demo4"},
     {D_SetPageName, credit},
   },
 
@@ -763,7 +770,7 @@ const demostate_t doom_demostates[][4] =
     {NULL},
     {NULL},
     {NULL},
-    {G_DeferedPlayDemo, "demo4"},
+    {D_PlayDemoName, "demo4"},
   },
 
   {
@@ -773,6 +780,23 @@ const demostate_t doom_demostates[][4] =
     {NULL},
   }
 };
+
+// Check whether to skip IWAD Demos
+int dsda_SkipIwadDemos(const char *name)
+{
+  int pwaddemos;
+  int pwadmaps;
+
+  if (dsda_IntConfig(nyan_config_play_pwad_only_demos) && allow_incompatibility)
+  {
+    pwaddemos = W_PWADLumpNameExists(name);
+    pwadmaps =  W_PWADLumpNameExists("THINGS");
+    if (pwadmaps && !pwaddemos)
+      return 1;
+  }
+
+  return 0;
+}
 
 /*
  * This cycles through the demo sequences.

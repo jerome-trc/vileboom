@@ -3219,6 +3219,7 @@ setup_menu_t misc2_settings[] = {
   { "Nyan Options", S_SKIP | S_TITLE, m_null, G_X},
   { "DSDA-Doom Options Order", S_YESNO, m_conf, G_X, nyan_config_dsda_menu_format },
   { "Play Demos While In Menus", S_YESNO, m_conf, G_X, nyan_config_menu_play_demo },
+  { "Play PWAD-Only Demos", S_YESNO, m_conf, G_X, nyan_config_play_pwad_only_demos },
   { "Pause After Intermission", S_YESNO, m_conf, G_X, nyan_config_intermission_pause },
   { "Skip IWAD Story Text", S_YESNO, m_conf, G_X, nyan_config_skip_default_text },
   EMPTY_LINE,

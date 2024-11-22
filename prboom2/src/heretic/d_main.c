@@ -59,10 +59,10 @@ const demostate_t heretic_demostates[][4] =
   },
 
   {
-    { G_DeferedPlayDemo, "demo1" },
-    { G_DeferedPlayDemo, "demo1" },
-    { G_DeferedPlayDemo, "demo1" },
-    { G_DeferedPlayDemo, "demo1" },
+    { D_PlayDemoName, "demo1" },
+    { D_PlayDemoName, "demo1" },
+    { D_PlayDemoName, "demo1" },
+    { D_PlayDemoName, "demo1" },
   },
 
   {
@@ -73,10 +73,10 @@ const demostate_t heretic_demostates[][4] =
   },
 
   {
-    { G_DeferedPlayDemo, "demo2" },
-    { G_DeferedPlayDemo, "demo2" },
-    { G_DeferedPlayDemo, "demo2" },
-    { G_DeferedPlayDemo, "demo2" },
+    { D_PlayDemoName, "demo2" },
+    { D_PlayDemoName, "demo2" },
+    { D_PlayDemoName, "demo2" },
+    { D_PlayDemoName, "demo2" },
   },
 
   {
@@ -87,10 +87,10 @@ const demostate_t heretic_demostates[][4] =
   },
 
   {
-    { G_DeferedPlayDemo, "demo3" },
-    { G_DeferedPlayDemo, "demo3" },
-    { G_DeferedPlayDemo, "demo3" },
-    { G_DeferedPlayDemo, "demo3" },
+    { D_PlayDemoName, "demo3" },
+    { D_PlayDemoName, "demo3" },
+    { D_PlayDemoName, "demo3" },
+    { D_PlayDemoName, "demo3" },
   },
 
   {
