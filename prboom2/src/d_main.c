@@ -671,6 +671,23 @@ void D_AdvanceDemo (void)
  * cphipps 10/99: constness fixes
  */
 
+// Check whether to skip IWAD Demos
+int dsda_SkipIwadDemos(const char *name)
+{
+  int pwaddemos;
+  int pwadmaps;
+
+  if (dsda_IntConfig(nyan_config_play_pwad_only_demos) && allow_incompatibility)
+  {
+    pwaddemos = W_PWADLumpNameExists(name);
+    pwadmaps =  W_PWADLumpNameExists("THINGS");
+    if (pwadmaps && !pwaddemos)
+      return 1;
+  }
+
+  return 0;
+}
+
 static void D_SetPageName(const char *name)
 {
   if ((bfgedition) && name && !strncmp(name,titlepic,8))
@@ -780,23 +797,6 @@ const demostate_t doom_demostates[][4] =
     {NULL},
   }
 };
-
-// Check whether to skip IWAD Demos
-int dsda_SkipIwadDemos(const char *name)
-{
-  int pwaddemos;
-  int pwadmaps;
-
-  if (dsda_IntConfig(nyan_config_play_pwad_only_demos) && allow_incompatibility)
-  {
-    pwaddemos = W_PWADLumpNameExists(name);
-    pwadmaps =  W_PWADLumpNameExists("THINGS");
-    if (pwadmaps && !pwaddemos)
-      return 1;
-  }
-
-  return 0;
-}
 
 /*
  * This cycles through the demo sequences.
