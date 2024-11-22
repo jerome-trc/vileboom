@@ -63,10 +63,10 @@
 // STATUS BAR DATA
 //
 
-/* Arsinikk - Set berserk icon type */
+// berserk icon type from config
 berserk_icon_t berserk_icon;
 
-/* Arsinikk - Set armor icon type */
+// armor icon type from config
 armor_icon_t armor_icon;
 
 int ST_SCALED_HEIGHT;
@@ -294,6 +294,10 @@ static dboolean st_armson;
 // !deathmatch
 static dboolean st_fragson;
 
+// armor / berserk icons on?
+static dboolean st_berserkicon_on;
+static dboolean st_armoricon_on;
+
 // 0-9, tall numbers
 static patchnum_t tallnum[10];
 
@@ -315,9 +319,9 @@ typedef enum {
   DOOM_ARMORICON
 } armoricon_t;
 
-static patchnum_t armoricon[DOOM_ARMORICON];
-static patchnum_t armoricon1[DOOM_ARMORICON];
-static patchnum_t armoricon2[DOOM_ARMORICON];
+static patchnum_t armorpatch[DOOM_ARMORICON];
+static patchnum_t armorstyle1[DOOM_ARMORICON];
+static patchnum_t armorstyle2[DOOM_ARMORICON];
 
 // Berserk icon types
 typedef enum {
@@ -325,19 +329,12 @@ typedef enum {
   berserkon,
   berserkunity,
   DOOM_BERSERKICON
-} berserkicon_t;
+} berserk_t;
 
-static patchnum_t berserkicon[DOOM_BERSERKICON];
+static patchnum_t berserkpatch[DOOM_BERSERKICON];
 
 // face status patches
 static patchnum_t faces[ST_NUMFACES];
-
-// berserk
-static patchnum_t berserk;
-
-// armor icon
-static patchnum_t armor1icon;
-static patchnum_t armor2icon;
 
 // face background
 static patchnum_t faceback; // CPhipps - single background, translated for different players
@@ -406,11 +403,9 @@ static int      st_faceindex = 0;
 // holds key-type for each key box on bar
 static int      keyboxes[3];
 
-// decides when to show armor icon or not
-static int      armoriconbox;
-
-// decides when to show berserk icon or not
-static int      berserkiconbox;
+// decides when to show icons or not
+static int      st_armorindex;
+static int      st_berserkindex;
 
 // a random number per tick
 static int      st_randomnumber;
@@ -494,7 +489,6 @@ static void ST_refreshBackground(void)
 {
   int y = ST_Y;
   enum patch_translation_e flags = VPT_ALIGN_LEFT_TOP;
-  dboolean fullmenu = (menuactive == mnact_full);
 
   if (st_statusbaron)
     {
@@ -777,31 +771,33 @@ static void ST_updateWidgets(void)
     }
 
   // update armor icon
-  if (armor_icon)
+  st_armorindex = plyr->armortype;
+  if(plyr->armortype > 2)
+    st_armorindex = 2;
+
+  for (i=0;i<3;i++)
   {
-    armoriconbox = plyr->armortype;
-    if(plyr->armortype > 2)
-      armoriconbox = 2;
-    for (i=0;i<3;i++)
-    {
-      if(armor_icon==2)
-        armoricon[i] = armoricon2[i];
-      else
-        armoricon[i] = armoricon1[i];
-    }
+    if(armor_icon==2)
+      armorpatch[i] = armorstyle2[i];
+    else
+      armorpatch[i] = armorstyle1[i];
   }
 
   // update berserk icon
-  if (plyr->powers[pw_strength] && berserk_icon)
+  if (plyr->powers[pw_strength])
     if(unityedition && !chex)
-      berserkiconbox = 2;
+      st_berserkindex = 2;
     else
-      berserkiconbox = 1;
+      st_berserkindex = 1;
   else
-    berserkiconbox = 0;
+    st_berserkindex = 0;
 
   // refresh everything if this is him coming back to life
   ST_updateFaceWidget();
+
+  // used by icon widgets
+  st_berserkicon_on = berserk_icon && st_statusbaron;
+  st_armoricon_on = armor_icon && st_statusbaron;
 
   // used by the w_armsbg widget
   st_notdeathmatch = !deathmatch;
@@ -926,6 +922,10 @@ static void ST_drawWidgets(dboolean refresh)
   // used by w_frags widget
   st_fragson = deathmatch && st_statusbaron;
 
+  // used by icon widgets
+  st_berserkicon_on = berserk_icon && st_statusbaron;
+  st_armoricon_on = armor_icon && st_statusbaron;
+
   //jff 2/16/98 make color of ammo depend on amount
   if (*w_ready.num == plyr->maxammo[weaponinfo[w_ready.data].ammo])
     STlib_updateNum(&w_ready, cr_ammo_full, refresh);
@@ -962,7 +962,6 @@ static void ST_drawWidgets(dboolean refresh)
 
   STlib_updateMultIcon(&w_faces, refresh);
 
-  // Update armor icon
   if(armor_icon)
     STlib_updateMultIcon(&w_armoricon, refresh);
 
@@ -1009,7 +1008,7 @@ void ST_Drawer(dboolean refresh)
 
   ST_doPaletteStuff();  // Do red-/gold-shifts from damage/items
 
-  // Arsinikk - Refreshes status bar background for software
+  // Refreshes status bar background for software
   //
   // Haven't seen any downsides to keeping the software
   // statusbar up-to-date, to be the same as OpenGL.
@@ -1070,15 +1069,15 @@ static void ST_loadGraphics(void)
       if (!chex)
       {
         sprintf(namebuf, "STFARMS%d", i);
-        R_SetPatchNum(&armoricon1[i], namebuf);
+        R_SetPatchNum(&armorstyle1[i], namebuf);
         sprintf(namebuf, "STFARM2%d", i);
-        R_SetPatchNum(&armoricon2[i], namebuf);
+        R_SetPatchNum(&armorstyle2[i], namebuf);
       }
       else
       {
         sprintf(namebuf, "CHXARMS%d", i);
-        R_SetPatchNum(&armoricon1[i], namebuf);
-        R_SetPatchNum(&armoricon2[i], namebuf);
+        R_SetPatchNum(&armorstyle1[i], namebuf);
+        R_SetPatchNum(&armorstyle2[i], namebuf);
       }
     }
 
@@ -1089,11 +1088,8 @@ static void ST_loadGraphics(void)
         sprintf(namebuf, "STFPSTR%d", i);
       else
         sprintf(namebuf, "CHXPSTR%d", i);
-      R_SetPatchNum(&berserkicon[i], namebuf);
+      R_SetPatchNum(&berserkpatch[i], namebuf);
     }
-
-  // Set berserk hud indicators
-  // Green cross for bfg edition (unity)
 
   //e6y: status bar background
   if(Check_Stbar_Animate)
@@ -1242,17 +1238,17 @@ static void ST_createWidgets(void)
   STlib_initMultIcon(&w_armoricon,
                      ST_ARMORICONX,
                      ST_ARMORICONY,
-                     armoricon,
-                     &armoriconbox,
-                     &st_statusbaron);
+                     armorpatch,
+                     &st_armorindex,
+                     &st_armoricon_on);
 
   // Berserk Icon
   STlib_initMultIcon(&w_berserkicon,
                      ST_BERSERKX,
                      ST_BERSERKY,
-                     berserkicon,
-                     &berserkiconbox,
-                     &st_statusbaron);
+                     berserkpatch,
+                     &st_berserkindex,
+                     &st_berserkicon_on);
 
   // keyboxes 0-2
   STlib_initMultIcon(&w_keyboxes[0],
