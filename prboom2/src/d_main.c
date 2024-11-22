@@ -1923,6 +1923,7 @@ static void D_DoomMainSetup(void)
   dsda_InitNyanLumps();
   if (limitremoving)
     lprintf(LO_INFO, "Limit-removing detected. Overflows disabled\n");
+  deh_copyDefaultCheats();
 
   // e6y
   // option to disable automatic loading of dehacked-in-wad lump

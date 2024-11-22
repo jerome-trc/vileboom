@@ -1572,6 +1572,13 @@ uint64_t deh_stringToMobjFlags(char *strval)
   return deh_stringToFlags(strval, deh_mobjflags);
 }
 
+void deh_copyDefaultCheats(void)
+{
+  int ix;
+  for (ix = 0; cheat[ix].cheat; ix++)
+    cheat[ix].deh_cheat = cheat[ix].cheat;
+}
+
 void deh_changeCompTranslucency(void)
 {
   extern byte* edited_mobjinfo_bits;
