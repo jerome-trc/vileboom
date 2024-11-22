@@ -963,10 +963,10 @@ static void ST_drawWidgets(dboolean refresh)
   STlib_updateMultIcon(&w_faces, refresh);
 
   if(armor_icon)
-    STlib_updateMultIcon(&w_armoricon, refresh);
+    STlib_updateMultIcon2(&w_armoricon, refresh);
 
   if(berserk_icon)
-    STlib_updateMultIcon(&w_berserkicon, refresh);
+    STlib_updateMultIcon2(&w_berserkicon, refresh);
 
   for (i=0;i<3;i++)
     STlib_updateMultIcon(&w_keyboxes[i], refresh);

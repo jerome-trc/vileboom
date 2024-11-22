@@ -193,6 +193,10 @@ void STlib_updateMultIcon
 ( st_multicon_t* mi,
   dboolean refresh );
 
+void STlib_updateMultIcon2
+( st_multicon_t* mi,
+  dboolean refresh );
+
 // Binary Icon widget routines
 
 void STlib_initBinIcon

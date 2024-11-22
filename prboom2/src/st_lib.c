@@ -291,8 +291,27 @@ void STlib_updateMultIcon
         I_Error("STlib_updateMultIcon: y - ST_Y < 0");
 #endif
 
-      //V_CopyRect(BG, FG, x, y, w, h, VPT_STRETCH | VPT_ALIGN_BOTTOM);
+      V_CopyRect(BG, FG, x, y, w, h, VPT_STRETCH | VPT_ALIGN_BOTTOM);
     }
+    if (*mi->inum != -1)  // killough 2/16/98: redraw only if != -1
+      V_DrawNumPatch(mi->x, mi->y, FG, mi->p[*mi->inum].lumpnum, CR_DEFAULT, VPT_ALIGN_BOTTOM);
+    mi->oldinum = *mi->inum;
+  }
+}
+
+//
+// STlib_updateMultIcon2()
+//
+// Draw a st_multicon_t widget, used for berserk and armor icons.
+// Does not use V_CopyRect, as it must draw on top of ST_Faces
+//
+void STlib_updateMultIcon2
+( st_multicon_t*  mi,
+  dboolean   refresh )
+{
+
+  if (*mi->on && (mi->oldinum != *mi->inum || refresh))
+  {
     if (*mi->inum != -1)  // killough 2/16/98: redraw only if != -1
       V_DrawNumPatch(mi->x, mi->y, FG, mi->p[*mi->inum].lumpnum, CR_DEFAULT, VPT_ALIGN_BOTTOM);
     mi->oldinum = *mi->inum;
