@@ -1590,7 +1590,7 @@ void deh_changeCompTranslucency(void)
     MT_TFOG, MT_IFOG, MT_MISC12, MT_INV, MT_INS, MT_MEGA
   };
   int lite_translucency[] = {
-    MT_FIRE, MT_SMOKE, MT_SPAWNFIRE, MT_TFOG, MT_IFOG
+    MT_FIRE, MT_SMOKE, MT_PUFF, MT_TFOG, MT_IFOG
   };
 
   if (raven) return;
