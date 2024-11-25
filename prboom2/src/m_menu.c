@@ -2868,6 +2868,7 @@ setup_menu_t auto_settings1[] =  // 1st AutoMap Settings screen
   { "Use mouse wheel for zooming", S_YESNO, m_conf, AU_X, dsda_config_map_wheel_zoom },
   { "Enable textured display", S_YESNO, m_conf, AU_X, dsda_config_map_textured },
   { "Things appearance", S_CHOICE, m_conf, AU_X, dsda_config_map_things_appearance, 0, map_things_appearance_list },
+  { "OpenGl Nice Icons", S_YESNO, m_conf, AU_X, dsda_config_map_things_nice },
   { "Show Minimap", S_YESNO, m_conf, AU_X, dsda_config_show_minimap },
 
   NEXT_PAGE(auto_settings2),

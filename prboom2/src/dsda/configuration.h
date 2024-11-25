@@ -271,6 +271,7 @@ typedef enum {
   dsda_config_map_textured_overlay_trans,
   dsda_config_map_lines_overlay_trans,
   dsda_config_map_things_appearance,
+  dsda_config_map_things_nice,
   dsda_config_videomode,
   dsda_config_screen_resolution,
   dsda_config_custom_resolution,

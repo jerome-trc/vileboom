@@ -1205,6 +1205,10 @@ dsda_config_t dsda_config[dsda_config_count] = {
     dsda_config_int, 0, map_things_appearance_max - 1, { map_things_appearance_max - 1 },
     NULL, NOT_STRICT, AM_InitParams
   },
+  [dsda_config_map_things_nice] = {
+    "dsda_map_things_nice", dsda_config_map_things_nice,
+    dsda_config_int, 0, 1, { 1 }, NULL, NOT_STRICT, AM_InitParams
+  },
   [dsda_config_videomode] = {
     "videomode", dsda_config_videomode,
     CONF_STRING("Software"), NULL, NOT_STRICT, M_ChangeVideoMode

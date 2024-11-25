@@ -163,6 +163,7 @@ static int map_grid_size;
 static int map_scroll_speed;
 static int map_zoom_speed;
 static int map_wheel_zoom;
+static int map_opengl_nice_things;
 int map_textured;
 int map_use_multisampling;
 
@@ -740,6 +741,7 @@ void AM_InitParams(void)
   map_grid_size = dsda_IntConfig(dsda_config_map_grid_size);
   map_wheel_zoom = dsda_IntConfig(dsda_config_map_wheel_zoom);
   map_things_appearance = dsda_IntConfig(dsda_config_map_things_appearance);
+  map_opengl_nice_things = dsda_IntConfig(dsda_config_map_things_nice);
 }
 
 void AM_ExchangeScales(int full_automap, int *last_full_automap)
@@ -1983,7 +1985,7 @@ static void AM_drawPlayers(void)
 #if defined(HAVE_LIBSDL2_IMAGE)
   if (V_IsOpenGLMode())
   {
-    if (map_things_appearance == map_things_appearance_icon)
+    if (map_opengl_nice_things)
       return;
   }
 #endif
@@ -2314,7 +2316,7 @@ static void AM_drawThings(void)
 #if defined(HAVE_LIBSDL2_IMAGE)
   if (V_IsOpenGLMode())
   {
-    if (map_things_appearance == map_things_appearance_icon)
+    if (map_opengl_nice_things)
     {
       AM_DrawNiceThings();
       return;
@@ -2564,7 +2566,7 @@ static void AM_drawMarks(void)
 #if defined(HAVE_LIBSDL2_IMAGE)
   if (V_IsOpenGLMode())
   {
-    if (map_things_appearance == map_things_appearance_icon)
+    if (map_opengl_nice_things)
       return;
   }
 #endif
@@ -2821,7 +2823,7 @@ void AM_Drawer (dboolean minimap)
     M_ArrayClear(&map_lines);
 
 #if defined(HAVE_LIBSDL2_IMAGE)
-    if (map_things_appearance == map_things_appearance_icon)
+    if (map_opengl_nice_things)
     {
       gld_DrawNiceThings(f_x, f_y, f_w, f_h);
     }
