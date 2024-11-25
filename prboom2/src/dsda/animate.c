@@ -23,6 +23,13 @@
 #include "st_stuff.h"
 #include "library.h"
 
+int animateLumps;
+int widescreenLumps;
+
+int Check_Stbar_Wide;
+int Check_Skull_Animate;
+int Check_Stbar_Animate;
+
 void AnimateTicker(void)
 {
   AnimateTime++;

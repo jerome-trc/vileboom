@@ -19,12 +19,12 @@
 #define __DSDA_ANIMATE__
 
 extern short AnimateTime;
-int animateLumps;
-int widescreenLumps;
+extern int animateLumps;
+extern int widescreenLumps;
 
-int Check_Stbar_Wide;
-int Check_Skull_Animate;
-int Check_Stbar_Animate;
+extern int Check_Stbar_Wide;
+extern int Check_Skull_Animate;
+extern int Check_Stbar_Animate;
 
 void AnimateTicker(void);
 

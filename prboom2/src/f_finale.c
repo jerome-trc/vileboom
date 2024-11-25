@@ -975,9 +975,9 @@ void F_BunnyScroll (void)
   F_BunnyLumpSetup();
 
   {
+    int scrolled = 320 - (finalecount-230)/2;
     F_BunnyApplyWidth();
 
-    int scrolled = 320 - (finalecount-230)/2;
     if (scrolled <= 0) {
       V_DrawNameNyanPatch(0, 0, 0, scrollpic2, CR_DEFAULT, VPT_STRETCH);
     } else if (scrolled >= 320) {
@@ -1021,7 +1021,7 @@ void F_BunnyScroll (void)
 
 void F_BunnyLumpSetup(void) 
 {
-  char* suffix;
+  const char* suffix;
 
   p1 = R_PatchByName(scrollpic1);
   p2 = R_PatchByName(scrollpic2);
