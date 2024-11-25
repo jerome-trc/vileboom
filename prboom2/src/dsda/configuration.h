@@ -79,7 +79,7 @@ typedef enum {
   dsda_config_cheat_codes,
   dsda_config_organize_failed_demos,
   nyan_config_intermission_pause,
-  nyan_config_play_pwad_only_demos,
+  nyan_config_skip_default_demos,
   nyan_config_skip_default_text,
   nyan_config_enable_widescreen_lumps,
   nyan_config_enable_animate_lumps,

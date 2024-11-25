@@ -324,7 +324,7 @@ cfg_def_t cfg_defs[] =
   MIGRATED_SETTING(nyan_config_dsda_menu_format),
   MIGRATED_SETTING(nyan_config_menu_play_demo),
   MIGRATED_SETTING(nyan_config_intermission_pause),
-  MIGRATED_SETTING(nyan_config_play_pwad_only_demos),
+  MIGRATED_SETTING(nyan_config_skip_default_demos),
   MIGRATED_SETTING(nyan_config_skip_default_text),
   MIGRATED_SETTING(nyan_config_enable_widescreen_lumps),
   MIGRATED_SETTING(nyan_config_enable_animate_lumps),

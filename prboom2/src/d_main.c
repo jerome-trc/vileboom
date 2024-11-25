@@ -674,13 +674,10 @@ void D_AdvanceDemo (void)
 // Check whether to skip IWAD Demos
 int dsda_SkipIwadDemos(const char *name)
 {
-  int pwaddemos;
-  int pwadmaps;
-
-  if (dsda_IntConfig(nyan_config_play_pwad_only_demos) && allow_incompatibility)
+  if (dsda_IntConfig(nyan_config_skip_default_demos) && allow_incompatibility)
   {
-    pwaddemos = W_PWADLumpNameExists(name);
-    pwadmaps =  W_PWADLumpNameExists("THINGS");
+    int pwaddemos = W_PWADLumpNameExists(name);
+    int pwadmaps =  W_PWADLumpNameExists("THINGS");
     if (pwadmaps && !pwaddemos)
       return 1;
   }
