@@ -457,7 +457,7 @@ void M_DrawMainMenu(void)
 {
   if (raven) return MN_DrawMainMenu();
   // CPhipps - patch drawing updated
-  V_DrawNameMenuPatch(94, 2, 0, mdoom, CR_DEFAULT, VPT_STRETCH);
+  V_DrawNameNyanPatch(94, 2, 0, mdoom, CR_DEFAULT, VPT_STRETCH);
 }
 
 /////////////////////////////
@@ -6095,11 +6095,17 @@ void M_Drawer (void)
     // DRAW SKULL
     if (max > 0)
     {
+        int ix = x + SKULLXOFF;
+        int iy = currentMenu->y - 5 + itemOn * LINEHEIGHT;
+        int scrn = 0;
+        int color = CR_DEFAULT;
+        int flags = VPT_STRETCH;
+
         // CPhipps - patch drawing updated
         if (Check_Skull_Animate && animateLumps)
-            V_DrawNameMenuPatch(x + SKULLXOFF,currentMenu->y - 5 + itemOn * LINEHEIGHT, 0, mskull1, CR_DEFAULT, VPT_STRETCH);
+            V_DrawNameNyanPatch(ix, iy, scrn, mskull1, color, flags);
         else
-            V_DrawNamePatch(x + SKULLXOFF, currentMenu->y - 5 + itemOn * LINEHEIGHT, 0, skullName[whichSkull], CR_DEFAULT, VPT_STRETCH);
+            V_DrawNamePatch(ix, iy, scrn, skullName[whichSkull], color, flags);
     }
   }
 
@@ -6159,8 +6165,10 @@ void M_Ticker (void)
   {
     whichSkull ^= 1;
     skullAnimCounter = 8;
-    AnimateTime++;
   }
+
+  // Nyan Animate Lump counter
+  AnimateTicker();
 
   if (raven) return MN_Ticker();
 }

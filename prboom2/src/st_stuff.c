@@ -450,16 +450,13 @@ void ST_LoadTextColors(void)
 void ST_SetScaledWidth(void)
 {
   int width;
-  int width_og = stbarbg.width;
-  int width_ani = stbarbg_ani.width;
-  int width_ws = stbarbg_ws.width;
 
   if (Check_Stbar_Animate && animateLumps)
-      width = width_ani;
+      width = stbarbg_ani.width;
   else if (Check_Stbar_Wide && widescreenLumps)
-      width = width_ws;
+      width = stbarbg_ws.width;
   else
-      width = width_og;
+      width = stbarbg.width;
 
   if (width == 0)
       width = ST_WIDTH;
@@ -496,7 +493,7 @@ static void ST_refreshBackground(void)
       V_DrawNameNyanPatch(ST_X, y, BG, stbar, CR_DEFAULT, flags);
       if (!deathmatch)
       {
-        V_DrawNameMenuPatch(ST_ARMSBGX, y, BG, starms, CR_DEFAULT, flags);
+        V_DrawNameNyanPatch(ST_ARMSBGX, y, BG, starms, CR_DEFAULT, flags);
       }
 
       // killough 3/7/98: make face background change with displayplayer
