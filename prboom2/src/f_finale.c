@@ -963,66 +963,20 @@ void F_StartScroll (const char* right, const char* left, const char* music, dboo
   F_StartScrollMusic(music, loop_music);
 }
 
+const rpatch_t *p1, *p2, *p1a, *p2a, *p1w, *p2w, *p1f, *p2f;
+static int  p1offset, p2width;
+
 void F_BunnyScroll (void)
 {
   char        name[10];
   int         stage;
   static int  laststage;
-  static int  p1offset, p2width;
-  int BunnyAnimate1 = 0;
-  int BunnyAnimate2 = 0;
 
-  if (finalecount == 0)
-  {
-    const rpatch_t *p1, *p2;
-    p1 = R_PatchByName(scrollpic1);
-    p2 = R_PatchByName(scrollpic2);
-
-    if (animateLumps)
-    {
-      if(D_CheckAnimate(scrollpic1))
-      {
-        p1 = R_PatchByName(AnimateCombine("S_", scrollpic1));
-        BunnyAnimate1 = 1;
-      }
-      if(D_CheckAnimate(scrollpic2))
-      {
-        p2 = R_PatchByName(AnimateCombine("S_", scrollpic2));
-        BunnyAnimate2 = 1;
-      }
-    }
-    if (widescreenLumps)
-    {
-      if(D_CheckWide(scrollpic1, "WS") && !BunnyAnimate1)
-      {
-        if (!strcmp(scrollpic1, e3bunny1))
-          p1 = R_PatchByName(WideCombine(scrollpic1, "_WS"));
-        else
-          p1 = R_PatchByName(WideCombine(scrollpic1, "WS"));
-      }
-      if(D_CheckWide(scrollpic2, "WS") && !BunnyAnimate2)
-      {
-        if (!strcmp(scrollpic1, e3bunny2))
-          p1 = R_PatchByName(WideCombine(scrollpic1, "_WS"));
-        else
-          p1 = R_PatchByName(WideCombine(scrollpic1, "WS"));
-      }
-    }
-
-    p2width = p2->width;
-    if (p1->width == 320)
-    {
-      // Unity or original PFUBs.
-      p1offset = (p2width - 320) / 2;
-    }
-    else
-    {
-      // Widescreen mod PFUBs.
-      p1offset = 0;
-    }
-  }
+  F_BunnyLumpSetup();
 
   {
+    F_BunnyApplyWidth();
+
     int scrolled = 320 - (finalecount-230)/2;
     if (scrolled <= 0) {
       V_DrawNameNyanPatch(0, 0, 0, scrollpic2, CR_DEFAULT, VPT_STRETCH);
@@ -1063,6 +1017,72 @@ void F_BunnyScroll (void)
   sprintf (name,"END%i",stage);
   // CPhipps - patch drawing updated
   V_DrawNamePatch((320-13*8)/2, (200-8*8)/2, 0, name, CR_DEFAULT, VPT_STRETCH);
+}
+
+void F_BunnyLumpSetup(void) 
+{
+  char* suffix;
+
+  p1 = R_PatchByName(scrollpic1);
+  p2 = R_PatchByName(scrollpic2);
+
+  if(D_CheckAnimate(scrollpic1))
+    p1a = R_PatchByName(AnimateCombine("S_", scrollpic1));
+  else
+    p1a = p1;
+
+  if(D_CheckAnimate(scrollpic2))
+    p2a = R_PatchByName(AnimateCombine("S_", scrollpic2));
+  else
+    p2a = p2;
+
+  if(D_CheckWide(scrollpic1, "WS")) {
+    if (!strcmp(scrollpic1, e3bunny1))
+      suffix = "_WS";
+    else
+      suffix = "WS";
+    p1w = R_PatchByName(WideCombine(scrollpic1, suffix));
+  }
+  else
+    p1w = p1;
+
+  if(D_CheckWide(scrollpic2, "WS")) {
+    if (!strcmp(scrollpic2, e3bunny2))
+      suffix = "_WS";
+    else
+      suffix = "WS";
+    p2w = R_PatchByName(WideCombine(scrollpic2, suffix));
+  }
+  else
+    p2w = p2;
+}
+
+void F_BunnyApplyWidth(void)
+{
+  p1f = p1;
+  p2f = p2;
+
+  if (widescreenLumps) {
+    if(p1w) { p1f = p1w; }
+    if(p2w) { p2f = p2w; }
+  }
+
+  if (animateLumps) {
+    if(p1a) { p1f = p1a; }
+    if(p2a) { p2f = p2a; }
+  }
+
+  p2width = p2f->width;
+  if (p1f->width == 320)
+  {
+    // Unity or original PFUBs.
+    p1offset = (p2width - 320) / 2;
+  }
+  else
+  {
+    // Widescreen mod PFUBs.
+    p1offset = 0;
+  }
 }
 
 void F_StartPostFinale (void)
