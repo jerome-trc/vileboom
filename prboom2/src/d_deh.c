@@ -1608,43 +1608,40 @@ void deh_changeCompTranslucency(void)
 
 int vanilla_health_bonus = -1;
 int vanilla_armor_bonus = -1;
+#define health_flash doom_states[819]
+#define armor_flash doom_states[825]
 
 void deh_InitBonusFlash(void)
 {
-  state_t health_flash = doom_states[819];
-  state_t armor_flash = doom_states[825];
-
-  if ((health_flash.sprite == SPR_BON1) &&
+  vanilla_health_bonus = (
+      (health_flash.sprite == SPR_BON1) &&
       (health_flash.frame == 3) &&
       (health_flash.tics == 6) &&
       (health_flash.action == NULL) &&
-      (health_flash.nextstate == S_BON1D))
-    vanilla_health_bonus = 1;
-  else
-    vanilla_health_bonus = 0;
+      (health_flash.nextstate == S_BON1D)
+      );
 
-  if ((armor_flash.sprite == SPR_BON2) &&
+  vanilla_armor_bonus = (
+      (armor_flash.sprite == SPR_BON2) &&
       (armor_flash.frame == 3) &&
       (armor_flash.tics == 6) &&
       (armor_flash.action == NULL) &&
-      (armor_flash.nextstate == S_BON2D))
-    vanilla_armor_bonus = 1;
-  else
-    vanilla_armor_bonus = 0;
+      (armor_flash.nextstate == S_BON2D)
+      );
 }
 
 void deh_NyanBonusFlash(void)
 {
   extern byte* edited_mobjinfo_bits;
   int i;
-  int nyan_flash_bonus;
+  int bonus_flash;
   int predefined_bonuses[] = {
     MT_MISC2, MT_MISC3
   };
 
   if (raven) return;
 
-  nyan_flash_bonus = dsda_IntConfig(nyan_config_item_bonus_flash);
+  bonus_flash = dsda_IntConfig(nyan_config_item_bonus_flash);
 
   if (vanilla_health_bonus == -1 || vanilla_armor_bonus == -1)
     deh_InitBonusFlash();
@@ -1654,16 +1651,9 @@ void deh_NyanBonusFlash(void)
     if (!edited_mobjinfo_bits[predefined_bonuses[i]])
     {
       if (vanilla_health_bonus)
-        if (nyan_flash_bonus)
-          doom_states[819].frame = 32771;
-        else
-          doom_states[819].frame = 3;
-
+          health_flash.frame = bonus_flash ? 32771 : 3;
       if (vanilla_armor_bonus)
-        if (nyan_flash_bonus)
-          doom_states[825].frame = 32771;
-        else
-          doom_states[825].frame = 3;
+          armor_flash.frame = bonus_flash ? 32771 : 3;
     }
   }
 }
