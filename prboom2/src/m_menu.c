@@ -3222,6 +3222,7 @@ setup_menu_t misc2_settings[] = {
   { "Skip IWAD Demos For PWADs", S_YESNO, m_conf, G_X, nyan_config_skip_default_demos },
   { "Skip IWAD Story Text For PWADs", S_YESNO, m_conf, G_X, nyan_config_skip_default_text },
   { "Pause After Intermission", S_YESNO, m_conf, G_X, nyan_config_intermission_pause },
+  { "Flashing Item Bonuses", S_YESNO, m_conf, G_X, nyan_config_item_bonus_flash },
   EMPTY_LINE,
   { "Endoom Screen", S_CHOICE, m_conf, G_X, nyan_config_show_endoom, 0, endoom_list },
   { "Endoom Type", S_CHOICE, m_conf, G_X, nyan_config_type_endoom, 0, endoom_type_list },

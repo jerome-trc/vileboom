@@ -1067,6 +1067,7 @@ extern const char* savegamename;
 uint64_t deh_stringToMBF21MobjFlags(char *strval);
 uint64_t deh_stringToMobjFlags(char *strval);
 void deh_changeCompTranslucency(void);
+void deh_NyanBonusFlash(void);
 void deh_applyCompatibility(void);
 
 #endif

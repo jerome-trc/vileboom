@@ -331,6 +331,7 @@ cfg_def_t cfg_defs[] =
   MIGRATED_SETTING(nyan_config_boom_credit_help),
   MIGRATED_SETTING(nyan_config_hud_berserk),
   MIGRATED_SETTING(nyan_config_hud_armoricon),
+  MIGRATED_SETTING(nyan_config_item_bonus_flash),
 
   SETTING_HEADING("Extended HUD Status Widget"),
   MIGRATED_SETTING(nyan_config_ex_status_widget),
