@@ -2769,7 +2769,7 @@ setup_menu_t stat_settings2[] =
 };
 
 //e6y
-#define HUD_X 284
+#define HUD_X 274
 
 static const char *crosshair_str[] =
   { "none", "cross", "angle", "dot", "small", "slim", "tiny", "big", NULL };
@@ -2838,9 +2838,6 @@ static const char *map_things_appearance_list[] =
 {
   "classic",
   "scaled",
-#if defined(HAVE_LIBSDL2_IMAGE)
-  "icons",
-#endif
   NULL
 };
 
@@ -2852,41 +2849,43 @@ static const char *map_trail_mode_list[] =
   NULL
 };
 
+#define AU_X2 255
+
 setup_menu_t auto_settings1[] =  // 1st AutoMap Settings screen
 {
-  { "Automap Components", S_SKIP | S_TITLE, m_null, AU_X},
-  { "Stat Totals", S_YESNO, m_conf, AU_X, dsda_config_map_totals },
-  { "Player Coordinates", S_YESNO, m_conf, AU_X, dsda_config_map_coordinates },
-  { "Level / Total Time", S_YESNO, m_conf, AU_X, dsda_config_map_time },
-  { "Level Title", S_YESNO, m_conf, AU_X, dsda_config_map_title },
+  { "Automap Components", S_SKIP | S_TITLE, m_null, AU_X2},
+  { "Stat Totals", S_YESNO, m_conf, AU_X2, dsda_config_map_totals },
+  { "Player Coordinates", S_YESNO, m_conf, AU_X2, dsda_config_map_coordinates },
+  { "Level / Total Time", S_YESNO, m_conf, AU_X2, dsda_config_map_time },
+  { "Level Title", S_YESNO, m_conf, AU_X2, dsda_config_map_title },
   EMPTY_LINE,
-  { "Locked doors blink", S_YESNO, m_conf, AU_X, dsda_config_map_blinking_locks },
-  { "Show Secrets only after entering", S_YESNO, m_conf, AU_X, dsda_config_map_secret_after },
-  { "Grid cell size 8..256, -1 for autosize", S_NUM, m_conf, AU_X, dsda_config_map_grid_size },
-  { "Scroll speed  (1..32)", S_NUM, m_conf, AU_X, dsda_config_map_scroll_speed },
-  { "Zoom speed  (1..32)", S_NUM, m_conf, AU_X, dsda_config_map_zoom_speed },  
-  { "Use mouse wheel for zooming", S_YESNO, m_conf, AU_X, dsda_config_map_wheel_zoom },
-  { "Enable textured display", S_YESNO, m_conf, AU_X, dsda_config_map_textured },
-  { "Things appearance", S_CHOICE, m_conf, AU_X, dsda_config_map_things_appearance, 0, map_things_appearance_list },
-  { "OpenGl Nice Icons", S_YESNO, m_conf, AU_X, dsda_config_map_things_nice },
-  { "Show Minimap", S_YESNO, m_conf, AU_X, dsda_config_show_minimap },
+  { "Locked doors blink", S_YESNO, m_conf, AU_X2, dsda_config_map_blinking_locks },
+  { "Show Secrets only after entering", S_YESNO, m_conf, AU_X2, dsda_config_map_secret_after },
+  { "Grid cell size 8..256, -1 for autosize", S_NUM, m_conf, AU_X2, dsda_config_map_grid_size },
+  { "Scroll speed  (1..32)", S_NUM, m_conf, AU_X2, dsda_config_map_scroll_speed },
+  { "Zoom speed  (1..32)", S_NUM, m_conf, AU_X2, dsda_config_map_zoom_speed },  
+  { "Use mouse wheel for zooming", S_YESNO, m_conf, AU_X2, dsda_config_map_wheel_zoom },
+  { "Things appearance", S_CHOICE, m_conf, AU_X2, dsda_config_map_things_appearance, 0, map_things_appearance_list },
+  { "Show Minimap", S_YESNO, m_conf, AU_X2, dsda_config_show_minimap },
 
   NEXT_PAGE(auto_settings2),
   FINAL_ENTRY
 };
 
-#define AU_X2 180
-
 setup_menu_t auto_settings2[] =  // 2st AutoMap Settings screen
 {
-  { "Translucency percentage", S_SKIP | S_TITLE, m_null, AU_X},
-  { "Textured automap", S_NUM, m_conf, AU_X, dsda_config_map_textured_trans },
-  { "Textured automap in overlay mode", S_NUM, m_conf, AU_X, dsda_config_map_textured_overlay_trans },
-  { "Lines in overlay mode", S_NUM, m_conf, AU_X, dsda_config_map_lines_overlay_trans },
+  { "OpenGL", S_SKIP | S_TITLE, m_null, AU_X2},
+  { "Nice Thing Icons", S_YESNO, m_conf, AU_X2, dsda_config_map_things_nice },
+  { "textured display", S_YESNO, m_conf, AU_X2, dsda_config_map_textured },
   EMPTY_LINE,
-  { "Tools", S_SKIP | S_TITLE, m_null, AU_X},
-  { "Player Trail Mode", S_CHOICE, m_conf, AU_X, dsda_config_map_trail_mode, 0, map_trail_mode_list },
-  { "Player Trail Size", S_NUM, m_conf, AU_X, dsda_config_map_trail_size },
+  { "Translucency percentage", S_SKIP | S_TITLE, m_null, AU_X2},
+  { "Textured automap", S_NUM, m_conf, AU_X2, dsda_config_map_textured_trans },
+  { "Textured automap in overlay mode", S_NUM, m_conf, AU_X2, dsda_config_map_textured_overlay_trans },
+  { "Lines in overlay mode", S_NUM, m_conf, AU_X2, dsda_config_map_lines_overlay_trans },
+  EMPTY_LINE,
+  { "Tools", S_SKIP | S_TITLE, m_null, AU_X2},
+  { "Player Trail Mode", S_CHOICE, m_conf, AU_X2, dsda_config_map_trail_mode, 0, map_trail_mode_list },
+  { "Player Trail Size", S_NUM, m_conf, AU_X2, dsda_config_map_trail_size },
 
   PREV_PAGE(auto_settings1),
   NEXT_PAGE(auto_settings3),
@@ -2895,21 +2894,21 @@ setup_menu_t auto_settings2[] =  // 2st AutoMap Settings screen
 
 setup_menu_t auto_settings3[] =  // 3nd AutoMap Settings screen
 {
-  {"background", S_COLOR, m_conf, AU_X, dsda_config_mapcolor_back},
-  {"grid lines", S_COLOR, m_conf, AU_X, dsda_config_mapcolor_grid},
-  {"normal 1s wall", S_COLOR, m_conf,AU_X, dsda_config_mapcolor_wall},
-  {"line at floor height change", S_COLOR, m_conf, AU_X, dsda_config_mapcolor_fchg},
-  {"line at ceiling height change"      ,S_COLOR,m_conf,AU_X, dsda_config_mapcolor_cchg},
-  {"line at sector with floor = ceiling",S_COLOR,m_conf,AU_X, dsda_config_mapcolor_clsd},
-  {"red key"                            ,S_COLOR,m_conf,AU_X, dsda_config_mapcolor_rkey},
-  {"blue key"                           ,S_COLOR,m_conf,AU_X, dsda_config_mapcolor_bkey},
-  {"yellow key"                         ,S_COLOR,m_conf,AU_X, dsda_config_mapcolor_ykey},
-  {"red door"                           ,S_COLOR,m_conf,AU_X, dsda_config_mapcolor_rdor},
-  {"blue door"                          ,S_COLOR,m_conf,AU_X, dsda_config_mapcolor_bdor},
-  {"yellow door"                        ,S_COLOR,m_conf,AU_X, dsda_config_mapcolor_ydor},
+  {"background", S_COLOR, m_conf, AU_X2, dsda_config_mapcolor_back},
+  {"grid lines", S_COLOR, m_conf, AU_X2, dsda_config_mapcolor_grid},
+  {"normal 1s wall", S_COLOR, m_conf,AU_X2, dsda_config_mapcolor_wall},
+  {"line at floor height change", S_COLOR, m_conf, AU_X2, dsda_config_mapcolor_fchg},
+  {"line at ceiling height change"      ,S_COLOR,m_conf,AU_X2, dsda_config_mapcolor_cchg},
+  {"line at sector with floor = ceiling",S_COLOR,m_conf,AU_X2, dsda_config_mapcolor_clsd},
+  {"red key"                            ,S_COLOR,m_conf,AU_X2, dsda_config_mapcolor_rkey},
+  {"blue key"                           ,S_COLOR,m_conf,AU_X2, dsda_config_mapcolor_bkey},
+  {"yellow key"                         ,S_COLOR,m_conf,AU_X2, dsda_config_mapcolor_ykey},
+  {"red door"                           ,S_COLOR,m_conf,AU_X2, dsda_config_mapcolor_rdor},
+  {"blue door"                          ,S_COLOR,m_conf,AU_X2, dsda_config_mapcolor_bdor},
+  {"yellow door"                        ,S_COLOR,m_conf,AU_X2, dsda_config_mapcolor_ydor},
   EMPTY_LINE,
-  {"player trail 1"     ,S_COLOR ,m_conf,AU_X, dsda_config_mapcolor_trail_1},
-  {"player trail 2"     ,S_COLOR ,m_conf,AU_X, dsda_config_mapcolor_trail_2},
+  {"player trail 1"     ,S_COLOR ,m_conf,AU_X2, dsda_config_mapcolor_trail_1},
+  {"player trail 2"     ,S_COLOR ,m_conf,AU_X2, dsda_config_mapcolor_trail_2},
 
   PREV_PAGE(auto_settings2),
   NEXT_PAGE(auto_settings4),
@@ -2918,21 +2917,21 @@ setup_menu_t auto_settings3[] =  // 3nd AutoMap Settings screen
 
 setup_menu_t auto_settings4[] =  // 3nd AutoMap Settings screen
 {
-  {"teleporter line"                ,S_COLOR ,m_conf,AU_X, dsda_config_mapcolor_tele},
-  {"secret sector boundary"         ,S_COLOR ,m_conf,AU_X, dsda_config_mapcolor_secr},
-  {"revealed secret sector boundary",S_COLOR ,m_conf,AU_X, dsda_config_mapcolor_revsecr},
+  {"teleporter line"                ,S_COLOR ,m_conf,AU_X2, dsda_config_mapcolor_tele},
+  {"secret sector boundary"         ,S_COLOR ,m_conf,AU_X2, dsda_config_mapcolor_secr},
+  {"revealed secret sector boundary",S_COLOR ,m_conf,AU_X2, dsda_config_mapcolor_revsecr},
   //jff 4/23/98 add exit line to automap
-  {"exit line"                      ,S_COLOR ,m_conf,AU_X, dsda_config_mapcolor_exit},
-  {"computer map unseen line"       ,S_COLOR ,m_conf,AU_X, dsda_config_mapcolor_unsn},
-  {"line w/no floor/ceiling changes",S_COLOR ,m_conf,AU_X, dsda_config_mapcolor_flat},
-  {"general sprite"                 ,S_COLOR ,m_conf,AU_X, dsda_config_mapcolor_sprt},
-  {"countable enemy sprite"         ,S_COLOR ,m_conf,AU_X, dsda_config_mapcolor_enemy},      // cph 2006/06/30
-  {"countable item sprite"          ,S_COLOR ,m_conf,AU_X, dsda_config_mapcolor_item},       // mead 3/4/2003
-  {"crosshair"                      ,S_COLOR ,m_conf,AU_X, dsda_config_mapcolor_hair},
-  {"single player arrow"            ,S_COLOR ,m_conf,AU_X, dsda_config_mapcolor_sngl},
-  {"your colour in multiplayer"     ,S_COLOR ,m_conf,AU_X, dsda_config_mapcolor_me},
+  {"exit line"                      ,S_COLOR ,m_conf,AU_X2, dsda_config_mapcolor_exit},
+  {"computer map unseen line"       ,S_COLOR ,m_conf,AU_X2, dsda_config_mapcolor_unsn},
+  {"line w/no floor/ceiling changes",S_COLOR ,m_conf,AU_X2, dsda_config_mapcolor_flat},
+  {"general sprite"                 ,S_COLOR ,m_conf,AU_X2, dsda_config_mapcolor_sprt},
+  {"countable enemy sprite"         ,S_COLOR ,m_conf,AU_X2, dsda_config_mapcolor_enemy},      // cph 2006/06/30
+  {"countable item sprite"          ,S_COLOR ,m_conf,AU_X2, dsda_config_mapcolor_item},       // mead 3/4/2003
+  {"crosshair"                      ,S_COLOR ,m_conf,AU_X2, dsda_config_mapcolor_hair},
+  {"single player arrow"            ,S_COLOR ,m_conf,AU_X2, dsda_config_mapcolor_sngl},
+  {"your colour in multiplayer"     ,S_COLOR ,m_conf,AU_X2, dsda_config_mapcolor_me},
   EMPTY_LINE,
-  {"friends"                        ,S_COLOR ,m_conf,AU_X, dsda_config_mapcolor_frnd},        // killough 8/8/98
+  {"friends"                        ,S_COLOR ,m_conf,AU_X2, dsda_config_mapcolor_frnd},        // killough 8/8/98
 
   PREV_PAGE(auto_settings3),
   FINAL_ENTRY
@@ -3005,12 +3004,13 @@ void M_DrawAutoMap(void)
 // The General table.
 // killough 10/10/98
 
-setup_menu_t audiovideo_settings[], mouse_settings[], controller_settings[], misc_settings[];
+setup_menu_t video_settings[], audio_settings[], mouse_settings[], controller_settings[], misc_settings[];
 setup_menu_t misc2_settings[], display_settings[];
 
 setup_menu_t* gen_settings[] =
 {
-  audiovideo_settings,
+  video_settings,
+  audio_settings,
   mouse_settings,
   controller_settings,
   misc_settings,
@@ -3089,7 +3089,7 @@ static const char* fake_contrast_list[] =
 
 static const char *gl_fade_mode_list[] = { "Normal", "Smooth", NULL };
 
-setup_menu_t audiovideo_settings[] = {
+setup_menu_t video_settings[] = {
   { "Video", S_SKIP | S_TITLE, m_null, G_X},
   { "Video mode", S_CHOICE | S_STR, m_conf, G_X, dsda_config_videomode, 0, videomodes },
   { "Screen Resolution", S_CHOICE | S_STR, m_conf, G_X, dsda_config_screen_resolution, 0, screen_resolutions_list },
@@ -3101,15 +3101,30 @@ setup_menu_t audiovideo_settings[] = {
   { "FPS Limit", S_NUM, m_conf, G_X, dsda_config_fps_limit },
   { "Background FPS Limit", S_NUM, m_conf, G_X, dsda_config_background_fps_limit },
   { "Fake Contrast", S_CHOICE, m_conf, G_X, dsda_config_fake_contrast_mode, 0, fake_contrast_list },
-  { "GL Light Fade", S_CHOICE, m_conf, G_X, dsda_config_gl_fade_mode, 0, gl_fade_mode_list },
   EMPTY_LINE,
+  { "OpenGL", S_SKIP | S_TITLE, m_null, G_X},
+  { "GL Light Fade", S_CHOICE, m_conf, G_X, dsda_config_gl_fade_mode, 0, gl_fade_mode_list },
+  { "Show Health Bars", S_YESNO, m_conf, G_X, dsda_config_gl_health_bar },
+  { "Blend Animations", S_YESNO, m_conf, G_X, dsda_config_gl_blend_animations },
+
+  NEXT_PAGE(audio_settings),
+  FINAL_ENTRY
+};
+setup_menu_t audio_settings[] = {
   { "Sound & Music", S_SKIP | S_TITLE, m_null, G_X},
   { "Number of Sound Channels", S_NUM, m_conf, G_X, dsda_config_snd_channels },
   { "Enable v1.1 Pitch Effects", S_YESNO, m_conf, G_X, dsda_config_pitched_sounds },
   { "Disable Sound Cutoffs", S_YESNO, m_conf, G_X, dsda_config_full_sounds },
   { "Preferred MIDI player", S_CHOICE | S_STR, m_conf, G_X, dsda_config_snd_midiplayer, 0, midiplayers },
   { "Mute Audio When Out of Focus", S_YESNO, m_conf, G_X, dsda_config_mute_unfocused_window },
+  EMPTY_LINE,
+  { "Parallel Same-Sound Limit", S_NUM, m_conf, G_X, dsda_config_parallel_sfx_limit },
+  { "Parallel Same-Sound Window", S_NUM, m_conf, G_X, dsda_config_parallel_sfx_window },
+  { "Play SFX For Movement Toggles", S_YESNO, m_conf, G_X, dsda_config_movement_toggle_sfx },
+  { "Play SFX For Quicksave", S_YESNO, m_conf, G_X, dsda_config_quicksave_sfx },
+  { "Play Quit SFX (Slower Quit)", S_YESNO, m_conf, G_X, dsda_config_quit_sounds },
 
+  PREV_PAGE(video_settings),
   NEXT_PAGE(mouse_settings),
   FINAL_ENTRY
 };
@@ -3132,7 +3147,7 @@ setup_menu_t mouse_settings[] = {
   { "Carry Fractional Tics", S_YESNO, m_conf, G_X, dsda_config_mouse_carrytics },
   { "Mouse Stutter Correction", S_YESNO, m_conf, G_X, dsda_config_mouse_stutter_correction },
 
-  PREV_PAGE(audiovideo_settings),
+  PREV_PAGE(audio_settings),
   NEXT_PAGE(controller_settings),
   FINAL_ENTRY
 };
@@ -3161,6 +3176,9 @@ setup_menu_t controller_settings[] = {
   FINAL_ENTRY
 };
 
+static const char* endoom_list[] = { "Off", "On", "PWAD only", NULL };
+static const char* endoom_type_list[] = { "Terminal", "Window", NULL };
+
 setup_menu_t misc_settings[] = {
   { "Miscellaneous", S_SKIP | S_TITLE, m_null, G_X},
   { "Default skill level", S_CHOICE, m_conf, G_X, dsda_config_default_skill, 0, gen_skillstrings },
@@ -3169,26 +3187,21 @@ setup_menu_t misc_settings[] = {
   { "Use Dehacked Cheats", S_YESNO, m_conf, G_X, dsda_config_deh_change_cheats },
   { "Announce Map On Entry", S_YESNO, m_conf, G_X, dsda_config_announce_map },
   EMPTY_LINE,
+  { "Endoom Screen", S_CHOICE, m_conf, G_X, nyan_config_show_endoom, 0, endoom_list },
+  { "Endoom Type", S_CHOICE, m_conf, G_X, nyan_config_type_endoom, 0, endoom_type_list },
+  EMPTY_LINE,
   { "Quality Of Life", S_SKIP | S_TITLE, m_null, G_X},
   { "Autosave On Level Start", S_YESNO, m_conf, G_X, dsda_config_auto_save },
   { "Organize My Save Files", S_YESNO, m_conf, G_X, dsda_config_organized_saves },
   { "Skip Quit Prompt", S_YESNO, m_conf, G_X, dsda_config_skip_quit_prompt },
   { "Death Use Action", S_CHOICE, m_conf, G_X, dsda_config_death_use_action, 0, death_use_strings },
+  { "Boom Translucent Sprites", S_YESNO, m_conf, G_X, dsda_config_boom_translucent_sprites },
   { "Boom Weapon Auto Switch", S_YESNO, m_conf, G_X, dsda_config_switch_when_ammo_runs_out },
-  EMPTY_LINE,
-  { "Parallel Same-Sound Limit", S_NUM, m_conf, G_X, dsda_config_parallel_sfx_limit },
-  { "Parallel Same-Sound Window", S_NUM, m_conf, G_X, dsda_config_parallel_sfx_window },
-  { "Play SFX For Movement Toggles", S_YESNO, m_conf, G_X, dsda_config_movement_toggle_sfx },
-  { "Play SFX For Quicksave", S_YESNO, m_conf, G_X, dsda_config_quicksave_sfx },
-  { "Play Quit SFX (Slower Quit)", S_YESNO, m_conf, G_X, dsda_config_quit_sounds },
 
   PREV_PAGE(controller_settings),
   NEXT_PAGE(display_settings),
   FINAL_ENTRY
 };
-
-static const char* endoom_list[] = { "Off", "On", "PWAD only", NULL };
-static const char* endoom_type_list[] = { "Terminal", "Window", NULL };
 
 setup_menu_t display_settings[] = {
   { "Display Options", S_SKIP | S_TITLE, m_null, G_X},
@@ -3198,7 +3211,6 @@ setup_menu_t display_settings[] = {
   { "Weapon Bobbing", S_YESNO, m_conf, G_X, dsda_config_weaponbob },
   { "Quake Intensity", S_NUM, m_conf, G_X, dsda_config_quake_intensity },
   { "Weapon Attack Alignment", S_CHOICE, m_conf, G_X, dsda_config_weapon_attack_alignment, 0, weapon_attack_alignment_strings },
-  { "Boom Translucent Sprites", S_YESNO, m_conf, G_X, dsda_config_boom_translucent_sprites },
   EMPTY_LINE,
   { "Hide Weapon", S_YESNO, m_conf, G_X, dsda_config_hide_weapon },
   { "Hide Status Bar Horns", S_YESNO, m_conf, G_X, dsda_config_hide_horns },
@@ -3221,22 +3233,16 @@ setup_menu_t misc2_settings[] = {
   { "DSDA-Doom Options Order", S_YESNO, m_conf, G_X, nyan_config_dsda_menu_format },
   { "Play Demos While In Menus", S_YESNO, m_conf, G_X, nyan_config_menu_play_demo },
   { "Skip IWAD Demos For PWADs", S_YESNO, m_conf, G_X, nyan_config_skip_default_demos },
-  { "Skip IWAD Story Text For PWADs", S_YESNO, m_conf, G_X, nyan_config_skip_default_text },
+  { "Skip IWAD Story For PWADs", S_YESNO, m_conf, G_X, nyan_config_skip_default_text },
   { "Pause After Intermission", S_YESNO, m_conf, G_X, nyan_config_intermission_pause },
+  EMPTY_LINE,
   { "Area Map Allows Tag Highlight", S_YESNO, m_conf, G_X, nyan_config_area_map_tagfinder },
   { "Flashing Item Bonuses", S_YESNO, m_conf, G_X, nyan_config_item_bonus_flash },
-  EMPTY_LINE,
-  { "Endoom Screen", S_CHOICE, m_conf, G_X, nyan_config_show_endoom, 0, endoom_list },
-  { "Endoom Type", S_CHOICE, m_conf, G_X, nyan_config_type_endoom, 0, endoom_type_list },
   EMPTY_LINE,
   { "Nyan Lumps", S_SKIP | S_TITLE, m_null, G_X},
   { "Animate Lumps", S_YESNO, m_conf, G_X, nyan_config_enable_animate_lumps },
   { "Widescreen Lumps", S_YESNO, m_conf, G_X, nyan_config_enable_widescreen_lumps },
   { "Boom Credit/Help Screens", S_YESNO, m_conf, G_X, nyan_config_boom_credit_help },
-  EMPTY_LINE,
-  { "OpenGL Options", S_SKIP | S_TITLE, m_null, G_X},
-  { "Show Health Bars", S_YESNO, m_conf, G_X, dsda_config_gl_health_bar },
-  { "Blend Animations", S_YESNO, m_conf, G_X, dsda_config_gl_blend_animations },
 
   PREV_PAGE(display_settings),
   FINAL_ENTRY
