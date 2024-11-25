@@ -54,12 +54,11 @@ void dsda_ReloadNyanLumps(void)
 
 const int D_CheckAnimate(const char* lump)
 {
-    static int SCheck;
-    static int ECheck;
-    static int Animate;
+    int Animate = 0;
     const char* lump_s;
     const char* lump_e;
-    Animate = 0;
+    int SCheck;
+    int ECheck;
 
     if (!strcmp(lump, mskull1))
         lump = "SKULL";
@@ -79,34 +78,29 @@ const int D_CheckAnimate(const char* lump)
 }
 
 const int D_CheckWide(const char* lump, const char *suffix) {
-    static int widecheck;
-    static int widescreen;
+    int widescreen = 0;
     const char* lump_w;
-    widescreen = 0;
 
     if (!strcmp(lump, e3bunny1) || !strcmp(lump, e3bunny2))
         suffix = "_WS";
 
     lump_w = WideCombine(lump, suffix);
-    widecheck = W_CheckNumForName(lump_w);
 
-    if (widecheck != LUMP_NOT_FOUND)
+    if (W_CheckNumForName(lump_w) != LUMP_NOT_FOUND)
         widescreen = 1;
     return widescreen;
 }
 
 const char* D_ApplyWide(const char* lump, const char* suffix)
 {
-    static int widecheck;
     const char* lump_w;
 
     if (!widescreenLumps)
         return lump;
 
     lump_w = WideCombine(lump, suffix);
-    widecheck = W_CheckNumForName(lump_w);
 
-    if (widecheck != LUMP_NOT_FOUND)
+    if (W_CheckNumForName(lump_w) != LUMP_NOT_FOUND)
         return lump_w;
     else
         return lump;
@@ -114,15 +108,10 @@ const char* D_ApplyWide(const char* lump, const char* suffix)
 
 void V_DrawNameNyanPatch(const int x, const int y, const int scrn, const char* lump, const int color, const int flags)
 {
-    int lumpNum;
-    static int AniCheck;
-    static int WideCheck;
-    static int SkipWide;
-    WideCheck = 0;
-    AniCheck = 0;
-    SkipWide = 0;
-
-    lumpNum = W_GetNumForName(lump);
+    int lumpNum = W_GetNumForName(lump);
+    int AniCheck = 0;
+    int WideCheck = 0;
+    int SkipWide = 0;
 
     if (animateLumps)
     {
@@ -148,33 +137,22 @@ void V_DrawNameNyanPatch(const int x, const int y, const int scrn, const char* l
 
 void V_DrawNyanBackground(const char* lump_s, const char* lump_e, const int scrn)
 {
-    int lumpNum;
-    static int SCheck;
-    static int ECheck;
-
-    SCheck = W_CheckNumForName2(lump_s, ns_flats);
-    ECheck = W_CheckNumForName2(lump_e, ns_flats);
+    int lumpNum = R_FlatNumForName("FLOOR16");
+    int SCheck = W_CheckNumForName2(lump_s, ns_flats);
+    int ECheck = W_CheckNumForName2(lump_e, ns_flats);
 
     if (SCheck)
         lumpNum = R_FlatNumForName(lump_s);
-    else
-        lumpNum = R_FlatNumForName("FLOOR16");
 
     if ((SCheck != LUMP_NOT_FOUND) && (ECheck != LUMP_NOT_FOUND))
     {
-        static int SLump;
-        static int ELump;
-
-        SLump = R_FlatNumForName(lump_s);
-        ELump = R_FlatNumForName(lump_e);
+        int SLump = R_FlatNumForName(lump_s);
+        int ELump = R_FlatNumForName(lump_e);
 
         if(SLump <= ELump)
         {
-            int frame;
-            int speed;
-
-            speed = 8;
-            frame = (AnimateTime / speed) % (ELump - SLump + 1);
+            int speed = 8;
+            int frame = (AnimateTime / speed) % (ELump - SLump + 1);;
             lumpNum = SLump + frame;
         }
     }
@@ -184,30 +162,20 @@ void V_DrawNyanBackground(const char* lump_s, const char* lump_e, const int scrn
 
 int D_SetupAnimatePatch(const char* lump)
 {
-    const char* lump_s;
-    const char* lump_e;
-    static int SCheck;
-    static int ECheck;
-
-    lump_s = AnimateCombine("S_", lump);
-    lump_e = AnimateCombine("E_", lump);
-    SCheck = W_CheckNumForName(lump_s);
-    ECheck = W_CheckNumForName(lump_e);
+    const char* lump_s = AnimateCombine("S_", lump);
+    const char* lump_e = AnimateCombine("E_", lump);
+    int SCheck = W_CheckNumForName(lump_s);
+    int ECheck = W_CheckNumForName(lump_e);
 
     if ((SCheck != LUMP_NOT_FOUND) && (ECheck != LUMP_NOT_FOUND))
     {
-        static int SLump;
-        static int ELump;
-        int frame;
-        int speed;
-
-        SLump = W_GetNumForName(lump_s);
-        ELump = W_GetNumForName(lump_e);
+        int SLump = W_GetNumForName(lump_s);
+        int ELump = W_GetNumForName(lump_e);
 
         if (SLump <= ELump)
         {
-            speed = 8;
-            frame = (AnimateTime / speed) % (ELump - SLump + 1);
+            int speed = 8;
+            int frame = (AnimateTime / speed) % (ELump - SLump + 1);
             return SLump + frame;
         }
         else
@@ -219,20 +187,15 @@ int D_SetupAnimatePatch(const char* lump)
 
 int D_SetupWidePatch(const char* lump)
 {
-    const char* lump_w;
-    static int WCheck;
+    const char* lump_w = D_ApplyWide(lump, "WS");
 
     if (!strcmp(lump, stbar) || !strcmp(lump, titlepic) || !strcmp(lump, interpic) ||
         !strcmp(lump, credit) || !strcmp(lump, help0) || !strcmp(lump, help1) ||
         !strcmp(lump, help2) || !strcmp(lump, e2victory) || !strcmp(lump, e4endpic) ||
         !strcmp(lump, e3bunny1) || !strcmp(lump, e3bunny2))
         lump_w = D_ApplyWide(lump, "_WS");
-    else
-        lump_w = D_ApplyWide(lump, "WS");
 
-    WCheck = W_CheckNumForName(lump_w);
-
-    if (WCheck)
+    if (W_CheckNumForName(lump_w))
         return W_GetNumForName(lump_w);
     else
         return 0;
