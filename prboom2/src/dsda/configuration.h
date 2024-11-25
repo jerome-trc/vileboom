@@ -85,6 +85,7 @@ typedef enum {
   nyan_config_enable_animate_lumps,
   nyan_config_boom_credit_help,
   nyan_config_item_bonus_flash,
+  nyan_config_area_map_tagfinder,
   dsda_config_script_0,
   dsda_config_script_1,
   dsda_config_script_2,

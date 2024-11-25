@@ -1180,7 +1180,9 @@ dboolean AM_Responder
   }
   else if (dsda_InputActivated(dsda_input_map_highlight_by_tag))
   {
-    if (!dsda_RevealAutomap())
+    if (dsda_AreamapTagfinder() && !plr->powers[pw_allmap] && !dsda_RevealAutomap())
+        doom_printf("Highlight requires computer area map");
+    else if (!dsda_RevealAutomap() && !dsda_AreamapTagfinder())
       doom_printf("Highlight requires iddt");
     else
       AM_HighlightByTag();
@@ -1853,7 +1855,8 @@ static void AM_DrawConnections(void)
   int i;
   mline_t l;
 
-  if (!dsda_RevealAutomap())
+  if ((!dsda_RevealAutomap() && !dsda_AreamapTagfinder()) ||
+      (!dsda_RevealAutomap() && dsda_AreamapTagfinder() && !plr->powers[pw_allmap]))
     return;
 
   for (i = 0; i < highlight.connection_count; ++i)
