@@ -3178,6 +3178,7 @@ setup_menu_t controller_settings[] = {
 
 static const char* endoom_list[] = { "Off", "On", "PWAD only", NULL };
 static const char* endoom_type_list[] = { "Terminal", "Window", NULL };
+static const char* boom_translucent_list[] = { "NO", "YES", "LITE", NULL };
 
 setup_menu_t misc_settings[] = {
   { "Miscellaneous", S_SKIP | S_TITLE, m_null, G_X},
@@ -3195,7 +3196,7 @@ setup_menu_t misc_settings[] = {
   { "Organize My Save Files", S_YESNO, m_conf, G_X, dsda_config_organized_saves },
   { "Skip Quit Prompt", S_YESNO, m_conf, G_X, dsda_config_skip_quit_prompt },
   { "Death Use Action", S_CHOICE, m_conf, G_X, dsda_config_death_use_action, 0, death_use_strings },
-  { "Boom Translucent Sprites", S_YESNO, m_conf, G_X, dsda_config_boom_translucent_sprites },
+  { "Boom Translucent Sprites", S_CHOICE, m_conf, G_X, dsda_config_boom_translucent_sprites, 0, boom_translucent_list },
   { "Boom Weapon Auto Switch", S_YESNO, m_conf, G_X, dsda_config_switch_when_ammo_runs_out },
 
   PREV_PAGE(controller_settings),

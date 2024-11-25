@@ -1589,6 +1589,9 @@ void deh_changeCompTranslucency(void)
     MT_TROOPSHOT, MT_HEADSHOT, MT_PLASMA, MT_BFG, MT_ARACHPLAZ, MT_PUFF,
     MT_TFOG, MT_IFOG, MT_MISC12, MT_INV, MT_INS, MT_MEGA
   };
+  int lite_translucency[] = {
+    MT_FIRE, MT_SMOKE, MT_SPAWNFIRE, MT_TFOG, MT_IFOG
+  };
 
   if (raven) return;
 
@@ -1598,12 +1601,19 @@ void deh_changeCompTranslucency(void)
   {
     if (!edited_mobjinfo_bits[predefined_translucency[i]])
     {
-      if (comp[comp_translucency] || !boom_translucent_sprites)
+      if (comp[comp_translucency] || !boom_translucent_sprites || boom_translucent_sprites==2)
         mobjinfo[predefined_translucency[i]].flags &= ~MF_TRANSLUCENT;
       else
         mobjinfo[predefined_translucency[i]].flags |= MF_TRANSLUCENT;
     }
   }
+
+  for (i = 0; (size_t)i < sizeof(lite_translucency) / sizeof(lite_translucency[0]); i++)
+  {
+      if (boom_translucent_sprites==2)
+        mobjinfo[predefined_translucency[i]].flags |= MF_TRANSLUCENT;
+  }
+
 }
 
 int vanilla_health_bonus = -1;
