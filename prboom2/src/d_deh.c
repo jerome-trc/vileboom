@@ -1609,13 +1609,17 @@ void deh_changeCompTranslucency(void)
   if (translucency_active)
   {
     if (boom_translucent_sprites == 2)
+    {
       for (i = 0; (size_t)i < sizeof(lite_translucency) / sizeof(lite_translucency[0]); i++)
         if (!edited_mobjinfo_bits[lite_translucency[i]])
             mobjinfo[lite_translucency[i]].flags |= MF_TRANSLUCENT;
+    }
     else
+    {
       for (i = 0; (size_t)i < sizeof(predefined_translucency) / sizeof(predefined_translucency[0]); i++)
         if (!edited_mobjinfo_bits[predefined_translucency[i]])
             mobjinfo[predefined_translucency[i]].flags |= MF_TRANSLUCENT;
+    }
   }
 }
 
@@ -1684,22 +1688,28 @@ void deh_changeColoredBlood(void)
     deh_InitColoredBlood();
 
   if (do_baron_blood > 0)
+  {
     if ((nyan_blood_color==1 && do_baron_blood==1) || nyan_blood_color==2)
       mobjinfo[MT_BRUISER].bloodcolor = nyan_blood_color ? V_BloodColor(2) : 0;
     else
       mobjinfo[MT_BRUISER].bloodcolor = 0;
+  }
 
   if (do_knight_blood > 0)
+  {
     if ((nyan_blood_color==1 && do_knight_blood==1) || nyan_blood_color==2)
       mobjinfo[MT_KNIGHT].bloodcolor = (nyan_blood_color > 0) ? V_BloodColor(2) : 0;
     else
       mobjinfo[MT_KNIGHT].bloodcolor = 0;
+  }
 
   if (do_caco_blood > 0)
+  {
     if ((nyan_blood_color==1 && do_caco_blood==1) || nyan_blood_color==2)
       mobjinfo[MT_HEAD].bloodcolor = (nyan_blood_color >= 0) ? V_BloodColor(3) : 0;
     else
       mobjinfo[MT_HEAD].bloodcolor = 0;
+  }
 }
 
 int vanilla_health_bonus = -1;
