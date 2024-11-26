@@ -1583,6 +1583,7 @@ void deh_changeCompTranslucency(void)
 {
   extern byte* edited_mobjinfo_bits;
   int i;
+  int translucency_active;
   int boom_translucent_sprites;
   int predefined_translucency[] = {
     MT_FIRE, MT_SMOKE, MT_FATSHOT, MT_BRUISERSHOT, MT_SPAWNFIRE,
@@ -1590,30 +1591,30 @@ void deh_changeCompTranslucency(void)
     MT_TFOG, MT_IFOG, MT_MISC12, MT_INV, MT_INS, MT_MEGA
   };
   int lite_translucency[] = {
-    MT_FIRE, MT_SMOKE, MT_PUFF, MT_TFOG, MT_IFOG
+    MT_FIRE, MT_SMOKE, MT_SPAWNFIRE, MT_PUFF, MT_TFOG, MT_IFOG
   };
 
   if (raven) return;
 
   boom_translucent_sprites = dsda_IntConfig(dsda_config_boom_translucent_sprites);
+  translucency_active = !comp[comp_translucency];
 
+  // Reset translucency
   for (i = 0; (size_t)i < sizeof(predefined_translucency) / sizeof(predefined_translucency[0]); i++)
-  {
-    if (!edited_mobjinfo_bits[predefined_translucency[i]])
-    {
-      if (comp[comp_translucency] || !boom_translucent_sprites || boom_translucent_sprites==2)
-        mobjinfo[predefined_translucency[i]].flags &= ~MF_TRANSLUCENT;
-      else
-        mobjinfo[predefined_translucency[i]].flags |= MF_TRANSLUCENT;
-    }
-  }
+    mobjinfo[predefined_translucency[i]].flags &= ~MF_TRANSLUCENT;
 
-  for (i = 0; (size_t)i < sizeof(lite_translucency) / sizeof(lite_translucency[0]); i++)
+  // Set translucency
+  if (translucency_active)
   {
-      if (boom_translucent_sprites==2)
-        mobjinfo[predefined_translucency[i]].flags |= MF_TRANSLUCENT;
+    if (boom_translucent_sprites == 2)
+      for (i = 0; (size_t)i < sizeof(lite_translucency) / sizeof(lite_translucency[0]); i++)
+        if (!edited_mobjinfo_bits[lite_translucency[i]])
+            mobjinfo[lite_translucency[i]].flags |= MF_TRANSLUCENT;
+    else
+      for (i = 0; (size_t)i < sizeof(predefined_translucency) / sizeof(predefined_translucency[0]); i++)
+        if (!edited_mobjinfo_bits[predefined_translucency[i]])
+            mobjinfo[predefined_translucency[i]].flags |= MF_TRANSLUCENT;
   }
-
 }
 
 int vanilla_health_bonus = -1;

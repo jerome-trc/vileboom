@@ -3178,7 +3178,7 @@ setup_menu_t controller_settings[] = {
 
 static const char* endoom_list[] = { "Off", "On", "PWAD only", NULL };
 static const char* endoom_type_list[] = { "Terminal", "Window", NULL };
-static const char* boom_translucent_list[] = { "NO", "YES", "LITE", NULL };
+static const char* boom_translucent_list[] = { "OFF", "ON", "LITE", NULL };
 
 setup_menu_t misc_settings[] = {
   { "Miscellaneous", S_SKIP | S_TITLE, m_null, G_X},
