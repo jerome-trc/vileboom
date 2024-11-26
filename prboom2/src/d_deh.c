@@ -1584,6 +1584,7 @@ void deh_changeCompTranslucency(void)
   extern byte* edited_mobjinfo_bits;
   int i;
   int translucency_active;
+  int vanilla_translucency;
   int boom_translucent_sprites;
   int predefined_translucency[] = {
     MT_FIRE, MT_SMOKE, MT_FATSHOT, MT_BRUISERSHOT, MT_SPAWNFIRE,
@@ -1597,7 +1598,8 @@ void deh_changeCompTranslucency(void)
   if (raven) return;
 
   boom_translucent_sprites = dsda_IntConfig(dsda_config_boom_translucent_sprites);
-  translucency_active = !comp[comp_translucency];
+  vanilla_translucency = dsda_IntConfig(dsda_config_vanilla_translucent_sprites);
+  translucency_active = (compatibility_level >= boom_compatibility_compatibility) ? !comp[comp_translucency] : vanilla_translucency;
 
   // Reset translucency
   for (i = 0; (size_t)i < sizeof(predefined_translucency) / sizeof(predefined_translucency[0]); i++)

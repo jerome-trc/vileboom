@@ -3240,6 +3240,7 @@ setup_menu_t misc2_settings[] = {
   { "Pause After Intermission", S_YESNO, m_conf, G_X, nyan_config_intermission_pause },
   EMPTY_LINE,
   { "Boom Translucent Sprites", S_CHOICE, m_conf, G_X, dsda_config_boom_translucent_sprites, 0, boom_translucent_list },
+  { "Translucent Sprites for Vanilla", S_YESNO, m_conf, G_X, dsda_config_vanilla_translucent_sprites },
   { "Flashing Item Bonuses", S_YESNO, m_conf, G_X, nyan_config_item_bonus_flash },
   { "Colored Blood", S_CHOICE, m_conf, G_X, nyan_config_colored_blood, 0, colored_blood_list },
   EMPTY_LINE,
