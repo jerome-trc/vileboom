@@ -2032,7 +2032,7 @@ static void D_DoomMainSetup(void)
   dsda_AppendZDoomMobjInfo();
   dsda_ApplyDefaultMapFormat();
 
-  deh_NyanBonusFlash();
+  deh_InitNyanTweaks();
 
   lprintf(LO_DEBUG, "dsda_InitWadStats: Setting up wad stats.\n");
   dsda_InitWadStats();

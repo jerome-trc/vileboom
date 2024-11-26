@@ -1617,6 +1617,89 @@ void deh_changeCompTranslucency(void)
   }
 }
 
+void deh_InitNyanTweaks(void)
+{
+  deh_changeColoredBlood();
+  deh_NyanBonusFlash();
+}
+
+int init_blood_check;
+int do_baron_blood;
+int do_knight_blood;
+int do_caco_blood;
+
+void deh_InitColoredBlood(void)
+{
+  extern byte* edited_mobjinfo_bits;
+  #define baron mobjinfo[MT_BRUISER]
+  #define knight mobjinfo[MT_KNIGHT]
+  #define caco mobjinfo[MT_HEAD]
+
+  int edited_baron = !(
+      (baron.doomednum == 3003) &&
+      (baron.spawnhealth == 1000) &&
+      (baron.radius == 24*FRACUNIT) &&
+      (baron.height == 64*FRACUNIT) &&
+      //(baron.missilestate == S_BOSS_ATK1) &&
+      (!edited_mobjinfo_bits[MT_BRUISER])
+      );
+
+  int edited_knight = !(
+      (knight.doomednum == 69) &&
+      (knight.spawnhealth == 500) &&
+      (knight.radius == 24*FRACUNIT) &&
+      (knight.height == 64*FRACUNIT) &&
+      //(knight.missilestate == S_BOS2_ATK1) &&
+      (!edited_mobjinfo_bits[MT_KNIGHT])
+      );
+
+  int edited_caco = !(
+      (caco.doomednum == 3005) &&
+      (caco.spawnhealth == 400) &&
+      (caco.radius == 31*FRACUNIT) &&
+      (caco.height == 56*FRACUNIT) &&
+      //(caco.missilestate == S_HEAD_ATK1) &&
+      (!edited_mobjinfo_bits[MT_HEAD])
+      );
+
+  do_baron_blood = (baron.bloodcolor == V_BloodColor(0)) ? (edited_baron ? 2 : 1) : 0;
+  do_knight_blood = (knight.bloodcolor == V_BloodColor(0)) ? (edited_knight ? 2 : 1) : 0;
+  do_caco_blood = (caco.bloodcolor == V_BloodColor(0)) ? (edited_caco ? 2 : 1) : 0;
+
+  init_blood_check = true;
+}
+
+void deh_changeColoredBlood(void)
+{
+  extern byte* edited_mobjinfo_bits;
+  int nyan_blood_color;
+
+  if (raven) return;
+
+  nyan_blood_color = dsda_IntConfig(nyan_config_colored_blood);
+
+  if (!init_blood_check)
+    deh_InitColoredBlood();
+
+  if (do_baron_blood > 0)
+    if ((nyan_blood_color==1 && do_baron_blood==1) || nyan_blood_color==2)
+      mobjinfo[MT_BRUISER].bloodcolor = nyan_blood_color ? V_BloodColor(2) : 0;
+    else
+      mobjinfo[MT_BRUISER].bloodcolor = 0;
+
+  if (do_knight_blood > 0)
+    if ((nyan_blood_color==1 && do_knight_blood==1) || nyan_blood_color==2)
+      mobjinfo[MT_KNIGHT].bloodcolor = (nyan_blood_color > 0) ? V_BloodColor(2) : 0;
+    else
+      mobjinfo[MT_KNIGHT].bloodcolor = 0;
+
+  if (do_caco_blood > 0)
+    if ((nyan_blood_color==1 && do_caco_blood==1) || nyan_blood_color==2)
+      mobjinfo[MT_HEAD].bloodcolor = (nyan_blood_color >= 0) ? V_BloodColor(3) : 0;
+    else
+      mobjinfo[MT_HEAD].bloodcolor = 0;
+}
+
 int vanilla_health_bonus = -1;
 int vanilla_armor_bonus = -1;
 #define health_flash doom_states[819]

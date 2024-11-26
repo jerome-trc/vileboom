@@ -132,6 +132,7 @@ void M_ChangeStretch(void);
 void M_ChangeAspectRatio(void);
 void deh_changeCompTranslucency(void);
 void deh_NyanBonusFlash(void);
+void deh_changeColoredBlood(void);
 void dsda_InitGameControllerParameters(void);
 void dsda_InitExHud(void);
 void dsda_UpdateFreeText(void);
@@ -1330,6 +1331,10 @@ dsda_config_t dsda_config[dsda_config_count] = {
   [nyan_config_area_map_tagfinder] = {
     "nyan_area_map_tagfinder", nyan_config_area_map_tagfinder,
     CONF_BOOL(0), NULL, NOT_STRICT
+  },
+  [nyan_config_colored_blood] = {
+    "nyan_colored_blood", nyan_config_colored_blood,
+    dsda_config_int, 0, 2, { 0 }, NULL, NOT_STRICT, deh_changeColoredBlood
   },
   [dsda_config_show_alive_monsters] = { // never persisted
     "show_alive_monsters", dsda_config_show_alive_monsters,

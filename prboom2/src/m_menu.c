@@ -3229,6 +3229,8 @@ setup_menu_t display_settings[] = {
   FINAL_ENTRY
 };
 
+static const char* colored_blood_list[] = { "OFF", "ON", "FORCED", NULL };
+
 setup_menu_t misc2_settings[] = {
   { "Nyan Options", S_SKIP | S_TITLE, m_null, G_X},
   { "DSDA-Doom Options Order", S_YESNO, m_conf, G_X, nyan_config_dsda_menu_format },
@@ -3239,6 +3241,7 @@ setup_menu_t misc2_settings[] = {
   EMPTY_LINE,
   { "Area Map Allows Tag Highlight", S_YESNO, m_conf, G_X, nyan_config_area_map_tagfinder },
   { "Flashing Item Bonuses", S_YESNO, m_conf, G_X, nyan_config_item_bonus_flash },
+  { "Colored Blood", S_CHOICE, m_conf, G_X, nyan_config_colored_blood, 0, colored_blood_list },
   EMPTY_LINE,
   { "Nyan Lumps", S_SKIP | S_TITLE, m_null, G_X},
   { "Animate Lumps", S_YESNO, m_conf, G_X, nyan_config_enable_animate_lumps },

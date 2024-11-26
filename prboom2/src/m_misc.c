@@ -334,6 +334,7 @@ cfg_def_t cfg_defs[] =
   MIGRATED_SETTING(nyan_config_hud_armoricon),
   MIGRATED_SETTING(nyan_config_area_map_tagfinder),
   MIGRATED_SETTING(nyan_config_item_bonus_flash),
+  MIGRATED_SETTING(nyan_config_colored_blood),
 
   SETTING_HEADING("Extended HUD Status Widget"),
   MIGRATED_SETTING(nyan_config_ex_status_widget),
