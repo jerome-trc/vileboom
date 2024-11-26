@@ -1070,9 +1070,10 @@ uint64_t deh_stringToMobjFlags(char *strval);
 // Nyan Doom Dehacked Tweaks
 void deh_InitNyanTweaks(void);
 
+void deh_changeBonusFlash(void);
 void deh_changeColoredBlood(void);
+
 void deh_changeCompTranslucency(void);
-void deh_NyanBonusFlash(void);
 void deh_applyCompatibility(void);
 
 #endif

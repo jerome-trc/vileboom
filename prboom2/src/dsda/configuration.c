@@ -131,7 +131,7 @@ void M_ChangeApplyPalette(void);
 void M_ChangeStretch(void);
 void M_ChangeAspectRatio(void);
 void deh_changeCompTranslucency(void);
-void deh_NyanBonusFlash(void);
+void deh_changeBonusFlash(void);
 void deh_changeColoredBlood(void);
 void dsda_InitGameControllerParameters(void);
 void dsda_InitExHud(void);
@@ -1322,15 +1322,15 @@ dsda_config_t dsda_config[dsda_config_count] = {
   },
   [dsda_config_boom_translucent_sprites] = {
     "boom_translucent_sprites", dsda_config_boom_translucent_sprites,
-      dsda_config_int, 0, 2, { 1 }, NULL, NOT_STRICT, deh_changeCompTranslucency
-  },
-  [nyan_config_item_bonus_flash] = {
-    "nyan_item_bonus_flash", nyan_config_item_bonus_flash,
-    CONF_BOOL(0), NULL, NOT_STRICT, deh_NyanBonusFlash
+    dsda_config_int, 0, 2, { 1 }, NULL, NOT_STRICT, deh_changeCompTranslucency
   },
   [nyan_config_area_map_tagfinder] = {
     "nyan_area_map_tagfinder", nyan_config_area_map_tagfinder,
     CONF_BOOL(0), NULL, NOT_STRICT
+  },
+  [nyan_config_item_bonus_flash] = {
+    "nyan_item_bonus_flash", nyan_config_item_bonus_flash,
+    CONF_BOOL(0), NULL, NOT_STRICT, deh_changeBonusFlash
   },
   [nyan_config_colored_blood] = {
     "nyan_colored_blood", nyan_config_colored_blood,

@@ -3178,7 +3178,6 @@ setup_menu_t controller_settings[] = {
 
 static const char* endoom_list[] = { "Off", "On", "PWAD only", NULL };
 static const char* endoom_type_list[] = { "Terminal", "Window", NULL };
-static const char* boom_translucent_list[] = { "OFF", "ON", "LITE", NULL };
 
 setup_menu_t misc_settings[] = {
   { "Miscellaneous", S_SKIP | S_TITLE, m_null, G_X},
@@ -3196,8 +3195,8 @@ setup_menu_t misc_settings[] = {
   { "Organize My Save Files", S_YESNO, m_conf, G_X, dsda_config_organized_saves },
   { "Skip Quit Prompt", S_YESNO, m_conf, G_X, dsda_config_skip_quit_prompt },
   { "Death Use Action", S_CHOICE, m_conf, G_X, dsda_config_death_use_action, 0, death_use_strings },
-  { "Boom Translucent Sprites", S_CHOICE, m_conf, G_X, dsda_config_boom_translucent_sprites, 0, boom_translucent_list },
   { "Boom Weapon Auto Switch", S_YESNO, m_conf, G_X, dsda_config_switch_when_ammo_runs_out },
+  { "Area Map Allows Tag Highlight", S_YESNO, m_conf, G_X, nyan_config_area_map_tagfinder },
 
   PREV_PAGE(controller_settings),
   NEXT_PAGE(display_settings),
@@ -3229,6 +3228,7 @@ setup_menu_t display_settings[] = {
   FINAL_ENTRY
 };
 
+static const char* boom_translucent_list[] = { "OFF", "ON", "LITE", NULL };
 static const char* colored_blood_list[] = { "OFF", "ON", "FORCED", NULL };
 
 setup_menu_t misc2_settings[] = {
@@ -3239,7 +3239,7 @@ setup_menu_t misc2_settings[] = {
   { "Skip IWAD Story For PWADs", S_YESNO, m_conf, G_X, nyan_config_skip_default_text },
   { "Pause After Intermission", S_YESNO, m_conf, G_X, nyan_config_intermission_pause },
   EMPTY_LINE,
-  { "Area Map Allows Tag Highlight", S_YESNO, m_conf, G_X, nyan_config_area_map_tagfinder },
+  { "Boom Translucent Sprites", S_CHOICE, m_conf, G_X, dsda_config_boom_translucent_sprites, 0, boom_translucent_list },
   { "Flashing Item Bonuses", S_YESNO, m_conf, G_X, nyan_config_item_bonus_flash },
   { "Colored Blood", S_CHOICE, m_conf, G_X, nyan_config_colored_blood, 0, colored_blood_list },
   EMPTY_LINE,

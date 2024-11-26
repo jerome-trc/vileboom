@@ -1620,7 +1620,7 @@ void deh_changeCompTranslucency(void)
 void deh_InitNyanTweaks(void)
 {
   deh_changeColoredBlood();
-  deh_NyanBonusFlash();
+  deh_changeBonusFlash();
 }
 
 int init_blood_check;
@@ -1724,7 +1724,7 @@ void deh_InitBonusFlash(void)
       );
 }
 
-void deh_NyanBonusFlash(void)
+void deh_changeBonusFlash(void)
 {
   extern byte* edited_mobjinfo_bits;
   int i;
