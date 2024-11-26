@@ -1987,6 +1987,10 @@ static dboolean P_HealCorpse(mobj_t* actor, int radius, statenum_t healstate, sf
             (info->flags & ~MF_FRIEND) | (actor->flags & MF_FRIEND);
           corpsehit->flags = corpsehit->flags | MF_RESSURECTED;//e6y
 
+          // Allow ghost monsters to be rendered translucent
+          if (comp[comp_vile] && demo_compatibility && dsda_IntConfig(dsda_config_vanilla_translucent_ghosts))
+            corpsehit->flags |= MF_TRANSLUCENT;
+
           dsda_WatchResurrection(corpsehit, actor);
 
           if (!((corpsehit->flags ^ MF_COUNTKILL) & (MF_FRIEND | MF_COUNTKILL)))
