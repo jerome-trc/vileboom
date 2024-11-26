@@ -295,7 +295,7 @@ dboolean dsda_WipeAtFullSpeed(void) {
 }
 
 int dsda_ShowAliveMonsters(void) {
-  return dsda_IntConfig(dsda_config_show_alive_monsters);
+  return dsda_IntConfig(dsda_config_show_alive_monsters) && V_IsOpenGLMode();
 }
 
 int dsda_reveal_map;

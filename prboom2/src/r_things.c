@@ -961,16 +961,19 @@ void R_AddAllAliveMonstersSprites(void)
   sector_t* sec;
   mobj_t *thing;
 
-  for (i = 0; i < numsectors; i++)
+  if (dsda_ShowAliveMonsters())
   {
-    sec = &sectors[i];
-    for (thing = sec->thinglist; thing; thing = thing->snext)
+    for (i = 0; i < numsectors; i++)
     {
-      if (ALIVE(thing))
+      sec = &sectors[i];
+      for (thing = sec->thinglist; thing; thing = thing->snext)
       {
-        thing->flags |= MF_NO_DEPTH_TEST;
-        R_ProjectSprite(thing, 255);
-        thing->flags &= ~MF_NO_DEPTH_TEST;
+        if (ALIVE(thing))
+        {
+          thing->flags |= MF_NO_DEPTH_TEST;
+          R_ProjectSprite(thing, 255);
+          thing->flags &= ~MF_NO_DEPTH_TEST;
+        }
       }
     }
   }
