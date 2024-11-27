@@ -28,15 +28,19 @@ dboolean dsda_Paused(void) {
   return paused != 0;
 }
 
+dboolean dsda_CausalPlayDemosUnderMenu(void) {
+  return dsda_IntConfig(nyan_config_menu_play_demo) && !demorecording;
+}
+
 dboolean dsda_PausedViaMenu(void) {
-  if (dsda_IntConfig(nyan_config_menu_play_demo))
+  if (dsda_CausalPlayDemosUnderMenu())
       return !demoplayback && menuactive && !netgame;
   else
       return menuactive && !netgame;
 }
 
 dboolean dsda_PausedOutsideDemo(void) {
-  if (dsda_IntConfig(nyan_config_menu_play_demo))
+  if (dsda_CausalPlayDemosUnderMenu())
       return dsda_PauseMode(PAUSE_PLAYBACK | PAUSE_BUILDMODE);
   else
       return dsda_PauseMode(PAUSE_PLAYBACK | PAUSE_BUILDMODE) || dsda_PausedViaMenu();
