@@ -3228,7 +3228,6 @@ setup_menu_t display_settings[] = {
   FINAL_ENTRY
 };
 
-static const char* boom_translucent_list[] = { "OFF", "ON", "LITE", NULL };
 static const char* colored_blood_list[] = { "OFF", "ON", "FORCED", NULL };
 
 setup_menu_t misc2_settings[] = {
@@ -3239,7 +3238,10 @@ setup_menu_t misc2_settings[] = {
   { "Skip IWAD Story For PWADs", S_YESNO, m_conf, G_X, nyan_config_skip_default_text },
   { "Pause After Intermission", S_YESNO, m_conf, G_X, nyan_config_intermission_pause },
   EMPTY_LINE,
-  { "Boom Translucent Sprites", S_CHOICE, m_conf, G_X, dsda_config_boom_translucent_sprites, 0, boom_translucent_list },
+  { "Boom Translucent Sprites", S_YESNO, m_conf, G_X, dsda_config_boom_translucent_sprites },
+  { "Projectiles", S_YESNO, m_conf, G_X, dsda_config_boom_translucent_missiles },
+  { "Powerups", S_YESNO, m_conf, G_X, dsda_config_boom_translucent_powerups },
+  { "Effects", S_YESNO, m_conf, G_X, dsda_config_boom_translucent_effects },
   { "Translucent Sprites for Vanilla", S_YESNO, m_conf, G_X, dsda_config_vanilla_translucent_sprites },
   { "Ghosts are Translucent", S_YESNO, m_conf, G_X, dsda_config_vanilla_translucent_ghosts },
   { "Flashing Item Bonuses", S_YESNO, m_conf, G_X, nyan_config_item_bonus_flash },
@@ -3250,7 +3252,7 @@ setup_menu_t misc2_settings[] = {
   { "Widescreen Lumps", S_YESNO, m_conf, G_X, nyan_config_enable_widescreen_lumps },
   { "Boom Credit/Help Screens", S_YESNO, m_conf, G_X, nyan_config_boom_credit_help },
 
-  PREV_PAGE(display_settings),
+  PREV_PAGE(misc_settings),
   FINAL_ENTRY
 };
 
