@@ -1603,7 +1603,8 @@ void deh_changeCompTranslucency(void)
 
   // Reset translucency
   for (i = 0; (size_t)i < sizeof(predefined_translucency) / sizeof(predefined_translucency[0]); i++)
-    mobjinfo[predefined_translucency[i]].flags &= ~MF_TRANSLUCENT;
+    if (!edited_mobjinfo_bits[predefined_translucency[i]])
+      mobjinfo[predefined_translucency[i]].flags &= ~MF_TRANSLUCENT;
 
   // Set translucency
   if (translucency_active)
