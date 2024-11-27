@@ -3004,8 +3004,8 @@ void M_DrawAutoMap(void)
 // The General table.
 // killough 10/10/98
 
-setup_menu_t video_settings[], audio_settings[], mouse_settings[], controller_settings[], misc_settings[];
-setup_menu_t misc2_settings[], display_settings[];
+setup_menu_t video_settings[], audio_settings[], mouse_settings[], controller_settings[];
+setup_menu_t misc_settings[], display_settings[], trans_settings[], nyan_settings[];
 
 setup_menu_t* gen_settings[] =
 {
@@ -3015,7 +3015,8 @@ setup_menu_t* gen_settings[] =
   controller_settings,
   misc_settings,
   display_settings,
-  misc2_settings,
+  trans_settings,
+  nyan_settings,
   NULL
 };
 
@@ -3120,6 +3121,7 @@ setup_menu_t audio_settings[] = {
   EMPTY_LINE,
   { "Parallel Same-Sound Limit", S_NUM, m_conf, G_X, dsda_config_parallel_sfx_limit },
   { "Parallel Same-Sound Window", S_NUM, m_conf, G_X, dsda_config_parallel_sfx_window },
+  EMPTY_LINE,
   { "Play SFX For Movement Toggles", S_YESNO, m_conf, G_X, dsda_config_movement_toggle_sfx },
   { "Play SFX For Quicksave", S_YESNO, m_conf, G_X, dsda_config_quicksave_sfx },
   { "Play Quit SFX (Slower Quit)", S_YESNO, m_conf, G_X, dsda_config_quit_sounds },
@@ -3184,7 +3186,6 @@ setup_menu_t misc_settings[] = {
   { "Default skill level", S_CHOICE, m_conf, G_X, dsda_config_default_skill, 0, gen_skillstrings },
   { "Default compatibility level", S_CHOICE, m_conf, G_X, dsda_config_default_complevel, 0, &gen_compstrings[1] },
   { "Enable Cheat Code Entry", S_YESNO, m_conf, G_X, dsda_config_cheat_codes },
-  { "Use Dehacked Cheats", S_YESNO, m_conf, G_X, dsda_config_deh_change_cheats },
   { "Announce Map On Entry", S_YESNO, m_conf, G_X, dsda_config_announce_map },
   EMPTY_LINE,
   { "Endoom Screen", S_CHOICE, m_conf, G_X, nyan_config_show_endoom, 0, endoom_list },
@@ -3196,7 +3197,6 @@ setup_menu_t misc_settings[] = {
   { "Skip Quit Prompt", S_YESNO, m_conf, G_X, dsda_config_skip_quit_prompt },
   { "Death Use Action", S_CHOICE, m_conf, G_X, dsda_config_death_use_action, 0, death_use_strings },
   { "Boom Weapon Auto Switch", S_YESNO, m_conf, G_X, dsda_config_switch_when_ammo_runs_out },
-  { "Area Map Allows Tag Highlight", S_YESNO, m_conf, G_X, nyan_config_area_map_tagfinder },
 
   PREV_PAGE(controller_settings),
   NEXT_PAGE(display_settings),
@@ -3218,32 +3218,47 @@ setup_menu_t display_settings[] = {
   { "Change Palette On Pain", S_YESNO, m_conf, G_X, dsda_config_palette_ondamage },
   { "Change Palette On Bonus", S_YESNO, m_conf, G_X, dsda_config_palette_onbonus },
   { "Change Palette On Powers", S_YESNO, m_conf, G_X, dsda_config_palette_onpowers },
-  { "Change Colormap On Lite Amp", S_YESNO, m_conf, G_X, dsda_config_colormap_onliteamp },
   EMPTY_LINE,
   { "Status Bar and Menu Appearance", S_CHOICE, m_conf, G_X, dsda_config_render_stretch_hud, 0, render_stretch_list },
   { "Fullscreen Menu Background", S_YESNO, m_conf, G_X, dsda_config_menu_background },
 
   PREV_PAGE(misc_settings),
-  NEXT_PAGE(misc2_settings),
+  NEXT_PAGE(trans_settings),
+  FINAL_ENTRY
+};
+
+setup_menu_t trans_settings[] = {
+  { "Translucency Options", S_SKIP | S_TITLE, m_null, G_X},
+  { "Translucent Sprites", S_YESNO, m_conf, G_X, dsda_config_boom_translucent_sprites },
+  EMPTY_LINE,
+  { "Customization", S_SKIP | S_TITLE, m_null, G_X},
+  { "Projectiles", S_YESNO, m_conf, G_X, dsda_config_boom_translucent_missiles },
+  { "Powerups", S_YESNO, m_conf, G_X, dsda_config_boom_translucent_powerups },
+  { "Effects", S_YESNO, m_conf, G_X, dsda_config_boom_translucent_effects },
+  EMPTY_LINE,
+  { "Vanilla Emulation", S_SKIP | S_TITLE, m_null, G_X},
+  { "Enable for Vanilla", S_YESNO, m_conf, G_X, dsda_config_vanilla_translucent_sprites },
+  { "Ghosts are Translucent", S_YESNO, m_conf, G_X, dsda_config_vanilla_translucent_ghosts },
+
+  PREV_PAGE(display_settings),
+  NEXT_PAGE(nyan_settings),
   FINAL_ENTRY
 };
 
 static const char* colored_blood_list[] = { "OFF", "ON", "FORCED", NULL };
 
-setup_menu_t misc2_settings[] = {
+setup_menu_t nyan_settings[] = {
   { "Nyan Options", S_SKIP | S_TITLE, m_null, G_X},
   { "DSDA-Doom Options Order", S_YESNO, m_conf, G_X, nyan_config_dsda_menu_format },
   { "Play Demos While In Menus", S_YESNO, m_conf, G_X, nyan_config_menu_play_demo },
+  EMPTY_LINE,
   { "Skip IWAD Demos For PWADs", S_YESNO, m_conf, G_X, nyan_config_skip_default_demos },
   { "Skip IWAD Story For PWADs", S_YESNO, m_conf, G_X, nyan_config_skip_default_text },
   { "Pause After Intermission", S_YESNO, m_conf, G_X, nyan_config_intermission_pause },
+  { "Use Dehacked Cheats", S_YESNO, m_conf, G_X, dsda_config_deh_change_cheats },
   EMPTY_LINE,
-  { "Boom Translucent Sprites", S_YESNO, m_conf, G_X, dsda_config_boom_translucent_sprites },
-  { "Projectiles", S_YESNO, m_conf, G_X, dsda_config_boom_translucent_missiles },
-  { "Powerups", S_YESNO, m_conf, G_X, dsda_config_boom_translucent_powerups },
-  { "Effects", S_YESNO, m_conf, G_X, dsda_config_boom_translucent_effects },
-  { "Translucent Sprites for Vanilla", S_YESNO, m_conf, G_X, dsda_config_vanilla_translucent_sprites },
-  { "Ghosts are Translucent", S_YESNO, m_conf, G_X, dsda_config_vanilla_translucent_ghosts },
+  { "Change Colormap On Lite Amp", S_YESNO, m_conf, G_X, dsda_config_colormap_onliteamp },
+  { "Area Map Allows Tag Highlight", S_YESNO, m_conf, G_X, nyan_config_area_map_tagfinder },
   { "Flashing Item Bonuses", S_YESNO, m_conf, G_X, nyan_config_item_bonus_flash },
   { "Colored Blood", S_CHOICE, m_conf, G_X, nyan_config_colored_blood, 0, colored_blood_list },
   EMPTY_LINE,
@@ -3252,7 +3267,7 @@ setup_menu_t misc2_settings[] = {
   { "Widescreen Lumps", S_YESNO, m_conf, G_X, nyan_config_enable_widescreen_lumps },
   { "Boom Credit/Help Screens", S_YESNO, m_conf, G_X, nyan_config_boom_credit_help },
 
-  PREV_PAGE(misc_settings),
+  PREV_PAGE(trans_settings),
   FINAL_ENTRY
 };
 
