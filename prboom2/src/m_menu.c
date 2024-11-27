@@ -310,6 +310,8 @@ void M_ChangeDemoSmoothTurns(void);
 void M_ChangeTextureParams(void);
 void M_General(int);      // killough 10/98
 void M_DrawGeneral(void); // killough 10/98
+void M_NyanMenu(int choice);
+void M_DrawNyanMenu(void);
 void M_GameplayMenu(int);      // Arsinikk
 void M_DrawGameplayMenu(void); // Arsinikk
 void M_LevelTable(int);
@@ -1146,6 +1148,7 @@ void M_SaveGame (int choice)
 
 enum
 {
+  nyan_options,
   general, // killough 10/98
   set_gameplaymenu,
   set_key_bindings,
@@ -1163,6 +1166,7 @@ enum
 
 menuitem_t OptionsMenu[]=
 {
+  { 1, "M_NYANOP", M_NyanMenu, 'n', "NYAN OPTIONS" }, // killough 10/98
   { 1, "M_GENERL", M_General, 'g', "GENERAL" }, // killough 10/98
   { 1, "M_GAMEPL", M_GameplayMenu, 'g', "GAMEPLAY / DEMOS" },
   { 1, "M_KEYBND", M_KeyBindings,'k', "KEY BINDINGS" },
@@ -1627,6 +1631,16 @@ enum
 menuitem_t Generic_Setup[] =
 {
   {1,"",M_DoNothing,0}
+};
+
+menu_t NyanMenuDef =
+{
+  generic_setup_end,
+  &OptionsDef,
+  Generic_Setup,
+  M_DrawNyanMenu,
+  34,5,      // skull drawn here
+  0
 };
 
 menu_t KeybndDef =
@@ -3005,7 +3019,7 @@ void M_DrawAutoMap(void)
 // killough 10/10/98
 
 setup_menu_t video_settings[], audio_settings[], mouse_settings[], controller_settings[];
-setup_menu_t misc_settings[], display_settings[], trans_settings[], nyan_settings[];
+setup_menu_t misc_settings[], display_settings[];
 
 setup_menu_t* gen_settings[] =
 {
@@ -3015,8 +3029,6 @@ setup_menu_t* gen_settings[] =
   controller_settings,
   misc_settings,
   display_settings,
-  trans_settings,
-  nyan_settings,
   NULL
 };
 
@@ -3223,27 +3235,37 @@ setup_menu_t display_settings[] = {
   { "Fullscreen Menu Background", S_YESNO, m_conf, G_X, dsda_config_menu_background },
 
   PREV_PAGE(misc_settings),
-  NEXT_PAGE(trans_settings),
   FINAL_ENTRY
 };
 
-setup_menu_t trans_settings[] = {
-  { "Translucency Options", S_SKIP | S_TITLE, m_null, G_X},
-  { "Translucent Sprites", S_YESNO, m_conf, G_X, dsda_config_boom_translucent_sprites },
-  EMPTY_LINE,
-  { "Customization", S_SKIP | S_TITLE, m_null, G_X},
-  { "Projectiles", S_YESNO, m_conf, G_X, dsda_config_boom_translucent_missiles },
-  { "Powerups", S_YESNO, m_conf, G_X, dsda_config_boom_translucent_powerups },
-  { "Effects", S_YESNO, m_conf, G_X, dsda_config_boom_translucent_effects },
-  EMPTY_LINE,
-  { "Vanilla Emulation", S_SKIP | S_TITLE, m_null, G_X},
-  { "Enable for Vanilla", S_YESNO, m_conf, G_X, dsda_config_vanilla_translucent_sprites },
-  { "Ghosts are Translucent", S_YESNO, m_conf, G_X, dsda_config_vanilla_translucent_ghosts },
+// Setting up for the Nyan Doom Options Menu.
+//
 
-  PREV_PAGE(display_settings),
-  NEXT_PAGE(nyan_settings),
-  FINAL_ENTRY
+setup_menu_t nyan_settings[], trans_settings[];
+
+setup_menu_t* nyanmenu_settings[] =
+{
+  nyan_settings,
+  trans_settings,
+  NULL
 };
+
+void M_NyanMenu(int choice)
+{
+  M_EnterSetup(&NyanMenuDef, &set_status_active, nyanmenu_settings[0]);
+}
+
+void M_DrawNyanMenu(void)
+{
+  M_ChangeMenu(NULL, mnact_full);
+
+  M_DrawBackground(g_menu_flat, 0); // Draw background
+
+  // proff/nicolas 09/20/98 -- changed for hi-res
+  M_DrawTitle(59, 2, "M_NYANOP", CR_DEFAULT, "NYAN OPTIONS", cr_title);
+  M_DrawInstructions();
+  M_DrawScreenItems(current_setup_menu, DEFAULT_LIST_Y);
+}
 
 static const char* colored_blood_list[] = { "OFF", "ON", "FORCED", NULL };
 
@@ -3267,7 +3289,24 @@ setup_menu_t nyan_settings[] = {
   { "Widescreen Lumps", S_YESNO, m_conf, G_X, nyan_config_enable_widescreen_lumps },
   { "Boom Credit/Help Screens", S_YESNO, m_conf, G_X, nyan_config_boom_credit_help },
 
-  PREV_PAGE(trans_settings),
+  NEXT_PAGE(trans_settings),
+  FINAL_ENTRY
+};
+
+setup_menu_t trans_settings[] = {
+  { "Translucency Options", S_SKIP | S_TITLE, m_null, G_X},
+  { "Translucent Sprites", S_YESNO, m_conf, G_X, dsda_config_boom_translucent_sprites },
+  EMPTY_LINE,
+  { "Customization", S_SKIP | S_TITLE, m_null, G_X},
+  { "Projectiles", S_YESNO, m_conf, G_X, dsda_config_boom_translucent_missiles },
+  { "Powerups", S_YESNO, m_conf, G_X, dsda_config_boom_translucent_powerups },
+  { "Effects", S_YESNO, m_conf, G_X, dsda_config_boom_translucent_effects },
+  EMPTY_LINE,
+  { "Vanilla Emulation", S_SKIP | S_TITLE, m_null, G_X},
+  { "Enable for Vanilla", S_YESNO, m_conf, G_X, dsda_config_vanilla_translucent_sprites },
+  { "Ghosts are Translucent", S_YESNO, m_conf, G_X, dsda_config_vanilla_translucent_ghosts },
+
+  PREV_PAGE(nyan_settings),
   FINAL_ENTRY
 };
 
