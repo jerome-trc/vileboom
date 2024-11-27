@@ -42,6 +42,7 @@
 #include "sounds.h"
 #include "info.h"
 #include "m_cheat.h"
+#include "p_tick.h"
 #include "p_inter.h"
 #include "p_enemy.h"
 #include "p_map.h"
@@ -1639,6 +1640,29 @@ void deh_changeCompTranslucency(void)
               mobjinfo[powerup_translucency[i]].flags |= MF_TRANSLUCENT;
       }
     }
+  }
+
+  // This updates the existing things in the map.
+  if (in_game)
+  {
+    thinker_t *th, *start_th;
+    int i;
+    th = &thinkercap;
+    start_th = th;
+
+    do
+    {
+      th = th->next;
+      if (th->function == P_MobjThinker)
+      {
+        mobj_t *mobj;
+        mobj = (mobj_t *) th;
+
+        for (i = 0; (size_t)i < sizeof(predefined_translucency) / sizeof(predefined_translucency[0]); i++)
+          if (mobj->type == predefined_translucency[i])
+            mobj->flags = mobjinfo[predefined_translucency[i]].flags;
+      }
+    } while (th != start_th);
   }
 }
 
