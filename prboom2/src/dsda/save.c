@@ -64,6 +64,12 @@ static void dsda_UnArchiveInternal(void) {
   dsda_MergeFeatures(features);
 }
 
+int track_pistolstart;
+int track_respawnparm;
+int track_fastparm;
+int track_nomonsters;
+int track_coop_spawns;
+
 void dsda_SaveModifiers(void)
 {
   track_pistolstart = dsda_IntConfig(dsda_config_pistol_start);
