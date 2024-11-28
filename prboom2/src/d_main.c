@@ -99,6 +99,7 @@
 #include "dsda/playback.h"
 #include "dsda/preferences.h"
 #include "dsda/render_stats.h"
+#include "dsda/save.h"
 #include "dsda/settings.h"
 #include "dsda/signal_context.h"
 #include "dsda/skill_info.h"
@@ -1737,6 +1738,12 @@ static void dsda_InitModifiers(void)
       dsda_UpdateIntConfig(dsda_config_no_monsters, 1, true);
   if (dsda_Flag(dsda_arg_coop_spawns))
       dsda_UpdateIntConfig(dsda_config_coop_spawns, 1, true);
+
+  track_pistolstart = dsda_IntConfig(dsda_config_pistol_start);
+  track_respawnparm = dsda_IntConfig(dsda_config_respawn_monsters);
+  track_fastparm = dsda_IntConfig(dsda_config_fast_monsters);
+  track_nomonsters = dsda_IntConfig(dsda_config_no_monsters);
+  track_coop_spawns = dsda_IntConfig(dsda_config_coop_spawns);
 }
 
 //
