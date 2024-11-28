@@ -226,6 +226,7 @@ void dsda_RefreshPistolStart(void)
   if (allow_incompatibility || in_game)
     if(dsda_IntConfig(dsda_config_always_pistol_start) && !dsda_IntConfig(dsda_config_pistol_start))
       dsda_UpdateIntConfig(dsda_config_always_pistol_start, 0, true);
+  dsda_TrackGameFlags();
 }
 
 void dsda_RefreshAlwaysPistolStart(void)
@@ -233,6 +234,7 @@ void dsda_RefreshAlwaysPistolStart(void)
   if (allow_incompatibility || in_game)
     if(dsda_IntConfig(dsda_config_always_pistol_start) && !dsda_IntConfig(dsda_config_pistol_start))
       dsda_UpdateIntConfig(dsda_config_pistol_start, 1, true);
+  dsda_TrackGameFlags();
 }
 
 static void dsda_ResetGameFlags(void)
@@ -241,6 +243,22 @@ static void dsda_ResetGameFlags(void)
   fastparm = (allow_incompatibility ? dsda_IntConfig(dsda_config_fast_monsters) : dsda_Flag(dsda_arg_fast));
   nomonsters = (allow_incompatibility ? dsda_IntConfig(dsda_config_no_monsters) : dsda_Flag(dsda_arg_nomonsters));
   coop_spawns = (allow_incompatibility ? dsda_IntConfig(dsda_config_coop_spawns) : dsda_Flag(dsda_arg_coop_spawns));
+  dsda_TrackGameFlags();
+}
+
+int track_pistolstart;
+int track_respawnparm;
+int track_fastparm;
+int track_nomonsters;
+int track_coop_spawns;
+
+void dsda_TrackGameFlags(void)
+{
+  track_pistolstart = dsda_IntConfig(dsda_config_pistol_start);
+  track_respawnparm = dsda_IntConfig(dsda_config_respawn_monsters);
+  track_fastparm = dsda_IntConfig(dsda_config_fast_monsters);
+  track_nomonsters = dsda_IntConfig(dsda_config_no_monsters);
+  track_coop_spawns = dsda_IntConfig(dsda_config_coop_spawns);
 }
 
 void dsda_RefreshGameSkill(void) {

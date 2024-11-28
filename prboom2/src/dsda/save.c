@@ -33,6 +33,7 @@
 #include "dsda/mapinfo.h"
 #include "dsda/music.h"
 #include "dsda/options.h"
+#include "dsda/skill_info.h"
 
 #include "save.h"
 
@@ -64,46 +65,40 @@ static void dsda_UnArchiveInternal(void) {
   dsda_MergeFeatures(features);
 }
 
-int track_pistolstart;
-int track_respawnparm;
-int track_fastparm;
-int track_nomonsters;
-int track_coop_spawns;
+int store_pistolstart;
+int store_respawnparm;
+int store_fastparm;
+int store_nomonsters;
+int store_coop_spawns;
 
-void dsda_SaveModifiers(void)
+void dsda_ArchiveGameModifiers(void)
 {
-  track_pistolstart = dsda_IntConfig(dsda_config_pistol_start);
-  track_respawnparm = dsda_IntConfig(dsda_config_respawn_monsters);
-  track_fastparm = dsda_IntConfig(dsda_config_fast_monsters);
-  track_nomonsters = dsda_IntConfig(dsda_config_no_monsters);
-  track_coop_spawns = dsda_IntConfig(dsda_config_coop_spawns);
+  store_pistolstart = track_pistolstart;
+  store_respawnparm = track_respawnparm;
+  store_fastparm = track_fastparm;
+  store_nomonsters = track_nomonsters;
+  store_coop_spawns = track_coop_spawns;
+
+  P_SAVE_X(store_pistolstart);
+  P_SAVE_X(store_respawnparm);
+  P_SAVE_X(store_fastparm);
+  P_SAVE_X(store_nomonsters);
+  P_SAVE_X(store_coop_spawns);
 }
 
-void dsda_LoadModifiers(void)
+void dsda_UnArchiveGameModifiers(void)
 {
-  dsda_UpdateIntConfig(dsda_config_pistol_start,track_pistolstart,true);
-  dsda_UpdateIntConfig(dsda_config_respawn_monsters,track_respawnparm,true);
-  dsda_UpdateIntConfig(dsda_config_fast_monsters,track_fastparm,true);
-  dsda_UpdateIntConfig(dsda_config_no_monsters,track_nomonsters,true);
-  dsda_UpdateIntConfig(dsda_config_coop_spawns,track_coop_spawns,true);
-}
+  P_LOAD_X(store_pistolstart);
+  P_LOAD_X(store_respawnparm);
+  P_LOAD_X(store_fastparm);
+  P_LOAD_X(store_nomonsters);
+  P_LOAD_X(store_coop_spawns);
 
-void dsda_ArchiveGameModifiers(void) {
-  dsda_SaveModifiers();
-  P_SAVE_X(track_pistolstart);
-  P_SAVE_X(track_respawnparm);
-  P_SAVE_X(track_fastparm);
-  P_SAVE_X(track_nomonsters);
-  P_SAVE_X(track_coop_spawns);
-}
-
-void dsda_UnArchiveGameModifiers(void) {
-  P_LOAD_X(track_pistolstart);
-  P_LOAD_X(track_respawnparm);
-  P_LOAD_X(track_fastparm);
-  P_LOAD_X(track_nomonsters);
-  P_LOAD_X(track_coop_spawns);
-  dsda_LoadModifiers();
+  dsda_UpdateIntConfig(dsda_config_pistol_start,store_pistolstart,true);
+  dsda_UpdateIntConfig(dsda_config_respawn_monsters,store_respawnparm,true);
+  dsda_UpdateIntConfig(dsda_config_fast_monsters,store_fastparm,true);
+  dsda_UpdateIntConfig(dsda_config_no_monsters,store_nomonsters,true);
+  dsda_UpdateIntConfig(dsda_config_coop_spawns,store_coop_spawns,true);
 }
 
 static void dsda_ArchiveContext(void) {

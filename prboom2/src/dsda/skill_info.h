@@ -34,6 +34,12 @@
 
 typedef uint16_t skill_info_flags_t;
 
+extern int track_pistolstart;
+extern int track_respawnparm;
+extern int track_fastparm;
+extern int track_nomonsters;
+extern int track_coop_spawns;
+
 typedef struct {
   fixed_t ammo_factor;
   fixed_t damage_factor;
@@ -56,6 +62,7 @@ extern skill_info_t skill_info;
 extern int num_skills;
 
 void dsda_InitSkills(void);
+void dsda_TrackGameFlags(void);
 void dsda_RefreshGameSkill(void);
 void dsda_UpdateGameSkill(int skill);
 

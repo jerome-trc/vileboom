@@ -1739,11 +1739,7 @@ static void dsda_InitModifiers(void)
   if (dsda_Flag(dsda_arg_coop_spawns))
       dsda_UpdateIntConfig(dsda_config_coop_spawns, 1, true);
 
-  track_pistolstart = dsda_IntConfig(dsda_config_pistol_start);
-  track_respawnparm = dsda_IntConfig(dsda_config_respawn_monsters);
-  track_fastparm = dsda_IntConfig(dsda_config_fast_monsters);
-  track_nomonsters = dsda_IntConfig(dsda_config_no_monsters);
-  track_coop_spawns = dsda_IntConfig(dsda_config_coop_spawns);
+  dsda_TrackGameFlags();
 }
 
 //
