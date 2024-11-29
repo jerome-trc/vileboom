@@ -563,14 +563,17 @@ static void dsda_LoadHUDConfig(void) {
     char** lines;
     dsda_arg_t* arg;
     int lump;
+    char* hudlump;
     int length = 0;
 
     arg = dsda_Arg(dsda_arg_hud);
     if (arg->found)
       length = M_ReadFileToString(arg->value.v_string, &hud_config);
 
+    hudlump = W_CheckNumForName("NYANHUD") ? "NYANHUD" : "DSDAHUD";
+
     lump = -1;
-    while ((lump = W_FindNumFromName("DSDAHUD", lump)) >= 0) {
+    while ((lump = W_FindNumFromName(hudlump, lump)) >= 0) {
       if (!hud_config) {
         hud_config = W_ReadLumpToString(lump);
         length = W_LumpLength(lump);

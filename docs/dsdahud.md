@@ -1,6 +1,8 @@
 ## HUD Configuration
 
-HUD configurations are stored in the DSDAHUD lump. These defaults can be changed by replacing the lump or specifying a hud config file with `-hud filename`. There are separate configurations for each game (doom, heretic, and hexen), with or without the status bar.
+HUD configurations are stored in the NYANHUD lump. These defaults can be changed by replacing the lump or specifying a hud config file with `-hud filename`. There are separate configurations for each game (doom, heretic, and hexen), with or without the status bar.
+
+Nyan Doom can also load a DSDAHUD lump, if no NYANHUD lump is found. The order of precedence is `NYANHUD > DSDAHUD`. This is to avoid Nyan Doom only preferences from finding their way into DSDAHUD lumps.
 
 ### Specification
 
@@ -58,8 +60,6 @@ Unless otherwise specified, argument values are integers. For toggles, a 1 means
 - `composite_time`: shows the current level time and the total time
   - Supports 1 argument: `show_label`
   - `show_label`: shows the "time" label
-- `status_widget`: shows icons for armor type, backpack, and other powerups
-  - Supports 1 argument: `vetical`
 - `keys`: shows the acquired keys
   - Supports 1 argument: `horizontal`
   - `horizontal`: displays the component horizontally rather than vertically
@@ -79,10 +79,6 @@ Unless otherwise specified, argument values are integers. For toggles, a 1 means
 - `big_health`: shows the player health (color-coded) in the status bar font with the health sprite
 - `big_health_text`: shows the player health (color-coded) in the status bar font
 - `big_artifact`: shows the current artifact as seen on the status bar
-- `sml_armor`: shows the player armor type with a small sprite
-  - Sprite is hidden when armor is 0%
-- `sml_berserk`: shows the player berserk status with a small sprite
-  - Sprite is hidden when berserk is inactive
 - `fps`: shows the current fps
 - `attempts`: shows the current and total demo attempts
 - `render_stats`: shows various render stats (`idrate`)
@@ -128,3 +124,11 @@ Unless otherwise specified, argument values are integers. For toggles, a 1 means
   - Uses the message font
   - Supports 1 argument: `center`
   - `center`: centers the component horizontally
+
+### NYANHUD Components
+- `status_widget`: shows icons for armor type, backpack, and other powerups
+  - Supports 1 argument: `vertical`
+- `sml_armor`: shows the player armor type with a small sprite
+  - Sprite is hidden when armor is 0%
+- `sml_berserk`: shows the player berserk status with a small sprite
+  - Sprite is hidden when berserk is inactive
