@@ -1278,6 +1278,10 @@ dsda_config_t dsda_config[dsda_config_count] = {
     "colormap_liteamp", dsda_config_colormap_onliteamp,
     CONF_BOOL(1), NULL, STRICT_INT(1)
   },
+  [dsda_config_enhanced_liteamp] = {
+    "enhanced_liteamp", dsda_config_enhanced_liteamp,
+    CONF_BOOL(0), NULL, STRICT_INT(0)
+  },
   [dsda_config_render_wipescreen] = {
     "render_wipescreen", dsda_config_render_wipescreen,
     CONF_BOOL(1), NULL, STRICT_INT(1)

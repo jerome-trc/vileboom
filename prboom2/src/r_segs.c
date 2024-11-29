@@ -55,6 +55,7 @@
 
 #include "dsda/mapinfo.h"
 #include "dsda/render_stats.h"
+#include "dsda/configuration.h"
 
 // OPTIMIZE: closed two sided lines as single sided
 
@@ -341,9 +342,9 @@ static void R_ApplyBottomLight(side_t *side)
 
 static void R_ApplyLightColormap(draw_column_vars_t *dcvars, fixed_t scale)
 {
-  if (!fixedcolormap)
+  if (!fixedcolormap || NYAN_LITEAMP)
   {
-    int index = (int)(((int64_t) scale * 160 / wide_centerx) >> LIGHTSCALESHIFT);
+    int index = (int)(((int64_t) scale * 160 / wide_centerx) >> LIGHTSCALESHIFT-NYAN_LITESHIFT);
     if (index >= MAXLIGHTSCALE)
         index = MAXLIGHTSCALE - 1;
 
@@ -572,7 +573,7 @@ static void R_RenderSegLoop (void)
       dcvars.prevsource = R_GetTextureColumn(tex_patch, specific_texturecolumn-1);
       dcvars.nextsource = R_GetTextureColumn(tex_patch, specific_texturecolumn+1);
       dcvars.texheight = midtexheight;
-      if (!fixedcolormap)
+      if (!fixedcolormap || NYAN_LITEAMP)
         R_ApplyMidLight(curline->sidedef);
       R_ApplyLightColormap(&dcvars, rw_scale);
       colfunc(&dcvars);
@@ -605,7 +606,7 @@ static void R_RenderSegLoop (void)
           dcvars.prevsource = R_GetTextureColumn(tex_patch,specific_texturecolumn-1);
           dcvars.nextsource = R_GetTextureColumn(tex_patch,specific_texturecolumn+1);
           dcvars.texheight = toptexheight;
-          if (!fixedcolormap)
+          if (!fixedcolormap || NYAN_LITEAMP)
             R_ApplyTopLight(curline->sidedef);
           R_ApplyLightColormap(&dcvars, rw_scale);
           colfunc(&dcvars);
@@ -643,7 +644,7 @@ static void R_RenderSegLoop (void)
           dcvars.prevsource = R_GetTextureColumn(tex_patch, specific_texturecolumn-1);
           dcvars.nextsource = R_GetTextureColumn(tex_patch, specific_texturecolumn+1);
           dcvars.texheight = bottomtexheight;
-          if (!fixedcolormap)
+          if (!fixedcolormap || NYAN_LITEAMP)
             R_ApplyBottomLight(curline->sidedef);
           R_ApplyLightColormap(&dcvars, rw_scale);
           colfunc(&dcvars);

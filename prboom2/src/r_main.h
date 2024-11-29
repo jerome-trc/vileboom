@@ -94,6 +94,10 @@ extern int LIGHTLEVELS;
 #define MAXLIGHTZ        128
 #define LIGHTZSHIFT       20
 
+#define NYAN_LITEAMP      (dsda_IntConfig(dsda_config_enhanced_liteamp) && !raven && viewplayer->powers[pw_infrared])
+#define NYAN_LITESHIFT    (NYAN_LITEAMP ? 2 : 0)
+#define NYAN_LITESHIFT_GL    (NYAN_LITEAMP ? light+0.2 : 1.0f)
+
 // killough 3/20/98: Allow colormaps to be dynamic (e.g. underwater)
 extern const lighttable_t *(*scalelight)[MAXLIGHTSCALE];
 extern const lighttable_t *(*c_zlight)[LIGHTLEVELS_MAX][MAXLIGHTZ];

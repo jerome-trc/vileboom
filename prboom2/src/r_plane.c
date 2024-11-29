@@ -63,6 +63,7 @@
 
 #include "dsda/map_format.h"
 #include "dsda/render_stats.h"
+#include "dsda/configuration.h"
 
 int Sky1Texture;
 int Sky2Texture;
@@ -196,10 +197,10 @@ static void R_MapPlane(int y, int x1, int x2, draw_span_vars_t *dsvars)
   dsvars->xfrac = FixedMul(dsvars->xfrac, dsvars->xscale);
   dsvars->yfrac = FixedMul(dsvars->yfrac, dsvars->yscale);
 
-  if (!(dsvars->colormap = fixedcolormap))
+  if ((!(dsvars->colormap = fixedcolormap) || ((dsvars->colormap = fixedcolormap) && NYAN_LITEAMP)))
   {
     dsvars->z = distance;
-    index = distance >> LIGHTZSHIFT;
+    index = distance >> LIGHTZSHIFT+NYAN_LITESHIFT;
     if (index >= MAXLIGHTZ )
       index = MAXLIGHTZ-1;
     dsvars->colormap = dsvars->planezlight[index];
@@ -744,7 +745,7 @@ static void R_DoDrawPlane(visplane_t *pl)
       dsvars.planeheight = D_abs(pl->height-viewz);
 
       // SoM 10/19/02: deep water colormap fix
-      if(fixedcolormap)
+      if(fixedcolormap && !NYAN_LITEAMP)
         light = (255  >> LIGHTSEGSHIFT);
       else
         light = (pl->lightlevel >> LIGHTSEGSHIFT) + (extralight * LIGHTBRIGHT);

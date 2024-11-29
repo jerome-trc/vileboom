@@ -164,6 +164,7 @@ cfg_def_t cfg_defs[] =
   MIGRATED_SETTING(dsda_config_palette_onbonus),
   MIGRATED_SETTING(dsda_config_palette_onpowers),
   MIGRATED_SETTING(dsda_config_colormap_onliteamp),
+  MIGRATED_SETTING(dsda_config_enhanced_liteamp),
   MIGRATED_SETTING(dsda_config_render_wipescreen),
   MIGRATED_SETTING(dsda_config_render_screen_multiply),
   MIGRATED_SETTING(dsda_config_integer_scaling),

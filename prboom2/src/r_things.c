@@ -901,13 +901,13 @@ static void R_ProjectSprite (mobj_t* thing, int lightlevel)
   // get light level
   if (thing->flags & g_mf_shadow)
       vis->colormap = NULL;             // shadow draw
-  else if (fixedcolormap)
+  else if (fixedcolormap && !NYAN_LITEAMP)
     vis->colormap = fixedcolormap;      // fixed map
   else if (LevelUseFullBright && thing->frame & FF_FULLBRIGHT)
     vis->colormap = fullcolormap;     // full bright  // killough 3/20/98
   else
     {      // diminished light
-      int index = (int)(((int64_t)xscale * 160 / wide_centerx) >> LIGHTSCALESHIFT);
+      int index = (int)(((int64_t)xscale * 160 / wide_centerx) >> LIGHTSCALESHIFT-NYAN_LITESHIFT);
       if (index >= MAXLIGHTSCALE)
         index = MAXLIGHTSCALE - 1;
       vis->colormap = spritelights[index];
