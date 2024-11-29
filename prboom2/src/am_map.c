@@ -160,8 +160,8 @@ static highlight_t highlight;
 static int map_blinking_locks;
 static int map_secret_after;
 static int map_grid_size;
+static int map_pan_speed;
 static int map_scroll_speed;
-static int map_zoom_speed;
 static int map_wheel_zoom;
 static int map_opengl_nice_things;
 int map_textured;
@@ -177,8 +177,8 @@ static map_things_appearance_t map_things_appearance;
 // how much the automap moves window per tic in frame-buffer coordinates
 // moves 140 pixels in 1 second
 #define F_SPEED  (dsda_InputActive(dsda_input_speed) ? !dsda_AutoRun() : dsda_AutoRun())
-#define F_PANINC  (F_SPEED ? map_scroll_speed * 2 : map_scroll_speed)
-#define F_ZOOMINC  (F_SPEED ? map_zoom_speed * 2 : map_zoom_speed)
+#define F_PANINC  (F_SPEED ? map_pan_speed * 2 : map_pan_speed)
+#define F_ZOOMINC  (F_SPEED ? map_scroll_speed * 2 : map_scroll_speed)
 // how much zoom-in per tic
 // goes to 2x in 1 second
 #define M_ZOOMIN        ((int) ((float)FRACUNIT * (1.00f + F_ZOOMINC / 200.0f)))
@@ -736,8 +736,8 @@ void AM_InitParams(void)
 {
   map_blinking_locks = dsda_IntConfig(dsda_config_map_blinking_locks);
   map_secret_after = dsda_IntConfig(dsda_config_map_secret_after);
+  map_pan_speed = dsda_IntConfig(dsda_config_map_pan_speed);
   map_scroll_speed = dsda_IntConfig(dsda_config_map_scroll_speed);
-  map_zoom_speed = dsda_IntConfig(dsda_config_map_zoom_speed);
   map_grid_size = dsda_IntConfig(dsda_config_map_grid_size);
   map_wheel_zoom = dsda_IntConfig(dsda_config_map_wheel_zoom);
   map_things_appearance = dsda_IntConfig(dsda_config_map_things_appearance);
