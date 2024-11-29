@@ -1148,9 +1148,9 @@ void M_SaveGame (int choice)
 
 enum
 {
-  nyan_options,
   general, // killough 10/98
   set_gameplaymenu,
+  nyan_options,
   set_key_bindings,
   set_weapons,
   set_statbar,
@@ -1166,9 +1166,9 @@ enum
 
 menuitem_t OptionsMenu[]=
 {
-  { 1, "M_NYANOP", M_NyanMenu, 'n', "NYAN OPTIONS" }, // killough 10/98
   { 1, "M_GENERL", M_General, 'g', "GENERAL" }, // killough 10/98
   { 1, "M_GAMEPL", M_GameplayMenu, 'g', "GAMEPLAY / DEMOS" },
+  { 1, "M_NYANOP", M_NyanMenu, 'n', "NYAN OPTIONS" },
   { 1, "M_KEYBND", M_KeyBindings,'k', "KEY BINDINGS" },
   { 1, "M_WEAP", M_Weapons, 'w', "WEAPONS" },
   { 1, "M_STAT", M_StatusBar, 's', "STATUS BAR / HUD" },
