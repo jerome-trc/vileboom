@@ -1132,6 +1132,13 @@ void M_SaveGame (int choice)
 {
   delete_verify = false;
 
+  // killough 10/6/98: allow savegames during single-player demo playback
+  if (!in_game && (!demoplayback || netgame))
+  {
+    M_StartMessage(s_SAVEDEAD,NULL,false); // Ty 03/27/98 - externalized
+    return;
+  }
+
   if (gamestate != GS_LEVEL)
     return;
 
