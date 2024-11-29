@@ -510,7 +510,14 @@ void R_DrawMaskedColumn(
 
 static void R_SetSpritelights(int lightlevel)
 {
-  int lightnum = (lightlevel >> LIGHTSEGSHIFT) + (extralight * LIGHTBRIGHT);
+  int lightnum;
+
+  lightnum = (lightlevel >> LIGHTSEGSHIFT) + (extralight * LIGHTBRIGHT);
+
+  // Allow dark areas to be seen
+  if(NYAN_LITEAMP && (lightnum <= (64 >> LIGHTSEGSHIFT)))
+    lightnum = (64 >> LIGHTSEGSHIFT) + (extralight * LIGHTBRIGHT);
+
   spritelights = scalelight[BETWEEN(0, LIGHTLEVELS - 1, lightnum)];
 }
 

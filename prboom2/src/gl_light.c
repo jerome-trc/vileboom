@@ -77,12 +77,20 @@ void gld_InitLightTable(void)
 
 float gld_Calc2DLightLevel(int lightlevel)
 {
+  // Enhanced Light Amp - Allow dark areas to be seen
+  if(NYAN_LITEAMP && (lightlevel <= 64))
+    lightlevel = 64;
+
   return lighttable[usegamma][BETWEEN(0, 255, lightlevel)];
 }
 
 float gld_CalcLightLevel(int lightlevel)
 {
   int light;
+
+  // Enhanced Light Amp - Allow dark areas to be seen
+  if(NYAN_LITEAMP && (lightlevel <= 64))
+    lightlevel = 64;
 
   light = BETWEEN(0, 255, lightlevel);
 

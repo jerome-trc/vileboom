@@ -753,6 +753,10 @@ static void R_DoDrawPlane(visplane_t *pl)
       if(light >= LIGHTLEVELS)
         light = LIGHTLEVELS-1;
 
+      // Enhanced Light Amp - Allow dark areas to be seen
+      if(NYAN_LITEAMP && (light <= (64 >> LIGHTSEGSHIFT)))
+        light = (64 >> LIGHTSEGSHIFT);
+
       if(light < 0)
         light = 0;
 
