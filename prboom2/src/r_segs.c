@@ -344,7 +344,7 @@ static void R_ApplyLightColormap(draw_column_vars_t *dcvars, fixed_t scale)
 {
   if (!fixedcolormap || NYAN_LITEAMP)
   {
-    int index = (int)(((int64_t) scale * 160 / wide_centerx) >> LIGHTSCALESHIFT-NYAN_LITESHIFT);
+    int index = (int)(((int64_t) scale * 160 / wide_centerx) >> (LIGHTSCALESHIFT-NYAN_LITESHIFT));
     if (index >= MAXLIGHTSCALE)
         index = MAXLIGHTSCALE - 1;
 
