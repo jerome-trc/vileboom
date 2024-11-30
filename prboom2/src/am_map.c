@@ -1079,7 +1079,7 @@ dboolean AM_Responder
   }
   else if (
     dsda_InputActivated(dsda_input_map_zoomout) ||
-    (map_wheel_zoom && ev->type == ev_keydown && ev->data1.i == KEYD_MWHEELDOWN)
+    (map_wheel_zoom && ev->type == ev_mouseb_down && ev->data1.i == KEYD_MWHEELDOWN)
   )
   {
     mtof_zoommul = M_ZOOMOUT;
@@ -1091,7 +1091,7 @@ dboolean AM_Responder
   }
   else if (
     dsda_InputActivated(dsda_input_map_zoomin) ||
-    (map_wheel_zoom && ev->type == ev_keydown && ev->data1.i == KEYD_MWHEELUP)
+    (map_wheel_zoom && ev->type == ev_mouseb_down && ev->data1.i == KEYD_MWHEELUP)
   )
   {
     mtof_zoommul = M_ZOOMIN;
@@ -1170,7 +1170,7 @@ dboolean AM_Responder
     dsda_InputDeactivated(dsda_input_map_zoomout) ||
     dsda_InputDeactivated(dsda_input_map_zoomin) ||
     (
-      map_wheel_zoom && ev->type == ev_keyup &&
+      map_wheel_zoom && ev->type == ev_mouseb_up &&
       (ev->data1.i == KEYD_MWHEELDOWN || ev->data1.i == KEYD_MWHEELUP)
     )
   )
