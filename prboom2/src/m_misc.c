@@ -317,6 +317,7 @@ cfg_def_t cfg_defs[] =
   MIGRATED_SETTING(dsda_config_cheat_codes),
   MIGRATED_SETTING(dsda_config_allow_jumping),
   MIGRATED_SETTING(dsda_config_always_pistol_start),
+  MIGRATED_SETTING(dsda_config_parallel_sfx_active),
   MIGRATED_SETTING(dsda_config_parallel_sfx_limit),
   MIGRATED_SETTING(dsda_config_parallel_sfx_window),
   MIGRATED_SETTING(dsda_config_movement_toggle_sfx),
