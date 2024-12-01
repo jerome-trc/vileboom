@@ -563,7 +563,7 @@ static void dsda_LoadHUDConfig(void) {
     char** lines;
     dsda_arg_t* arg;
     int lump;
-    char* hudlump;
+    const char* hudlump;
     int length = 0;
 
     arg = dsda_Arg(dsda_arg_hud);
