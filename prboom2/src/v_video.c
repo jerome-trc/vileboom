@@ -1458,11 +1458,26 @@ void V_DrawRawScreenSection(const char *lump_name, int source_offset, int dest_y
     }
   }
 
-  x_factor = (float)SCREENWIDTH / 320;
-  y_factor = (float)SCREENHEIGHT / 200;
+  switch (render_stretch_hud) {
+    case patch_stretch_not_adjusted:
+      x_factor = (float)SCREENWIDTH / 320;
+      y_factor = (float)SCREENHEIGHT / 200;
 
-  if (y_factor < x_factor)
-    x_factor = y_factor;
+      if (y_factor < x_factor)
+        x_factor = y_factor;
+      break;
+    case patch_stretch_doom_format:
+      x_factor = (float)WIDE_SCREENWIDTH / 320;
+      y_factor = (float)WIDE_SCREENHEIGHT / 200;
+
+      if (y_factor < x_factor)
+        x_factor = y_factor;
+      break;
+    case patch_stretch_fit_to_width:
+      x_factor = (float)SCREENWIDTH / 320;
+      y_factor = (float)SCREENHEIGHT / 200;
+      break;
+  }
 
   x_offset = (int)((SCREENWIDTH - (x_factor * 320)) / 2);
   y_offset = (int)((dest_y_offset * y_factor) - (source_offset * y_factor / 320));
