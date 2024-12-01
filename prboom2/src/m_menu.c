@@ -3140,7 +3140,7 @@ setup_menu_t audio_settings[] = {
   EMPTY_LINE,
   { "Limit Overlapping For Same-Sound", S_YESNO, m_conf, G_X, dsda_config_parallel_sfx_active },
   { "Number of Overlapping Sounds", S_NUM, m_conf, G_X, dsda_config_parallel_sfx_limit },
-  { "Sound Replay Window (sec)", S_NUM, m_conf, G_X, dsda_config_parallel_sfx_window },
+  { "Sound Replay Window (tics)", S_NUM, m_conf, G_X, dsda_config_parallel_sfx_window },
   EMPTY_LINE,
   { "Play SFX For Movement Toggles", S_YESNO, m_conf, G_X, dsda_config_movement_toggle_sfx },
   { "Play SFX For Quicksave", S_YESNO, m_conf, G_X, dsda_config_quicksave_sfx },
