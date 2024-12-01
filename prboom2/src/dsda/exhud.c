@@ -570,7 +570,7 @@ static void dsda_LoadHUDConfig(void) {
     if (arg->found)
       length = M_ReadFileToString(arg->value.v_string, &hud_config);
 
-    hudlump = W_CheckNumForName("NYANHUD") ? "NYANHUD" : "DSDAHUD";
+    hudlump = ((W_CheckNumForName("NYANHUD") != LUMP_NOT_FOUND) ? "NYANHUD" : "DSDAHUD");
 
     lump = -1;
     while ((lump = W_FindNumFromName(hudlump, lump)) >= 0) {
