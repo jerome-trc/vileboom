@@ -361,28 +361,22 @@ static void I_GetEvent(void)
       case SDL_MOUSEWHEEL:
         if (mouse_enabled && window_focused)
         {
-          int button;
+          int mouseb;
 
           if (Event->wheel.y > 0)
-          {
-            button = KEYD_MWHEELUP;
-          }
+            mouseb = KEYD_MWHEELUP;
           else if (Event->wheel.y < 0)
-          {
-            button = KEYD_MWHEELDOWN;
-          }
+            mouseb = KEYD_MWHEELDOWN;
           else if (Event->wheel.x < 0)
-          {
-            button = KEYD_MWHEELLEFT;
-          }
+            mouseb = KEYD_MWHEELLEFT;
           else if (Event->wheel.x > 0)
-          {
-            button = KEYD_MWHEELRIGHT;
-          }
+            mouseb = KEYD_MWHEELRIGHT;
+          else
+            mouseb = 0;
 
-          if(button)
+          if(mouseb)
           {
-            event.data1.i = button;
+            event.data1.i = mouseb;
 
             event.type = ev_keydown;
             D_PostEvent(&event);
