@@ -1477,6 +1477,11 @@ void V_DrawRawScreenSection(const char *lump_name, int source_offset, int dest_y
       x_factor = (float)SCREENWIDTH / 320;
       y_factor = (float)SCREENHEIGHT / 200;
       break;
+    default:
+      // This should never happen
+      x_factor = 0;
+      y_factor = 0;
+      break;
   }
 
   x_offset = (int)((SCREENWIDTH - (x_factor * 320)) / 2);

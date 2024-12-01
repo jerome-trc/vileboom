@@ -365,7 +365,7 @@ static void I_GetEvent(void)
       case SDL_MOUSEWHEEL:
         if (mouse_enabled && window_focused)
         {
-          int button;
+          int button = -1;
 
           if (Event->wheel.y > 0)
           {
