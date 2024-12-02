@@ -446,7 +446,7 @@ dsda_config_t dsda_config[dsda_config_count] = {
   },
   [nyan_config_full_menu_fade] = {
     "nyan_full_menu_fade", nyan_config_full_menu_fade,
-    CONF_BOOL(0)
+    CONF_BOOL(1)
   },
   [nyan_config_gradual_menu_fade] = {
     "nyan_gradual_menu_fade", nyan_config_gradual_menu_fade,
