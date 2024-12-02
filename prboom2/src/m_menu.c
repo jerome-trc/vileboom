@@ -1132,15 +1132,11 @@ void M_SaveGame (int choice)
 {
   delete_verify = false;
 
-  // killough 10/6/98: allow savegames during single-player demo playback
-  if (!in_game && (!demoplayback || netgame))
+  if (gamestate != GS_LEVEL)
   {
     M_StartMessage(s_SAVEDEAD,NULL,false); // Ty 03/27/98 - externalized
     return;
   }
-
-  if (gamestate != GS_LEVEL)
-    return;
 
   M_SetupNextMenu(&SaveDef);
   M_ReadSaveStrings();
@@ -5564,7 +5560,7 @@ static confirmation_t M_EventToConfirmation(int ch, int action, event_t* ev)
 {
   if (ch == 'y' || (!ch && action == MENU_ENTER))
     return confirmation_yes;
-  else if (ch == ' ' || ch == KEYD_ESCAPE || ch == 'n' || (!ch && action == MENU_BACKSPACE))
+  else if (ch == ' ' || ch == KEYD_ESCAPE || ch == 'n' || (!delete_verify && action == MENU_BACKSPACE))
     return confirmation_no;
   else
     return confirmation_null;
