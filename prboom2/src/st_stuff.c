@@ -993,6 +993,7 @@ void ST_Drawer(dboolean refresh)
 {
   dboolean statusbaron = R_StatusBarVisible();
   dboolean fullmenu = (menuactive == mnact_full) && !M_MenuIsShaded();
+  dboolean alwaysrefresh = true;
 
   V_BeginUIDraw();
 
@@ -1007,11 +1008,13 @@ void ST_Drawer(dboolean refresh)
    * completely by the call from D_Display
    * proff - really do it
    */
-  st_firsttime = st_firsttime || refresh || fullmenu;
+  st_firsttime = st_firsttime || refresh || fullmenu || alwaysrefresh;
 
   ST_doPaletteStuff();  // Do red-/gold-shifts from damage/items
 
   // Always refresh status bar background for software
+  //
+  // dboolean alwaysrefresh = true
   //
   // Haven't seen any downsides to keeping the software
   // statusbar up-to-date, to be the same as OpenGL.
@@ -1024,9 +1027,20 @@ void ST_Drawer(dboolean refresh)
   //
   //
   if (statusbaron) {
-    ST_refreshBackground();
-    if (!fullmenu)
-        ST_drawWidgets(true);
+    if (st_firsttime || (V_IsOpenGLMode() || fadeBG()))
+    {
+      /* If just after ST_Start(), refresh all */
+      st_firsttime = false;
+      ST_refreshBackground(); // draw status bar background to off-screen buff
+      if (!fullmenu)
+        ST_drawWidgets(true); // and refresh all widgets
+    }
+    else
+    {
+      /* Otherwise, update as little as possible */
+      if (!fullmenu)
+        ST_drawWidgets(false); // update all widgets
+    }
   }
 
   V_EndUIDraw();
