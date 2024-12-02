@@ -850,6 +850,53 @@ void gld_FillBlock(int x, int y, int width, int height, int col)
   glsl_PopNullShader();
 }
 
+void gld_DrawShaded(int x, int y, int width, int height, int col, dboolean animate)
+{
+  color_rgb_t color = gld_LookupIndexedColor(col, V_IsUILightmodeIndexed() || V_IsAutomapLightmodeIndexed());
+  const int targshade = 20;
+  static int oldtic = -1;
+  static int screenshade;
+
+  // [FG] longer than one tic ago? start a new sequence
+  if (gametic - oldtic > 1)
+  {
+    screenshade = 0;
+  }
+
+  glsl_PushNullShader();
+
+  gld_EnableTexture2D(GL_TEXTURE0_ARB, false);
+
+  glColor4f((float)color.r/255.0f,
+            (float)color.g/255.0f,
+            (float)color.b/255.0f,
+            (float)screenshade/30);
+
+  glBegin(GL_TRIANGLE_STRIP);
+    glVertex2i( x, y );
+    glVertex2i( x, y+height );
+    glVertex2i( x+width, y );
+    glVertex2i( x+width, y+height );
+  glEnd();
+  glColor4f(1.0f,1.0f,1.0f,1.0f);
+  gld_EnableTexture2D(GL_TEXTURE0_ARB, true);
+
+  glsl_PopNullShader();
+
+  if (!animate)
+  {
+    screenshade = targshade;
+  }
+  else if (screenshade < targshade && gametic != oldtic)
+  {
+    screenshade += 2;
+    if (screenshade > targshade)
+      screenshade = targshade;
+  }
+
+  oldtic = gametic;
+}
+
 void gld_SetPalette(int palette)
 {
   static int last_palette = 0;
