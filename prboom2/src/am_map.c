@@ -621,7 +621,7 @@ void AM_SetPosition(void)
     f_x = f_y = 0;
     f_w = SCREENWIDTH;
 
-    if (automap_overlay==1)
+    if (automap_overlay>0)
     {
       f_h = viewheight;
     }

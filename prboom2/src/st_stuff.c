@@ -1025,7 +1025,7 @@ void ST_Drawer(dboolean refresh)
   //
   if (statusbaron) {
     ST_refreshBackground();
-    if (!fullmenu || !fadeBG)
+    if (!fullmenu)
         ST_drawWidgets(true);
   }
 
