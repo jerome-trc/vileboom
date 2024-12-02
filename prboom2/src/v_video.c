@@ -637,9 +637,9 @@ static void V_DrawMemPatch(int x, int y, int scrn, const rpatch_t *patch,
 //
 static void FUNC_V_DrawShaded(int scrn, int x, int y, int width, int height, dboolean animate)
 {
-  int xi, yi;
+  extern const lighttable_t **colormaps;
   byte* dest;
-  int pitch;
+  int ix, iy;
   const int targshade = 20;
   static int oldtic = -1;
   static int screenshade;
@@ -650,11 +650,11 @@ static void FUNC_V_DrawShaded(int scrn, int x, int y, int width, int height, dbo
     screenshade = 0;
   }
 
-  for (yi = y; yi < y + height; ++yi)
+  for (iy = y; iy < y + height; ++iy)
   {
-    dest = screens[scrn].data + screens[scrn].pitch * yi + x;
+    dest = screens[scrn].data + screens[scrn].pitch * iy + x;
 
-    for (xi = x; xi < x + width; ++xi)
+    for (ix = x; ix < x + width; ++ix)
     {
       *dest++ = colormaps[scrn][screenshade * 256 + dest[scrn]];
     }
