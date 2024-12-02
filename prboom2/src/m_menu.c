@@ -3286,7 +3286,8 @@ setup_menu_t nyan_settings[] = {
   { "Nyan Options", S_SKIP | S_TITLE, m_null, G_X},
   { "DSDA-Doom Options Order", S_YESNO, m_conf, G_X, nyan_config_dsda_menu_format },
   { "Play Demos While In Menus", S_YESNO, m_conf, G_X, nyan_config_menu_play_demo },
-  { "Add Overlay for All Menus", S_YESNO, m_conf, G_X, nyan_config_full_menu_fade },
+  { "Overlay for All Menus", S_YESNO, m_conf, G_X, nyan_config_full_menu_fade },
+  { "Overlay Gradual Fade", S_YESNO, m_conf, G_X, nyan_config_gradual_menu_fade },
   EMPTY_LINE,
   { "Skip IWAD Demos For PWADs", S_YESNO, m_conf, G_X, nyan_config_skip_default_demos },
   { "Skip IWAD Story For PWADs", S_YESNO, m_conf, G_X, nyan_config_skip_default_text },
@@ -6106,7 +6107,7 @@ void M_Drawer (void)
   V_BeginUIDraw();
 
   if (M_MenuIsShaded())
-    V_DrawShaded(0, 0, 0, SCREENWIDTH << WIDE_SCREENWIDTH, SCREENHEIGHT << WIDE_SCREENHEIGHT, false);
+    V_DrawShaded(0, 0, 0, SCREENWIDTH << WIDE_SCREENWIDTH, SCREENHEIGHT << WIDE_SCREENHEIGHT, dsda_IntConfig(nyan_config_gradual_menu_fade));
 
   inhelpscreens = false;
 
