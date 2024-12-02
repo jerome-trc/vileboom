@@ -24,6 +24,7 @@
 #include "w_wad.h"
 #include "st_stuff.h"
 #include "r_draw.h"
+#include "m_menu.h"
 
 #include "dsda/pause.h"
 #include "dsda/settings.h"
@@ -537,7 +538,7 @@ static int oldpieces = -1;
 
 void SB_Drawer(dboolean statusbaron, dboolean refresh, dboolean fullmenu)
 {
-    if (refresh || fullmenu || V_IsOpenGLMode() || automap_overlay>0) SB_state = -1;
+    if (refresh || fullmenu || V_IsOpenGLMode() || M_MenuIsShaded()) SB_state = -1;
 
     if (!statusbaron)
     {
