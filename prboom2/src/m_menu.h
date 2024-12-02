@@ -49,7 +49,8 @@
 
 dboolean M_Responder (event_t *ev);
 
-extern dboolean M_MenuIsShaded(void);
+dboolean fadeBG(void);
+dboolean M_MenuIsShaded(void);
 
 // Called by main loop,
 // only used for menu (skull cursor) animation.

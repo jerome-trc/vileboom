@@ -991,9 +991,8 @@ void ST_Refresh(void)
 
 void ST_Drawer(dboolean refresh)
 {
-  dboolean fadeBG = dsda_IntConfig(dsda_config_menu_background)==1;
   dboolean statusbaron = R_StatusBarVisible();
-  dboolean fullmenu = (menuactive == mnact_full);
+  dboolean fullmenu = (menuactive == mnact_full) && !M_MenuIsShaded();
 
   V_BeginUIDraw();
 
@@ -1012,19 +1011,18 @@ void ST_Drawer(dboolean refresh)
 
   ST_doPaletteStuff();  // Do red-/gold-shifts from damage/items
 
-  // Refreshes status bar background for software
+  // Always refresh status bar background for software
   //
   // Haven't seen any downsides to keeping the software
   // statusbar up-to-date, to be the same as OpenGL.
   // 
-  // This fixes a few issues like when status bar
+  // This fixes a few Software issues like when statusbar
   // numbers are too long and leave artefacts on the
-  // background
+  // background ("200 Line Christmas") or wider
+  // statusbar faces leaving parts on the background
+  // ("Pirate Doom II").
   //
-  // (see "200 Line Christmas" or the statusbar face
-  // from "Pirate Doom II")
-  // 
-  // Also fixes the new armor and berserk stbar indicators!
+  //
   if (statusbaron) {
     ST_refreshBackground();
     if (!fullmenu || !fadeBG)

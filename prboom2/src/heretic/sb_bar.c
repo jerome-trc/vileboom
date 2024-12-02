@@ -18,13 +18,13 @@
 
 #include "doomstat.h"
 #include "m_cheat.h"
+#include "m_menu.h"
 #include "m_random.h"
 #include "v_video.h"
 #include "r_main.h"
 #include "w_wad.h"
 #include "st_stuff.h"
 #include "r_draw.h"
-#include "m_menu.h"
 
 #include "dsda/pause.h"
 #include "dsda/settings.h"
@@ -538,8 +538,7 @@ static int oldpieces = -1;
 
 void SB_Drawer(dboolean statusbaron, dboolean refresh, dboolean fullmenu)
 {
-    dboolean fadeBG = dsda_IntConfig(dsda_config_menu_background)==1;
-    if (refresh || fullmenu || fadeBG || V_IsOpenGLMode()) SB_state = -1;
+    if (refresh || fullmenu || fadeBG() || V_IsOpenGLMode()) SB_state = -1;
 
     if (!statusbaron)
     {

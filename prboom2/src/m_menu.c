@@ -6081,13 +6081,17 @@ void M_StartControlPanel (void)
   itemOn = currentMenu->lastOn;   // JDC
 }
 
+dboolean fadeBG(void)
+{
+  return dsda_IntConfig(dsda_config_menu_background)==1;
+}
+
 dboolean M_MenuIsShaded(void)
 {
-  int FadeBG = dsda_IntConfig(dsda_config_menu_background)==1;
   int WhichMenuFade = dsda_IntConfig(nyan_config_full_menu_fade);
   int Options = (setup_active || currentMenu == &OptionsDef || currentMenu == &SoundDef);
   int All     = WhichMenuFade && (Options || menuactive == mnact_float);
-  return FadeBG && (Options || All);
+  return (Options || All) && fadeBG();
 }
 
 //
