@@ -78,6 +78,7 @@ typedef enum {
   dsda_config_mute_unfocused_window,
   dsda_config_cheat_codes,
   dsda_config_organize_failed_demos,
+  nyan_config_full_menu_fade,
   nyan_config_intermission_pause,
   nyan_config_skip_default_demos,
   nyan_config_skip_default_text,

@@ -444,6 +444,10 @@ dsda_config_t dsda_config[dsda_config_count] = {
     "dsda_organize_failed_demos", dsda_config_organize_failed_demos,
     CONF_BOOL(0)
   },
+  [nyan_config_full_menu_fade] = {
+    "nyan_full_menu_fade", nyan_config_full_menu_fade,
+    CONF_BOOL(0)
+  },
   [nyan_config_intermission_pause] = {
    "nyan_intermission_pause", nyan_config_intermission_pause,
    CONF_BOOL(1), NULL, STRICT_INT(0)

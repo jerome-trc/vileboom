@@ -332,6 +332,7 @@ cfg_def_t cfg_defs[] =
   SETTING_HEADING("Nyan-Doom settings"),
   MIGRATED_SETTING(nyan_config_dsda_menu_format),
   MIGRATED_SETTING(nyan_config_menu_play_demo),
+  MIGRATED_SETTING(nyan_config_full_menu_fade),
   MIGRATED_SETTING(nyan_config_intermission_pause),
   MIGRATED_SETTING(nyan_config_skip_default_demos),
   MIGRATED_SETTING(nyan_config_skip_default_text),
