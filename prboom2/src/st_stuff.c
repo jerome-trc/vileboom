@@ -991,7 +991,7 @@ void ST_Refresh(void)
 void ST_Drawer(dboolean refresh)
 {
   dboolean statusbaron = R_StatusBarVisible();
-  dboolean fullmenu = (menuactive == mnact_full);
+  dboolean fullmenu = (menuactive == mnact_full) && !M_MenuIsShaded();
 
   V_BeginUIDraw();
 

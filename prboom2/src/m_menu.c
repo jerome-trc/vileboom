@@ -190,7 +190,7 @@ void (*messageRoutine)(int response);
 
 static void M_DrawBackground(const char *flat, int scrn)
 {
-  if (dsda_IntConfig(dsda_config_menu_background))
+  if (dsda_IntConfig(dsda_config_menu_background)==2)
     V_DrawBackground(flat, scrn);
 }
 
@@ -3225,6 +3225,8 @@ setup_menu_t misc_settings[] = {
   FINAL_ENTRY
 };
 
+static const char* menu_background_list[] = { "Off", "Dark", "Texture", NULL };
+
 setup_menu_t display_settings[] = {
   { "Display Options", S_SKIP | S_TITLE, m_null, G_X},
   { "Wipe Screen Effect", S_YESNO,  m_conf, G_X, dsda_config_render_wipescreen },
@@ -3243,7 +3245,7 @@ setup_menu_t display_settings[] = {
   { "Change Colormap On Lite Amp", S_YESNO, m_conf, G_X, dsda_config_colormap_onliteamp },
   EMPTY_LINE,
   { "Status Bar and Menu Appearance", S_CHOICE, m_conf, G_X, dsda_config_render_stretch_hud, 0, render_stretch_list },
-  { "Fullscreen Menu Background", S_YESNO, m_conf, G_X, dsda_config_menu_background },
+  { "Fullscreen Menu Background", S_CHOICE, m_conf, G_X, dsda_config_menu_background, 0, menu_background_list },
 
   PREV_PAGE(misc_settings),
   FINAL_ENTRY
@@ -6081,6 +6083,13 @@ void M_StartControlPanel (void)
   itemOn = currentMenu->lastOn;   // JDC
 }
 
+dboolean M_MenuIsShaded(void)
+{
+  int FadeBG = dsda_IntConfig(dsda_config_menu_background)==1;
+  int Options = (setup_active || currentMenu == &OptionsDef || currentMenu == &SoundDef);
+  return FadeBG && Options;
+}
+
 //
 // M_Drawer
 // Called after the view has been rendered,
@@ -6092,6 +6101,9 @@ void M_StartControlPanel (void)
 void M_Drawer (void)
 {
   V_BeginUIDraw();
+
+  if (M_MenuIsShaded())
+    V_DrawShaded(0, 0, 0, SCREENWIDTH << WIDE_SCREENWIDTH, SCREENHEIGHT << WIDE_SCREENHEIGHT, false);
 
   inhelpscreens = false;
 
