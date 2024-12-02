@@ -656,7 +656,8 @@ static void FUNC_V_DrawShaded(int scrn, int x, int y, int width, int height, dbo
 
     for (ix = x; ix < x + width; ++ix)
     {
-      *dest++ = colormaps[scrn][screenshade * 256 + dest[scrn]];
+      *dest = colormaps[scrn][screenshade * 256 + dest[scrn]];
+      dest++;
     }
   }
 
