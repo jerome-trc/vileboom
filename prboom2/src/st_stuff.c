@@ -991,8 +991,9 @@ void ST_Refresh(void)
 
 void ST_Drawer(dboolean refresh)
 {
+  dboolean fadeBG = dsda_IntConfig(dsda_config_menu_background)==1;
   dboolean statusbaron = R_StatusBarVisible();
-  dboolean fullmenu = (menuactive == mnact_full) && !M_MenuIsShaded();
+  dboolean fullmenu = (menuactive == mnact_full);
 
   V_BeginUIDraw();
 
@@ -1026,7 +1027,7 @@ void ST_Drawer(dboolean refresh)
   // Also fixes the new armor and berserk stbar indicators!
   if (statusbaron) {
     ST_refreshBackground();
-    if (!fullmenu)
+    if (!fullmenu || !fadeBG)
         ST_drawWidgets(true);
   }
 

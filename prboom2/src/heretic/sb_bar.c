@@ -538,7 +538,7 @@ static int oldpieces = -1;
 
 void SB_Drawer(dboolean statusbaron, dboolean refresh, dboolean fullmenu)
 {
-    int fadeBG = dsda_IntConfig(dsda_config_menu_background)==1;
+    dboolean fadeBG = dsda_IntConfig(dsda_config_menu_background)==1;
     if (refresh || fullmenu || fadeBG || V_IsOpenGLMode()) SB_state = -1;
 
     if (!statusbaron)
