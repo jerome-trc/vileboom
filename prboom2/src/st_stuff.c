@@ -44,6 +44,7 @@
 #include "r_main.h"
 #include "am_map.h"
 #include "m_cheat.h"
+#include "m_menu.h"
 #include "s_sound.h"
 #include "sounds.h"
 #include "dstrings.h"
