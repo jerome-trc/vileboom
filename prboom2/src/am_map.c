@@ -57,6 +57,7 @@
 #include "m_misc.h"
 #include "m_bbox.h"
 #include "d_main.h"
+#include "m_menu.h"
 
 #include "dsda/id_list.h"
 #include "dsda/input.h"
@@ -620,7 +621,7 @@ void AM_SetPosition(void)
     f_x = f_y = 0;
     f_w = SCREENWIDTH;
 
-    if (automap_overlay)
+    if (automap_overlay==1)
     {
       f_h = viewheight;
     }
@@ -2778,6 +2779,9 @@ void AM_Drawer (dboolean minimap)
   if (!automap_active && !minimap)
     return;
 
+  if (automap_active && automap_overlay==2 && minimap)
+    return;
+
   V_BeginAutomapDraw();
 
   if (automap_follow)
@@ -2801,6 +2805,8 @@ void AM_Drawer (dboolean minimap)
 
   if (!automap_overlay) // cph - If not overlay mode, clear background for the automap
     V_FillRect(FB, f_x, f_y, f_w, f_h, (byte)mapcolor_p->back); //jff 1/5/98 background default color
+  if (automap_overlay==2 && !M_MenuIsShaded())
+    V_DrawShaded(FB, f_x, f_y, f_w, f_h, false);
 
   if (map_textured)
   {
