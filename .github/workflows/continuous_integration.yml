@@ -35,6 +35,8 @@ jobs:
             msystem: ucrt64
             msys-env: mingw-w64-ucrt-x86_64
             artifact-path: build/*.zip
+            extra_options: >-
+              -DwxUSE_DPI_AWARE_MANIFEST=2
 
           - name: "Linux GCC"
             os: ubuntu-latest
