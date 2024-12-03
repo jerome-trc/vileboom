@@ -641,11 +641,12 @@ static void FUNC_V_DrawShaded(int scrn, int x, int y, int width, int height, dbo
   byte* dest;
   int ix, iy;
   const int targshade = 20;
+  const int step = 2;
   static int oldtic = -1;
   static int screenshade;
 
-  // [FG] longer than one tic ago? start a new sequence
-  if (gametic - oldtic > 1)
+  // [FG] start a new sequence
+  if (gametic - oldtic > targshade / step)
   {
     screenshade = 0;
   }
@@ -667,8 +668,11 @@ static void FUNC_V_DrawShaded(int scrn, int x, int y, int width, int height, dbo
   }
   else if (screenshade < targshade && gametic != oldtic)
   {
-    screenshade += 2;
-    if (screenshade > targshade)
+    const int sign = ((screenshade - targshade) < 0) ? 1 : -1;
+
+    screenshade += step*sign;
+
+    if (screenshade*sign > targshade*sign)
       screenshade = targshade;
   }
 
