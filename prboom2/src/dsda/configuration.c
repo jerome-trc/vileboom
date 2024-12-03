@@ -943,7 +943,7 @@ dsda_config_t dsda_config[dsda_config_count] = {
   },
   [dsda_config_hudadd_secretarea] = {
     "hudadd_secretarea", dsda_config_hudadd_secretarea,
-    CONF_BOOL(1)
+    dsda_config_int, 0, 2, { 0 }
   },
   [dsda_config_hudadd_demoprogressbar] = {
     "hudadd_demoprogressbar", dsda_config_hudadd_demoprogressbar,
@@ -1446,7 +1446,7 @@ dsda_config_t dsda_config[dsda_config_count] = {
   },
   [dsda_config_announce_map] = {
     "announce_map", dsda_config_announce_map,
-    CONF_BOOL(0),
+    dsda_config_int, 0, 2, { 0 }
   },
 };
 

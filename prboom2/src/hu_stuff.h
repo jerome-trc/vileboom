@@ -52,6 +52,7 @@ void HU_Drawer(void);
 mobj_t *HU_Target(void);
 
 int SetCustomMessage(int plr, const char *msg, int ticks, int sfx);
+int SetTitleMessage(int plr, const char *msg, int ticks, int sfx);
 
 extern int hud_health_red;    // health amount less than which status is red
 extern int hud_health_yellow; // health amount less than which status is yellow

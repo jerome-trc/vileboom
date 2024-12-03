@@ -83,6 +83,7 @@ typedef enum {
   exhud_color_test,
   exhud_free_text,
   exhud_message,
+  exhud_announce_message,
   exhud_secret_message,
   exhud_map_coordinates,
   exhud_map_time,
@@ -321,6 +322,12 @@ exhud_component_t components_template[exhud_component_count] = {
     dsda_UpdateMessageHC,
     dsda_DrawMessageHC,
     "message",
+  },
+  [exhud_announce_message] = {
+    dsda_InitAnnounceMessageHC,
+    dsda_UpdateAnnounceMessageHC,
+    dsda_DrawAnnounceMessageHC,
+    "announce_message",
   },
   [exhud_secret_message] = {
     dsda_InitSecretMessageHC,

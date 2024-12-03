@@ -2738,6 +2738,8 @@ static const char* armor_icon_list[] =
   NULL
 };
 
+static const char* secretarea_list[] = { "Off", "On", "Subtle", NULL };
+
 setup_menu_t stat_settings1[] =  // Status Bar and HUD Settings screen
 {
   { "STATUS BAR", S_SKIP | S_TITLE, m_null, SB_X},
@@ -2754,7 +2756,7 @@ setup_menu_t stat_settings1[] =  // Status Bar and HUD Settings screen
   { "HEALTH GOOD/EXTRA", S_NUM, m_conf, SB_X, dsda_config_hud_health_green },
   { "AMMO LOW/OK", S_NUM, m_conf, SB_X, dsda_config_hud_ammo_red },
   { "AMMO OK/GOOD", S_NUM, m_conf, SB_X, dsda_config_hud_ammo_yellow },
-  { "REPORT REVEALED SECRETS", S_YESNO, m_conf, SB_X, dsda_config_hudadd_secretarea },
+  { "REPORT REVEALED SECRETS", S_CHOICE, m_conf, SB_X, dsda_config_hudadd_secretarea, 0, secretarea_list },
   { "DEMO PLAYBACK PROGRESS BAR", S_YESNO, m_conf, SB_X, dsda_config_hudadd_demoprogressbar },
 
   NEXT_PAGE(stat_settings2),
@@ -3196,6 +3198,7 @@ setup_menu_t controller_settings[] = {
 
 static const char* endoom_list[] = { "Off", "On", "PWAD only", NULL };
 static const char* endoom_type_list[] = { "Terminal", "Window", NULL };
+static const char* announce_map_list[] = { "Off", "On", "Subtle", NULL };
 
 setup_menu_t misc_settings[] = {
   { "Miscellaneous", S_SKIP | S_TITLE, m_null, G_X},
@@ -3203,7 +3206,7 @@ setup_menu_t misc_settings[] = {
   { "Default compatibility level", S_CHOICE, m_conf, G_X, dsda_config_default_complevel, 0, &gen_compstrings[1] },
   { "Enable Cheat Code Entry", S_YESNO, m_conf, G_X, dsda_config_cheat_codes },
   { "Use Dehacked Cheats", S_YESNO, m_conf, G_X, dsda_config_deh_change_cheats },
-  { "Announce Map On Entry", S_YESNO, m_conf, G_X, dsda_config_announce_map },
+  { "Announce Map On Entry", S_CHOICE, m_conf, G_X, dsda_config_announce_map, 0, announce_map_list },
   EMPTY_LINE,
   { "Endoom Screen", S_CHOICE, m_conf, G_X, nyan_config_show_endoom, 0, endoom_list },
   { "Endoom Type", S_CHOICE, m_conf, G_X, nyan_config_type_endoom, 0, endoom_type_list },

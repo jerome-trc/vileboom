@@ -77,6 +77,9 @@ typedef struct custom_message_s
 static custom_message_t custom_message[MAX_MAXPLAYERS];
 static custom_message_t *custom_message_p;
 
+static custom_message_t title_message[MAX_MAXPLAYERS];
+static custom_message_t *title_message_p;
+
 //jff 2/16/98 status color change levels
 int hud_ammo_red;      // ammo percent less than which status is red
 int hud_ammo_yellow;   // ammo percent less is yellow more green
@@ -107,6 +110,9 @@ static void HU_InitMessages(void)
 {
   custom_message_p = &custom_message[displayplayer];
   custom_message_p->ticks = 0;
+
+  title_message_p = &title_message[displayplayer];
+  title_message_p->ticks = 0;
 }
 
 static void HU_InitPlayer(void)
@@ -303,13 +309,14 @@ void HU_DrawCrosshair(void)
 
 void HU_AnnounceMap(void)
 {
-  if (dsda_IntConfig(dsda_config_announce_map))
+  if (dsda_IntConfig(dsda_config_announce_map)>0)
   {
     static int last_gamemap;
     static int last_gameepisode;
 
     if (gamemap != last_gamemap || gameepisode != last_gameepisode)
     {
+      int announce_config = dsda_IntConfig(dsda_config_announce_map);
       const char *author;
 
       last_gamemap = gamemap;
@@ -318,15 +325,23 @@ void HU_AnnounceMap(void)
       author = dsda_MapAuthor();
       if (author && author[0])
       {
-        dsda_string_t message;
+        dsda_string_t map_and_author;
 
-        dsda_StringPrintF(&message, "%s by %s", hud_title.string, author);
-        dsda_AddAlert(message.string);
-        dsda_FreeString(&message);
+        dsda_StringPrintF(&map_and_author, "%s by %s", hud_title.string, author);
+
+        if (announce_config==2)
+          dsda_AddAlert(map_and_author.string);
+        else
+          SetTitleMessage(plr - players, hud_title.string, 4 * TICRATE, 0);
+
+        dsda_FreeString(&map_and_author);
       }
       else
       {
-        dsda_AddAlert(hud_title.string);
+        if (announce_config==2)
+          dsda_AddAlert(hud_title.string);
+        else
+          SetTitleMessage(plr - players, hud_title.string, 4 * TICRATE, 0);
       }
     }
   }
@@ -377,6 +392,8 @@ void HU_Drawer(void)
   V_EndUIDraw();
 }
 
+//
+// Secret Message
 char* secret_message;
 
 static void HU_UpdateSecretMessage(const char* message)
@@ -389,6 +406,22 @@ static void HU_UpdateSecretMessage(const char* message)
 
 char* HU_SecretMessage(void) {
   return custom_message_p->ticks > 0 ? secret_message : NULL;
+}
+
+//
+// Announce Map Message
+char* announce_message;
+
+static void HU_UpdateAnnounceMessage(const char* message)
+{
+  if (announce_message)
+    Z_Free(announce_message);
+
+  announce_message = Z_Strdup(message);
+}
+
+char* HU_AnnounceMessage(void) {
+  return title_message_p->ticks > 0 ? announce_message : NULL;
 }
 
 //
@@ -420,6 +453,25 @@ void HU_Ticker(void)
     if (custom_message_p->sfx > 0 && custom_message_p->sfx < num_sfx)
     {
       S_StartVoidSound(custom_message_p->sfx);
+    }
+  }
+
+  // Title messages
+  for (i = 0; i < g_maxplayers; i++)
+  {
+    if (title_message[i].ticks > 0)
+      title_message[i].ticks--;
+  }
+
+  if (title_message_p->msg)
+  {
+    HU_UpdateAnnounceMessage(title_message_p->msg);
+
+    title_message_p->msg = NULL;
+
+    if (title_message_p->sfx > 0 && title_message_p->sfx < num_sfx)
+    {
+      S_StartVoidSound(title_message_p->sfx);
     }
   }
 
@@ -459,6 +511,24 @@ int SetCustomMessage(int plr, const char *msg, int ticks, int sfx)
   item.sfx = sfx;
 
   custom_message[plr] = item;
+
+  return true;
+}
+
+int SetTitleMessage(int plr, const char *msg, int ticks, int sfx)
+{
+  custom_message_t item;
+
+  if (plr < 0 || plr >= g_maxplayers || !msg || ticks < 0 || sfx < 0 || sfx >= num_sfx)
+  {
+    return false;
+  }
+
+  item.msg = msg;
+  item.ticks = ticks;
+  item.sfx = sfx;
+
+  title_message[plr] = item;
 
   return true;
 }

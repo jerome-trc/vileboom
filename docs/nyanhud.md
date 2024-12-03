@@ -132,3 +132,7 @@ Unless otherwise specified, argument values are integers. For toggles, a 1 means
   - Sprite is hidden when armor is 0%
 - `sml_berserk`: shows the player berserk status with a small sprite
   - Sprite is hidden when berserk is inactive
+- `announce_message`: shows the announce map message
+  - Uses the message font
+  - Supports 1 argument: `center`
+  - `center`: centers the component horizontally
