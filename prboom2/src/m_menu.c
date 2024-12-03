@@ -6110,7 +6110,7 @@ void M_Drawer (void)
   V_BeginUIDraw();
 
   if (M_MenuIsShaded())
-    V_DrawShaded(0, 0, 0, SCREENWIDTH << WIDE_SCREENWIDTH, SCREENHEIGHT << WIDE_SCREENHEIGHT, dsda_IntConfig(nyan_config_gradual_menu_fade));
+    V_DrawShaded(0, 0, 0, SCREENWIDTH, SCREENHEIGHT, dsda_IntConfig(nyan_config_gradual_menu_fade));
 
   inhelpscreens = false;
 
