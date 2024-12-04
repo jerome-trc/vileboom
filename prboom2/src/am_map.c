@@ -1017,7 +1017,7 @@ dboolean AM_Responder
     dsda_CycleConfig(dsda_config_automap_overlay, true);
     dsda_AddMessage(automap_overlay == 0 ? s_AMSTR_OVERLAYOFF :
                     automap_overlay == 1 ? s_AMSTR_OVERLAYON :
-                    "Dark Overlay On");
+                    "Overlay Mode Dark");
     AM_SetPosition();
     AM_activateNewScale();
 
