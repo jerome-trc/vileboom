@@ -6132,11 +6132,15 @@ static void M_GradualShade(void)
 
 static void M_ShadedScreen(int scrn)
 {
-  if (automap_overlay==2 && automap_active)
-    screenshade = targshade;
+  int gradualShade = dsda_IntConfig(nyan_config_gradual_menu_fade);
+  int automapShade = automap_overlay==2 && automap_active;
 
-  if (dsda_IntConfig(nyan_config_gradual_menu_fade))
-    M_GradualShade();
+  // Disables shade when automap overlay or gradual shade is turned off
+  if (!gradualShade || automapShade)
+    screenshade = targshade;
+  
+  // Always run gradual shade for smooth setting change transition
+  M_GradualShade();
 
   V_DrawShaded(scrn, 0, 0, SCREENWIDTH, SCREENHEIGHT, screenshade);
 }
