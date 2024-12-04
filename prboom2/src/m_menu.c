@@ -6332,6 +6332,8 @@ void M_Ticker (void)
 
 void M_StartMessage (const char* string,void* routine,dboolean input)
 {
+  currentMenu = NULL;
+  setup_active = false;
   messageLastMenuActive = menuactive;
   messageToPrint = 1;
   messageString = string;
