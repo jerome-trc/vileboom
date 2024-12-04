@@ -631,25 +631,14 @@ static void V_DrawMemPatch(int x, int y, int scrn, const rpatch_t *patch,
 //
 // Adapted from Woof.
 //
-// This uses a dark colormap to create a dark faded
-// background under all of the menus. You can also
-// add a gradual fade by setting "animate" to true.
+// This uses a dark colormap to create
+// a dark faded background under menus.
 //
-static void FUNC_V_DrawShaded(int scrn, int x, int y, int width, int height, dboolean animate)
+static void FUNC_V_DrawShaded(int scrn, int x, int y, int width, int height, int screenshade)
 {
   extern const lighttable_t **colormaps;
   byte* dest;
   int ix, iy;
-  const int targshade = 20;
-  const int step = 2;
-  static int oldtic = -1;
-  static int screenshade;
-
-  // [FG] start a new sequence
-  if (gametic - oldtic > targshade / step)
-  {
-    screenshade = 0;
-  }
 
   for (iy = y; iy < y + height; ++iy)
   {
@@ -661,22 +650,6 @@ static void FUNC_V_DrawShaded(int scrn, int x, int y, int width, int height, dbo
       dest++;
     }
   }
-
-  if (!animate)
-  {
-    screenshade = targshade;
-  }
-  else if (screenshade < targshade && gametic != oldtic)
-  {
-    const int sign = ((screenshade - targshade) < 0) ? 1 : -1;
-
-    screenshade += step*sign;
-
-    if (screenshade*sign > targshade*sign)
-      screenshade = targshade;
-  }
-
-  oldtic = gametic;
 }
 
 
@@ -811,9 +784,9 @@ static void WRAP_gld_DrawLine(fline_t* fl, int color)
 {
   gld_DrawLine_f(fl->a.fx, fl->a.fy, fl->b.fx, fl->b.fy, color);
 }
-static void WRAP_gld_DrawShaded(int scrn, int x, int y, int width, int height, dboolean animate)
+static void WRAP_gld_DrawShaded(int scrn, int x, int y, int width, int height, int screenshade)
 {
-  gld_DrawShaded(x, y, width, height, playpal_black, animate);
+  gld_DrawShaded(x, y, width, height, playpal_black, screenshade);
 }
 
 static void NULL_BeginUIDraw(void) {}
@@ -832,7 +805,7 @@ static void NULL_PlotPixel(int scrn, int x, int y, byte color) {}
 static void NULL_PlotPixelWu(int scrn, int x, int y, byte color, int weight) {}
 static void NULL_DrawLine(fline_t* fl, int color) {}
 static void NULL_DrawLineWu(fline_t* fl, int color) {}
-static void NULL_DrawShaded(int scrn, int x, int y, int width, int height, dboolean animate) {}
+static void NULL_DrawShaded(int scrn, int x, int y, int width, int height, int screenshade) {}
 
 static video_mode_t current_videomode = VID_MODESW;
 

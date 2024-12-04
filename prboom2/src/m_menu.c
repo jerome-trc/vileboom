@@ -6084,6 +6084,15 @@ void M_StartControlPanel (void)
   itemOn = currentMenu->lastOn;   // JDC
 }
 
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu Shaded Overlay Stuff
+//
+// This displays a dark overlay under certain screens of the menus
+
+const int targshade = 20;
+int screenshade = 20;
+
 dboolean fadeBG(void)
 {
   return dsda_IntConfig(dsda_config_menu_background)==1;
@@ -6095,6 +6104,41 @@ dboolean M_MenuIsShaded(void)
   int Options = (setup_active || currentMenu == &OptionsDef || currentMenu == &SoundDef);
   int All     = WhichMenuFade && (Options || menuactive == mnact_float);
   return (Options || All) && fadeBG();
+}
+
+static void M_GradualShade(void)
+{
+  const int step = 2;
+  static int oldtic = -1;
+
+  // [FG] start a new sequence
+  if (gametic - oldtic > targshade / step)
+  {
+    screenshade = 0;
+  }
+
+  if (screenshade < targshade && gametic != oldtic)
+  {  
+    const int sign = ((screenshade - targshade) < 0) ? 1 : -1;
+
+    screenshade += step*sign;
+  
+    if ((screenshade*sign > targshade*sign))
+      screenshade = targshade;
+  }
+
+  oldtic = gametic;
+}
+
+static void M_ShadedScreen(int scrn)
+{
+  if (automap_overlay==2 && automap_active)
+    screenshade = targshade;
+
+  if (dsda_IntConfig(nyan_config_gradual_menu_fade))
+    M_GradualShade();
+
+  V_DrawShaded(scrn, 0, 0, SCREENWIDTH, SCREENHEIGHT, screenshade);
 }
 
 //
@@ -6110,7 +6154,7 @@ void M_Drawer (void)
   V_BeginUIDraw();
 
   if (M_MenuIsShaded())
-    V_DrawShaded(0, 0, 0, SCREENWIDTH, SCREENHEIGHT, dsda_IntConfig(nyan_config_gradual_menu_fade));
+    M_ShadedScreen(0);
 
   inhelpscreens = false;
 
