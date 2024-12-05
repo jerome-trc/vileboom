@@ -215,8 +215,8 @@ char savegamestrings[10][SAVESTRINGSIZE];
 
 short itemOn;           // menu item skull is on (for Big Font menus)
 short skullAnimCounter; // skull animation counter
-short AnimateTime;
 short whichSkull;       // which skull to draw (he blinks)
+int AnimateTime;
 
 // graphic name of skulls
 

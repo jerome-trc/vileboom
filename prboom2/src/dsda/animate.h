@@ -18,7 +18,7 @@
 #ifndef __DSDA_ANIMATE__
 #define __DSDA_ANIMATE__
 
-extern short AnimateTime;
+extern int AnimateTime;
 extern int animateLumps;
 extern int widescreenLumps;
 

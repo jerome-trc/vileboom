@@ -152,7 +152,7 @@ void V_DrawNyanBackground(const char* lump_s, const char* lump_e, const int scrn
         if(SLump <= ELump)
         {
             int speed = 8;
-            int frame = (AnimateTime / speed) % (ELump - SLump + 1);;
+            int frame = (AnimateTime / speed) % (ELump - SLump + 1);
             lumpNum = SLump + frame;
         }
     }
