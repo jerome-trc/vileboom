@@ -118,7 +118,7 @@ int dsda_CheckInterText(void)
 
     for (i = 0; (size_t)i < sizeof(story_text_array) / sizeof(story_text_array[0]); i++)
     {
-      if (finaletext = story_text_array[i])
+      if ((finaletext) = story_text_array[i])
         MatchText = 1;
     }
 
