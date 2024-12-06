@@ -850,7 +850,7 @@ void gld_FillBlock(int x, int y, int width, int height, int col)
   glsl_PopNullShader();
 }
 
-void gld_DrawShaded(int x, int y, int width, int height, int col, int screenshade)
+void gld_DrawShaded(int x, int y, int width, int height, int screenshade)
 {
   color_rgb_t color = gld_LookupIndexedColor(playpal_black, V_IsAutomapLightmodeIndexed());
 
