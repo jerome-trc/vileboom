@@ -786,7 +786,7 @@ static void WRAP_gld_DrawLine(fline_t* fl, int color)
 }
 static void WRAP_gld_DrawShaded(int scrn, int x, int y, int width, int height, int screenshade)
 {
-  gld_DrawShaded(x, y, width, height, playpal_black, screenshade);
+  gld_DrawShaded(x, y, width, height, screenshade);
 }
 
 static void NULL_BeginUIDraw(void) {}
