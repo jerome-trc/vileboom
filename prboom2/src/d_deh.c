@@ -1757,17 +1757,20 @@ void deh_changeColoredBlood(void)
 
 int vanilla_health_bonus = -1;
 int vanilla_armor_bonus = -1;
-#define health_flash doom_states[819]
-#define armor_flash doom_states[825]
+#define health_flash states[S_BON1C]
+#define armor_flash states[S_BON2C]
 
 void deh_InitBonusFlash(void)
 {
+  extern byte* edited_mobjinfo_bits;
+
   vanilla_health_bonus = (
       (health_flash.sprite == SPR_BON1) &&
       (health_flash.frame == 3) &&
       (health_flash.tics == 6) &&
       (health_flash.action == NULL) &&
-      (health_flash.nextstate == S_BON1D)
+      (health_flash.nextstate == S_BON1D) &&
+      (!edited_mobjinfo_bits[MT_MISC2])
       );
 
   vanilla_armor_bonus = (
@@ -1775,13 +1778,13 @@ void deh_InitBonusFlash(void)
       (armor_flash.frame == 3) &&
       (armor_flash.tics == 6) &&
       (armor_flash.action == NULL) &&
-      (armor_flash.nextstate == S_BON2D)
+      (armor_flash.nextstate == S_BON2D) &&
+      (!edited_mobjinfo_bits[MT_MISC3])
       );
 }
 
 void deh_changeBonusFlash(void)
 {
-  extern byte* edited_mobjinfo_bits;
   int i;
   int bonus_flash;
   int predefined_bonuses[] = {
@@ -1797,13 +1800,10 @@ void deh_changeBonusFlash(void)
 
   for (i = 0; (size_t)i < sizeof(predefined_bonuses) / sizeof(predefined_bonuses[0]); i++)
   {
-    if (!edited_mobjinfo_bits[predefined_bonuses[i]])
-    {
-      if (vanilla_health_bonus)
-          health_flash.frame = bonus_flash ? 32771 : 3;
-      if (vanilla_armor_bonus)
-          armor_flash.frame = bonus_flash ? 32771 : 3;
-    }
+    if (vanilla_health_bonus)
+        health_flash.frame = bonus_flash ? 32771 : 3;
+    if (vanilla_armor_bonus)
+        armor_flash.frame = bonus_flash ? 32771 : 3;
   }
 }
 
