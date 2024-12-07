@@ -1213,82 +1213,6 @@ void M_Options(int choice)
 
 /////////////////////////////
 //
-// M_QuitDOOM
-//
-int quitsounds[8] =
-{
-  sfx_pldeth,
-  sfx_dmpain,
-  sfx_popain,
-  sfx_slop,
-  sfx_telept,
-  sfx_posit1,
-  sfx_posit3,
-  sfx_sgtatk
-};
-
-int quitsounds2[8] =
-{
-  sfx_vilact,
-  sfx_getpow,
-  sfx_boscub,
-  sfx_slop,
-  sfx_skeswg,
-  sfx_kntdth,
-  sfx_bspact,
-  sfx_sgtatk
-};
-
-static void M_QuitResponse(dboolean affirmative)
-{
-  if (!affirmative)
-    return;
-
-  if (!netgame // killough 12/98
-      && !nosfxparm
-      && dsda_IntConfig(dsda_config_quit_sounds))
-  {
-    int i;
-
-    if (gamemode == commercial)
-      S_StartVoidSound(quitsounds2[(gametic>>2)&7]);
-    else
-      S_StartVoidSound(quitsounds[(gametic>>2)&7]);
-
-    // wait till all sounds stopped or 3 seconds are over
-    i = 30;
-    while (i > 0) {
-      I_uSleep(100000); // CPhipps - don't thrash cpu in this loop
-      if (!I_AnySoundStillPlaying())
-        break;
-      i--;
-    }
-  }
-
-  //e6y: I_SafeExit instead of exit - prevent recursive exits
-  I_SafeExit(0); // killough
-}
-
-void M_QuitDOOM(int choice)
-{
-  static char endstring[160];
-
-  // We pick index 0 which is language sensitive,
-  // or one at random, between 1 and maximum number.
-  // Ty 03/27/98 - externalized DOSY as a string s_DOSY that's in the sprintf
-  if (language != english)
-    sprintf(endstring,"%s\n\n%s",s_DOSY, *endmsg[0] );
-  else         // killough 1/18/98: fix endgame message calculation:
-    sprintf(endstring,"%s\n\n%s", *endmsg[gametic%(NUM_QUITMESSAGES-1)+1], s_DOSY);
-
-  if (dsda_SkipQuitPrompt())
-    M_QuitResponse(true);
-  else
-    M_StartMessage(endstring,M_QuitResponse,true);
-}
-
-/////////////////////////////
-//
 // SOUND VOLUME MENU
 //
 
@@ -3396,6 +3320,84 @@ setup_menu_t tas_settings[] = {
   PREV_PAGE(demo_settings),
   FINAL_ENTRY
 };
+
+/////////////////////////////
+//
+// M_QuitDOOM
+//
+int quitsounds[8] =
+{
+  sfx_pldeth,
+  sfx_dmpain,
+  sfx_popain,
+  sfx_slop,
+  sfx_telept,
+  sfx_posit1,
+  sfx_posit3,
+  sfx_sgtatk
+};
+
+int quitsounds2[8] =
+{
+  sfx_vilact,
+  sfx_getpow,
+  sfx_boscub,
+  sfx_slop,
+  sfx_skeswg,
+  sfx_kntdth,
+  sfx_bspact,
+  sfx_sgtatk
+};
+
+static void M_QuitResponse(dboolean affirmative)
+{
+  if (!affirmative)
+    return;
+
+  if (!netgame // killough 12/98
+      && !nosfxparm
+      && dsda_IntConfig(dsda_config_quit_sounds))
+  {
+    int i;
+
+    if (gamemode == commercial)
+      S_StartVoidSound(quitsounds2[(gametic>>2)&7]);
+    else
+      S_StartVoidSound(quitsounds[(gametic>>2)&7]);
+
+    // wait till all sounds stopped or 3 seconds are over
+    i = 30;
+    while (i > 0) {
+      I_uSleep(100000); // CPhipps - don't thrash cpu in this loop
+      if (!I_AnySoundStillPlaying())
+        break;
+      i--;
+    }
+  }
+
+  //e6y: I_SafeExit instead of exit - prevent recursive exits
+  I_SafeExit(0); // killough
+}
+
+void M_QuitDOOM(int choice)
+{
+  static char endstring[160];
+  setup_active = false;
+  currentMenu = NULL;
+
+  // We pick index 0 which is language sensitive,
+  // or one at random, between 1 and maximum number.
+  // Ty 03/27/98 - externalized DOSY as a string s_DOSY that's in the sprintf
+  if (language != english)
+    sprintf(endstring,"%s\n\n%s",s_DOSY, *endmsg[0] );
+  else         // killough 1/18/98: fix endgame message calculation:
+    sprintf(endstring,"%s\n\n%s", *endmsg[gametic%(NUM_QUITMESSAGES-1)+1], s_DOSY);
+
+  if (dsda_SkipQuitPrompt())
+    M_QuitResponse(true);
+  else
+    M_StartMessage(endstring,M_QuitResponse,true);
+}
 
 // To (un)set fullscreen video after menu changes
 void M_ChangeFullScreen(void)
@@ -6336,8 +6338,6 @@ void M_Ticker (void)
 
 void M_StartMessage (const char* string,void* routine,dboolean input)
 {
-  currentMenu = NULL;
-  setup_active = false;
   messageLastMenuActive = menuactive;
   messageToPrint = 1;
   messageString = string;
