@@ -190,7 +190,7 @@ void (*messageRoutine)(int response);
 
 static void M_DrawBackground(const char *flat, int scrn)
 {
-  if (dsda_IntConfig(dsda_config_menu_background)==2)
+  if (dsda_IntConfig(dsda_config_menu_background) == 2)
     V_DrawBackground(flat, scrn);
 }
 
@@ -6094,7 +6094,7 @@ void M_StartControlPanel (void)
 
 dboolean fadeBG(void)
 {
-  return dsda_IntConfig(dsda_config_menu_background)==1;
+  return dsda_IntConfig(dsda_config_menu_background) == 1;
 }
 
 dboolean M_MenuIsShaded(void)
@@ -6132,7 +6132,7 @@ static void M_GradualShade(void)
 static void M_ShadedScreen(int scrn)
 {
   int gradualShade = dsda_IntConfig(nyan_config_gradual_menu_fade);
-  int automapShade = automap_overlay==2 && automap_active;
+  int automapShade = automap_overlay == 2 && automap_active;
 
   // Disables shade when automap overlay or gradual shade is turned off
   if (!gradualShade || automapShade)
