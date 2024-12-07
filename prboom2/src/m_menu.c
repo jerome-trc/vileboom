@@ -162,6 +162,26 @@
 
 extern dboolean  message_dontfuckwithme;
 
+/////////////////////////////
+//
+// booleans for setup screens
+// these tell you what state the setup screens are in, and whether any of
+// the overlay screens (automap colors, reset button message) should be
+// displayed
+
+dboolean setup_active      = false; // in one of the setup screens
+dboolean set_keybnd_active = false; // in key binding setup screens
+dboolean set_weapon_active = false; // in weapons setup screen
+dboolean set_status_active = false; // in status bar/hud setup screen
+dboolean set_auto_active   = false; // in automap setup screen
+dboolean setup_select      = false; // changing an item
+dboolean setup_gather      = false; // gathering keys for value
+dboolean colorbox_active   = false; // color palette being shown
+dboolean set_general_active = false;
+dboolean set_game_active = false;
+dboolean level_table_active = false;
+
+
 extern const char* g_menu_flat;
 extern int g_menu_save_page_size;
 extern int g_menu_font_spacing;
@@ -1213,6 +1233,84 @@ void M_Options(int choice)
 
 /////////////////////////////
 //
+// M_QuitDOOM
+//
+int quitsounds[8] =
+{
+  sfx_pldeth,
+  sfx_dmpain,
+  sfx_popain,
+  sfx_slop,
+  sfx_telept,
+  sfx_posit1,
+  sfx_posit3,
+  sfx_sgtatk
+};
+
+int quitsounds2[8] =
+{
+  sfx_vilact,
+  sfx_getpow,
+  sfx_boscub,
+  sfx_slop,
+  sfx_skeswg,
+  sfx_kntdth,
+  sfx_bspact,
+  sfx_sgtatk
+};
+
+static void M_QuitResponse(dboolean affirmative)
+{
+  if (!affirmative)
+    return;
+
+  if (!netgame // killough 12/98
+      && !nosfxparm
+      && dsda_IntConfig(dsda_config_quit_sounds))
+  {
+    int i;
+
+    if (gamemode == commercial)
+      S_StartVoidSound(quitsounds2[(gametic>>2)&7]);
+    else
+      S_StartVoidSound(quitsounds[(gametic>>2)&7]);
+
+    // wait till all sounds stopped or 3 seconds are over
+    i = 30;
+    while (i > 0) {
+      I_uSleep(100000); // CPhipps - don't thrash cpu in this loop
+      if (!I_AnySoundStillPlaying())
+        break;
+      i--;
+    }
+  }
+
+  //e6y: I_SafeExit instead of exit - prevent recursive exits
+  I_SafeExit(0); // killough
+}
+
+void M_QuitDOOM(int choice)
+{
+  static char endstring[160];
+  setup_active = false;
+  currentMenu = NULL;
+
+  // We pick index 0 which is language sensitive,
+  // or one at random, between 1 and maximum number.
+  // Ty 03/27/98 - externalized DOSY as a string s_DOSY that's in the sprintf
+  if (language != english)
+    sprintf(endstring,"%s\n\n%s",s_DOSY, *endmsg[0] );
+  else         // killough 1/18/98: fix endgame message calculation:
+    sprintf(endstring,"%s\n\n%s", *endmsg[gametic%(NUM_QUITMESSAGES-1)+1], s_DOSY);
+
+  if (dsda_SkipQuitPrompt())
+    M_QuitResponse(true);
+  else
+    M_StartMessage(endstring,M_QuitResponse,true);
+}
+
+/////////////////////////////
+//
 // SOUND VOLUME MENU
 //
 
@@ -1453,25 +1551,6 @@ void M_SizeDisplay(int choice)
 //
 // killough 10/98: added Compatibility and General menus
 //
-
-/////////////////////////////
-//
-// booleans for setup screens
-// these tell you what state the setup screens are in, and whether any of
-// the overlay screens (automap colors, reset button message) should be
-// displayed
-
-dboolean setup_active      = false; // in one of the setup screens
-dboolean set_keybnd_active = false; // in key binding setup screens
-dboolean set_weapon_active = false; // in weapons setup screen
-dboolean set_status_active = false; // in status bar/hud setup screen
-dboolean set_auto_active   = false; // in automap setup screen
-dboolean setup_select      = false; // changing an item
-dboolean setup_gather      = false; // gathering keys for value
-dboolean colorbox_active   = false; // color palette being shown
-dboolean set_general_active = false;
-dboolean set_game_active = false;
-dboolean level_table_active = false;
 
 /////////////////////////////
 //
@@ -3320,84 +3399,6 @@ setup_menu_t tas_settings[] = {
   PREV_PAGE(demo_settings),
   FINAL_ENTRY
 };
-
-/////////////////////////////
-//
-// M_QuitDOOM
-//
-int quitsounds[8] =
-{
-  sfx_pldeth,
-  sfx_dmpain,
-  sfx_popain,
-  sfx_slop,
-  sfx_telept,
-  sfx_posit1,
-  sfx_posit3,
-  sfx_sgtatk
-};
-
-int quitsounds2[8] =
-{
-  sfx_vilact,
-  sfx_getpow,
-  sfx_boscub,
-  sfx_slop,
-  sfx_skeswg,
-  sfx_kntdth,
-  sfx_bspact,
-  sfx_sgtatk
-};
-
-static void M_QuitResponse(dboolean affirmative)
-{
-  if (!affirmative)
-    return;
-
-  if (!netgame // killough 12/98
-      && !nosfxparm
-      && dsda_IntConfig(dsda_config_quit_sounds))
-  {
-    int i;
-
-    if (gamemode == commercial)
-      S_StartVoidSound(quitsounds2[(gametic>>2)&7]);
-    else
-      S_StartVoidSound(quitsounds[(gametic>>2)&7]);
-
-    // wait till all sounds stopped or 3 seconds are over
-    i = 30;
-    while (i > 0) {
-      I_uSleep(100000); // CPhipps - don't thrash cpu in this loop
-      if (!I_AnySoundStillPlaying())
-        break;
-      i--;
-    }
-  }
-
-  //e6y: I_SafeExit instead of exit - prevent recursive exits
-  I_SafeExit(0); // killough
-}
-
-void M_QuitDOOM(int choice)
-{
-  static char endstring[160];
-  setup_active = false;
-  currentMenu = NULL;
-
-  // We pick index 0 which is language sensitive,
-  // or one at random, between 1 and maximum number.
-  // Ty 03/27/98 - externalized DOSY as a string s_DOSY that's in the sprintf
-  if (language != english)
-    sprintf(endstring,"%s\n\n%s",s_DOSY, *endmsg[0] );
-  else         // killough 1/18/98: fix endgame message calculation:
-    sprintf(endstring,"%s\n\n%s", *endmsg[gametic%(NUM_QUITMESSAGES-1)+1], s_DOSY);
-
-  if (dsda_SkipQuitPrompt())
-    M_QuitResponse(true);
-  else
-    M_StartMessage(endstring,M_QuitResponse,true);
-}
 
 // To (un)set fullscreen video after menu changes
 void M_ChangeFullScreen(void)
