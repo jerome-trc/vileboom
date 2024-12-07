@@ -6105,6 +6105,8 @@ dboolean M_MenuIsShaded(void)
   return (Options || All) && fadeBG();
 }
 
+int screenshade;
+
 static void M_GradualShade(void)
 {
   const int step = 2;
