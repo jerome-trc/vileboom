@@ -850,7 +850,7 @@ void gld_FillBlock(int x, int y, int width, int height, int col)
   glsl_PopNullShader();
 }
 
-void gld_DrawShaded(int x, int y, int width, int height, int screenshade)
+void gld_DrawShaded(int x, int y, int width, int height, int shade)
 {
   color_rgb_t color = gld_LookupIndexedColor(playpal_black, V_IsAutomapLightmodeIndexed());
 
@@ -861,7 +861,7 @@ void gld_DrawShaded(int x, int y, int width, int height, int screenshade)
   glColor4f((float)color.r/255.0f,
             (float)color.g/255.0f,
             (float)color.b/255.0f,
-            (float)screenshade/30);
+            (float)shade/30);
 
   glBegin(GL_TRIANGLE_STRIP);
     glVertex2i( x, y );

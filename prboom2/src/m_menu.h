@@ -51,7 +51,8 @@ dboolean M_Responder (event_t *ev);
 
 dboolean fadeBG(void);
 dboolean M_MenuIsShaded(void);
-extern int screenshade;
+#define FULLSHADE 20
+int screenshade;
 
 // Called by main loop,
 // only used for menu (skull cursor) animation.

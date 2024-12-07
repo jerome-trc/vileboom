@@ -6092,9 +6092,6 @@ void M_StartControlPanel (void)
 //
 // This displays a dark overlay under certain screens of the menus
 
-const int targshade = 20;
-int screenshade = 20;
-
 dboolean fadeBG(void)
 {
   return dsda_IntConfig(dsda_config_menu_background)==1;
@@ -6114,19 +6111,19 @@ static void M_GradualShade(void)
   static int oldtic = -1;
 
   // [FG] start a new sequence
-  if (gametic - oldtic > targshade / step)
+  if (gametic - oldtic > FULLSHADE / step)
   {
     screenshade = 0;
   }
 
-  if (screenshade < targshade && gametic != oldtic)
+  if (screenshade < FULLSHADE && gametic != oldtic)
   {  
-    const int sign = ((screenshade - targshade) < 0) ? 1 : -1;
+    const int sign = ((screenshade - FULLSHADE) < 0) ? 1 : -1;
 
     screenshade += step*sign;
   
-    if ((screenshade*sign > targshade*sign))
-      screenshade = targshade;
+    if ((screenshade*sign > FULLSHADE*sign))
+      screenshade = FULLSHADE;
   }
 
   oldtic = gametic;
@@ -6139,7 +6136,7 @@ static void M_ShadedScreen(int scrn)
 
   // Disables shade when automap overlay or gradual shade is turned off
   if (!gradualShade || automapShade)
-    screenshade = targshade;
+    screenshade = FULLSHADE;
   
   // Always run gradual shade for smooth setting change transition
   M_GradualShade();

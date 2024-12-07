@@ -634,7 +634,7 @@ static void V_DrawMemPatch(int x, int y, int scrn, const rpatch_t *patch,
 // This uses a dark colormap to create
 // a dark faded background under menus.
 //
-static void FUNC_V_DrawShaded(int scrn, int x, int y, int width, int height, int screenshade)
+static void FUNC_V_DrawShaded(int scrn, int x, int y, int width, int height, int shade)
 {
   extern const lighttable_t **colormaps;
   byte* dest;
@@ -646,7 +646,7 @@ static void FUNC_V_DrawShaded(int scrn, int x, int y, int width, int height, int
 
     for (ix = x; ix < x + width; ++ix)
     {
-      *dest = colormaps[scrn][screenshade * 256 + dest[scrn]];
+      *dest = colormaps[scrn][shade * 256 + dest[scrn]];
       dest++;
     }
   }
@@ -784,9 +784,9 @@ static void WRAP_gld_DrawLine(fline_t* fl, int color)
 {
   gld_DrawLine_f(fl->a.fx, fl->a.fy, fl->b.fx, fl->b.fy, color);
 }
-static void WRAP_gld_DrawShaded(int scrn, int x, int y, int width, int height, int screenshade)
+static void WRAP_gld_DrawShaded(int scrn, int x, int y, int width, int height, int shade)
 {
-  gld_DrawShaded(x, y, width, height, screenshade);
+  gld_DrawShaded(x, y, width, height, shade);
 }
 
 static void NULL_BeginUIDraw(void) {}
@@ -805,7 +805,7 @@ static void NULL_PlotPixel(int scrn, int x, int y, byte color) {}
 static void NULL_PlotPixelWu(int scrn, int x, int y, byte color, int weight) {}
 static void NULL_DrawLine(fline_t* fl, int color) {}
 static void NULL_DrawLineWu(fline_t* fl, int color) {}
-static void NULL_DrawShaded(int scrn, int x, int y, int width, int height, int screenshade) {}
+static void NULL_DrawShaded(int scrn, int x, int y, int width, int height, int shade) {}
 
 static video_mode_t current_videomode = VID_MODESW;
 
