@@ -3292,6 +3292,7 @@ setup_menu_t nyan_settings[] = {
   EMPTY_LINE,
   { "Skip IWAD Demos For PWADs", S_YESNO, m_conf, G_X, nyan_config_skip_default_demos },
   { "Skip IWAD Story For PWADs", S_YESNO, m_conf, G_X, nyan_config_skip_default_text },
+  { "Ignore IWAD Map Names", S_YESNO, m_conf, G_X, nyan_config_ignore_default_map_names },
   { "Pause After Intermission", S_YESNO, m_conf, G_X, nyan_config_intermission_pause },
   EMPTY_LINE,
   { "Enhanced Lite Amp Effect", S_YESNO, m_conf, G_X, dsda_config_enhanced_liteamp },
