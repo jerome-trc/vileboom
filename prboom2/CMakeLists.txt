@@ -201,9 +201,9 @@ else()
     endif()
 endif()
 
-set(DSDA_OUTPUT_PATH ${CMAKE_BINARY_DIR})
+set(NYAN_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 
-set(WAD_DATA_PATH "${DSDA_OUTPUT_PATH}/${WAD_DATA}")
+set(WAD_DATA_PATH "${NYAN_OUTPUT_PATH}/${WAD_DATA}")
 
 add_subdirectory(data)
 add_subdirectory(src)

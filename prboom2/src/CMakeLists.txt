@@ -497,7 +497,7 @@ set(EXTRA_FILES
     r_drawflush.inl
 )
 
-set(DSDA_SOURCES
+set(NYAN_SOURCES
     ${COMMON_SRC}
     ${NET_CLIENT_SRC}
     ${WAD_SRC}
@@ -577,7 +577,7 @@ function(AddGameExecutable TARGET SOURCES)
     endif()
 
     set_target_properties(${TARGET} PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY ${DSDA_OUTPUT_PATH}
+        RUNTIME_OUTPUT_DIRECTORY ${NYAN_OUTPUT_PATH}
         INTERPROCEDURAL_OPTIMIZATION ${ENABLE_LTO}
         C_STANDARD 99
     )
@@ -623,9 +623,9 @@ function(AddGameExecutable TARGET SOURCES)
     endif()
 
     if(WIN32)
-        set(DSDA_BINARY_INSTALL_DIR ".")
+        set(NYAN_BINARY_INSTALL_DIR ".")
     else()
-        set(DSDA_BINARY_INSTALL_DIR "${CMAKE_INSTALL_BINDIR}")
+        set(NYAN_BINARY_INSTALL_DIR "${CMAKE_INSTALL_BINDIR}")
     endif()
 
     if(CMAKE_VERSION VERSION_GREATER 3.20 AND NOT VCPKG_TOOLCHAIN AND WIN32)
@@ -635,10 +635,10 @@ function(AddGameExecutable TARGET SOURCES)
                 PRE_EXCLUDE_REGEXES "api-ms-" "ext-ms-"
                 POST_EXCLUDE_REGEXES ".*system32/.*\\.dll"
                 DIRECTORIES $<TARGET_FILE_DIR:${TARGET}> $ENV{PATH}
-            RUNTIME DESTINATION "${DSDA_BINARY_INSTALL_DIR}"
+            RUNTIME DESTINATION "${NYAN_BINARY_INSTALL_DIR}"
         )
     else()
-        install(TARGETS ${TARGET} RUNTIME DESTINATION "${DSDA_BINARY_INSTALL_DIR}")
+        install(TARGETS ${TARGET} RUNTIME DESTINATION "${NYAN_BINARY_INSTALL_DIR}")
     endif()
 
     target_link_libraries(${TARGET} PRIVATE
@@ -647,4 +647,4 @@ function(AddGameExecutable TARGET SOURCES)
     )
 endfunction()
 
-AddGameExecutable(nyan-doom "${DSDA_SOURCES}")
+AddGameExecutable(nyan-doom "${NYAN_SOURCES}")
