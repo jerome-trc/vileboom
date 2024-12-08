@@ -1,7 +1,7 @@
 <a href="#"><img src="https://andrikarkane.com/doom/nyan-doom/nyan-doom-logo.png" width="500"></a>
 
 # Nyan Doom
-This is the most furry, fuzzy, most cuddley Doom port you will ever come across! Based on the DSDA-Doom source port, Nyan Doom focuses on new quality-of-life and never-before-seen features that you won't find anywhere else! Check out Nyan Doom on [Doomworld!](https://www.doomworld.com/forum/topic/145913/)
+This is the most furry, fuzzy, and most cuddly Doom port you will ever come across! Based on the DSDA-Doom source port, Nyan Doom focuses on new quality-of-life and never-before-seen features that you won't find anywhere else! Check out Nyan Doom on [Doomworld!](https://www.doomworld.com/forum/topic/145913/)
 
 You don't have to worry about Nyan Doom falling behind, as it's kept up to date with the latest DSDA-Doom. 
 
