@@ -2741,6 +2741,7 @@ static const char* armor_icon_list[] =
   NULL
 };
 
+static const char* announce_map_list[] = { "Off", "On", "Subtle", NULL };
 static const char* secretarea_list[] = { "Off", "On", "Subtle", NULL };
 
 setup_menu_t stat_settings1[] =  // Status Bar and HUD Settings screen
@@ -2754,13 +2755,15 @@ setup_menu_t stat_settings1[] =  // Status Bar and HUD Settings screen
   EMPTY_LINE,
   { "HEADS-UP DISPLAY", S_SKIP | S_TITLE, m_null, SB_X},
   { "SHOW MESSAGES", S_YESNO, m_conf, SB_X, dsda_config_show_messages },
+  { "Announce Map On Entry", S_CHOICE, m_conf, SB_X, dsda_config_announce_map, 0, announce_map_list },
+  { "REPORT REVEALED SECRETS", S_CHOICE, m_conf, SB_X, dsda_config_hudadd_secretarea, 0, secretarea_list },
+  { "DEMO PLAYBACK PROGRESS BAR", S_YESNO, m_conf, SB_X, dsda_config_hudadd_demoprogressbar },
+  EMPTY_LINE,
   { "HEALTH LOW/OK", S_NUM, m_conf, SB_X, dsda_config_hud_health_red },
   { "HEALTH OK/GOOD", S_NUM, m_conf, SB_X, dsda_config_hud_health_yellow },
   { "HEALTH GOOD/EXTRA", S_NUM, m_conf, SB_X, dsda_config_hud_health_green },
   { "AMMO LOW/OK", S_NUM, m_conf, SB_X, dsda_config_hud_ammo_red },
   { "AMMO OK/GOOD", S_NUM, m_conf, SB_X, dsda_config_hud_ammo_yellow },
-  { "REPORT REVEALED SECRETS", S_CHOICE, m_conf, SB_X, dsda_config_hudadd_secretarea, 0, secretarea_list },
-  { "DEMO PLAYBACK PROGRESS BAR", S_YESNO, m_conf, SB_X, dsda_config_hudadd_demoprogressbar },
 
   NEXT_PAGE(stat_settings2),
   FINAL_ENTRY
@@ -3201,7 +3204,6 @@ setup_menu_t controller_settings[] = {
 
 static const char* endoom_list[] = { "Off", "On", "PWAD only", NULL };
 static const char* endoom_type_list[] = { "Terminal", "Window", NULL };
-static const char* announce_map_list[] = { "Off", "On", "Subtle", NULL };
 
 setup_menu_t misc_settings[] = {
   { "Miscellaneous", S_SKIP | S_TITLE, m_null, G_X},
@@ -3209,7 +3211,6 @@ setup_menu_t misc_settings[] = {
   { "Default compatibility level", S_CHOICE, m_conf, G_X, dsda_config_default_complevel, 0, &gen_compstrings[1] },
   { "Enable Cheat Code Entry", S_YESNO, m_conf, G_X, dsda_config_cheat_codes },
   { "Use Dehacked Cheats", S_YESNO, m_conf, G_X, dsda_config_deh_change_cheats },
-  { "Announce Map On Entry", S_CHOICE, m_conf, G_X, dsda_config_announce_map, 0, announce_map_list },
   EMPTY_LINE,
   { "Endoom Screen", S_CHOICE, m_conf, G_X, nyan_config_show_endoom, 0, endoom_list },
   { "Endoom Type", S_CHOICE, m_conf, G_X, nyan_config_type_endoom, 0, endoom_type_list },
@@ -3231,6 +3232,7 @@ static const char* menu_background_list[] = { "Off", "Dark", "Texture", NULL };
 
 setup_menu_t display_settings[] = {
   { "Display Options", S_SKIP | S_TITLE, m_null, G_X},
+  { "Menu Background", S_CHOICE, m_conf, G_X, dsda_config_menu_background, 0, menu_background_list },
   { "Wipe Screen Effect", S_YESNO,  m_conf, G_X, dsda_config_render_wipescreen },
   { "Show FPS", S_YESNO,  m_conf, G_X, dsda_config_show_fps },
   { "View Bobbing", S_YESNO, m_conf, G_X, dsda_config_viewbob },
@@ -3245,9 +3247,6 @@ setup_menu_t display_settings[] = {
   { "Change Palette On Bonus", S_YESNO, m_conf, G_X, dsda_config_palette_onbonus },
   { "Change Palette On Powers", S_YESNO, m_conf, G_X, dsda_config_palette_onpowers },
   { "Change Colormap On Lite Amp", S_YESNO, m_conf, G_X, dsda_config_colormap_onliteamp },
-  EMPTY_LINE,
-  { "Status Bar and Menu Appearance", S_CHOICE, m_conf, G_X, dsda_config_render_stretch_hud, 0, render_stretch_list },
-  { "Fullscreen Menu Background", S_CHOICE, m_conf, G_X, dsda_config_menu_background, 0, menu_background_list },
 
   PREV_PAGE(misc_settings),
   FINAL_ENTRY
