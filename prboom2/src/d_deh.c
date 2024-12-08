@@ -1770,7 +1770,8 @@ void deh_InitBonusFlash(void)
       (health_flash.tics == 6) &&
       (health_flash.action == NULL) &&
       (health_flash.nextstate == S_BON1D) &&
-      (!edited_mobjinfo_bits[MT_MISC2])
+      (!edited_mobjinfo_bits[MT_MISC2] ||
+       (mobjinfo[MT_MISC2].flags == MF_SPECIAL))
       );
 
   vanilla_armor_bonus = (
@@ -1779,7 +1780,8 @@ void deh_InitBonusFlash(void)
       (armor_flash.tics == 6) &&
       (armor_flash.action == NULL) &&
       (armor_flash.nextstate == S_BON2D) &&
-      (!edited_mobjinfo_bits[MT_MISC3])
+      (!edited_mobjinfo_bits[MT_MISC3] ||
+       (mobjinfo[MT_MISC3].flags == MF_SPECIAL))
       );
 }
 
