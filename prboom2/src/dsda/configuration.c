@@ -1434,7 +1434,7 @@ dsda_config_t dsda_config[dsda_config_count] = {
   },
   [dsda_config_ansi_endoom] = {
     "ansi_endoom", dsda_config_ansi_endoom,
-    dsda_config_int, 0, 2, { 1 }
+    dsda_config_int, 1, 2, { 1 }
   },
   [nyan_config_endoom_wait] = {
     "terminal_endoom_wait", nyan_config_endoom_wait,

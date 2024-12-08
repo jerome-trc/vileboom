@@ -366,9 +366,6 @@ void dsda_CacheEndoom(void) {
   if (dsda_Flag(dsda_arg_launcher))
     output_format = format_utf8;
 
-  if (output_format == format_null)
-    dsda_UpdateIntConfig(dsda_config_ansi_endoom,format_cp437,true);
-
   show_endoom = dsda_IntConfig(nyan_config_show_endoom);
 
   if (demo_check > 0)
