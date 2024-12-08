@@ -97,7 +97,6 @@ static dboolean F_ShowCast(void)
 // used for the skip intermission config option.
 int dsda_CheckInterText(void)
 {
-    int MatchText = 0;
     int SkipText = 0;
     int lump = 0;
     int PWADlump = 0;
