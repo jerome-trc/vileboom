@@ -3099,9 +3099,7 @@ static const char *death_use_strings[] = { "default", "nothing", "reload", NULL 
 
 static const char *render_aspects_list[] = { "auto", "16:9", "16:10", "4:3", "5:4", NULL };
 
-static const char* render_stretch_list[] = {
-  "Not Adjusted", "Doom Format", "Fit to Width", NULL
-};
+// static const char* render_stretch_list[] = { "Not Adjusted", "Doom Format", "Fit to Width", NULL };
 
 static const char* fake_contrast_list[] =
 {
