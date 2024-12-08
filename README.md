@@ -1,7 +1,9 @@
 <a href="#"><img src="https://andrikarkane.com/doom/nyan-doom/nyan-doom-logo.png" width="500"></a>
 
-# Arsinikk's Nyan Doom
-This is Arsinikk's own personal fork of DSDA-Doom with new added features and improvements. It's kept relatively up to date with the original. Check it out on [Doomworld!](https://www.doomworld.com/forum/topic/145913/)
+# Nyan Doom
+This is the most furry, fuzzy, most cuddley Doom port you will ever come across! Based on the DSDA-Doom source port, Nyan Doom focuses on new quality-of-life and never-before-seen features that you won't find anywhere else! Check out Nyan Doom on [Doomworld!](https://www.doomworld.com/forum/topic/145913/)
+
+You don't have to worry about Nyan Doom falling behind, as it's kept up to date with the latest DSDA-Doom. 
 
 ### Nyan Features For Mappers
 - New [animated background / menu element](./docs/animbg.md) lump support (for animated M_DOOM, TITLEPIC, INTERPIC, and even UMAPINFO backgrounds!)
@@ -10,13 +12,13 @@ This is Arsinikk's own personal fork of DSDA-Doom with new added features and im
 - [Limit-Removing Support](./docs/limit_removing.md) for Vanilla style maps to ignore overflow errors (such as all-ghosts, etc)
 
 ### Nyan Features For Players
-- Quality-of-life features such as "Skipping IWAD Story text in PWADs" or "Extended Intermission Pause" so you can actually read the next map name
-- [Limit-Removing Support](./docs/limit_removing.md) to record/playback demos and/or play casually without overflow errors and emulation under Vanilla compatibility
+- New innovative features you won't find anywhere else such as "flashing item bonuses", in-depth "Boom Translucency" customization, a smarter "Colored Blood" option, and a new experimental "Light Amplification Visor" screen effect
+- Quality-of-life features such as "Skip IWAD Story text For PWADs" or "Extended Intermission Pause" so you can actually read the next map name
 - Native "berserk" and "armour" elements on the statusbar *(Options > Status Bar / HUD)*
 - "Status Widget" for the extended HUD, that shows currently active powerups *(Options > Status Bar / HUD > Status Widget)*
-- Support for game modifier toggles (`pistol start`, `respawn`, `fast monsters`, etc)
+- Savegame support for per-game modifiers (`pistol start`, `respawn`, `fast monsters`, etc)
 - Enhanced ENDOOM support
-- and even more!
+- and more!
 
 ### Patch Notes
 - [v1.2](./patch_notes/v1.2.md)
@@ -27,7 +29,7 @@ This is Arsinikk's own personal fork of DSDA-Doom with new added features and im
 - MacOS Version [(in Releases)](https://github.com/andrikpowell/nyan-doom/releases/latest)
 
 ### Credits
-- The Nyan Doom logo designed by Andrik Powell (Arsinikk).
+- Nyan Doom and its logo design are by Andrik "Arsinikk" Powell.
 
 ___
 
