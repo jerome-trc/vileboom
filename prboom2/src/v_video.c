@@ -1471,7 +1471,7 @@ void V_DrawRawScreen(const char *lump_name)
 void V_DrawRawScreenSection(const char *lump_name, int source_offset, int dest_y_offset, int dest_y_limit)
 {
   int i, j;
-  float x_factor, y_factor;
+  float x_factor = 0, y_factor = 0;
   int x_offset, y_offset;
   const byte* raw;
 
@@ -1498,25 +1498,18 @@ void V_DrawRawScreenSection(const char *lump_name, int source_offset, int dest_y
     case patch_stretch_not_adjusted:
       x_factor = (float)SCREENWIDTH / 320;
       y_factor = (float)SCREENHEIGHT / 200;
-
       if (y_factor < x_factor)
         x_factor = y_factor;
       break;
     case patch_stretch_doom_format:
       x_factor = (float)WIDE_SCREENWIDTH / 320;
       y_factor = (float)WIDE_SCREENHEIGHT / 200;
-
       if (y_factor < x_factor)
         x_factor = y_factor;
       break;
     case patch_stretch_fit_to_width:
       x_factor = (float)SCREENWIDTH / 320;
       y_factor = (float)SCREENHEIGHT / 200;
-      break;
-    default:
-      // This should never happen
-      x_factor = 0;
-      y_factor = 0;
       break;
   }
 

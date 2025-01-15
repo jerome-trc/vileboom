@@ -158,7 +158,7 @@ void dsda_ResetExTextOffsets(void) {
 static void InitStretchParam(stretch_param_t* offsets, int stretch, enum patch_translation_e flags) {
   memset(offsets, 0, sizeof(*offsets));
 
-  switch (stretch) {
+  switch (stretch_hud(stretch)) {
     case patch_stretch_not_adjusted:
       if (flags == VPT_ALIGN_WIDE) {
         offsets->video = &video_stretch;
@@ -181,15 +181,6 @@ static void InitStretchParam(stretch_param_t* offsets, int stretch, enum patch_t
       offsets->deltax1 = 0;
       offsets->deltax2 = 0;
       break;
-  }
-
-  // Raven HUD breaks in "patch_stretch_not_adjusted",
-  // so let's use "patch_stretch_doom_format" settings
-  if (raven && stretch == 0)
-  {
-    offsets->video = &video_stretch;
-    offsets->deltax1 = (SCREENWIDTH - WIDE_SCREENWIDTH) / 2;
-    offsets->deltax2 = (SCREENWIDTH - WIDE_SCREENWIDTH) / 2;
   }
 
   if (flags == VPT_ALIGN_LEFT || flags == VPT_ALIGN_LEFT_BOTTOM || flags == VPT_ALIGN_LEFT_TOP) {
@@ -280,7 +271,7 @@ void dsda_EvaluatePatchScale(void) {
       SCREENHEIGHT < 200 || WIDE_SCREENHEIGHT < 200)
     render_stretch_hud = patch_stretch_fit_to_width;
 
-  switch (render_stretch_hud) {
+  switch (stretch_hud(render_stretch_hud)) {
     case patch_stretch_not_adjusted:
       wide_offset2x = SCREENWIDTH - patches_scalex * 320;
       wide_offset2y = SCREENHEIGHT - patches_scaley * 200;
@@ -297,16 +288,6 @@ void dsda_EvaluatePatchScale(void) {
       wide_offset2x = 0;
       wide_offset2y = 0;
       break;
-  }
-
-
-  // Raven HUD breaks in "patch_stretch_not_adjusted",
-  // so let's use "patch_stretch_doom_format" settings
-  if (raven && render_stretch_hud == 0) {
-      ST_SCALED_HEIGHT = g_st_height * WIDE_SCREENHEIGHT / 200;
-
-      wide_offset2x = SCREENWIDTH - WIDE_SCREENWIDTH;
-      wide_offset2y = SCREENHEIGHT - WIDE_SCREENHEIGHT;
   }
 
   wide_offsetx = wide_offset2x / 2;
