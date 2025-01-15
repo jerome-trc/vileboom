@@ -2945,6 +2945,7 @@ setup_menu_t auto_settings4[] =  // 3nd AutoMap Settings screen
   {"teleporter line"                ,S_COLOR ,m_conf,AU_X2, dsda_config_mapcolor_tele},
   {"secret sector boundary"         ,S_COLOR ,m_conf,AU_X2, dsda_config_mapcolor_secr},
   {"revealed secret sector boundary",S_COLOR ,m_conf,AU_X2, dsda_config_mapcolor_revsecr},
+  {"tag finder line"                 ,S_COLOR,m_conf,AU_X2, dsda_config_mapcolor_tagfinder},
   EMPTY_LINE,
   //jff 4/23/98 add exit line to automap
   {"exit line"                      ,S_COLOR ,m_conf,AU_X2, dsda_config_mapcolor_exit},
