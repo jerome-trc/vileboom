@@ -2738,6 +2738,10 @@ void G_ReloadDefaults(void)
   if ((compatibility_level <= 3) && (gamemode != commercial) && (gamemode != shareware) && !raven)
     pwad_help2_check = W_PWADLumpNameExists(help2);
 
+  // disables overflow warnings and errors for vanilla complevels
+  if (demo_compatibility && (arg_complevel_limitremoving || dsda_Flag(dsda_arg_limitremoving)))
+    limitremoving = true;
+
   // killough 3/1/98: Initialize options based on config file
   // (allows functions above to load different values for demos
   // and savegames without messing up defaults).
@@ -3954,8 +3958,7 @@ void G_DoPlayDemo(void)
 {
   if (LoadDemo(defdemoname, &demobuffer, &demolength))
   {
-    const char* lrtext;
-    lrtext = ((demo_compatibility && limitremoving) ? "  Limit-Removing: Enabled\n" : "");
+    const char* lrtext = (limitremoving ? "  Limit-Removing: Enabled\n" : "");
 
     G_StartDemoPlayback(demobuffer, demolength, PLAYBACK_NORMAL);
 

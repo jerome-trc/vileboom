@@ -1849,10 +1849,6 @@ static void D_DoomMainSetup(void)
   // Arsinikk - set game modifiers based off args and cfg
   dsda_InitModifiers();
 
-  // disables overflow warnings and errors for vanilla complevels
-  if (arg_complevel_limitremoving || dsda_Flag(dsda_arg_limitremoving))
-    limitremoving = 1;
-
   // CPhipps - autoloading of wads
   autoload = !dsda_Flag(dsda_arg_noautoload);
 

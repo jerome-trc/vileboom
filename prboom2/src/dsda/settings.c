@@ -59,7 +59,7 @@ static int dsda_WadCompatibilityLevel(void) {
   // This might be called before all wads are loaded
   if (numwadfiles != last_numwadfiles) {
       int num;
-      int gcheck = 0;
+      int gcheck;
       const char* gtext;
       const char* lrtext;
 
@@ -75,28 +75,26 @@ static int dsda_WadCompatibilityLevel(void) {
           data = W_LumpByNum(num);
           gnum = W_CheckNumForName("GAMEVERS");
 
-          if (length == 14 && !strncasecmp("limit-removing", data, 14))
-            limitremoving = 1;
-
           if ((length == 7 && !strncasecmp("vanilla", data, 7)) || limitremoving) {
             if (gnum != LUMP_NOT_FOUND) {
-              int vlength;
-              const char* vdata;
+              const char* gdata;
 
-              gcheck = 1;
-              vlength = W_LumpLength(gnum);
-              vdata = W_LumpByNum(gnum);
+              gcheck = true;
+              gdata = W_ReadLumpToString(W_GetNumForName("GAMEVERS"));
 
-              if (vlength == 3 && !strncasecmp("1.2", vdata, 3))
+              if (!strncasecmp("1.2", gdata, 3))
                   complvl = 0;
-              else if (vlength == 5 && !strncasecmp("1.666", vdata, 5))
+              else if (!strncasecmp("1.666", gdata, 5))
                   complvl = 1;
-              else if (vlength == 3 && !strncasecmp("1.9", vdata, 3))
+              else if (!strncasecmp("1.9", gdata, 3))
                   complvl = 2;
-              else if (vlength == 8 && !strncasecmp("ultimate", vdata, 8))
+              else if (!strncasecmp("ultimate", gdata, 8))
                   complvl = 3;
-              else if (vlength == 5 && !strncasecmp("final", vdata, 5))
+              else if (!strncasecmp("final", gdata, 5))
                   complvl = 4;
+
+              if (strstr(gdata, "limit"))
+                limitremoving = true;
             }
             if (complvl == -1) {
                 if (gamemode == commercial)

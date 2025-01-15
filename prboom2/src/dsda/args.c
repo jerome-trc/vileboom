@@ -730,7 +730,7 @@ static void dsda_ParseIntArg(arg_config_t* config, int* value, const char* param
 static void dsda_ParseLimitRemovingArg(arg_config_t* config, const char** value, const char* param) {
   //lprintf(LO_INFO, "lr check: '%s'\n", param);
   if ((!strcmp(param, "0r")) || (!strcmp(param, "1r")) || (!strcmp(param, "2r")) || (!strcmp(param, "3r")) || (!strcmp(param, "4r")))
-    arg_complevel_limitremoving = 1;
+    arg_complevel_limitremoving = true;
 }
 
 static void dsda_ParseStringArg(arg_config_t* config, const char** value, const char* param) {

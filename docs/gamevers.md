@@ -1,20 +1,20 @@
 ## GAMEVERS Lump
 
-The GAMEVERS lump can be used only when the [COMPLVL](complvl.md) lump has the value of `vanilla` or `limit-removing`, to specify an exact vanilla complevel. Learn more about [limit-removing](limit_removing.md).
+The GAMEVERS lump can be used only when the [COMPLVL](complvl.md) lump has the key of `vanilla`, to specify an exact vanilla complevel and [limit-removing](limit_removing.md).
 
-GAMEVERS will NOT be read if COMPLVL is absent or if COMPLVL has other values than `vanilla` or `limit-removing`.
+GAMEVERS will NOT be read if COMPLVL is absent or if COMPLVL has any other key than `vanilla`.
 
-The order of precedence is highest to lowest: parameter > lump > config. This means that if a vanilla or limit-removing complevel is set through a parameter, this will take precedence over the contents of COMPLVL and GAMEVERS, while COMPLVL and GAMEVERS will in turn take precedence over whatever is set in the menu as the default compatibility.
+The order of precedence is highest to lowest: parameter > lump > config. This means that if a another complevel is set and/or if limit-removing isn't in the parameters (example: `-complevel 2`), the GAMEVERS `value` or `key` will be ignored and the game will run ignoring the contents of COMPLVL and GAMEVERS.
 
 ### Specification
 
-The GAMEVERS lump has a key and a value:
+The GAMEVERS lump has two values:
 
-`value`
+`complvl limit`
 
-The `value` defines the specific complevel.
+The `complvl` value defines the specific vanilla complevel, while the `limit` value defines limit-removing or not. The `limit` value can be ommited to run in normal mode.
 
-### Values
+### complvl
 
 - `1.2`
   - Selects complevel 0, for Doom 1.2 compatibility.
@@ -26,3 +26,17 @@ The `value` defines the specific complevel.
   - Selects complevel 3, for Ultimate Doom compatibility.
 - `final`
   - Selects complevel 4, for Final Doom (Plutonia, TNT) compatibility.
+- `limit`
+  - Allows the port to automatically detect the vanilla complevel, while activating limit-removing.
+  - When using this, the second `value` is not needed.
+
+### limit
+
+- `limit`
+  - Runs complevel under [limit-removing](limit_removing.md) mode. Removes overflow errors and emulation. Omit to run in normal mode. (Note this can be overriden by parameters).
+
+### Examples:
+
+- `1.666` - Selects complevel 1
+- `1.666 limit` - Selects complevel 1, while activating limit-removing
+- `limit` - Auto-selects vanilla complevel, while activating limit-removing 
