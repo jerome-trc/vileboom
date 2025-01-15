@@ -636,7 +636,7 @@ static void V_DrawMemPatch(int x, int y, int scrn, const rpatch_t *patch,
 //
 static void FUNC_V_DrawShaded(int scrn, int x, int y, int width, int height, int shade)
 {
-  extern const lighttable_t **colormaps;
+  const byte *darkcolormap = &colormaps[scrn][shade * 256];
   byte* dest;
   int ix, iy;
 
@@ -646,8 +646,7 @@ static void FUNC_V_DrawShaded(int scrn, int x, int y, int width, int height, int
 
     for (ix = x; ix < x + width; ++ix)
     {
-      *dest = colormaps[scrn][shade * 256 + dest[scrn]];
-      dest++;
+      *dest++ = darkcolormap[*dest];
     }
   }
 }
