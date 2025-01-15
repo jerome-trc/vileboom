@@ -132,6 +132,7 @@ typedef enum {
   dsda_config_mapcolor_secr,
   dsda_config_mapcolor_revsecr,
   dsda_config_mapcolor_exit,
+  dsda_config_mapcolor_secretexit,
   dsda_config_mapcolor_unsn,
   dsda_config_mapcolor_flat,
   dsda_config_mapcolor_sprt,

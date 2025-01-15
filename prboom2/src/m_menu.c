@@ -2945,8 +2945,10 @@ setup_menu_t auto_settings4[] =  // 3nd AutoMap Settings screen
   {"teleporter line"                ,S_COLOR ,m_conf,AU_X2, dsda_config_mapcolor_tele},
   {"secret sector boundary"         ,S_COLOR ,m_conf,AU_X2, dsda_config_mapcolor_secr},
   {"revealed secret sector boundary",S_COLOR ,m_conf,AU_X2, dsda_config_mapcolor_revsecr},
+  EMPTY_LINE,
   //jff 4/23/98 add exit line to automap
   {"exit line"                      ,S_COLOR ,m_conf,AU_X2, dsda_config_mapcolor_exit},
+  {"alt secret exit line"           ,S_COLOR ,m_conf,AU_X2, dsda_config_mapcolor_secretexit},
   {"computer map unseen line"       ,S_COLOR ,m_conf,AU_X2, dsda_config_mapcolor_unsn},
   {"line w/no floor/ceiling changes",S_COLOR ,m_conf,AU_X2, dsda_config_mapcolor_flat},
   {"general sprite"                 ,S_COLOR ,m_conf,AU_X2, dsda_config_mapcolor_sprt},
@@ -2955,7 +2957,6 @@ setup_menu_t auto_settings4[] =  // 3nd AutoMap Settings screen
   {"crosshair"                      ,S_COLOR ,m_conf,AU_X2, dsda_config_mapcolor_hair},
   {"single player arrow"            ,S_COLOR ,m_conf,AU_X2, dsda_config_mapcolor_sngl},
   {"your colour in multiplayer"     ,S_COLOR ,m_conf,AU_X2, dsda_config_mapcolor_me},
-  EMPTY_LINE,
   {"friends"                        ,S_COLOR ,m_conf,AU_X2, dsda_config_mapcolor_frnd},        // killough 8/8/98
 
   PREV_PAGE(auto_settings3),

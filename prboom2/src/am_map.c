@@ -1669,7 +1669,10 @@ static automap_style_t AM_wallStyle(int i)
     )
       return ams_locked;
 
-    if (mapcolor_p->exit && dsda_IsExitLine(i))
+    if (mapcolor_p->secretexit && (dsda_IsSecretExitLine(i) && !dsda_IsExitLine(i)))
+      return ams_secret_exit;
+
+    if (mapcolor_p->exit && (dsda_IsExitLine(i) || dsda_IsSecretExitLine(i)))
       return ams_exit;
 
     if (!lines[i].backsector) // 1-sided
@@ -1816,6 +1819,10 @@ static void AM_drawWalls(void)
 
       case ams_exit:
         AM_drawMline(&l, mapcolor_p->exit);
+        continue;
+
+      case ams_secret_exit:
+        AM_drawMline(&l, mapcolor_p->secretexit);
         continue;
 
       case ams_one_sided:

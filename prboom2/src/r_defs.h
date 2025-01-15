@@ -298,6 +298,7 @@ typedef enum
   ams_locked,
   ams_teleport,
   ams_exit,
+  ams_secret_exit,
   ams_unseen_secret,
   ams_portal,
 
