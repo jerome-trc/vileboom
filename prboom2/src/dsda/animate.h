@@ -31,7 +31,7 @@ void AnimateTicker(void);
 const int D_CheckAnimate(const char* lump);
 void V_DrawNyanBackground(const char* lump_s, const char* lump_e, const int scrn);
 
-const int D_CheckWide(const char* lump, const char *suffix);
+const int D_CheckWide(const char* lump);
 
 void dsda_InitNyanLumps(void);
 void dsda_ReloadNyanLumps(void);
@@ -41,7 +41,6 @@ void V_DrawNameNyanPatch(const int x, const int y, const int scrn, const char* l
 int D_SetupAnimatePatch(const char* lump);
 int D_SetupWidePatch(const char* lump);
 
-const char* AnimateCombine(const char *lump_prefix, const char *lump_main);
-const char* WideCombine(const char *lump_main, const char *lump_suffix);
+const char* PrefixCombine(const char *lump_prefix, const char *lump_main);
 
 #endif

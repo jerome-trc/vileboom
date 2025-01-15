@@ -39,7 +39,7 @@ void dsda_InitNyanLumps(void) {
     if(!raven) {
         Check_Skull_Animate = D_CheckAnimate(mskull1);
         Check_Stbar_Animate = D_CheckAnimate(stbar);
-        Check_Stbar_Wide = D_CheckWide(stbar, "_WS");
+        Check_Stbar_Wide = D_CheckWide(stbar);
     }
 }
 
@@ -65,8 +65,8 @@ const int D_CheckAnimate(const char* lump)
     if (!strcmp(lump, mdoom))
         lump = "DOOM";
 
-    lump_s = AnimateCombine("S_", lump);
-    lump_e = AnimateCombine("E_", lump);
+    lump_s = PrefixCombine("S_", lump);
+    lump_e = PrefixCombine("E_", lump);
     SCheck = W_CheckNumForName(lump_s);
     ECheck = W_CheckNumForName(lump_e);
 
@@ -77,28 +77,25 @@ const int D_CheckAnimate(const char* lump)
     return Animate;
 }
 
-const int D_CheckWide(const char* lump, const char *suffix) {
+const int D_CheckWide(const char* lump) {
     int widescreen = 0;
     const char* lump_w;
 
-    if (!strcmp(lump, e3bunny1) || !strcmp(lump, e3bunny2))
-        suffix = "_WS";
-
-    lump_w = WideCombine(lump, suffix);
+    lump_w = PrefixCombine("W_", lump);
 
     if (W_CheckNumForName(lump_w) != LUMP_NOT_FOUND)
         widescreen = 1;
     return widescreen;
 }
 
-const char* D_ApplyWide(const char* lump, const char* suffix)
+const char* D_ApplyWide(const char* lump)
 {
     const char* lump_w;
 
     if (!widescreenLumps)
         return lump;
 
-    lump_w = WideCombine(lump, suffix);
+    lump_w = PrefixCombine("W_", lump);
 
     if (W_CheckNumForName(lump_w) != LUMP_NOT_FOUND)
         return lump_w;
@@ -162,8 +159,8 @@ void V_DrawNyanBackground(const char* lump_s, const char* lump_e, const int scrn
 
 int D_SetupAnimatePatch(const char* lump)
 {
-    const char* lump_s = AnimateCombine("S_", lump);
-    const char* lump_e = AnimateCombine("E_", lump);
+    const char* lump_s = PrefixCombine("S_", lump);
+    const char* lump_e = PrefixCombine("E_", lump);
     int SCheck = W_CheckNumForName(lump_s);
     int ECheck = W_CheckNumForName(lump_e);
 
@@ -187,13 +184,9 @@ int D_SetupAnimatePatch(const char* lump)
 
 int D_SetupWidePatch(const char* lump)
 {
-    const char* lump_w = D_ApplyWide(lump, "WS");
+    const char* lump_w = D_ApplyWide(lump);
 
-    if (!strcmp(lump, stbar) || !strcmp(lump, titlepic) || !strcmp(lump, interpic) ||
-        !strcmp(lump, credit) || !strcmp(lump, help0) || !strcmp(lump, help1) ||
-        !strcmp(lump, help2) || !strcmp(lump, e2victory) || !strcmp(lump, e4endpic) ||
-        !strcmp(lump, e3bunny1) || !strcmp(lump, e3bunny2))
-        lump_w = D_ApplyWide(lump, "_WS");
+    lump_w = D_ApplyWide(lump);
 
     if (W_CheckNumForName(lump_w))
         return W_GetNumForName(lump_w);
@@ -201,7 +194,7 @@ int D_SetupWidePatch(const char* lump)
         return 0;
 }
 
-const char* AnimateCombine(const char *lump_prefix, const char *lump_main)
+const char* PrefixCombine(const char *lump_prefix, const char *lump_main)
 {
     char lump_short[7];
     size_t main, prefix;
@@ -222,31 +215,5 @@ const char* AnimateCombine(const char *lump_prefix, const char *lump_main)
     result = Z_Malloc(prefix + main + 1);
     memcpy(result, lump_prefix, prefix);
     memcpy(result + prefix, lump_short, main + 1);
-    return result;
-}
-
-const char* WideCombine(const char *lump_main, const char *lump_suffix)
-{
-    char lump_short[7];
-    size_t main, suffix;
-    char *result;
-    memcpy(lump_short, lump_main, strnlen(lump_main,7));
-
-    if (lump_suffix == NULL)
-        lump_suffix = "WS";
-
-    if (strlen(lump_main) > 5 && !strcmp(lump_suffix, "_WS"))
-        lump_short[5] = 0;
-    else if (strlen(lump_main) > 6 && !strcmp(lump_suffix, "WS"))
-        lump_short[6] = 0;
-    else
-        lump_short[strlen(lump_main)] = 0;
-
-    main = strlen(lump_short);
-    suffix = strlen(lump_suffix);
-
-    result = Z_Malloc(main + suffix + 1);
-    memcpy(result, lump_short, main);
-    memcpy(result + main, lump_suffix, suffix + 1);
     return result;
 }

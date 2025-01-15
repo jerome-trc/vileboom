@@ -1111,7 +1111,7 @@ static void ST_loadGraphics(void)
   if(Check_Stbar_Animate)
     R_SetPatchNum(&stbarbg_ani, "S_STBAR");
   if (Check_Stbar_Wide)
-    R_SetPatchNum(&stbarbg_ws, "STBAR_WS");
+    R_SetPatchNum(&stbarbg_ws, "W_STBAR");
   R_SetPatchNum(&stbarbg, stbar);
   R_SetPatchNum(&brdr_b, "brdr_b");
 

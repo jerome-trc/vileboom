@@ -1018,40 +1018,12 @@ void F_BunnyScroll (void)
 
 void F_BunnyLumpSetup(void) 
 {
-  const char* suffix;
-
   p1 = R_PatchByName(scrollpic1);
   p2 = R_PatchByName(scrollpic2);
-
-  if(D_CheckAnimate(scrollpic1))
-    p1a = R_PatchByName(AnimateCombine("S_", scrollpic1));
-  else
-    p1a = p1;
-
-  if(D_CheckAnimate(scrollpic2))
-    p2a = R_PatchByName(AnimateCombine("S_", scrollpic2));
-  else
-    p2a = p2;
-
-  if(D_CheckWide(scrollpic1, "WS")) {
-    if (!strcmp(scrollpic1, e3bunny1))
-      suffix = "_WS";
-    else
-      suffix = "WS";
-    p1w = R_PatchByName(WideCombine(scrollpic1, suffix));
-  }
-  else
-    p1w = p1;
-
-  if(D_CheckWide(scrollpic2, "WS")) {
-    if (!strcmp(scrollpic2, e3bunny2))
-      suffix = "_WS";
-    else
-      suffix = "WS";
-    p2w = R_PatchByName(WideCombine(scrollpic2, suffix));
-  }
-  else
-    p2w = p2;
+  p1a = D_CheckAnimate(scrollpic1) ? R_PatchByName(PrefixCombine("S_", scrollpic1)) : p1;
+  p2a = D_CheckAnimate(scrollpic2) ? R_PatchByName(PrefixCombine("S_", scrollpic2)) : p2;
+  p1w = D_CheckWide(scrollpic1) ? R_PatchByName(PrefixCombine("W_", scrollpic1)) : p1;
+  p2w = D_CheckWide(scrollpic2) ? R_PatchByName(PrefixCombine("W_", scrollpic2)) : p2;
 }
 
 void F_BunnyApplyWidth(void)
