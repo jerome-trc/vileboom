@@ -112,6 +112,9 @@ jobs:
             pkg-config \
             libdumb1-dev \
             libfluidsynth-dev \
+            fluidsynth \
+            libgl-dev \
+            libglu1-mesa-dev \
             libmad0-dev \
             libportmidi-dev \
             libsdl2-dev \
