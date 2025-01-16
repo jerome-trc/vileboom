@@ -365,6 +365,9 @@ static st_percent_t w_health;
 // weapon ownership widgets
 static st_multicon_t w_arms[6];
 
+// [crispy] show SSG availability in the Shotgun slot of the arms widget
+static int st_shotguns;
+
 // face status widget
 static st_multicon_t w_faces;
 
@@ -955,6 +958,9 @@ static void ST_drawWidgets(dboolean refresh)
   else if (plyr->armortype == 0)
     STlib_updatePercent(&w_armor, cr_armor_zero, refresh);
 
+  // [crispy] show SSG availability in the Shotgun slot of the arms widget
+  st_shotguns = dsda_IntConfig(dsda_config_ssg_on_arms) && (plyr->weaponowned[wp_shotgun] || plyr->weaponowned[wp_supershotgun]);
+
   for (i=0;i<6;i++)
     STlib_updateMultIcon(&w_arms[i], refresh);
 
@@ -1219,6 +1225,9 @@ static void ST_createWidgets(void)
                          arms[i], (int *) &plyr->weaponowned[i+1],
                          &st_armson);
     }
+
+  // [crispy] show SSG availability in the Shotgun slot of the arms widget
+  w_arms[1].inum = &st_shotguns;
 
   // frags sum
   STlib_initNum(&w_frags,

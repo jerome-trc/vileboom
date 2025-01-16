@@ -3222,6 +3222,7 @@ setup_menu_t misc_settings[] = {
   { "Death Use Action", S_CHOICE, m_conf, G_X, dsda_config_death_use_action, 0, death_use_strings },
   { "Boom Weapon Auto Switch", S_YESNO, m_conf, G_X, dsda_config_switch_when_ammo_runs_out },
   { "Auto Switch Weapon on Pickup", S_YESNO, m_conf, G_X, dsda_config_switch_weapon_on_pickup },
+  { "SSG Shows on ARMS Display", S_YESNO, m_conf, G_X, dsda_config_ssg_on_arms },
 
   PREV_PAGE(controller_settings),
   NEXT_PAGE(display_settings),
