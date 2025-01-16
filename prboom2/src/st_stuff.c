@@ -959,7 +959,7 @@ static void ST_drawWidgets(dboolean refresh)
     STlib_updatePercent(&w_armor, cr_armor_zero, refresh);
 
   // [crispy] show SSG availability in the Shotgun slot of the arms widget
-  st_shotguns = dsda_IntConfig(dsda_config_ssg_on_arms) && (plyr->weaponowned[wp_shotgun] || plyr->weaponowned[wp_supershotgun]);
+  st_shotguns = dsda_IntConfig(dsda_config_ssg_on_arms) && (gamemode == commercial) && (plyr->weaponowned[wp_shotgun] || plyr->weaponowned[wp_supershotgun]);
 
   for (i=0;i<6;i++)
     STlib_updateMultIcon(&w_arms[i], refresh);
