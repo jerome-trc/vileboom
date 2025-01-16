@@ -646,7 +646,8 @@ static void FUNC_V_DrawShaded(int scrn, int x, int y, int width, int height, int
 
     for (ix = x; ix < x + width; ++ix)
     {
-      *dest++ = darkcolormap[*dest];
+      *dest = darkcolormap[*dest];
+      ++dest;
     }
   }
 }
