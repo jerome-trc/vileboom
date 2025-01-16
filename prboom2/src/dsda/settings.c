@@ -15,6 +15,8 @@
 //	DSDA Settings
 //
 
+#include <string.h>
+
 #include "doomstat.h"
 #include "m_menu.h"
 #include "e6y.h"
