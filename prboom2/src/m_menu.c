@@ -2750,6 +2750,7 @@ setup_menu_t stat_settings1[] =  // Status Bar and HUD Settings screen
   { "USE RED NUMBERS", S_YESNO, m_conf, SB_X, dsda_config_sts_always_red },
   { "GRAY %",S_YESNO, m_conf, SB_X, dsda_config_sts_pct_always_gray },
   { "SINGLE KEY DISPLAY", S_YESNO, m_conf, SB_X, dsda_config_sts_traditional_keys },
+  { "INCLUDE SSG ON ARMS", S_YESNO, m_conf, SB_X, dsda_config_ssg_on_arms },
   { "BERSERK INDICATOR", S_CHOICE, m_conf, SB_X, nyan_config_hud_berserk, 0, berserk_icon_list },
   { "ARMOR INDICATOR", S_CHOICE, m_conf, SB_X, nyan_config_hud_armoricon, 0, armor_icon_list },
   EMPTY_LINE,
@@ -3222,7 +3223,6 @@ setup_menu_t misc_settings[] = {
   { "Death Use Action", S_CHOICE, m_conf, G_X, dsda_config_death_use_action, 0, death_use_strings },
   { "Boom Weapon Auto Switch", S_YESNO, m_conf, G_X, dsda_config_switch_when_ammo_runs_out },
   { "Auto Switch Weapon on Pickup", S_YESNO, m_conf, G_X, dsda_config_switch_weapon_on_pickup },
-  { "SSG Shows on ARMS Display", S_YESNO, m_conf, G_X, dsda_config_ssg_on_arms },
 
   PREV_PAGE(controller_settings),
   NEXT_PAGE(display_settings),
