@@ -78,9 +78,10 @@ static void R_FLUSHWHOLE_FUNCNAME(void)
     do
     {
         int mask;
-        count -= lines;
         const byte fuzz =
             fullcolormap[6 * 256 + dest[fuzzoffset[fuzzpos]]];
+
+        count -= lines;
 
         // if (count < 0)
         // {
@@ -143,16 +144,16 @@ static void R_FLUSHWHOLE_FUNCNAME(void)
 //
 static void R_FLUSHHEADTAIL_FUNCNAME(void)
 {
+   byte *source;
+   byte *dest;
+   int count, colnum = 0;
+   int yl, yh;
+
    #if (R_DRAWCOLUMN_PIPELINE & RDC_FUZZ)
       // Only whole flushes are supported for fuzz
       R_FLUSHWHOLE_FUNCNAME();
       return;
    #endif
-
-   byte *source;
-   byte *dest;
-   int count, colnum = 0;
-   int yl, yh;
 
    while(colnum < 4)
    {
