@@ -64,7 +64,6 @@ extern menu_t LoadDef;
 extern menu_t SaveDef;
 extern menuitem_t SoundMenu[];
 
-
 /////////////////////////////
 //
 // Raven Prototypes
@@ -214,7 +213,6 @@ void MN_DrawCredits (void)
   return;
 }
 
-
 /////////////////////////////
 //
 // RavenMainMenu (Heretic and Hexen use this)
@@ -239,7 +237,6 @@ menuitem_t RavenMainMenu[]=
   {1,"M_INFO",MN_Info,'i', "INFO"},
   {1,"M_QUITG", M_QuitDOOM,'q', "QUIT GAME"}
 };
-
 
 
 /////////////////////////////
@@ -275,7 +272,6 @@ void MN_GameFiles(int choice)
 {
   M_SetupNextMenu(&SaveLoadDef);
 }
-
 
 
 /////////////////////////////
@@ -454,10 +450,10 @@ void MN_Drawer(void)
     y += ITEM_HEIGHT;
   }
 
-  // Arsinikk - Don't draw selector on INFO screens for Heretic / Hexen
-  if(currentMenu == &InfoDef1 || currentMenu == &InfoDef2 ||
-     currentMenu == &InfoDef3 || currentMenu == &InfoDef4 ||
-     currentMenu == &ExtHelpDef)
+  // Don't draw selector on INFO screens for Heretic / Hexen
+  if (currentMenu == &InfoDef1 || currentMenu == &InfoDef2 ||
+      currentMenu == &InfoDef3 || currentMenu == &InfoDef4 ||
+      currentMenu == &ExtHelpDef)
     return;
 
   if (max)

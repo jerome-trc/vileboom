@@ -655,6 +655,16 @@ void M_Episode(int choice)
     return;
   }
 
+  // Heretic shareware is different than Doom shareware in that it shows
+  // the episode select, but will display a message when selecting
+  // other episodes. This code shows that message and avoids a crash.
+  //
+  if (heretic && gamemode == shareware && choice && episodes[choice].vanilla) {
+    M_StartMessage(HERETIC_SWSTRING, NULL, false); // externalized
+    M_SetupNextMenu(&InfoDef1);
+    return;
+  }
+
   chosen_episode = choice;
 
   if (hexen) // hack hexen class as "episode menu"
@@ -4145,7 +4155,6 @@ void M_DrawExtHelp(void)
   // CPhipps - patch drawing updated
   V_ClearBorder(); // Arsinikk - redraw background for every ext HELP screen. Adds background for widescreen on sides.
   V_DrawNameNyanPatch(0, 0, 0, namebfr, CR_DEFAULT, VPT_STRETCH);
-
 }
 
 //
@@ -4425,7 +4434,6 @@ void M_DrawAd (void)
   else
     M_DrawCredits();
 }
-
 
 //
 // End of Dynamic HELP screen                // phares 3/2/98
@@ -5345,24 +5353,6 @@ static dboolean M_InactiveMenuResponder(int ch, int action, event_t* ev)
     return true;
   }
 
-  if (dsda_InputActivated(dsda_input_console))
-  {
-    if (dsda_OpenConsole())
-      S_StartVoidSound(g_sfx_swtchn);
-    return true;
-  }
-
-  {
-    int i;
-
-    for (i = 0; i < CONSOLE_SCRIPT_COUNT; ++i)
-      if (dsda_InputActivated(dsda_input_script_0 + i)) {
-        dsda_ExecuteConsoleScript(i);
-
-        return true;
-      }
-  }
-
   // Toggle gamma
   if (dsda_InputActivated(dsda_input_gamma))
   {
@@ -5376,22 +5366,20 @@ static dboolean M_InactiveMenuResponder(int ch, int action, event_t* ev)
     return true;
   }
 
-  if (dsda_InputActivated(dsda_input_zoomout))
+  if (dsda_InputActivated(dsda_input_cycle_profile))
   {
-    if (automap_active)
-      return false;
-    M_SizeDisplay(0);
-    S_StartVoidSound(g_sfx_stnmov);
+    int value = dsda_CycleConfig(dsda_config_input_profile, true);
+    doom_printf("Input Profile %d", value);
+    S_StartVoidSound(g_sfx_swtchn);
     return true;
   }
 
-  if (dsda_InputActivated(dsda_input_zoomin))
-  {                                   // jff 2/23/98
-    if (automap_active)               // allow
-      return false;                   // key_hud==key_zoomin
-    M_SizeDisplay(1);                                             //  ^
-    S_StartVoidSound(g_sfx_stnmov);                              //  |
-    return true;                                                  // phares
+  if (dsda_InputActivated(dsda_input_cycle_palette))
+  {
+    dsda_CyclePlayPal();
+    doom_printf("Palette %s", dsda_PlayPalData()->lump_name);
+    S_StartVoidSound(g_sfx_swtchn);
+    return true;
   }
 
   //e6y
@@ -5420,6 +5408,52 @@ static dboolean M_InactiveMenuResponder(int ch, int action, event_t* ev)
     doom_printf("Game Speed %d", value);
     // Don't eat the keypress in this case.
     // return true;
+  }
+
+  // Pop-up Main menu?
+  if (ch == KEYD_ESCAPE || action == MENU_ESCAPE ||
+      (!in_game && (ch == KEYD_ENTER || ch == KEYD_SPACEBAR ||
+       dsda_InputActivated(dsda_input_fire) || dsda_InputActivated(dsda_input_use) || dsda_InputActivated(dsda_input_menu_enter)))) // phares
+  {
+    M_StartControlPanel();
+    S_StartVoidSound(g_sfx_swtchn);
+    return true;
+  }
+
+  if (dsda_InputActivated(dsda_input_console))
+  {
+    if (dsda_OpenConsole())
+      S_StartVoidSound(g_sfx_swtchn);
+    return true;
+  }
+
+  {
+    int i;
+
+    for (i = 0; i < CONSOLE_SCRIPT_COUNT; ++i)
+      if (dsda_InputActivated(dsda_input_script_0 + i)) {
+        dsda_ExecuteConsoleScript(i);
+
+        return true;
+      }
+  }
+
+  if (dsda_InputActivated(dsda_input_zoomout))
+  {
+    if (automap_active)
+      return false;
+    M_SizeDisplay(0);
+    S_StartVoidSound(g_sfx_stnmov);
+    return true;
+  }
+
+  if (dsda_InputActivated(dsda_input_zoomin))
+  {                                   // jff 2/23/98
+    if (automap_active)               // allow
+      return false;                   // key_hud==key_zoomin
+    M_SizeDisplay(1);                                             //  ^
+    S_StartVoidSound(g_sfx_stnmov);                              //  |
+    return true;                                                  // phares
   }
 
   if (dsda_InputActivated(dsda_input_nextlevel))
@@ -5488,22 +5522,6 @@ static dboolean M_InactiveMenuResponder(int ch, int action, event_t* ev)
     return true;
   }
 
-  if (dsda_InputActivated(dsda_input_cycle_profile))
-  {
-    int value = dsda_CycleConfig(dsda_config_input_profile, true);
-    doom_printf("Input Profile %d", value);
-    S_StartVoidSound(g_sfx_swtchn);
-    return true;
-  }
-
-  if (dsda_InputActivated(dsda_input_cycle_palette))
-  {
-    dsda_CyclePlayPal();
-    doom_printf("Palette %s", dsda_PlayPalData()->lump_name);
-    S_StartVoidSound(g_sfx_swtchn);
-    return true;
-  }
-
   if (dsda_InputActivated(dsda_input_walkcamera))
   {
     if (demoplayback && gamestate == GS_LEVEL)
@@ -5531,7 +5549,6 @@ static dboolean M_InactiveMenuResponder(int ch, int action, event_t* ev)
     else
     {
       dsda_UpdateIntConfig(dsda_config_show_alive_monsters,0,false);
-      dsda_ShowAliveMonsters();
       doom_printf("Action Only Supported in OpenGL");
     }
   }
@@ -5546,14 +5563,6 @@ static dboolean M_InactiveMenuResponder(int ch, int action, event_t* ev)
     return true;
   }
 
-  // Pop-up Main menu?
-  if (ch == KEYD_ESCAPE || action == MENU_ESCAPE) // phares
-  {
-    M_StartControlPanel();
-    S_StartVoidSound(g_sfx_swtchn);
-    return true;
-  }
-
   return false;
 }
 
@@ -5565,9 +5574,9 @@ typedef enum {
 
 static confirmation_t M_EventToConfirmation(int ch, int action, event_t* ev)
 {
-  if (ch == 'y' || ch == KEYD_ENTER || (!ch && action == MENU_ENTER))
+  if (ch == 'y' || action == MENU_ENTER)
     return confirmation_yes;
-  else if (ch == ' ' || ch == KEYD_ESCAPE || ch == KEYD_BACKSPACE || ch == 'n' || (!ch && action == MENU_BACKSPACE))
+  else if (ch == ' ' || ch == KEYD_ESCAPE || ch == 'n' || action == MENU_BACKSPACE)
     return confirmation_no;
   else
     return confirmation_null;

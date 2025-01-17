@@ -143,7 +143,6 @@ void R_ResetColumnBuffer(void);
 void R_SetFuzzPos(int fuzzpos);
 int R_GetFuzzPos();
 
-// Reset scaled fuzz column
 // height is the height of the last column, in pixels
 void R_ResetFuzzCol(int height);
 

@@ -179,8 +179,9 @@ const char *const standard_iwads[]=
   "bfgdoom.wad",
 
   "heretic.wad",
-  "heretic1.wad",
-  "hexen.wad"
+  "hexen.wad",
+
+  "heretic1.wad"
 };
 //e6y static
 const int nstandard_iwads = sizeof standard_iwads/sizeof*standard_iwads;
@@ -1031,12 +1032,6 @@ void AddIWAD(const char *iwad)
       dsda_UpdateFlag(dsda_arg_heretic, true);
   }
 
-  if (i >= 12 && !strnicmp(iwad + i - 12, "heretic1.wad", 12))
-  {
-    if (!dsda_Flag(dsda_arg_heretic))
-      dsda_UpdateFlag(dsda_arg_heretic, true);
-  }
-
   if (i >= 9 && !strnicmp(iwad + i - 9, "hexen.wad", 9))
   {
     if (!dsda_Flag(dsda_arg_hexen))
@@ -1056,6 +1051,14 @@ void AddIWAD(const char *iwad)
   {
     if (!dsda_Flag(dsda_arg_chex))
       dsda_UpdateFlag(dsda_arg_chex, true);
+  }
+
+  if (i >= 12 && !strnicmp(iwad + i - 12, "heretic1.wad", 12))
+  {
+    if (!dsda_Flag(dsda_arg_heretic))
+      dsda_UpdateFlag(dsda_arg_heretic, true);
+
+    gamemode = shareware;
   }
 
   switch(gamemode)
@@ -1215,7 +1218,11 @@ static void IdentifyVersion (void)
     Z_Free(iwad);
   }
   else
-    I_Error("IdentifyVersion: IWAD not found\n");
+  {
+    I_Error("IdentifyVersion: IWAD not found\n\n"
+            "Make sure your IWADs are in a folder that dsda-doom searches on\n"
+            "For example: %s", I_ConfigDir());
+  }
 }
 
 //
@@ -1635,7 +1642,7 @@ static void EvaluateDoomVerStr(void)
   if (heretic)
   {
     if(gamemode == retail)
-      doomverstr= "Heretic: Shadow of the Serpent Riders";
+      doomverstr = "Heretic: Shadow of the Serpent Riders";
     else if(gamemode == shareware)
       doomverstr = "Heretic Shareware";
     else

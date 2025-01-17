@@ -203,7 +203,7 @@ static dboolean P_GiveAmmo(player_t *player, ammotype_t ammo, int num)
     {
         if (player->weaponowned[GetAmmoChange[ammo]])
         {
-            P_AutoSwitchWeapon(player, GetAmmoChange[ammo]);
+              P_AutoSwitchWeapon(player, GetAmmoChange[ammo]);
         }
     }
 
@@ -265,7 +265,6 @@ dboolean P_GiveWeapon(player_t *player, weapontype_t weapon, dboolean dropped)
       player->weaponowned[weapon] = true;
 
       P_GiveAmmo(player, weaponinfo[weapon].ammo, deathmatch ? 5 : 2);
-
       P_AutoSwitchWeapon(player, weapon);
       /* cph 20028/10 - for old-school DM addicts, allow old behavior
        * where only consoleplayer's pickup sounds are heard */

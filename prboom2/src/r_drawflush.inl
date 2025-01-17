@@ -43,57 +43,66 @@
 //
 static void R_FLUSHWHOLE_FUNCNAME(void)
 {
-    // Scaled software fuzz algorithm
+   // Scaled software fuzz algorithm
 #if (R_DRAWCOLUMN_PIPELINE & RDC_FUZZ)
-    int x;
-    byte* dest, * topleft, * fuzztable;
-    int yl;
-    int count, count2, cmask;
-    int tableoffset;
-    int fp, cs;
-
-    x = temp_x;
-    topleft = drawvars.topleft + startx;
-    cs = fuzzcellsize;
-    fuzztable = fuzzintensitytables + 5 * 256 * boom_cm;
-
-    while (--x >= 0)
+    if ((temp_x + startx) % fuzzcellsize)
     {
-        yl = tempyl[x];
-        dest = topleft + yl * drawvars.pitch + x;
-        count = tempyh[x] - yl + 1;
+        return;
+    }
 
-        // Draw fuzz stripe independently from vertical screen position
-        fp = fuzzpos + (yl / cs);
+    int yl = tempyl[temp_x - 1];
+    int yh = tempyh[temp_x - 1];
 
-        // Draw column, cell stripe by cell stripe
-        count2 = cs - (yl % cs);
+    int count = yh - yl + 1;
+
+    if (count < 0)
+    {
+        return;
+    }
+
+#ifdef RANGECHECK
+    if ((unsigned)x >= video.width || yl < 0 || yh  >= video.height)
+    {
+        I_Error("R_DrawFuzzColumn: %i to %i at %i", yl, yh , x);
+    }
+#endif
+
+    ++count;
+
+    byte *dest = drawvars.topleft + yl * drawvars.pitch + startx + temp_x - fuzzcellsize;
+
+    int lines = fuzzcellsize - (yl % fuzzcellsize);
+
+    do
+    {
+        count -= lines;
+
+        // if (count < 0)
+        // {
+        //    lines += count;
+        //    count = 0;
+        // }
+        const int mask = count >> (8 * sizeof(mask) - 1);
+        lines += count & mask;
+        count &= ~mask;
+
+        const byte fuzz =
+            fullcolormap[6 * 256 + dest[fuzzoffset[fuzzpos]]];
+
         do
         {
-            tableoffset = fuzzintensity[fp % FUZZTABLE] * 256;
+            memset(dest, fuzz, fuzzcellsize);
+            dest += drawvars.pitch;
+        } while (--lines);
 
-            count -= count2;
+        ++fuzzpos;
 
-            // if (count < 0) {
-            //    count2 += count;
-            //    count = 0;
-            // }
-            cmask = count >> (sizeof(int) * 8 - 1);
-            count2 += count & cmask;
-            count &= ~cmask;
+        // Clamp table lookup index.
+        fuzzpos &= (fuzzpos - FUZZTABLE) >> (8 * sizeof(fuzzpos) - 1); // killough 1/99
 
-            // Draw cell stripe, pixel by pixel
-            do
-            {
-                *dest = fuzztable[tableoffset + *dest];
-                dest += drawvars.pitch;
-            } while (--count2);
-
-            ++fp;
-            count2 = cs;
-        } while (count);
-    }
-#else  /* if (R_DRAWCOLUMN_PIPELINE & RDC_FUZZ) */
+        lines = fuzzcellsize;
+    } while (count);
+#else
    byte *source;
    byte *dest;
    int  count, yl;
@@ -117,7 +126,7 @@ static void R_FLUSHWHOLE_FUNCNAME(void)
          dest += drawvars.pitch;
       }
    }
-#endif  /* if (R_DRAWCOLUMN_PIPELINE & RDC_FUZZ) */
+#endif
 }
 
 //
@@ -129,16 +138,16 @@ static void R_FLUSHWHOLE_FUNCNAME(void)
 //
 static void R_FLUSHHEADTAIL_FUNCNAME(void)
 {
+   #if (R_DRAWCOLUMN_PIPELINE & RDC_FUZZ)
+      // Only whole flushes are supported for fuzz
+      R_FLUSHWHOLE_FUNCNAME();
+      return;
+   #endif
+
    byte *source;
    byte *dest;
    int count, colnum = 0;
    int yl, yh;
-
-#if (R_DRAWCOLUMN_PIPELINE & RDC_FUZZ)
-   // Only whole flushes are supported for fuzz
-   R_FLUSHWHOLE_FUNCNAME();
-   return;
-#endif
 
    while(colnum < 4)
    {
@@ -192,13 +201,14 @@ static void R_FLUSHHEADTAIL_FUNCNAME(void)
 
 static void R_FLUSHQUAD_FUNCNAME(void)
 {
+   #if (R_DRAWCOLUMN_PIPELINE & RDC_FUZZ)
+      // Only whole flushes are supported for fuzz
+      return;
+   #endif
+
    byte *source = &tempbuf[commontop << 2];
    byte *dest = drawvars.topleft + commontop*drawvars.pitch + startx;
    int count;
-#if (R_DRAWCOLUMN_PIPELINE & RDC_FUZZ)
-   // Only whole flushes are supported for fuzz
-   return;
-#endif
 
    count = commonbot - commontop + 1;
 

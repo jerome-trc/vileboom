@@ -622,7 +622,6 @@ static void R_DrawVisSprite(vissprite_t *vis)
     {
       texturecolumn = frac>>FRACBITS;
 
-      // Fuzz column handling
       if (!dcvars.colormap) R_CheckFuzzCol(dcvars.x, colheight);
 
       R_DrawMaskedColumn(
@@ -938,7 +937,7 @@ void R_AddSprites(subsector_t* subsec, int lightlevel)
 
   // Handle all things in sector.
 
-  if (dsda_ShowAliveMonsters())
+  if (dsda_ShowAliveMonsters() && V_IsOpenGLMode())
   {
     if (dsda_ShowAliveMonsters() == 1)
     {

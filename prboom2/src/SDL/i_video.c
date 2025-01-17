@@ -1076,16 +1076,16 @@ void I_InitScreenResolution(void)
 
   desired_fullscreen = dsda_IntConfig(dsda_config_use_fullscreen);
 
-  if (dsda_Flag(dsda_arg_fullscreen))
-    desired_fullscreen = 1;
-
-  if (dsda_Flag(dsda_arg_window))
-    desired_fullscreen = 0;
-
   if (init)
   {
     //e6y: ability to change screen resolution from GUI
     I_FillScreenResolutionsList();
+
+    if (dsda_Flag(dsda_arg_fullscreen))
+    desired_fullscreen = 1;
+
+    if (dsda_Flag(dsda_arg_window))
+      desired_fullscreen = 0;
 
     // Video stuff
     arg = dsda_Arg(dsda_arg_width);
@@ -1223,7 +1223,6 @@ void I_UpdateVideoMode(void)
 {
   int init_flags = SDL_WINDOW_ALLOW_HIGHDPI;
   int screen_multiply;
-  int actualheight;
   int render_vsync;
   int integer_scaling;
   const char *sdl_video_window_pos;
@@ -1270,6 +1269,16 @@ void I_UpdateVideoMode(void)
     init_flags |= SDL_WINDOW_OPENGL;
   }
 
+  // [FG] aspect ratio correction for the canonical video modes
+  if (SCREENHEIGHT == 200 || SCREENHEIGHT == 400)
+  {
+    ACTUALHEIGHT = 6*SCREENHEIGHT/5;
+  }
+  else
+  {
+    ACTUALHEIGHT = SCREENHEIGHT;
+  }
+
   if (desired_fullscreen)
   {
     if (exclusive_fullscreen)
@@ -1277,14 +1286,10 @@ void I_UpdateVideoMode(void)
     else
       init_flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
   }
-
-  // In windowed mode, the window can be resized while the game is
-  // running.  This feature is disabled on OS X, as it adds an ugly
-  // scroll handle to the corner of the screen.
-#ifndef __APPLE__
-  if (!desired_fullscreen)
+  else
+  {
     init_flags |= SDL_WINDOW_RESIZABLE;
-#endif
+  }
 
   if (V_IsOpenGLMode())
   {
@@ -1308,10 +1313,10 @@ void I_UpdateVideoMode(void)
     sdl_window = SDL_CreateWindow(
       PACKAGE_NAME " " PACKAGE_VERSION,
       SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-      SCREENWIDTH * screen_multiply, SCREENHEIGHT * screen_multiply,
+      SCREENWIDTH * screen_multiply, ACTUALHEIGHT * screen_multiply,
       init_flags);
     sdl_glcontext = SDL_GL_CreateContext(sdl_window);
-    SDL_SetWindowMinimumSize(sdl_window, SCREENWIDTH, SCREENHEIGHT);
+    SDL_SetWindowMinimumSize(sdl_window, SCREENWIDTH, ACTUALHEIGHT);
   }
   else
   {
@@ -1323,34 +1328,12 @@ void I_UpdateVideoMode(void)
     sdl_window = SDL_CreateWindow(
       PACKAGE_NAME " " PACKAGE_VERSION,
       SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-      SCREENWIDTH, SCREENHEIGHT,
+      SCREENWIDTH * screen_multiply, ACTUALHEIGHT * screen_multiply,
       init_flags);
     sdl_renderer = SDL_CreateRenderer(sdl_window, -1, flags);
 
-    // [FG] aspect ratio correction for the canonical video modes
-    if (SCREENHEIGHT == 200 || SCREENHEIGHT == 400)
-    {
-      actualheight = 6*SCREENHEIGHT/5;
-    }
-    else
-    {
-      actualheight = SCREENHEIGHT;
-    }
-
-    SDL_SetWindowMinimumSize(sdl_window, SCREENWIDTH, actualheight);
-    SDL_RenderSetLogicalSize(sdl_renderer, SCREENWIDTH, actualheight);
-
-    // [FG] make sure initial window size is always >= 640x480
-    while (screen_multiply*SCREENWIDTH < 640 || screen_multiply*actualheight < 480)
-    {
-      screen_multiply++;
-    }
-
-    // [FG] apply screen_multiply to initial window size
-    if (!desired_fullscreen)
-    {
-      SDL_SetWindowSize(sdl_window, screen_multiply*SCREENWIDTH, screen_multiply*actualheight);
-    }
+    SDL_SetWindowMinimumSize(sdl_window, SCREENWIDTH, ACTUALHEIGHT);
+    SDL_RenderSetLogicalSize(sdl_renderer, SCREENWIDTH, ACTUALHEIGHT);
 
     // [FG] force integer scales
     SDL_RenderSetIntegerScale(sdl_renderer, integer_scaling);

@@ -116,7 +116,7 @@
 #include "dsda/utility.h"
 #include "dsda/library.h"
 
-// Arsinikk - allows use of HELP2 screen for PWADs under DOOM 1
+// Allows use of HELP2 screen for PWADs under DOOM 1
 int pwad_help2_check;
 
 struct
@@ -2746,6 +2746,12 @@ void G_ReloadDefaults(void)
   // (allows functions above to load different values for demos
   // and savegames without messing up defaults).
 
+  // Allows PWAD HELP2 screen for DOOM 1 wads.
+  // there's no easy way to set it only to complevel 0-2, so
+  // I just allowed it for complevel 3 if HELP2 is present
+  if ((compatibility_level <= 3) && (gamemode != commercial) && (gamemode != shareware) && !raven)
+    pwad_help2_check = W_PWADLumpNameExists("HELP2");
+
   options = dsda_Options();
 
   weapon_recoil = options->weapon_recoil;    // weapon recoil
@@ -4211,6 +4217,10 @@ void G_ContinueDemo(const char *playback_name)
 
 static dboolean InventoryMoveLeft(void)
 {
+    player_t *plr;
+
+    plr = &players[consoleplayer];
+
     if (R_FullView())
     {
         inv_ptr--;
@@ -4218,6 +4228,7 @@ static dboolean InventoryMoveLeft(void)
         {
             inv_ptr = 0;
         }
+        plr->readyArtifact = plr->inventory[inv_ptr].type;
         return true;
     }
 
@@ -4258,6 +4269,7 @@ static dboolean InventoryMoveRight(void)
             if (inv_ptr < 0)
                 inv_ptr = 0;
         }
+        plr->readyArtifact = plr->inventory[inv_ptr].type;
         return true;
     }
 
