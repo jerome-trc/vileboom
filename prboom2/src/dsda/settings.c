@@ -282,10 +282,6 @@ dboolean dsda_PowerPalette(void) {
   return dsda_IntConfig(dsda_config_palette_onpowers);
 }
 
-dboolean dsda_LiteAmpColormap(void) {
-  return dsda_IntConfig(dsda_config_colormap_onliteamp);
-}
-
 dboolean dsda_ShowHealthBars(void) {
   return dsda_IntConfig(dsda_config_gl_health_bar);
 }

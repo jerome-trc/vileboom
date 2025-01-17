@@ -3247,7 +3247,6 @@ setup_menu_t display_settings[] = {
   { "Change Palette On Pain", S_YESNO, m_conf, G_X, dsda_config_palette_ondamage },
   { "Change Palette On Bonus", S_YESNO, m_conf, G_X, dsda_config_palette_onbonus },
   { "Change Palette On Powers", S_YESNO, m_conf, G_X, dsda_config_palette_onpowers },
-  { "Change Colormap On Lite Amp", S_YESNO, m_conf, G_X, dsda_config_colormap_onliteamp },
 
   PREV_PAGE(misc_settings),
   FINAL_ENTRY

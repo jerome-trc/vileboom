@@ -58,7 +58,6 @@ dboolean dsda_MapTitle(void);
 dboolean dsda_PainPalette(void);
 dboolean dsda_BonusPalette(void);
 dboolean dsda_PowerPalette(void);
-dboolean dsda_LiteAmpColormap(void);
 dboolean dsda_RenderWipeScreen(void);
 dboolean dsda_WipeAtFullSpeed(void);
 int dsda_ShowAliveMonsters(void);

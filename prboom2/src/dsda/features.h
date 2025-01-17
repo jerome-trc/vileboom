@@ -47,7 +47,7 @@ typedef enum {
   // 26
   // 27
   // 28
-  uf_litecolormap,
+  // 29
 
   uf_unknown = 30,
   uf_invalid = 31,

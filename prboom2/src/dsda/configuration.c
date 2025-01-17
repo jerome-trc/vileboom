@@ -184,9 +184,6 @@ void dsda_TrackConfigFeatures(void) {
   if (!dsda_IntConfig(dsda_config_palette_onpowers))
     dsda_TrackFeature(uf_powerpalette);
 
-  if (!dsda_IntConfig(dsda_config_colormap_onliteamp))
-    dsda_TrackFeature(uf_litecolormap);
-
   if (dsda_IntConfig(dsda_config_gl_health_bar))
     dsda_TrackFeature(uf_healthbar);
 
@@ -1301,10 +1298,6 @@ dsda_config_t dsda_config[dsda_config_count] = {
   [dsda_config_palette_onpowers] = {
     "palette_onpowers", dsda_config_palette_onpowers,
     CONF_BOOL(1), NULL, STRICT_INT(1), M_ChangeApplyPalette
-  },
-  [dsda_config_colormap_onliteamp] = {
-    "colormap_liteamp", dsda_config_colormap_onliteamp,
-    CONF_BOOL(1), NULL, STRICT_INT(1)
   },
   [dsda_config_enhanced_liteamp] = {
     "enhanced_liteamp", dsda_config_enhanced_liteamp,
