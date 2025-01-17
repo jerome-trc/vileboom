@@ -639,9 +639,9 @@ void M_DrawEpisode(void)
 
 void M_Episode(int choice)
 {
-  // Arsinikk - Heretic shareware is different than Doom shareware in that
-  // it shows the episode select, but will display a message when selecting
-  // the other episodes. This code shows that message and avoids a crash.
+  // Heretic shareware is different than Doom shareware in that it shows
+  // the episode select, but will display a message when selecting
+  // other episodes. This code shows that message and avoids a crash.
   //
   if (heretic && gamemode == shareware && choice && episodes[choice].vanilla) {
     M_StartMessage(HERETIC_SWSTRING, NULL, false); // Ty 03/27/98 - externalized
@@ -652,16 +652,6 @@ void M_Episode(int choice)
   if (gamemode == shareware && choice && !episodes[choice].vanilla) {
     M_StartMessage(s_SWSTRING, NULL, false); // Ty 03/27/98 - externalized
     M_SetupNextMenu(&ReadDef1);
-    return;
-  }
-
-  // Heretic shareware is different than Doom shareware in that it shows
-  // the episode select, but will display a message when selecting
-  // other episodes. This code shows that message and avoids a crash.
-  //
-  if (heretic && gamemode == shareware && choice && episodes[choice].vanilla) {
-    M_StartMessage(HERETIC_SWSTRING, NULL, false); // externalized
-    M_SetupNextMenu(&InfoDef1);
     return;
   }
 

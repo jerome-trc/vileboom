@@ -339,15 +339,15 @@ void MN_Init(void)
   SoundMenu[0].alttext = "SFX VOLUME";
   SoundMenu[2].alttext = "MUSIC VOLUME";
 
-  // Arsinikk - Use exclusive Heretic
+  // Use exclusive Heretic
   // and Hexen MainMenu.
   MainDef.menuitems = RavenMainMenu;
   MainDef.numitems = rmain_end;
   SaveDef.prevMenu = &SaveLoadDef;
   LoadDef.prevMenu = &SaveLoadDef;
 
-  // Arsinikk - remove "ORDER" screen in
-  // INFO routine if not Heretic shareware
+  // remove "ORDER" screen in INFO
+  // routine if not Heretic shareware
   if (raven && (gamemode != shareware))
   {
     InfoDef1.routine = MN_DrawInfoHelp1;
