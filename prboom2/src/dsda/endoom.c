@@ -397,7 +397,7 @@ void dsda_DumpEndoom(void) {
 
   if(endoom)
   {
-    if (endoom_type==1 && !dsda_Flag(dsda_arg_launcher))
+    if (endoom_type==1)
       dsda_WindowEndoom();
     else
       dsda_TerminalEndoom();
