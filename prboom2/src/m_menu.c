@@ -3034,7 +3034,7 @@ void M_DrawAutoMap(void)
 // killough 10/10/98
 
 setup_menu_t video_settings[], audio_settings[], mouse_settings[], controller_settings[];
-setup_menu_t misc_settings[], display_settings[];
+setup_menu_t misc_settings[], display_settings[], trans_settings[];
 
 setup_menu_t* gen_settings[] =
 {
@@ -3044,6 +3044,7 @@ setup_menu_t* gen_settings[] =
   controller_settings,
   misc_settings,
   display_settings,
+  trans_settings,
   NULL
 };
 
@@ -3253,18 +3254,36 @@ setup_menu_t display_settings[] = {
   { "Change Palette On Powers", S_YESNO, m_conf, G_X, dsda_config_palette_onpowers },
 
   PREV_PAGE(misc_settings),
+  NEXT_PAGE(trans_settings),
+  FINAL_ENTRY
+};
+
+setup_menu_t trans_settings[] = {
+  { "Translucency Options", S_SKIP | S_TITLE, m_null, G_X},
+  { "Translucent Sprites", S_YESNO, m_conf, G_X, dsda_config_boom_translucent_sprites },
+  EMPTY_LINE,
+  { "Customization", S_SKIP | S_TITLE, m_null, G_X},
+  { "Projectiles", S_YESNO, m_conf, G_X, dsda_config_boom_translucent_missiles },
+  { "Powerups", S_YESNO, m_conf, G_X, dsda_config_boom_translucent_powerups },
+  { "Effects", S_YESNO, m_conf, G_X, dsda_config_boom_translucent_effects },
+  EMPTY_LINE,
+  { "Vanilla Emulation", S_SKIP | S_TITLE, m_null, G_X},
+  { "Enable for Vanilla", S_YESNO, m_conf, G_X, dsda_config_vanilla_translucent_sprites },
+  { "Ghosts are Translucent", S_YESNO, m_conf, G_X, dsda_config_vanilla_translucent_ghosts },
+
+  PREV_PAGE(display_settings),
   FINAL_ENTRY
 };
 
 // Setting up for the Nyan Doom Options Menu.
 //
 
-setup_menu_t nyan_settings[], trans_settings[];
+setup_menu_t nyan_settings[], lump_settings[];
 
 setup_menu_t* nyanmenu_settings[] =
 {
   nyan_settings,
-  trans_settings,
+  lump_settings,
   NULL
 };
 
@@ -3304,27 +3323,16 @@ setup_menu_t nyan_settings[] = {
   { "Flashing Item Bonuses", S_YESNO, m_conf, G_X, nyan_config_item_bonus_flash },
   { "Colored Blood", S_CHOICE, m_conf, G_X, nyan_config_colored_blood, 0, colored_blood_list },
   EMPTY_LINE,
+
+  NEXT_PAGE(lump_settings),
+  FINAL_ENTRY
+};
+
+setup_menu_t lump_settings[] = {
   { "Nyan Lumps", S_SKIP | S_TITLE, m_null, G_X},
   { "Animate Lumps", S_YESNO, m_conf, G_X, nyan_config_enable_animate_lumps },
   { "Widescreen Lumps", S_YESNO, m_conf, G_X, nyan_config_enable_widescreen_lumps },
   { "Boom Credit/Help Screens", S_YESNO, m_conf, G_X, nyan_config_boom_credit_help },
-
-  NEXT_PAGE(trans_settings),
-  FINAL_ENTRY
-};
-
-setup_menu_t trans_settings[] = {
-  { "Translucency Options", S_SKIP | S_TITLE, m_null, G_X},
-  { "Translucent Sprites", S_YESNO, m_conf, G_X, dsda_config_boom_translucent_sprites },
-  EMPTY_LINE,
-  { "Customization", S_SKIP | S_TITLE, m_null, G_X},
-  { "Projectiles", S_YESNO, m_conf, G_X, dsda_config_boom_translucent_missiles },
-  { "Powerups", S_YESNO, m_conf, G_X, dsda_config_boom_translucent_powerups },
-  { "Effects", S_YESNO, m_conf, G_X, dsda_config_boom_translucent_effects },
-  EMPTY_LINE,
-  { "Vanilla Emulation", S_SKIP | S_TITLE, m_null, G_X},
-  { "Enable for Vanilla", S_YESNO, m_conf, G_X, dsda_config_vanilla_translucent_sprites },
-  { "Ghosts are Translucent", S_YESNO, m_conf, G_X, dsda_config_vanilla_translucent_ghosts },
 
   PREV_PAGE(nyan_settings),
   FINAL_ENTRY
