@@ -329,6 +329,7 @@ cfg_def_t cfg_defs[] =
   MIGRATED_SETTING(dsda_config_viewbob),
   MIGRATED_SETTING(dsda_config_weaponbob),
   MIGRATED_SETTING(dsda_config_quake_intensity),
+  MIGRATED_SETTING(dsda_config_software_fuzzmode),
   MIGRATED_SETTING(dsda_config_organize_failed_demos),
 
   SETTING_HEADING("Nyan-Doom settings"),
