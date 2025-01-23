@@ -951,7 +951,6 @@ int ST_HealthColor(int health)
 static void ST_drawWidgets(dboolean refresh)
 {
   int i;
-  int health, armor;
 
   // used by w_arms[] widgets
   st_armson = st_statusbaron && !deathmatch;
@@ -962,11 +961,6 @@ static void ST_drawWidgets(dboolean refresh)
   // used by icon widgets
   st_berserkicon_on = berserk_icon && st_statusbaron;
   st_armoricon_on = armor_icon && st_statusbaron;
-
-  // [Alaux] Used to color health and armor counts based on
-  // the real values, only ever relevant when using smooth counts
-  health = plyr->health;
-  armor = plyr->armorpoints[ARMOR_ARMOR];
 
   //jff 2/16/98 make color of ammo depend on amount
   if (*w_ready.num == plyr->maxammo[weaponinfo[w_ready.data].ammo])
@@ -989,7 +983,7 @@ static void ST_drawWidgets(dboolean refresh)
   }
 
   //jff 2/16/98 make color of health depend on amount
-  STlib_updatePercent(&w_health, ST_HealthColor(health), refresh);
+  STlib_updatePercent(&w_health, ST_HealthColor(plyr->health), refresh);
 
   // armor color dictated by type (Status Bar)
   if (plyr->armortype >= 2)
