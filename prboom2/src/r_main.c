@@ -1080,6 +1080,9 @@ void R_RenderPlayerView (player_t* player)
     DSDA_REMOVE_CONTEXT(sf_draw_planes);
   }
 
+  // [crispy] draw fuzz effect independent of rendering frame rate
+  R_SetFuzzPosDraw();
+
   DSDA_ADD_CONTEXT(sf_reset_column_buffer);
   R_ResetColumnBuffer();
   DSDA_REMOVE_CONTEXT(sf_reset_column_buffer);
