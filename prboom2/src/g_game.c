@@ -1240,6 +1240,11 @@ static void G_DoLoadLevel (void)
   P_SetupLevel (gameepisode, gamemap, 0, gameskill);
   if (!demoplayback) // Don't switch views if playing a demo
     displayplayer = consoleplayer;    // view the guy you are playing
+
+  // [Alaux] Update smooth count values
+  st_health = players[displayplayer].health;
+  st_armor  = players[displayplayer].armorpoints[ARMOR_ARMOR];
+
   gameaction = ga_nothing;
 
   // clear cmd building stuff
@@ -2408,6 +2413,12 @@ void G_AfterLoad(void)
   {
     players[consoleplayer].readyArtifact = players[consoleplayer].inventory[inv_ptr].type;
   }
+
+  // [Alaux] Update smooth count values;
+  // the same procedure is done in G_LoadLevel, but we have to repeat it here
+  st_health = players[displayplayer].health;
+  st_armor  = players[displayplayer].armorpoints[ARMOR_ARMOR];
+
 
   if (setsizeneeded)
     R_ExecuteSetViewSize ();

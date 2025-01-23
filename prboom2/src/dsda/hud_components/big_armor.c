@@ -69,7 +69,7 @@ static void dsda_DrawComponent(void) {
   y += patch_vertical_spacing;
 
   dsda_DrawBigNumber(x, y, patch_delta_x, 0,
-                     cm, local->component.vpt, 3, armor);
+                     cm, local->component.vpt, 3, st_armor);
 }
 
 void dsda_InitBigArmorHC(int x_offset, int y_offset, int vpt, int* args, int arg_count, void** data) {

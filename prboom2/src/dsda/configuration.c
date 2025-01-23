@@ -323,6 +323,10 @@ dsda_config_t dsda_config[dsda_config_count] = {
     "sts_pct_always_gray", dsda_config_sts_pct_always_gray,
     CONF_BOOL(0), &sts_pct_always_gray
   },
+  [dsda_config_hud_animated_count] = {
+    "hud_animated_count", dsda_config_hud_animated_count,
+    CONF_BOOL(0), NULL, NOT_STRICT, HU_InitThresholds
+  },
   [dsda_config_sts_traditional_keys] = {
     "sts_traditional_keys", dsda_config_sts_traditional_keys,
     CONF_BOOL(0), &sts_traditional_keys

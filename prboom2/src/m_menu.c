@@ -2749,6 +2749,7 @@ setup_menu_t stat_settings1[] =  // Status Bar and HUD Settings screen
   { "STATUS BAR", S_SKIP | S_TITLE, m_null, SB_X},
   { "USE RED NUMBERS", S_YESNO, m_conf, SB_X, dsda_config_sts_always_red },
   { "GRAY %",S_YESNO, m_conf, SB_X, dsda_config_sts_pct_always_gray },
+  { "ANIMATED HEALTH/ARMOR COUNT", S_YESNO, m_conf, SB_X, dsda_config_hud_animated_count },
   { "SINGLE KEY DISPLAY", S_YESNO, m_conf, SB_X, dsda_config_sts_traditional_keys },
   { "INCLUDE SSG ON ARMS", S_YESNO, m_conf, SB_X, dsda_config_ssg_on_arms },
   { "BERSERK INDICATOR", S_CHOICE, m_conf, SB_X, nyan_config_hud_berserk, 0, berserk_icon_list },

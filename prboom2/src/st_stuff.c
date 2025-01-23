@@ -356,6 +356,10 @@ static patchnum_t arms[6][2];
 // ready-weapon widget
 static st_number_t w_ready;
 
+// [Alaux]
+int st_health = 100;
+int st_armor = 0;
+
  // in deathmatch only, summary of frags stats
 static st_number_t w_frags;
 
@@ -822,9 +826,37 @@ static void ST_updateWidgets(void)
     }
 }
 
+// [Alaux]
+int SmoothCount(int shownval, int realval)
+{
+  int step = realval - shownval;
+
+  if (!smooth_counts || !step)
+  {
+    return realval;
+  }
+  else
+  {
+    int sign = step / abs(step);
+    step = BETWEEN(1, 7, abs(step) / 20);
+    shownval += (step+1)*sign;
+
+    if (  (sign > 0 && shownval > realval)
+        ||(sign < 0 && shownval < realval))
+    {
+      shownval = realval;
+    }
+
+    return shownval;
+  }
+}
+
 void ST_Ticker(void)
 {
   if (raven) return SB_Ticker();
+
+  st_health = SmoothCount(st_health, plyr->health);
+  st_armor  = SmoothCount(st_armor, plyr->armorpoints[ARMOR_ARMOR]);
 
   st_clock++;
   st_randomnumber = M_Random();
@@ -930,6 +962,11 @@ static void ST_drawWidgets(dboolean refresh)
   st_berserkicon_on = berserk_icon && st_statusbaron;
   st_armoricon_on = armor_icon && st_statusbaron;
 
+  // [Alaux] Used to color health and armor counts based on
+  // the real values, only ever relevant when using smooth counts
+  const int health = plyr->health;
+  const int armor = plyr->armorpoints[ARMOR_ARMOR];
+
   //jff 2/16/98 make color of ammo depend on amount
   if (*w_ready.num == plyr->maxammo[weaponinfo[w_ready.data].ammo])
     STlib_updateNum(&w_ready, cr_ammo_full, refresh);
@@ -951,7 +988,7 @@ static void ST_drawWidgets(dboolean refresh)
   }
 
   //jff 2/16/98 make color of health depend on amount
-  STlib_updatePercent(&w_health, ST_HealthColor(*w_health.n.num), refresh);
+  STlib_updatePercent(&w_health, ST_HealthColor(health), refresh);
 
   // armor color dictated by type (Status Bar)
   if (plyr->armortype >= 2)
@@ -1218,7 +1255,7 @@ static void ST_createWidgets(void)
                     ST_HEALTHX,
                     ST_HEALTHY,
                     tallnum,
-                    &plyr->health,
+                    &st_health,
                     &st_statusbaron,
                     &tallpercent);
 
@@ -1257,7 +1294,7 @@ static void ST_createWidgets(void)
                     ST_ARMORX,
                     ST_ARMORY,
                     tallnum,
-                    &plyr->armorpoints[ARMOR_ARMOR],
+                    &st_armor,
                     &st_statusbaron, &tallpercent);
 
   // Armor Icon

@@ -39,7 +39,7 @@ static void dsda_DrawComponent(void) {
        dsda_TextCR(dsda_tc_exhud_health_super);
 
   dsda_DrawBigNumber(local->component.x, local->component.y, patch_delta_x, 0,
-                     cm, local->component.vpt, 3, player->health);
+                     cm, local->component.vpt, 3, st_health);
 }
 
 void dsda_InitBigHealthTextHC(int x_offset, int y_offset, int vpt, int* args, int arg_count, void** data) {

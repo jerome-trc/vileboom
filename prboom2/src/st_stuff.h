@@ -108,6 +108,10 @@ typedef enum
 extern berserk_icon_t berserk_icon;
 extern armor_icon_t armor_icon;
 
+// [Alaux]
+extern int st_health;
+extern int st_armor;
+
 // e6y: makes sense for wide resolutions
 extern patchnum_t grnrock;
 extern patchnum_t brdr_b;

@@ -49,6 +49,7 @@ typedef enum {
   dsda_config_weapon_attack_alignment,
   dsda_config_sts_always_red,
   dsda_config_sts_pct_always_gray,
+  dsda_config_hud_animated_count,
   dsda_config_sts_traditional_keys,
   dsda_config_strict_mode,
   dsda_config_vertmouse,

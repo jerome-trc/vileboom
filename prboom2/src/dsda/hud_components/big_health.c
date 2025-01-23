@@ -57,7 +57,7 @@ static void dsda_DrawComponent(void) {
   x += patch_spacing;
   y += patch_vertical_spacing;
 
-  health = player->health < 0 ? 0 : player->health;
+  health = st_health < 0 ? 0 : st_health;
 
   dsda_DrawBigNumber(x, y, patch_delta_x, 0,
                      cm, local->component.vpt, 3, health);
