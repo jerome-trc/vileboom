@@ -87,6 +87,9 @@ int r_frame_count;
 
 #define HEXEN_PI 3.141592657
 
+// for Linear Sky
+#define FIXED2DOUBLE(x) ((x)/(double)FRACUNIT)
+
 int validcount = 1;         // increment every time a check is made
 int validcount2 = 1;
 const lighttable_t *fixedcolormap;
@@ -366,8 +369,8 @@ angle_t R_PointToPseudoAngle (fixed_t x, fixed_t y)
 static void R_InitTextureMapping (void)
 {
   int i,x;
-  FieldOfView = FIELDOFVIEW;
   double linearskyfactor;
+  FieldOfView = FIELDOFVIEW;
 
   // For widescreen displays, increase the FOV so that the middle part of the
   // screen that would be visible on a 4:3 display has the requested FOV.
@@ -414,7 +417,6 @@ static void R_InitTextureMapping (void)
   //  xtoviewangle will give the smallest view angle
   //  that maps to x.
 
-  #define FIXED2DOUBLE(x) ((x)/(double)FRACUNIT)
   linearskyfactor = FIXED2DOUBLE(finetangent[FINEANGLES/4 + FieldOfView/2]) * ANG90;
 
   for (x=0; x<=viewwidth; x++)

@@ -951,6 +951,7 @@ int ST_HealthColor(int health)
 static void ST_drawWidgets(dboolean refresh)
 {
   int i;
+  int health, armor;
 
   // used by w_arms[] widgets
   st_armson = st_statusbaron && !deathmatch;
@@ -964,8 +965,8 @@ static void ST_drawWidgets(dboolean refresh)
 
   // [Alaux] Used to color health and armor counts based on
   // the real values, only ever relevant when using smooth counts
-  const int health = plyr->health;
-  const int armor = plyr->armorpoints[ARMOR_ARMOR];
+  health = plyr->health;
+  armor = plyr->armorpoints[ARMOR_ARMOR];
 
   //jff 2/16/98 make color of ammo depend on amount
   if (*w_ready.num == plyr->maxammo[weaponinfo[w_ready.data].ammo])

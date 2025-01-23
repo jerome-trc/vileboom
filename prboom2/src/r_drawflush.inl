@@ -88,8 +88,6 @@ static void R_FLUSHWHOLE_FUNCNAME(void)
          const byte fuzz =
                fullcolormap[6 * 256 + dest[fuzzoffset[fuzzpos]]];
 
-         int lines = fuzzcellsize - (yl % fuzzcellsize);
-
          count -= lines;
 
          // if (count < 0)
@@ -140,17 +138,14 @@ static void R_FLUSHWHOLE_FUNCNAME(void)
          I_Error("R_DrawFuzzColumn: %i to %i at %i", yl, yh , x);
       }
    #endif
-
-      ++count;
-
+      {
       byte *dest = drawvars.topleft + yl * drawvars.pitch + startx + temp_x - fuzzcellsize;
 
       int lines = fuzzcellsize - (yl % fuzzcellsize);
-
-      ++count;
-
       int dark = FUZZDARK;
       int offset = 0;
+
+      ++count;
 
       do
       {
@@ -185,6 +180,7 @@ static void R_FLUSHWHOLE_FUNCNAME(void)
 
          lines = fuzzcellsize;
       } while (count);
+      }
    }
    else if (SHADOW_FUZZ)
    {
