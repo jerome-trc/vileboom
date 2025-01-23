@@ -108,6 +108,9 @@ extern int              FieldOfView;
 extern fixed_t          rw_distance;
 extern angle_t          rw_normalangle;
 
+// [FG] linear horizontal sky scrolling
+extern angle_t          *linearskyangle;
+
 // angle to line origin
 extern int              rw_angle1;
 

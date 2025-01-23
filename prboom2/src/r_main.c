@@ -141,6 +141,9 @@ int viewangletox[FINEANGLES/2];
 // e6y: resolution limitation is removed
 angle_t *xtoviewangle;   // killough 2/8/98
 
+// [FG] linear horizontal sky scrolling
+angle_t *linearskyangle;
+
 // killough 3/20/98: Support dynamic colormaps, e.g. deep water
 // killough 4/4/98: support dynamic number of them as well
 
@@ -364,6 +367,7 @@ static void R_InitTextureMapping (void)
 {
   int i,x;
   FieldOfView = FIELDOFVIEW;
+  double linearskyfactor;
 
   // For widescreen displays, increase the FOV so that the middle part of the
   // screen that would be visible on a 4:3 display has the requested FOV.
@@ -410,11 +414,16 @@ static void R_InitTextureMapping (void)
   //  xtoviewangle will give the smallest view angle
   //  that maps to x.
 
+  #define FIXED2DOUBLE(x) ((x)/(double)FRACUNIT)
+  linearskyfactor = FIXED2DOUBLE(finetangent[FINEANGLES/4 + FieldOfView/2]) * ANG90;
+
   for (x=0; x<=viewwidth; x++)
     {
       for (i=0; viewangletox[i] > x; i++)
         ;
       xtoviewangle[x] = (i<<ANGLETOFINESHIFT)-ANG90;
+      // [FG] linear horizontal sky scrolling
+      linearskyangle[x] = (0.5 - x / (double)viewwidth) * linearskyfactor;
     }
 
   // Take out the fencepost cases from viewangletox.
