@@ -2708,7 +2708,7 @@ void M_DrawWeapons(void)
 //
 // The Status Bar / HUD tables.
 
-#define SB_X 203
+#define SB_X 223
 
 // Screen table definitions
 
@@ -2741,9 +2741,6 @@ static const char* armor_icon_list[] =
   NULL
 };
 
-static const char* announce_map_list[] = { "Off", "On", "Subtle", NULL };
-static const char* secretarea_list[] = { "Off", "On", "Subtle", NULL };
-
 setup_menu_t stat_settings1[] =  // Status Bar and HUD Settings screen
 {
   { "STATUS BAR", S_SKIP | S_TITLE, m_null, SB_X},
@@ -2754,12 +2751,6 @@ setup_menu_t stat_settings1[] =  // Status Bar and HUD Settings screen
   { "INCLUDE SSG ON ARMS", S_YESNO, m_conf, SB_X, dsda_config_ssg_on_arms },
   { "BERSERK INDICATOR", S_CHOICE, m_conf, SB_X, nyan_config_hud_berserk, 0, berserk_icon_list },
   { "ARMOR INDICATOR", S_CHOICE, m_conf, SB_X, nyan_config_hud_armoricon, 0, armor_icon_list },
-  EMPTY_LINE,
-  { "HEADS-UP DISPLAY", S_SKIP | S_TITLE, m_null, SB_X},
-  { "SHOW MESSAGES", S_YESNO, m_conf, SB_X, dsda_config_show_messages },
-  { "Announce Map On Entry", S_CHOICE, m_conf, SB_X, dsda_config_announce_map, 0, announce_map_list },
-  { "REPORT REVEALED SECRETS", S_CHOICE, m_conf, SB_X, dsda_config_hudadd_secretarea, 0, secretarea_list },
-  { "DEMO PLAYBACK PROGRESS BAR", S_YESNO, m_conf, SB_X, dsda_config_hudadd_demoprogressbar },
   EMPTY_LINE,
   { "HEALTH LOW/OK", S_NUM, m_conf, SB_X, dsda_config_hud_health_red },
   { "HEALTH OK/GOOD", S_NUM, m_conf, SB_X, dsda_config_hud_health_yellow },
@@ -2796,18 +2787,27 @@ setup_menu_t stat_settings2[] =
 };
 
 //e6y
-#define HUD_X 274
+#define HUD_X 223
 
 static const char *crosshair_str[] =
   { "none", "cross", "angle", "dot", "small", "slim", "tiny", "big", NULL };
 
+static const char* announce_map_list[] = { "Off", "On", "Subtle", NULL };
+static const char* secretarea_list[] = { "Off", "On", "Subtle", NULL };
+
 setup_menu_t stat_settings3[] =
 {
+  { "HEADS-UP DISPLAY", S_SKIP | S_TITLE, m_null, HUD_X},
+  { "SHOW MESSAGES", S_YESNO, m_conf, HUD_X, dsda_config_show_messages },
+  { "Announce Map On Entry", S_CHOICE, m_conf, HUD_X, dsda_config_announce_map, 0, announce_map_list },
+  { "REPORT REVEALED SECRETS", S_CHOICE, m_conf, HUD_X, dsda_config_hudadd_secretarea, 0, secretarea_list },
+  { "DEMO PLAYBACK PROGRESS BAR", S_YESNO, m_conf, HUD_X, dsda_config_hudadd_demoprogressbar },
+  EMPTY_LINE,
   { "CROSSHAIR SETTINGS", S_SKIP | S_TITLE, m_null, HUD_X},
   { "ENABLE CROSSHAIR", S_CHOICE, m_conf, HUD_X, dsda_config_hudadd_crosshair, 0, crosshair_str },
   { "SCALE CROSSHAIR", S_YESNO, m_conf, HUD_X, dsda_config_hudadd_crosshair_scale },
-  { "CHANGE CROSSHAIR COLOR BY PLAYER HEALTH", S_YESNO, m_conf, HUD_X, dsda_config_hudadd_crosshair_health },
-  { "CHANGE CROSSHAIR COLOR ON TARGET", S_YESNO, m_conf, HUD_X, dsda_config_hudadd_crosshair_target },
+  { "CHANGE COLOR BY PLAYER HEALTH", S_YESNO, m_conf, HUD_X, dsda_config_hudadd_crosshair_health },
+  { "CHANGE COLOR ON TARGET", S_YESNO, m_conf, HUD_X, dsda_config_hudadd_crosshair_target },
   { "LOCK CROSSHAIR ON TARGET", S_YESNO, m_conf, HUD_X, dsda_config_hudadd_crosshair_lock_target },
   { "DEFAULT CROSSHAIR COLOR", S_CRITEM, m_conf, HUD_X, dsda_config_hudadd_crosshair_color },
   { "TARGET CROSSHAIR COLOR", S_CRITEM, m_conf, HUD_X, dsda_config_hudadd_crosshair_target_color },
