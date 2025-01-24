@@ -2793,7 +2793,7 @@ static const char* armor_icon_list[] =
 setup_menu_t stat_settings1[] =  // Status Bar and HUD Settings screen
 {
   { "STATUS BAR", S_SKIP | S_TITLE, m_null, D_X},
-  { "USE RED NUMBERS", S_YESNO, m_conf, D_X, dsda_config_sts_always_red },
+  { "COLORED NUMBERS", S_YESNO, m_conf, D_X, dsda_config_sts_colored_numbers },
   { "GRAY %",S_YESNO, m_conf, D_X, dsda_config_sts_pct_always_gray },
   { "ANIMATED HEALTH/ARMOR COUNT", S_YESNO, m_conf, D_X, dsda_config_hud_animated_count },
   { "SINGLE KEY DISPLAY", S_YESNO, m_conf, D_X, dsda_config_sts_traditional_keys },
