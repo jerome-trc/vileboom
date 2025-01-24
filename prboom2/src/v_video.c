@@ -61,6 +61,7 @@
 #include "dsda/palette.h"
 #include "dsda/stretch.h"
 #include "dsda/text_color.h"
+#include "dsda/mapinfo/hexen.h"
 
 // DWF 2012-05-10
 // SetRatio sets the following global variables based on window geometry and
