@@ -852,7 +852,8 @@ void gld_FillBlock(int x, int y, int width, int height, int col)
 
 void gld_DrawShaded(int x, int y, int width, int height, int shade)
 {
-  color_rgb_t color = gld_LookupIndexedColor(0, V_IsUILightmodeIndexed() || V_IsAutomapLightmodeIndexed());
+  int black = 0;
+  color_rgb_t color = gld_LookupIndexedColor(black, V_IsUILightmodeIndexed() || V_IsAutomapLightmodeIndexed());
 
   glsl_PushNullShader();
 
