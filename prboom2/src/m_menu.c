@@ -172,7 +172,8 @@ extern dboolean  message_dontfuckwithme;
 dboolean setup_active      = false; // in one of the setup screens
 dboolean set_keybnd_active = false; // in key binding setup screens
 dboolean set_weapon_active = false; // in weapons setup screen
-dboolean set_status_active = false; // in status bar/hud setup screen
+dboolean set_display_active = false; // in status bar/hud setup screen
+dboolean set_nyan_active    = false; // in Nyan setup screen
 dboolean set_auto_active   = false; // in automap setup screen
 dboolean setup_select      = false; // changing an item
 dboolean setup_gather      = false; // gathering keys for value
@@ -312,7 +313,7 @@ void M_ClearMenus (void);
 int  M_GetKeyString(int,int);
 void M_KeyBindings(int choice);
 void M_Weapons(int);
-void M_StatusBar(int);
+void M_Display(int);
 void M_Automap(int);
 void M_InitExtendedHelp(void);
 void M_ExtHelpNextScreen(int);
@@ -323,7 +324,7 @@ void M_DrawWeapons(void);
 static void M_DrawString(int cx, int cy, int color, const char* ch);
 static void M_DrawMenuString(int,int,int);
 static void M_DrawStringCentered(int,int,int,const char*);
-void M_DrawStatusHUD(void);
+void M_DrawDisplay(void);
 void M_DrawExtHelp(void);
 void M_DrawAutoMap(void);
 void M_ChangeDemoSmoothTurns(void);
@@ -1172,11 +1173,11 @@ void M_SaveGame (int choice)
 enum
 {
   general, // killough 10/98
-  set_gameplaymenu,
   nyan_options,
   set_key_bindings,
+  set_gameplaymenu,
+  set_display,
   set_weapons,
-  set_statbar,
   set_automap,
   option_1,
   option_2,
@@ -1190,11 +1191,11 @@ enum
 menuitem_t OptionsMenu[]=
 {
   { 1, "M_GENERL", M_General, 'g', "GENERAL" }, // killough 10/98
-  { 1, "M_GAMEPL", M_GameplayMenu, 'g', "GAMEPLAY / DEMOS" },
   { 1, "M_NYANOP", M_NyanMenu, 'n', "NYAN OPTIONS" },
   { 1, "M_KEYBND", M_KeyBindings,'k', "KEY BINDINGS" },
+  { 1, "M_GAMEPL", M_GameplayMenu, 'g', "GAMEPLAY / DEMOS" },
+  { 1, "M_DISP", M_Display, 'd', "DISPLAY" },
   { 1, "M_WEAP", M_Weapons, 'w', "WEAPONS" },
-  { 1, "M_STAT", M_StatusBar, 's', "STATUS BAR / HUD" },
   { 1, "M_AUTO", M_Automap, 'a', "AUTOMAP" },
   { 1, "M_OPTION_1", M_General, 'q', "OPTION 1" },
   { 1, "M_OPTION_2", M_General, 'q', "OPTION 2" },
@@ -1669,12 +1670,12 @@ menu_t WeaponDef =
   0
 };
 
-menu_t StatusHUDDef =
+menu_t DisplayDef =
 {
   generic_setup_end,
   &OptionsDef,
   Generic_Setup,
-  M_DrawStatusHUD,
+  M_DrawDisplay,
   34,5,      // skull drawn here
   0
 };
@@ -2642,7 +2643,7 @@ void M_DrawKeybnd(void)
 //
 // The Weapon Screen tables.
 
-#define WP_X 203
+#define WP_X 223
 
 static const char *weapon_attack_alignment_strings[] = {
   "OFF", "HORIZONTAL", "CENTERED", "BOBBING", NULL
@@ -2675,6 +2676,9 @@ setup_menu_t weap_settings1[] =  // Weapons Settings screen
   { "7th CHOICE WEAPON", S_WEAP, m_conf, WP_X, dsda_config_weapon_choice_7 },
   { "8th CHOICE WEAPON", S_WEAP, m_conf, WP_X, dsda_config_weapon_choice_8 },
   { "9th CHOICE WEAPON", S_WEAP, m_conf, WP_X, dsda_config_weapon_choice_9 },
+  EMPTY_LINE,
+  { "Boom Weapon Auto Switch", S_YESNO, m_conf, WP_X, dsda_config_switch_when_ammo_runs_out },
+  { "Auto Switch Weapon on Pickup", S_YESNO, m_conf, WP_X, dsda_config_switch_weapon_on_pickup },
 
   FINAL_ENTRY
 };
@@ -2706,24 +2710,69 @@ void M_DrawWeapons(void)
 
 /////////////////////////////
 //
-// The Status Bar / HUD tables.
+// The Display tables.
 
-#define SB_X 223
+#define D_X 223
 
 // Screen table definitions
 
-setup_menu_t stat_settings1[];
 //e6y
-setup_menu_t stat_settings2[];
-setup_menu_t stat_settings3[];
+setup_menu_t stat_settings1[], stat_settings2[], stat_settings3[];
+setup_menu_t display_settings[], trans_settings[];
 
-setup_menu_t* stat_settings[] =
+setup_menu_t* disp_settings[] =
 {
+  display_settings,
+  trans_settings,
   stat_settings1,
   //e6y
   stat_settings2,
   stat_settings3,
   NULL
+};
+
+static const char* menu_background_list[] = { "Off", "Dark", "Texture", NULL };
+static const char* fuzz_mode_list[] = { "Vanilla", "Refraction", "Shadow", NULL };
+
+setup_menu_t display_settings[] = {
+  { "Display Options", S_SKIP | S_TITLE, m_null, D_X},
+  { "Menu Background", S_CHOICE, m_conf, D_X, dsda_config_menu_background, 0, menu_background_list },
+  { "Wipe Screen Effect", S_YESNO,  m_conf, D_X, dsda_config_render_wipescreen },
+  { "Show FPS", S_YESNO,  m_conf, D_X, dsda_config_show_fps },
+  { "View Bobbing", S_YESNO, m_conf, D_X, dsda_config_viewbob },
+  { "Weapon Bobbing", S_YESNO, m_conf, D_X, dsda_config_weaponbob },
+  { "Quake Intensity", S_NUM, m_conf, D_X, dsda_config_quake_intensity },
+  { "Weapon Attack Alignment", S_CHOICE, m_conf, D_X, dsda_config_weapon_attack_alignment, 0, weapon_attack_alignment_strings },
+  { "Linear Sky Scrolling", S_YESNO, m_conf, D_X, dsda_config_render_linearsky },
+  { "Software Fuzz Mode", S_CHOICE, m_conf, D_X, dsda_config_software_fuzzmode, 0, fuzz_mode_list },
+  EMPTY_LINE,
+  { "Hide Weapon", S_YESNO, m_conf, D_X, dsda_config_hide_weapon },
+  { "Hide Status Bar Horns", S_YESNO, m_conf, D_X, dsda_config_hide_horns },
+  EMPTY_LINE,
+  { "Change Palette On Pain", S_YESNO, m_conf, D_X, dsda_config_palette_ondamage },
+  { "Change Palette On Bonus", S_YESNO, m_conf, D_X, dsda_config_palette_onbonus },
+  { "Change Palette On Powers", S_YESNO, m_conf, D_X, dsda_config_palette_onpowers },
+
+  NEXT_PAGE(trans_settings),
+  FINAL_ENTRY
+};
+
+setup_menu_t trans_settings[] = {
+  { "Translucency Options", S_SKIP | S_TITLE, m_null, D_X},
+  { "Translucent Sprites", S_YESNO, m_conf, D_X, dsda_config_boom_translucent_sprites },
+  EMPTY_LINE,
+  { "Customization", S_SKIP | S_TITLE, m_null, D_X},
+  { "Projectiles", S_YESNO, m_conf, D_X, dsda_config_boom_translucent_missiles },
+  { "Powerups", S_YESNO, m_conf, D_X, dsda_config_boom_translucent_powerups },
+  { "Effects", S_YESNO, m_conf, D_X, dsda_config_boom_translucent_effects },
+  EMPTY_LINE,
+  { "Vanilla Emulation", S_SKIP | S_TITLE, m_null, D_X},
+  { "Enable for Vanilla", S_YESNO, m_conf, D_X, dsda_config_vanilla_translucent_sprites },
+  { "Ghosts are Translucent", S_YESNO, m_conf, D_X, dsda_config_vanilla_translucent_ghosts },
+
+  PREV_PAGE(display_settings),
+  NEXT_PAGE(stat_settings1),
+  FINAL_ENTRY
 };
 
 static const char* berserk_icon_list[] =
@@ -2743,21 +2792,22 @@ static const char* armor_icon_list[] =
 
 setup_menu_t stat_settings1[] =  // Status Bar and HUD Settings screen
 {
-  { "STATUS BAR", S_SKIP | S_TITLE, m_null, SB_X},
-  { "USE RED NUMBERS", S_YESNO, m_conf, SB_X, dsda_config_sts_always_red },
-  { "GRAY %",S_YESNO, m_conf, SB_X, dsda_config_sts_pct_always_gray },
-  { "ANIMATED HEALTH/ARMOR COUNT", S_YESNO, m_conf, SB_X, dsda_config_hud_animated_count },
-  { "SINGLE KEY DISPLAY", S_YESNO, m_conf, SB_X, dsda_config_sts_traditional_keys },
-  { "INCLUDE SSG ON ARMS", S_YESNO, m_conf, SB_X, dsda_config_ssg_on_arms },
-  { "BERSERK INDICATOR", S_CHOICE, m_conf, SB_X, nyan_config_hud_berserk, 0, berserk_icon_list },
-  { "ARMOR INDICATOR", S_CHOICE, m_conf, SB_X, nyan_config_hud_armoricon, 0, armor_icon_list },
+  { "STATUS BAR", S_SKIP | S_TITLE, m_null, D_X},
+  { "USE RED NUMBERS", S_YESNO, m_conf, D_X, dsda_config_sts_always_red },
+  { "GRAY %",S_YESNO, m_conf, D_X, dsda_config_sts_pct_always_gray },
+  { "ANIMATED HEALTH/ARMOR COUNT", S_YESNO, m_conf, D_X, dsda_config_hud_animated_count },
+  { "SINGLE KEY DISPLAY", S_YESNO, m_conf, D_X, dsda_config_sts_traditional_keys },
+  { "INCLUDE SSG ON ARMS", S_YESNO, m_conf, D_X, dsda_config_ssg_on_arms },
+  { "BERSERK INDICATOR", S_CHOICE, m_conf, D_X, nyan_config_hud_berserk, 0, berserk_icon_list },
+  { "ARMOR INDICATOR", S_CHOICE, m_conf, D_X, nyan_config_hud_armoricon, 0, armor_icon_list },
   EMPTY_LINE,
-  { "HEALTH LOW/OK", S_NUM, m_conf, SB_X, dsda_config_hud_health_red },
-  { "HEALTH OK/GOOD", S_NUM, m_conf, SB_X, dsda_config_hud_health_yellow },
-  { "HEALTH GOOD/EXTRA", S_NUM, m_conf, SB_X, dsda_config_hud_health_green },
-  { "AMMO LOW/OK", S_NUM, m_conf, SB_X, dsda_config_hud_ammo_red },
-  { "AMMO OK/GOOD", S_NUM, m_conf, SB_X, dsda_config_hud_ammo_yellow },
+  { "HEALTH LOW/OK", S_NUM, m_conf, D_X, dsda_config_hud_health_red },
+  { "HEALTH OK/GOOD", S_NUM, m_conf, D_X, dsda_config_hud_health_yellow },
+  { "HEALTH GOOD/EXTRA", S_NUM, m_conf, D_X, dsda_config_hud_health_green },
+  { "AMMO LOW/OK", S_NUM, m_conf, D_X, dsda_config_hud_ammo_red },
+  { "AMMO OK/GOOD", S_NUM, m_conf, D_X, dsda_config_hud_ammo_yellow },
 
+  PREV_PAGE(trans_settings),
   NEXT_PAGE(stat_settings2),
   FINAL_ENTRY
 };
@@ -2765,29 +2815,26 @@ setup_menu_t stat_settings1[] =  // Status Bar and HUD Settings screen
 
 setup_menu_t stat_settings2[] =
 {
-  { "Extended Hud", S_SKIP | S_TITLE, m_null, SB_X},
-  { "Use Extended Hud", S_YESNO, m_conf, SB_X, dsda_config_exhud },
-  { "Ex Hud Scale %", S_NUM, m_conf, SB_X, dsda_config_ex_text_scale_x },
-  { "Ex Hud Ratio %", S_NUM, m_conf, SB_X, dsda_config_ex_text_ratio_y },
+  { "Extended Hud", S_SKIP | S_TITLE, m_null, D_X},
+  { "Use Extended Hud", S_YESNO, m_conf, D_X, dsda_config_exhud },
+  { "Ex Hud Scale %", S_NUM, m_conf, D_X, dsda_config_ex_text_scale_x },
+  { "Ex Hud Ratio %", S_NUM, m_conf, D_X, dsda_config_ex_text_ratio_y },
   EMPTY_LINE,
-  { "Status Widget", S_SKIP | S_TITLE, m_null, SB_X},
-  { "Use Status Widget", S_YESNO, m_conf, SB_X, nyan_config_ex_status_widget },
-  { "Armor", S_YESNO, m_conf, SB_X, nyan_config_ex_status_armor },
-  { "Berserk", S_YESNO, m_conf, SB_X, nyan_config_ex_status_berserk },
-  { "Computer Area Map", S_YESNO, m_conf, SB_X, nyan_config_ex_status_areamap },
-  { "Backpack", S_YESNO, m_conf, SB_X, nyan_config_ex_status_backpack },
-  { "Radiation Suit", S_YESNO, m_conf, SB_X, nyan_config_ex_status_radsuit },
-  { "Partial Invisibility", S_YESNO, m_conf, SB_X, nyan_config_ex_status_invis },
-  { "Light Amplification", S_YESNO, m_conf, SB_X, nyan_config_ex_status_liteamp },
-  { "Invulnerability", S_YESNO, m_conf, SB_X, nyan_config_ex_status_invuln },
+  { "Status Widget", S_SKIP | S_TITLE, m_null, D_X},
+  { "Use Status Widget", S_YESNO, m_conf, D_X, nyan_config_ex_status_widget },
+  { "Armor", S_YESNO, m_conf, D_X, nyan_config_ex_status_armor },
+  { "Berserk", S_YESNO, m_conf, D_X, nyan_config_ex_status_berserk },
+  { "Computer Area Map", S_YESNO, m_conf, D_X, nyan_config_ex_status_areamap },
+  { "Backpack", S_YESNO, m_conf, D_X, nyan_config_ex_status_backpack },
+  { "Radiation Suit", S_YESNO, m_conf, D_X, nyan_config_ex_status_radsuit },
+  { "Partial Invisibility", S_YESNO, m_conf, D_X, nyan_config_ex_status_invis },
+  { "Light Amplification", S_YESNO, m_conf, D_X, nyan_config_ex_status_liteamp },
+  { "Invulnerability", S_YESNO, m_conf, D_X, nyan_config_ex_status_invuln },
 
   PREV_PAGE(stat_settings1),
   NEXT_PAGE(stat_settings3),
   FINAL_ENTRY
 };
-
-//e6y
-#define HUD_X 223
 
 static const char *crosshair_str[] =
   { "none", "cross", "angle", "dot", "small", "slim", "tiny", "big", NULL };
@@ -2797,45 +2844,45 @@ static const char* secretarea_list[] = { "Off", "On", "Subtle", NULL };
 
 setup_menu_t stat_settings3[] =
 {
-  { "HEADS-UP DISPLAY", S_SKIP | S_TITLE, m_null, HUD_X},
-  { "SHOW MESSAGES", S_YESNO, m_conf, HUD_X, dsda_config_show_messages },
-  { "Announce Map On Entry", S_CHOICE, m_conf, HUD_X, dsda_config_announce_map, 0, announce_map_list },
-  { "REPORT REVEALED SECRETS", S_CHOICE, m_conf, HUD_X, dsda_config_hudadd_secretarea, 0, secretarea_list },
-  { "DEMO PLAYBACK PROGRESS BAR", S_YESNO, m_conf, HUD_X, dsda_config_hudadd_demoprogressbar },
+  { "HEADS-UP DISPLAY", S_SKIP | S_TITLE, m_null, D_X},
+  { "SHOW MESSAGES", S_YESNO, m_conf, D_X, dsda_config_show_messages },
+  { "Announce Map On Entry", S_CHOICE, m_conf, D_X, dsda_config_announce_map, 0, announce_map_list },
+  { "REPORT REVEALED SECRETS", S_CHOICE, m_conf, D_X, dsda_config_hudadd_secretarea, 0, secretarea_list },
+  { "DEMO PLAYBACK PROGRESS BAR", S_YESNO, m_conf, D_X, dsda_config_hudadd_demoprogressbar },
   EMPTY_LINE,
-  { "CROSSHAIR SETTINGS", S_SKIP | S_TITLE, m_null, HUD_X},
-  { "ENABLE CROSSHAIR", S_CHOICE, m_conf, HUD_X, dsda_config_hudadd_crosshair, 0, crosshair_str },
-  { "SCALE CROSSHAIR", S_YESNO, m_conf, HUD_X, dsda_config_hudadd_crosshair_scale },
-  { "CHANGE COLOR BY PLAYER HEALTH", S_YESNO, m_conf, HUD_X, dsda_config_hudadd_crosshair_health },
-  { "CHANGE COLOR ON TARGET", S_YESNO, m_conf, HUD_X, dsda_config_hudadd_crosshair_target },
-  { "LOCK CROSSHAIR ON TARGET", S_YESNO, m_conf, HUD_X, dsda_config_hudadd_crosshair_lock_target },
-  { "DEFAULT CROSSHAIR COLOR", S_CRITEM, m_conf, HUD_X, dsda_config_hudadd_crosshair_color },
-  { "TARGET CROSSHAIR COLOR", S_CRITEM, m_conf, HUD_X, dsda_config_hudadd_crosshair_target_color },
+  { "CROSSHAIR SETTINGS", S_SKIP | S_TITLE, m_null, D_X},
+  { "ENABLE CROSSHAIR", S_CHOICE, m_conf, D_X, dsda_config_hudadd_crosshair, 0, crosshair_str },
+  { "SCALE CROSSHAIR", S_YESNO, m_conf, D_X, dsda_config_hudadd_crosshair_scale },
+  { "CHANGE COLOR BY PLAYER HEALTH", S_YESNO, m_conf, D_X, dsda_config_hudadd_crosshair_health },
+  { "CHANGE COLOR ON TARGET", S_YESNO, m_conf, D_X, dsda_config_hudadd_crosshair_target },
+  { "LOCK CROSSHAIR ON TARGET", S_YESNO, m_conf, D_X, dsda_config_hudadd_crosshair_lock_target },
+  { "DEFAULT CROSSHAIR COLOR", S_CRITEM, m_conf, D_X, dsda_config_hudadd_crosshair_color },
+  { "TARGET CROSSHAIR COLOR", S_CRITEM, m_conf, D_X, dsda_config_hudadd_crosshair_target_color },
 
   PREV_PAGE(stat_settings2),
   FINAL_ENTRY
 };
 
-// Setting up for the Status Bar / HUD screen. Turn on flags, set pointers,
+// Setting up for the Display screen. Turn on flags, set pointers,
 // locate the first item on the screen where the cursor is allowed to
 // land.
 
-void M_StatusBar(int choice)
+void M_Display(int choice)
 {
-  M_EnterSetup(&StatusHUDDef, &set_status_active, stat_settings[0]);
+  M_EnterSetup(&DisplayDef, &set_display_active, disp_settings[0]);
 }
 
 // The drawing part of the Status Bar / HUD Setup initialization. Draw the
 // background, title, instruction line, and items.
 
-void M_DrawStatusHUD(void)
+void M_DrawDisplay(void)
 {
   M_ChangeMenu(NULL, mnact_full);
 
   M_DrawBackground(g_menu_flat, 0); // Draw background
 
   // proff/nicolas 09/20/98 -- changed for hi-res
-  M_DrawTitle(59, 2, "M_STAT", CR_DEFAULT, "STATUS BAR / HUD", cr_title);
+  M_DrawTitle(59, 2, "M_DISPLA", CR_DEFAULT, "Display", cr_title);
   M_DrawInstructions();
   M_DrawScreenItems(current_setup_menu, DEFAULT_LIST_Y);
 }
@@ -3034,7 +3081,7 @@ void M_DrawAutoMap(void)
 // killough 10/10/98
 
 setup_menu_t video_settings[], audio_settings[], mouse_settings[], controller_settings[];
-setup_menu_t misc_settings[], display_settings[], trans_settings[];
+setup_menu_t misc_settings[];
 
 setup_menu_t* gen_settings[] =
 {
@@ -3043,8 +3090,6 @@ setup_menu_t* gen_settings[] =
   mouse_settings,
   controller_settings,
   misc_settings,
-  display_settings,
-  trans_settings,
   NULL
 };
 
@@ -3223,55 +3268,8 @@ setup_menu_t misc_settings[] = {
   { "Organize My Save Files", S_YESNO, m_conf, G_X, dsda_config_organized_saves },
   { "Skip Quit Prompt", S_YESNO, m_conf, G_X, dsda_config_skip_quit_prompt },
   { "Death Use Action", S_CHOICE, m_conf, G_X, dsda_config_death_use_action, 0, death_use_strings },
-  { "Boom Weapon Auto Switch", S_YESNO, m_conf, G_X, dsda_config_switch_when_ammo_runs_out },
-  { "Auto Switch Weapon on Pickup", S_YESNO, m_conf, G_X, dsda_config_switch_weapon_on_pickup },
 
   PREV_PAGE(controller_settings),
-  NEXT_PAGE(display_settings),
-  FINAL_ENTRY
-};
-
-static const char* menu_background_list[] = { "Off", "Dark", "Texture", NULL };
-static const char* fuzz_mode_list[] = { "Vanilla", "Refraction", "Shadow", NULL };
-
-setup_menu_t display_settings[] = {
-  { "Display Options", S_SKIP | S_TITLE, m_null, G_X},
-  { "Menu Background", S_CHOICE, m_conf, G_X, dsda_config_menu_background, 0, menu_background_list },
-  { "Wipe Screen Effect", S_YESNO,  m_conf, G_X, dsda_config_render_wipescreen },
-  { "Show FPS", S_YESNO,  m_conf, G_X, dsda_config_show_fps },
-  { "View Bobbing", S_YESNO, m_conf, G_X, dsda_config_viewbob },
-  { "Weapon Bobbing", S_YESNO, m_conf, G_X, dsda_config_weaponbob },
-  { "Quake Intensity", S_NUM, m_conf, G_X, dsda_config_quake_intensity },
-  { "Linear Sky Scrolling", S_YESNO, m_conf, G_X, dsda_config_render_linearsky },
-  { "Weapon Attack Alignment", S_CHOICE, m_conf, G_X, dsda_config_weapon_attack_alignment, 0, weapon_attack_alignment_strings },
-  { "Software Fuzz Mode", S_CHOICE, m_conf, G_X, dsda_config_software_fuzzmode, 0, fuzz_mode_list },
-  EMPTY_LINE,
-  { "Hide Weapon", S_YESNO, m_conf, G_X, dsda_config_hide_weapon },
-  { "Hide Status Bar Horns", S_YESNO, m_conf, G_X, dsda_config_hide_horns },
-  EMPTY_LINE,
-  { "Change Palette On Pain", S_YESNO, m_conf, G_X, dsda_config_palette_ondamage },
-  { "Change Palette On Bonus", S_YESNO, m_conf, G_X, dsda_config_palette_onbonus },
-  { "Change Palette On Powers", S_YESNO, m_conf, G_X, dsda_config_palette_onpowers },
-
-  PREV_PAGE(misc_settings),
-  NEXT_PAGE(trans_settings),
-  FINAL_ENTRY
-};
-
-setup_menu_t trans_settings[] = {
-  { "Translucency Options", S_SKIP | S_TITLE, m_null, G_X},
-  { "Translucent Sprites", S_YESNO, m_conf, G_X, dsda_config_boom_translucent_sprites },
-  EMPTY_LINE,
-  { "Customization", S_SKIP | S_TITLE, m_null, G_X},
-  { "Projectiles", S_YESNO, m_conf, G_X, dsda_config_boom_translucent_missiles },
-  { "Powerups", S_YESNO, m_conf, G_X, dsda_config_boom_translucent_powerups },
-  { "Effects", S_YESNO, m_conf, G_X, dsda_config_boom_translucent_effects },
-  EMPTY_LINE,
-  { "Vanilla Emulation", S_SKIP | S_TITLE, m_null, G_X},
-  { "Enable for Vanilla", S_YESNO, m_conf, G_X, dsda_config_vanilla_translucent_sprites },
-  { "Ghosts are Translucent", S_YESNO, m_conf, G_X, dsda_config_vanilla_translucent_ghosts },
-
-  PREV_PAGE(display_settings),
   FINAL_ENTRY
 };
 
@@ -3289,7 +3287,7 @@ setup_menu_t* nyanmenu_settings[] =
 
 void M_NyanMenu(int choice)
 {
-  M_EnterSetup(&NyanMenuDef, &set_status_active, nyanmenu_settings[0]);
+  M_EnterSetup(&NyanMenuDef, &set_nyan_active, nyanmenu_settings[0]);
 }
 
 void M_DrawNyanMenu(void)
@@ -4594,7 +4592,8 @@ static void M_LeaveSetupMenu(void)
   setup_active = false;
   set_keybnd_active = false;
   set_weapon_active = false;
-  set_status_active = false;
+  set_nyan_active = false;
+  set_display_active = false;
   set_auto_active = false;
   colorbox_active = false;
   set_general_active = false;
@@ -5258,7 +5257,7 @@ static dboolean M_SetupResponder(int ch, int action, event_t* ev)
       return true;
 
   // killough 10/98: consolidate handling into one place:
-  if (set_general_active || set_status_active)
+  if (set_general_active || set_display_active || set_nyan_active)
     if (M_StringResponder(ch, action, ev))
       return true;
 
