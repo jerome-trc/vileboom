@@ -636,9 +636,12 @@ static void V_DrawMemPatch(int x, int y, int scrn, const rpatch_t *patch,
 //
 static void FUNC_V_DrawShaded(int scrn, int x, int y, int width, int height, int shade)
 {
-  const byte *darkcolormap = &colormaps[scrn][shade * 256];
+  const lighttable_t *darkcolormap;
   byte* dest;
   int ix, iy;
+
+  // Compensate for Hexen FOGMAP
+  darkcolormap = dsda_HexenFadeExists() ? (const lighttable_t *)W_LumpByName("COLORMAP") : colormaps[scrn];
 
   for (iy = y; iy < y + height; ++iy)
   {
@@ -646,7 +649,7 @@ static void FUNC_V_DrawShaded(int scrn, int x, int y, int width, int height, int
 
     for (ix = x; ix < x + width; ++ix)
     {
-      *dest = darkcolormap[*dest];
+      *dest = darkcolormap[shade * 256 + dest[scrn]];
       ++dest;
     }
   }
