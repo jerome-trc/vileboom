@@ -79,7 +79,7 @@ float gld_Calc2DLightLevel(int lightlevel)
 {
   // Enhanced Light Amp - Allow dark areas to be seen
   if(NYAN_LITEAMP && (lightlevel <= 64))
-    lightlevel = 64;
+    lightlevel = 64 + gld_GetGunFlashLight();
 
   return lighttable[usegamma][BETWEEN(0, 255, lightlevel)];
 }
@@ -90,7 +90,7 @@ float gld_CalcLightLevel(int lightlevel)
 
   // Enhanced Light Amp - Allow dark areas to be seen
   if(NYAN_LITEAMP && (lightlevel <= 64))
-    lightlevel = 64;
+    lightlevel = 64 + gld_GetGunFlashLight();
 
   light = BETWEEN(0, 255, lightlevel);
 
@@ -103,7 +103,7 @@ void gld_StaticLightAlpha(float light, float alpha)
 
   glColor4f(1.0f, 1.0f, 1.0f, alpha);
 
-  glsl_SetLightLevel((player->fixedcolormap ? NYAN_LITESHIFT_GL : light));
+  glsl_SetLightLevel((player->fixedcolormap ? (NYAN_LITEAMP ? light+0.3 : 1.0f) : light));
 }
 
 // [XA] return amount of light to add from the player's gun flash.

@@ -251,10 +251,6 @@ void R_AddContrast(seg_t *seg, int *base_lightlevel)
   /* cph - ...what is this for? adding contrast to rooms?
    * It looks crap in outdoor areas */
 
-  // Enhanced Light Amp - Allow dark areas to be seen
-  if(NYAN_LITEAMP && *base_lightlevel <= 64)
-    *base_lightlevel = 64;
-
   if (R_FakeContrast(seg))
   {
     if (seg->linedef->dy == 0)
@@ -356,11 +352,6 @@ static void R_ApplyLightColormap(draw_column_vars_t *dcvars, fixed_t scale)
     int index = (int)(((int64_t) scale * 160 / wide_centerx) >> (LIGHTSCALESHIFT-NYAN_LITESHIFT));
     if (index >= MAXLIGHTSCALE)
         index = MAXLIGHTSCALE - 1;
-
-    // Enhanced Light Amp - Allow dark areas to be seen
-    if(NYAN_LITEAMP && index <= 12)
-      index = 24;
-
     dcvars->colormap = walllights[index];
   }
   else
