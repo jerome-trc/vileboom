@@ -6142,7 +6142,7 @@ static void M_GradualShade(void)
   oldtic = gametic;
 }
 
-static void M_ShadedScreen(int scrn)
+void M_ShadedScreen(int scrn)
 {
   int gradualShade = dsda_IntConfig(nyan_config_gradual_menu_fade);
   int automapShade = automap_overlay == 2 && automap_active;
@@ -6168,9 +6168,6 @@ static void M_ShadedScreen(int scrn)
 void M_Drawer (void)
 {
   V_BeginUIDraw();
-
-  if (M_MenuIsShaded())
-    M_ShadedScreen(0);
 
   inhelpscreens = false;
 
