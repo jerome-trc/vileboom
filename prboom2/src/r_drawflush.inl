@@ -35,8 +35,8 @@
 #endif
 
 #define BLOCKY_FUZZ dsda_IntConfig(dsda_config_software_fuzzmode)==0
-#define REFRACTION_FUZZ dsda_IntConfig(dsda_config_software_fuzzmode)==1
-#define SHADOW_FUZZ dsda_IntConfig(dsda_config_software_fuzzmode)==2
+#define REFRACTION_FUZZ dsda_IntConfig(dsda_config_software_fuzzmode)==1 && allow_incompatibility
+#define SHADOW_FUZZ dsda_IntConfig(dsda_config_software_fuzzmode)==2 && allow_incompatibility
 
 //
 // R_FlushWholeOpaque
@@ -50,7 +50,7 @@ static void R_FLUSHWHOLE_FUNCNAME(void)
    // Scaled software fuzz algorithm
 #if (R_DRAWCOLUMN_PIPELINE & RDC_FUZZ)
 {
-   if (BLOCKY_FUZZ || !allow_incompatibility)
+   if (BLOCKY_FUZZ || REFRACTION_FUZZ || !allow_incompatibility)
    {
       int yl, yh, count;
 
@@ -79,13 +79,21 @@ static void R_FLUSHWHOLE_FUNCNAME(void)
       byte *dest = drawvars.topleft + yl * drawvars.pitch + startx + temp_x - fuzzcellsize;
 
       int lines = fuzzcellsize - (yl % fuzzcellsize);
+      int dark, offset;
+
+      if (REFRACTION_FUZZ)
+      {
+         dark = FUZZDARK;
+         offset = 0;
+      }
 
       ++count;
 
       do
       {
          int mask;
-         const byte fuzz =
+         const byte fuzz = REFRACTION_FUZZ ?
+               fullcolormap[dark + dest[offset]] :
                fullcolormap[6 * 256 + dest[fuzzoffset[fuzzpos]]];
 
          count -= lines;
@@ -110,73 +118,11 @@ static void R_FLUSHWHOLE_FUNCNAME(void)
          // Clamp table lookup index.
          fuzzpos &= (fuzzpos - FUZZTABLE) >> (8 * sizeof(fuzzpos) - 1); // killough 1/99
 
-         lines = fuzzcellsize;
-      } while (count);
-      }
-   }
-   else if (REFRACTION_FUZZ)
-   {
-      int yl, yh, count;
-      if ((temp_x + startx) % fuzzcellsize)
-      {
-         return;
-      }
-
-      yl = tempyl[temp_x - 1];
-      yh = tempyh[temp_x - 1];
-
-      count = yh - yl + 1;
-
-      if (count < 0)
-      {
-         return;
-      }
-
-   #ifdef RANGECHECK
-      if ((unsigned)x >= video.width || yl < 0 || yh  >= video.height)
-      {
-         I_Error("R_DrawFuzzColumn: %i to %i at %i", yl, yh , x);
-      }
-   #endif
-      {
-      byte *dest = drawvars.topleft + yl * drawvars.pitch + startx + temp_x - fuzzcellsize;
-
-      int lines = fuzzcellsize - (yl % fuzzcellsize);
-      int dark = FUZZDARK;
-      int offset = 0;
-
-      ++count;
-
-      do
-      {
-         int mask;
-         const byte fuzz =
-               fullcolormap[dark + dest[offset]];
-
-         count -= lines;
-
-         // if (count < 0)
-         // {
-         //    lines += count;
-         //    count = 0;
-         // }
-         mask = count >> (8 * sizeof(mask) - 1);
-         lines += count & mask;
-         count &= ~mask;
-
-         do
+         if (REFRACTION_FUZZ)
          {
-               memset(dest, fuzz, fuzzcellsize);
-               dest += drawvars.pitch;
-         } while (--lines);
-
-         ++fuzzpos;
-
-         // Clamp table lookup index.
-         fuzzpos &= (fuzzpos - FUZZTABLE) >> (8 * sizeof(fuzzpos) - 1); // killough 1/99
-
-         dark = fuzzdark[fuzzpos];
-         offset = fuzzoffset[fuzzpos];
+            dark = fuzzdark[fuzzpos];
+            offset = fuzzoffset[fuzzpos];
+         }
 
          lines = fuzzcellsize;
       } while (count);
