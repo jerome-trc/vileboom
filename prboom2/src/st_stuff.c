@@ -899,10 +899,11 @@ void ST_updateBlinkingKeys(player_t* plyr)
   int i;
 
   if (hexen) return;
+
   // [crispy] blinking key or skull in the status bar
   if (plyr->keyblinktics)
   {
-    if (sts_blink_keys && allow_incompatibility && (R_StatusBarVisible() || dsda_CheckExHudKeys()))
+    if (sts_blink_keys && allow_incompatibility && ((R_StatusBarVisible() && !inventory) || dsda_CheckExHudKeys()))
     {
       if (!(plyr->keyblinktics & (!heretic ? (2*KEYBLINKMASK - 1) : (8*KEYBLINKMASK - 1))))
         S_StartVoidSound(g_sfx_itemup);
@@ -919,12 +920,15 @@ void ST_updateBlinkingKeys(player_t* plyr)
           case KEYBLINK_CARD:
             if (heretic)
             {
-              if (i == 0)
-                  V_DrawNamePatch(153, 180, 0, "bkeyicon", CR_DEFAULT, VPT_STRETCH);
-              else if (i == 1)
-                  V_DrawNamePatch(153, 164, 0, "ykeyicon", CR_DEFAULT, VPT_STRETCH);
-              else if (i == 2)
-                  V_DrawNamePatch(153, 172, 0, "gkeyicon", CR_DEFAULT, VPT_STRETCH);
+              if (R_StatusBarVisible())
+              {
+                if (i == 0)
+                    V_DrawNamePatch(153, 180, 0, "bkeyicon", CR_DEFAULT, VPT_STRETCH);
+                else if (i == 1)
+                    V_DrawNamePatch(153, 164, 0, "ykeyicon", CR_DEFAULT, VPT_STRETCH);
+                else if (i == 2)
+                    V_DrawNamePatch(153, 172, 0, "gkeyicon", CR_DEFAULT, VPT_STRETCH);
+              }
             }
             else
               keyboxes[i] = i;

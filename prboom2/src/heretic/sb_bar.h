@@ -31,6 +31,8 @@
 #define NUMBONUSPALS     4
 #define NUMPOISONPALS    8
 
+extern dboolean inventory;
+
 void SB_Start(void);
 void SB_Init(void);
 void SB_Ticker(void);
