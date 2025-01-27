@@ -173,7 +173,6 @@ dboolean setup_active      = false; // in one of the setup screens
 dboolean set_keybnd_active = false; // in key binding setup screens
 dboolean set_weapon_active = false; // in weapons setup screen
 dboolean set_display_active = false; // in status bar/hud setup screen
-dboolean set_nyan_active    = false; // in Nyan setup screen
 dboolean set_auto_active   = false; // in automap setup screen
 dboolean setup_select      = false; // changing an item
 dboolean setup_gather      = false; // gathering keys for value
@@ -331,8 +330,6 @@ void M_ChangeDemoSmoothTurns(void);
 void M_ChangeTextureParams(void);
 void M_General(int);      // killough 10/98
 void M_DrawGeneral(void); // killough 10/98
-void M_NyanMenu(int choice);
-void M_DrawNyanMenu(void);
 void M_GameplayMenu(int);      // Arsinikk
 void M_DrawGameplayMenu(void); // Arsinikk
 void M_LevelTable(int);
@@ -1173,16 +1170,13 @@ void M_SaveGame (int choice)
 enum
 {
   general, // killough 10/98
-  nyan_options,
   set_key_bindings,
-  set_gameplaymenu,
   set_display,
+  set_gameplaymenu,
   set_weapons,
   set_automap,
-  option_1,
-  option_2,
-  level_table,
   soundvol,
+  level_table,
   opt_end
 } options_e;
 
@@ -1191,16 +1185,13 @@ enum
 menuitem_t OptionsMenu[]=
 {
   { 1, "M_GENERL", M_General, 'g', "GENERAL" }, // killough 10/98
-  { 1, "M_NYANOP", M_NyanMenu, 'n', "NYAN OPTIONS" },
   { 1, "M_KEYBND", M_KeyBindings,'k', "KEY BINDINGS" },
-  { 1, "M_GAMEPL", M_GameplayMenu, 'g', "GAMEPLAY / DEMOS" },
   { 1, "M_DISP", M_Display, 'd', "DISPLAY" },
+  { 1, "M_GAMEPL", M_GameplayMenu, 'g', "GAMEPLAY / DEMOS" },
   { 1, "M_WEAP", M_Weapons, 'w', "WEAPONS" },
   { 1, "M_AUTO", M_Automap, 'a', "AUTOMAP" },
-  { 1, "M_OPTION_1", M_General, 'q', "OPTION 1" },
-  { 1, "M_OPTION_2", M_General, 'q', "OPTION 2" },
-  { 1, "M_LVLTBL", M_LevelTable, 'l', "LEVEL TABLE" },
   { 1, "M_SVOL", M_Sound, 's', "SOUND VOLUME" },
+  { 1, "M_LVLTBL", M_LevelTable, 'l', "LEVEL TABLE" },
 };
 
 menu_t OptionsDef =
@@ -1228,7 +1219,6 @@ void M_DrawOptions(void)
 
 void M_Options(int choice)
 {
-  M_ResetOptionsMenu();
   M_SetupNextMenu(&OptionsDef);
 }
 
@@ -1643,16 +1633,6 @@ enum
 menuitem_t Generic_Setup[] =
 {
   {1,"",M_DoNothing,0}
-};
-
-menu_t NyanMenuDef =
-{
-  generic_setup_end,
-  &OptionsDef,
-  Generic_Setup,
-  M_DrawNyanMenu,
-  34,5,      // skull drawn here
-  0
 };
 
 menu_t KeybndDef =
@@ -3088,7 +3068,7 @@ void M_DrawAutoMap(void)
 // killough 10/10/98
 
 setup_menu_t video_settings[], audio_settings[], mouse_settings[], controller_settings[];
-setup_menu_t misc_settings[];
+setup_menu_t misc_settings[], nyan_settings[];
 
 setup_menu_t* gen_settings[] =
 {
@@ -3097,6 +3077,7 @@ setup_menu_t* gen_settings[] =
   mouse_settings,
   controller_settings,
   misc_settings,
+  nyan_settings,
   NULL
 };
 
@@ -3277,43 +3258,14 @@ setup_menu_t misc_settings[] = {
   { "Death Use Action", S_CHOICE, m_conf, G_X, dsda_config_death_use_action, 0, death_use_strings },
 
   PREV_PAGE(controller_settings),
+  NEXT_PAGE(nyan_settings),
   FINAL_ENTRY
 };
-
-// Setting up for the Nyan Doom Options Menu.
-//
-
-setup_menu_t nyan_settings[], lump_settings[];
-
-setup_menu_t* nyanmenu_settings[] =
-{
-  nyan_settings,
-  lump_settings,
-  NULL
-};
-
-void M_NyanMenu(int choice)
-{
-  M_EnterSetup(&NyanMenuDef, &set_nyan_active, nyanmenu_settings[0]);
-}
-
-void M_DrawNyanMenu(void)
-{
-  M_ChangeMenu(NULL, mnact_full);
-
-  M_DrawBackground(g_menu_flat, 0); // Draw background
-
-  // proff/nicolas 09/20/98 -- changed for hi-res
-  M_DrawTitle(59, 2, "M_NYANOP", CR_DEFAULT, "NYAN OPTIONS", cr_title);
-  M_DrawInstructions();
-  M_DrawScreenItems(current_setup_menu, DEFAULT_LIST_Y);
-}
 
 static const char* colored_blood_list[] = { "OFF", "ON", "FORCED", NULL };
 
 setup_menu_t nyan_settings[] = {
   { "Nyan Options", S_SKIP | S_TITLE, m_null, G_X},
-  { "DSDA-Doom Options Order", S_YESNO, m_conf, G_X, nyan_config_dsda_menu_format },
   { "Play Demos While In Menus", S_YESNO, m_conf, G_X, nyan_config_menu_play_demo },
   { "Overlay for All Menus", S_YESNO, m_conf, G_X, nyan_config_full_menu_fade },
   { "Overlay Gradual Fade", S_YESNO, m_conf, G_X, nyan_config_gradual_menu_fade },
@@ -3328,18 +3280,11 @@ setup_menu_t nyan_settings[] = {
   { "Flashing Item Bonuses", S_YESNO, m_conf, G_X, nyan_config_item_bonus_flash },
   { "Colored Blood", S_CHOICE, m_conf, G_X, nyan_config_colored_blood, 0, colored_blood_list },
   EMPTY_LINE,
-
-  NEXT_PAGE(lump_settings),
-  FINAL_ENTRY
-};
-
-setup_menu_t lump_settings[] = {
-  { "Nyan Lumps", S_SKIP | S_TITLE, m_null, G_X},
   { "Animate Lumps", S_YESNO, m_conf, G_X, nyan_config_enable_animate_lumps },
   { "Widescreen Lumps", S_YESNO, m_conf, G_X, nyan_config_enable_widescreen_lumps },
   { "Boom Credit/Help Screens", S_YESNO, m_conf, G_X, nyan_config_boom_credit_help },
 
-  PREV_PAGE(nyan_settings),
+  PREV_PAGE(misc_settings),
   FINAL_ENTRY
 };
 
@@ -4599,7 +4544,6 @@ static void M_LeaveSetupMenu(void)
   setup_active = false;
   set_keybnd_active = false;
   set_weapon_active = false;
-  set_nyan_active = false;
   set_display_active = false;
   set_auto_active = false;
   colorbox_active = false;
@@ -5264,7 +5208,7 @@ static dboolean M_SetupResponder(int ch, int action, event_t* ev)
       return true;
 
   // killough 10/98: consolidate handling into one place:
-  if (set_general_active || set_display_active || set_nyan_active)
+  if (set_general_active || set_display_active)
     if (M_StringResponder(ch, action, ev))
       return true;
 
@@ -6568,21 +6512,6 @@ void M_InitHelpScreen(void)
       src->m_flags = S_SKIP; // Don't show setting or item
     if ((strncmp(src->m_text,"SSG",3) == 0) && (gamemode != commercial))
       src->m_flags = S_SKIP; // Don't show setting or item
-  }
-}
-
-void M_ResetOptionsMenu(void)
-{
-  OptionsDef.numitems = opt_end-2;
-  if (dsda_IntConfig(nyan_config_dsda_menu_format))
-  {
-    OptionsMenu[option_1] = OptionsMenu[soundvol];
-    OptionsMenu[option_2] = OptionsMenu[level_table];
-  }
-  else
-  {
-    OptionsMenu[option_1] = OptionsMenu[level_table];
-    OptionsMenu[option_2] = OptionsMenu[soundvol];
   }
 }
 
