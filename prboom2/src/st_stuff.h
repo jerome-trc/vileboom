@@ -114,6 +114,7 @@ extern int st_armor;
 
 // e6y: makes sense for wide resolutions
 extern patchnum_t grnrock;
-extern patchnum_t brdr_b;
+extern patchnum_t brdr_t, brdr_b, brdr_l, brdr_r;
+extern patchnum_t brdr_tl, brdr_tr, brdr_bl, brdr_br;
 
 #endif

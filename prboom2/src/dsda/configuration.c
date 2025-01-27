@@ -127,6 +127,7 @@ void M_ChangeVideoMode(void);
 void M_ChangeUncappedFrameRate(void);
 void M_ChangeFullScreen(void);
 void R_SetViewSize(void);
+void R_ResetViewSize(void);
 void M_ChangeApplyPalette(void);
 void M_ChangeStretch(void);
 void M_ChangeAspectRatio(void);
@@ -955,6 +956,10 @@ dsda_config_t dsda_config[dsda_config_count] = {
     "hud_displayed", dsda_config_hud_displayed,
     CONF_BOOL(0), NULL, CONF_FEATURE | NOT_STRICT, R_SetViewSize
   },
+  [dsda_config_hud_multiple_zooms] = {
+    "hud_multiple_zooms", dsda_config_hud_multiple_zooms,
+    CONF_BOOL(0), NULL, NOT_STRICT, R_ResetViewSize
+  },
   [dsda_config_hudadd_secretarea] = {
     "hudadd_secretarea", dsda_config_hudadd_secretarea,
     dsda_config_int, 0, 2, { 0 }
@@ -1290,7 +1295,7 @@ dsda_config_t dsda_config[dsda_config_count] = {
   },
   [dsda_config_screenblocks] = {
     "screenblocks", dsda_config_screenblocks,
-    dsda_config_int, 10, 11, { 10 }, NULL, CONF_FEATURE | NOT_STRICT, R_SetViewSize
+    dsda_config_int, 3, 11, { 10 }, NULL, CONF_FEATURE | NOT_STRICT, R_SetViewSize
   },
   [dsda_config_sdl_video_window_pos] = {
     "sdl_video_window_pos", dsda_config_sdl_video_window_pos,

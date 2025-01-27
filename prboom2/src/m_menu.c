@@ -1508,19 +1508,24 @@ void M_ChangeMessages(void)
 
 void M_SizeDisplay(int choice)
 {
+  int screenblocks, multizoom;
+
+  multizoom = dsda_IntConfig(dsda_config_hud_multiple_zooms);
+  screenblocks = R_ViewSize();
+
   switch(choice) {
     case 0:
-      if (R_FullView())
+      if (multizoom ? (screenblocks > 3) : R_FullView())
         dsda_DecrementIntConfig(dsda_config_screenblocks, true);
       break;
     case 1:
-      if (R_PartialView())
+      if (multizoom ? (screenblocks < 11) : R_PartialView())
         dsda_IncrementIntConfig(dsda_config_screenblocks, true);
       else
         dsda_ToggleConfig(dsda_config_hud_displayed, true);
       break;
     case 2:
-      if (R_PartialView()) {
+      if (multizoom ? (screenblocks < 11) : R_PartialView()) {
         dsda_UpdateIntConfig(dsda_config_screenblocks, 11, true);
         dsda_UpdateIntConfig(dsda_config_hud_displayed, true, true);
       }
@@ -2738,6 +2743,7 @@ setup_menu_t display_settings[] = {
   { "Display Options", S_SKIP | S_TITLE, m_null, D_X},
   { "Menu Background", S_CHOICE, m_conf, D_X, dsda_config_menu_background, 0, menu_background_list },
   { "Wipe Screen Effect", S_YESNO,  m_conf, D_X, dsda_config_render_wipescreen },
+  { "Classic Zoom Levels", S_YESNO, m_conf, D_X, dsda_config_hud_multiple_zooms },
   { "Show FPS", S_YESNO,  m_conf, D_X, dsda_config_show_fps },
   { "View Bobbing", S_YESNO, m_conf, D_X, dsda_config_viewbob },
   { "Weapon Bobbing", S_YESNO, m_conf, D_X, dsda_config_weaponbob },
