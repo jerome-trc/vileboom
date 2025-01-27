@@ -556,6 +556,7 @@ void SB_Drawer(dboolean statusbaron, dboolean refresh, dboolean fullmenu)
         if (R_FullView())
         {
             DrawAnimatedIcons();
+            ST_updateBlinkingKeys(CPlayer);
         }
         return;
     }
@@ -632,6 +633,7 @@ void SB_Drawer(dboolean statusbaron, dboolean refresh, dboolean fullmenu)
     }
     SB_PaletteFlash(false);
     DrawAnimatedIcons();
+    ST_updateBlinkingKeys(CPlayer);
 }
 
 // sets the new palette based upon current values of player->damagecount

@@ -23,6 +23,7 @@ void dsda_UpdateExHud(void);
 void dsda_DrawExHud(void);
 void dsda_DrawExIntermission(void);
 void dsda_ToggleRenderStats(void);
+dboolean dsda_CheckExHudKeys(void);
 void dsda_RefreshExHudFPS(void);
 void dsda_RefreshExHudMinimap(void);
 void dsda_RefreshExHudLevelSplits(void);

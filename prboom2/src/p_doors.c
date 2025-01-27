@@ -39,6 +39,7 @@
 #include "r_main.h"
 #include "dstrings.h"
 #include "d_deh.h"  // Ty 03/27/98 - externalized
+#include "st_stuff.h"
 #include "lprintf.h"
 #include "e6y.h"//e6y
 
@@ -468,6 +469,7 @@ int EV_DoLockedDoor
       {
         dsda_AddPlayerMessage(s_PD_BLUEO, p);
         S_StartMobjSound(p->mo,sfx_oof);         // killough 3/20/98
+        ST_SetKeyBlink(p, KEYBLINK_EITHER, KEYBLINK_NONE, KEYBLINK_NONE);
         return 0;
       }
       break;
@@ -478,6 +480,7 @@ int EV_DoLockedDoor
       {
         dsda_AddPlayerMessage(s_PD_REDO, p);
         S_StartMobjSound(p->mo,sfx_oof);         // killough 3/20/98
+        ST_SetKeyBlink(p, KEYBLINK_NONE, KEYBLINK_NONE, KEYBLINK_EITHER);
         return 0;
       }
       break;
@@ -488,6 +491,7 @@ int EV_DoLockedDoor
       {
         dsda_AddPlayerMessage(s_PD_YELLOWO, p);
         S_StartMobjSound(p->mo,sfx_oof);         // killough 3/20/98
+        ST_SetKeyBlink(p, KEYBLINK_NONE, KEYBLINK_EITHER, KEYBLINK_NONE);
         return 0;
       }
       break;
@@ -641,6 +645,7 @@ int EV_VerticalDoor
       {
           dsda_AddPlayerMessage(s_PD_BLUEK, player);
           S_StartMobjSound(player->mo,sfx_oof);     // killough 3/20/98
+          ST_SetKeyBlink(player, KEYBLINK_EITHER, KEYBLINK_NONE, KEYBLINK_NONE);
           return 0;
       }
       break;
@@ -653,6 +658,7 @@ int EV_VerticalDoor
       {
           dsda_AddPlayerMessage(s_PD_YELLOWK, player);
           S_StartMobjSound(player->mo,sfx_oof);     // killough 3/20/98
+          ST_SetKeyBlink(player, KEYBLINK_NONE, KEYBLINK_EITHER, KEYBLINK_NONE);
           return 0;
       }
       break;
@@ -665,6 +671,7 @@ int EV_VerticalDoor
       {
           dsda_AddPlayerMessage(s_PD_REDK, player);
           S_StartMobjSound(player->mo,sfx_oof);     // killough 3/20/98
+          ST_SetKeyBlink(player, KEYBLINK_NONE, KEYBLINK_NONE, KEYBLINK_EITHER);
           return 0;
       }
       break;
@@ -913,6 +920,7 @@ void Heretic_EV_VerticalDoor(line_t * line, mobj_t * thing)
             {
                 P_SetMessage(player, HERETIC_TXT_NEEDBLUEKEY, false);
                 S_StartVoidSound(heretic_sfx_plroof);
+                ST_SetKeyBlink(player, KEYBLINK_CARD, KEYBLINK_NONE, KEYBLINK_NONE);
                 return;
             }
             break;
@@ -926,6 +934,7 @@ void Heretic_EV_VerticalDoor(line_t * line, mobj_t * thing)
             {
                 P_SetMessage(player, HERETIC_TXT_NEEDYELLOWKEY, false);
                 S_StartVoidSound(heretic_sfx_plroof);
+                ST_SetKeyBlink(player, KEYBLINK_NONE, KEYBLINK_CARD, KEYBLINK_NONE);
                 return;
             }
             break;
@@ -939,6 +948,7 @@ void Heretic_EV_VerticalDoor(line_t * line, mobj_t * thing)
             {
                 P_SetMessage(player, HERETIC_TXT_NEEDGREENKEY, false);
                 S_StartVoidSound(heretic_sfx_plroof);
+                ST_SetKeyBlink(player, KEYBLINK_NONE, KEYBLINK_NONE, KEYBLINK_CARD);
                 return;
             }
             break;

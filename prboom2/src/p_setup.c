@@ -49,6 +49,7 @@
 #include "p_enemy.h"
 #include "s_sound.h"
 #include "s_advsound.h"
+#include "st_stuff.h"
 #include "lprintf.h" //jff 10/6/98 for debug outputs
 #include "v_video.h"
 #include "smooth.h"
@@ -3815,6 +3816,10 @@ void P_SetupLevel(int episode, int map, int playermask, int skill)
   P_LoadReject(level_components.reject);
 
   P_RemoveSlimeTrails();    // killough 10/98: remove slime trails from wad
+
+  // [crispy] blinking key or skull in the status bar
+  if (!hexen)
+    memset(st_keyorskull, 0, sizeof(st_keyorskull));
 
   // should be after P_RemoveSlimeTrails, because it changes vertexes
   R_CalcSegsLength();

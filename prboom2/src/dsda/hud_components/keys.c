@@ -18,6 +18,7 @@
 #include "base.h"
 
 #include "keys.h"
+#include "st_stuff.h"
 
 #define PATCH_DELTA 10
 
@@ -31,6 +32,32 @@ static local_component_t* local;
 static int key_patch_num[NUMCARDS];
 
 static const char* dsda_Key1Name(player_t* player) {
+  // [crispy] blinking key or skull in the status bar
+  if (player->keyblinktics && sts_blink_keys && allow_incompatibility)
+  {
+      switch (ST_BlinkKey(player, !heretic ? 0 : key_yellow))
+      {
+          case KEYBLINK_NONE:
+            return NULL;
+            break;
+
+          case KEYBLINK_CARD:
+            return !heretic ? "STKEYS0" : "ykeyicon";
+            break;
+
+          case KEYBLINK_SKULL:
+            return "STKEYS3";
+            break;
+
+          case KEYBLINK_BOTH:
+            return "STKEYS6";
+            break;
+
+          default:
+            break;
+      }
+  }
+
   if (heretic) {
     if (player->cards[key_yellow])
       return "ykeyicon";
@@ -48,6 +75,32 @@ static const char* dsda_Key1Name(player_t* player) {
 }
 
 static const char* dsda_Key2Name(player_t* player) {
+  // [crispy] blinking key or skull in the status bar
+  if (player->keyblinktics && sts_blink_keys && allow_incompatibility)
+  {
+      switch (ST_BlinkKey(player, !heretic ? 1 : key_green))
+      {
+          case KEYBLINK_NONE:
+            return NULL;
+            break;
+
+          case KEYBLINK_CARD:
+            return !heretic ? "STKEYS1" : "gkeyicon";
+            break;
+
+          case KEYBLINK_SKULL:
+            return "STKEYS4";
+            break;
+
+          case KEYBLINK_BOTH:
+            return "STKEYS7";
+            break;
+
+          default:
+            break;
+      }
+  }
+
   if (heretic) {
     if (player->cards[key_green])
       return "gkeyicon";
@@ -65,6 +118,32 @@ static const char* dsda_Key2Name(player_t* player) {
 }
 
 static const char* dsda_Key3Name(player_t* player) {
+  // [crispy] blinking key or skull in the status bar
+  if (player->keyblinktics && sts_blink_keys && allow_incompatibility)
+  {
+      switch (ST_BlinkKey(player, !heretic ? 2 : key_blue))
+      {
+          case KEYBLINK_NONE:
+            return NULL;
+            break;
+
+          case KEYBLINK_CARD:
+            return !heretic ? "STKEYS2" : "bkeyicon";
+            break;
+
+          case KEYBLINK_SKULL:
+            return "STKEYS5";
+            break;
+
+          case KEYBLINK_BOTH:
+            return "STKEYS8";
+            break;
+
+          default:
+            break;
+      }
+  }
+
   if (heretic) {
     if (player->cards[key_blue])
       return "bkeyicon";

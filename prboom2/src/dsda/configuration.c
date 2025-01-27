@@ -90,6 +90,7 @@ extern int demo_smoothturnsfactor;
 extern int sts_colored_numbers;
 extern int sts_pct_always_gray;
 extern int sts_traditional_keys;
+extern int sts_blink_keys;
 extern int full_sounds;
 
 void I_Init2(void);
@@ -332,6 +333,10 @@ dsda_config_t dsda_config[dsda_config_count] = {
   [dsda_config_sts_traditional_keys] = {
     "sts_traditional_keys", dsda_config_sts_traditional_keys,
     CONF_BOOL(0), &sts_traditional_keys
+  },
+  [dsda_config_sts_blink_keys] = {
+    "sts_blink_keys", dsda_config_sts_blink_keys,
+    CONF_BOOL(0), &sts_blink_keys, STRICT_INT(0),
   },
   [dsda_config_strict_mode] = {
     "dsda_strict_mode", dsda_config_strict_mode,

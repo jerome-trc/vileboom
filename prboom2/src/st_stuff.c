@@ -57,6 +57,7 @@
 #include "dsda/text_color.h"
 #include "dsda/animate.h"
 #include "dsda/library.h"
+#include "dsda/exhud.h"
 
 #include "heretic/sb_bar.h"
 
@@ -415,6 +416,9 @@ static int      st_faceindex = 0;
 // holds key-type for each key box on bar
 static int      keyboxes[3];
 
+// [crispy] blinking key or skull in the status bar
+int             st_keyorskull[3];
+
 // decides when to show icons or not
 static int      st_armorindex;
 static int      st_berserkindex;
@@ -738,6 +742,67 @@ static void ST_updateFaceWidget(void)
 }
 
 int sts_traditional_keys; // killough 2/28/98: traditional status bar keys
+int sts_blink_keys; // [crispy] blinking key or skull in the status bar
+
+void ST_SetKeyBlink(player_t* player, int blue, int yellow, int red)
+{
+  int i;
+  // Init array with args to iterate through
+  const int keys[3] = { blue, yellow, red };
+
+  //if (raven) return;
+
+  player->keyblinktics = !heretic ? KEYBLINKTICS : 4*KEYBLINKTICS;
+
+  for (i = 0; i < 3; i++)
+  {
+    if (   ((keys[i] == KEYBLINK_EITHER) && !(player->cards[i] || player->cards[i+3]))
+        || ((keys[i] == KEYBLINK_CARD)   && !(player->cards[i]))
+        || ((keys[i] == KEYBLINK_SKULL)  && !(player->cards[i+3]))
+        || ((keys[i] == KEYBLINK_BOTH)   && !(player->cards[i] && player->cards[i+3])))
+    {
+      player->keyblinkkeys[i] = keys[i];
+    }
+    else
+    {
+      player->keyblinkkeys[i] = KEYBLINK_NONE;
+    }
+  }
+}
+
+int ST_BlinkKey(player_t* player, int index)
+{
+  const keyblink_t keyblink = player->keyblinkkeys[index];
+
+  if (!keyblink)
+    return KEYBLINK_NONE;
+
+  if (player->keyblinktics & (!heretic ? KEYBLINKMASK : 4*KEYBLINKMASK))
+  {
+    if (keyblink == KEYBLINK_EITHER)
+    {
+      if (st_keyorskull[index] && st_keyorskull[index] != KEYBLINK_BOTH)
+      {
+        return st_keyorskull[index];
+      }
+      else if ( (player->keyblinktics & (2*KEYBLINKMASK)) &&
+               !(player->keyblinktics & (4*KEYBLINKMASK)))
+      {
+        return KEYBLINK_SKULL;
+      }
+      else
+      {
+        return KEYBLINK_CARD;
+      }
+    }
+    else
+    {
+      return keyblink;
+    }
+  }
+
+  return -1;
+}
 
 static void ST_updateWidgets(void)
 {
@@ -778,6 +843,8 @@ static void ST_updateWidgets(void)
       if (plyr->cards[i+3])
         keyboxes[i] = keyboxes[i]==-1 || sts_traditional_keys ? i+3 : i+6;
     }
+
+  ST_updateBlinkingKeys(plyr);
 
   // update armor icon
   st_armorindex = plyr->armortype;
@@ -825,6 +892,63 @@ static void ST_updateWidgets(void)
       else
         st_fragscount -= plyr->frags[i];
     }
+}
+
+void ST_updateBlinkingKeys(player_t* plyr)
+{
+  int i;
+
+  if (hexen) return;
+  // [crispy] blinking key or skull in the status bar
+  if (plyr->keyblinktics)
+  {
+    if (sts_blink_keys && allow_incompatibility && (R_StatusBarVisible() || dsda_CheckExHudKeys()))
+    {
+      if (!(plyr->keyblinktics & (!heretic ? (2*KEYBLINKMASK - 1) : (8*KEYBLINKMASK - 1))))
+        S_StartVoidSound(g_sfx_itemup);
+
+      plyr->keyblinktics--;
+
+      for (i = 0; i < 3; i++)
+      {
+        switch (ST_BlinkKey(plyr, i))
+        {
+          case KEYBLINK_NONE:
+            continue;
+
+          case KEYBLINK_CARD:
+            if (heretic)
+            {
+              if (i == 0)
+                  V_DrawNamePatch(153, 180, 0, "bkeyicon", CR_DEFAULT, VPT_STRETCH);
+              else if (i == 1)
+                  V_DrawNamePatch(153, 164, 0, "ykeyicon", CR_DEFAULT, VPT_STRETCH);
+              else if (i == 2)
+                  V_DrawNamePatch(153, 172, 0, "gkeyicon", CR_DEFAULT, VPT_STRETCH);
+            }
+            else
+              keyboxes[i] = i;
+            break;
+
+          case KEYBLINK_SKULL:
+            keyboxes[i] = i + 3;
+            break;
+
+          case KEYBLINK_BOTH:
+            keyboxes[i] = i + 6;
+            break;
+
+          default:
+            keyboxes[i] = -1;
+            break;
+        }
+      }
+    }
+    else
+    {
+      plyr->keyblinktics = 0;
+    }
+  }
 }
 
 // [Alaux]

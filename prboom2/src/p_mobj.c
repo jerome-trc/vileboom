@@ -2660,6 +2660,61 @@ spawnit:
   if (mobj->flags & MF_COUNTITEM)
     totalitems++;
 
+  if (!raven)
+  {
+    // [crispy] blinking key or skull in the status bar
+    switch (mobj->sprite)
+    {
+      case SPR_BKEY:
+        st_keyorskull[it_bluecard] |= KEYBLINK_CARD;
+        break;
+
+      case SPR_BSKU:
+        st_keyorskull[it_bluecard] |= KEYBLINK_SKULL;
+        break;
+
+      case SPR_RKEY:
+        st_keyorskull[it_redcard] |= KEYBLINK_CARD;
+        break;
+
+      case SPR_RSKU:
+        st_keyorskull[it_redcard] |= KEYBLINK_SKULL;
+        break;
+
+      case SPR_YKEY:
+        st_keyorskull[it_yellowcard] |= KEYBLINK_CARD;
+        break;
+
+      case SPR_YSKU:
+        st_keyorskull[it_yellowcard] |= KEYBLINK_SKULL;
+        break;
+
+      default:
+        break;
+    }
+  }
+  else if (heretic)
+  {
+    // [crispy] blinking key or skull in the status bar
+    switch (mobj->sprite)
+    {
+      case HERETIC_SPR_AKYY:
+        st_keyorskull[key_green] |= KEYBLINK_CARD;
+        break;
+
+      case HERETIC_SPR_BKYY:
+        st_keyorskull[key_blue] |= KEYBLINK_CARD;
+        break;
+
+      case HERETIC_SPR_CKYY:
+        st_keyorskull[key_yellow] |= KEYBLINK_CARD;
+        break;
+
+      default:
+        break;
+    }
+  }
+
   if (map_format.hexen)
   {
     if (mobj->flags & MF_COUNTKILL)

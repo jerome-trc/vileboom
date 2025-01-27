@@ -789,6 +789,10 @@ static void dsda_BasicMapRefresh(dboolean (*show_component)(void), exhud_compone
   components = old_components;
 }
 
+dboolean dsda_CheckExHudKeys(void) {
+  return (!dsda_HideHUD() && (components[exhud_keys].on == true));
+}
+
 void dsda_RefreshExHudFPS(void) {
   dsda_BasicRefresh(dsda_ShowFPS, exhud_fps);
 }

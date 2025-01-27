@@ -112,6 +112,15 @@ extern armor_icon_t armor_icon;
 extern int st_health;
 extern int st_armor;
 
+// [crispy] blinking key or skull in the status bar
+extern int sts_blink_keys;
+#define KEYBLINKMASK 0x8
+#define KEYBLINKTICS (7*KEYBLINKMASK)
+extern void ST_updateBlinkingKeys(player_t* plyr);
+extern void ST_SetKeyBlink(player_t* player, int blue, int yellow, int red);
+extern int  ST_BlinkKey(player_t* player, int index);
+extern int  st_keyorskull[3];
+
 // e6y: makes sense for wide resolutions
 extern patchnum_t grnrock;
 extern patchnum_t brdr_t, brdr_b, brdr_l, brdr_r;

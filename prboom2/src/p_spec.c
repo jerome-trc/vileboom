@@ -58,6 +58,7 @@
 #include "i_sound.h"
 #include "m_bbox.h"                                         // phares 3/20/98
 #include "d_deh.h"
+#include "st_stuff.h"
 #include "r_plane.h"
 #include "hu_stuff.h"
 #include "lprintf.h"
@@ -952,6 +953,7 @@ dboolean P_CanUnlockGenDoor
       {
         dsda_AddPlayerMessage(s_PD_ANY, player);
         S_StartMobjSound(player->mo,sfx_oof);             // killough 3/20/98
+        ST_SetKeyBlink(player, KEYBLINK_EITHER, KEYBLINK_EITHER, KEYBLINK_EITHER);
         return false;
       }
       break;
@@ -964,6 +966,7 @@ dboolean P_CanUnlockGenDoor
       {
         dsda_AddPlayerMessage(skulliscard ? s_PD_REDK : s_PD_REDC, player);
         S_StartMobjSound(player->mo,sfx_oof);             // killough 3/20/98
+        ST_SetKeyBlink(player, KEYBLINK_NONE, KEYBLINK_NONE, skulliscard ? KEYBLINK_EITHER : KEYBLINK_CARD);
         return false;
       }
       break;
@@ -976,6 +979,7 @@ dboolean P_CanUnlockGenDoor
       {
         dsda_AddPlayerMessage(skulliscard ? s_PD_BLUEK : s_PD_BLUEC, player);
         S_StartMobjSound(player->mo,sfx_oof);             // killough 3/20/98
+        ST_SetKeyBlink(player, skulliscard ? KEYBLINK_EITHER : KEYBLINK_CARD, KEYBLINK_NONE, KEYBLINK_NONE);
         return false;
       }
       break;
@@ -988,6 +992,7 @@ dboolean P_CanUnlockGenDoor
       {
         dsda_AddPlayerMessage(skulliscard ? s_PD_YELLOWK : s_PD_YELLOWC, player);
         S_StartMobjSound(player->mo,sfx_oof);             // killough 3/20/98
+        ST_SetKeyBlink(player, KEYBLINK_NONE, skulliscard ? KEYBLINK_EITHER : KEYBLINK_CARD, KEYBLINK_NONE);
         return false;
       }
       break;
@@ -1000,6 +1005,7 @@ dboolean P_CanUnlockGenDoor
       {
         dsda_AddPlayerMessage(skulliscard ? s_PD_REDK : s_PD_REDS, player);
         S_StartMobjSound(player->mo,sfx_oof);             // killough 3/20/98
+        ST_SetKeyBlink(player, KEYBLINK_NONE, KEYBLINK_NONE, skulliscard ? KEYBLINK_EITHER : KEYBLINK_SKULL);
         return false;
       }
       break;
@@ -1012,6 +1018,7 @@ dboolean P_CanUnlockGenDoor
       {
         dsda_AddPlayerMessage(skulliscard ? s_PD_BLUEK : s_PD_BLUES, player);
         S_StartMobjSound(player->mo,sfx_oof);             // killough 3/20/98
+        ST_SetKeyBlink(player, skulliscard ? KEYBLINK_EITHER : KEYBLINK_SKULL, KEYBLINK_NONE, KEYBLINK_NONE);
         return false;
       }
       break;
@@ -1024,6 +1031,7 @@ dboolean P_CanUnlockGenDoor
       {
         dsda_AddPlayerMessage(skulliscard ? s_PD_YELLOWK : s_PD_YELLOWS, player);
         S_StartMobjSound(player->mo,sfx_oof);             // killough 3/20/98
+        ST_SetKeyBlink(player, KEYBLINK_NONE, skulliscard ? KEYBLINK_EITHER : KEYBLINK_SKULL, KEYBLINK_NONE);
         return false;
       }
       break;
@@ -1043,6 +1051,7 @@ dboolean P_CanUnlockGenDoor
       {
         dsda_AddPlayerMessage(s_PD_ALL6, player);
         S_StartMobjSound(player->mo,sfx_oof);             // killough 3/20/98
+        ST_SetKeyBlink(player, KEYBLINK_BOTH, KEYBLINK_BOTH, KEYBLINK_BOTH);
         return false;
       }
       if
@@ -1067,6 +1076,7 @@ dboolean P_CanUnlockGenDoor
       {
         dsda_AddPlayerMessage(s_PD_ALL3, player);
         S_StartMobjSound(player->mo,sfx_oof);             // killough 3/20/98
+        ST_SetKeyBlink(player, KEYBLINK_EITHER, KEYBLINK_EITHER, KEYBLINK_EITHER);
         return false;
       }
       break;

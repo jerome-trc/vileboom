@@ -137,6 +137,16 @@ typedef enum
 
 #define NUMINVENTORYSLOTS	HEXEN_NUMARTIFACTS
 
+// [crispy] blinking key or skull in the status bar
+typedef enum
+{
+  KEYBLINK_NONE,
+  KEYBLINK_CARD,
+  KEYBLINK_SKULL,
+  KEYBLINK_BOTH,
+  KEYBLINK_EITHER,
+} keyblink_t;
+
 //
 // Extended player object info: player_t
 //
@@ -218,6 +228,10 @@ typedef struct player_s
 
   // True if secret level has been done.
   dboolean           didsecret;
+
+  // [crispy] blinking key or skull in the status bar
+  keyblink_t          keyblinkkeys[3];
+  int                 keyblinktics;
 
   // e6y
   // All non original (new) fields of player_t struct are moved to bottom
