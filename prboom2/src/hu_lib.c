@@ -220,6 +220,9 @@ void HUlib_setTextXCenter(hu_textline_t* t)
     int c = toupper(*(s++)) - HU_FONTSTART;
     t->x -= (c < 0 || c > HU_FONTSIZE ? t->space_width : t->f[c].width);
   }
+
+  // Awful Temp Hack
+  t->x = t->x + 14;
   if (t->x < 0)
     t->x = 0;
 
