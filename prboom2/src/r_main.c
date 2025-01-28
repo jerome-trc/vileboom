@@ -368,7 +368,7 @@ angle_t R_PointToPseudoAngle (fixed_t x, fixed_t y)
 
 static void R_InitTextureMapping (void)
 {
-  int i,x;
+  int i,x,angle;
   double linearskyfactor;
   FieldOfView = FIELDOFVIEW;
 
@@ -424,8 +424,13 @@ static void R_InitTextureMapping (void)
       for (i=0; viewangletox[i] > x; i++)
         ;
       xtoviewangle[x] = (i<<ANGLETOFINESHIFT)-ANG90;
+
       // [FG] linear horizontal sky scrolling
-      linearskyangle[x] = (0.5 - x / (double)viewwidth) * linearskyfactor;
+      angle = (0.5 - x / (double)viewwidth) * linearskyfactor;
+      if (angle >= 0)
+        linearskyangle[x] = angle;
+      else
+        linearskyangle[x] = ANG90 + angle;
     }
 
   // Take out the fencepost cases from viewangletox.
