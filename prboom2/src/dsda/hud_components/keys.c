@@ -33,7 +33,7 @@ static int key_patch_num[NUMCARDS];
 
 static const char* dsda_Key1Name(player_t* player) {
   // [crispy] blinking key or skull in the status bar
-  if (player->keyblinktics && sts_blink_keys && allow_incompatibility)
+  if (player->keyblinktics && sts_blink_keys && !dsda_StrictMode())
   {
       switch (ST_BlinkKey(player, !heretic ? 0 : key_yellow))
       {
@@ -76,7 +76,7 @@ static const char* dsda_Key1Name(player_t* player) {
 
 static const char* dsda_Key2Name(player_t* player) {
   // [crispy] blinking key or skull in the status bar
-  if (player->keyblinktics && sts_blink_keys && allow_incompatibility)
+  if (player->keyblinktics && sts_blink_keys && !dsda_StrictMode())
   {
       switch (ST_BlinkKey(player, !heretic ? 1 : key_green))
       {
@@ -119,7 +119,7 @@ static const char* dsda_Key2Name(player_t* player) {
 
 static const char* dsda_Key3Name(player_t* player) {
   // [crispy] blinking key or skull in the status bar
-  if (player->keyblinktics && sts_blink_keys && allow_incompatibility)
+  if (player->keyblinktics && sts_blink_keys && !dsda_StrictMode())
   {
       switch (ST_BlinkKey(player, !heretic ? 2 : key_blue))
       {

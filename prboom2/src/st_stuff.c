@@ -903,7 +903,7 @@ void ST_updateBlinkingKeys(player_t* plyr)
   // [crispy] blinking key or skull in the status bar
   if (plyr->keyblinktics)
   {
-    if (sts_blink_keys && allow_incompatibility && ((R_StatusBarVisible() && !inventory) || dsda_CheckExHudKeys()))
+    if (sts_blink_keys && !dsda_StrictMode() && ((R_StatusBarVisible() && !inventory) || dsda_CheckExHudKeys()))
     {
       if (!(plyr->keyblinktics & (!heretic ? (2*KEYBLINKMASK - 1) : (8*KEYBLINKMASK - 1))))
         S_StartVoidSound(g_sfx_itemup);

@@ -46,8 +46,8 @@ typedef enum {
   // 25
   // 26
   // 27
-  // 28
-  // 29
+  uf_blink_keys = 28,
+  uf_fuzz = 29,
 
   uf_unknown = 30,
   uf_invalid = 31,

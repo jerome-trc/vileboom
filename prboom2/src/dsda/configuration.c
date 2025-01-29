@@ -190,6 +190,12 @@ void dsda_TrackConfigFeatures(void) {
   if (dsda_IntConfig(dsda_config_gl_health_bar))
     dsda_TrackFeature(uf_healthbar);
 
+  if (dsda_IntConfig(dsda_config_sts_blink_keys))
+    dsda_TrackFeature(uf_blink_keys);
+
+  if (dsda_IntConfig(dsda_config_software_fuzzmode) && V_IsSoftwareMode())
+    dsda_TrackFeature(uf_fuzz);
+
   if (dsda_IntConfig(dsda_config_movement_strafe50))
     dsda_TrackFeature(uf_alwayssr50);
 

@@ -34,6 +34,9 @@ static const char* feature_names[64] = {
   [uf_100k] = "100K Tracker",
   [uf_console] = "Console",
 
+  [uf_blink_keys] = "Blinking Kyes",
+  [uf_fuzz] = "Alternate Fuzz",
+
   [uf_iddt] = "IDDT",
   [uf_automap] = "IDBEHOLD Map",
   [uf_liteamp] = "IDBEHOLD Light",

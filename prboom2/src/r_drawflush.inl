@@ -34,9 +34,9 @@
 #define GETDESTCOLOR(col) (col)
 #endif
 
-#define BLOCKY_FUZZ dsda_IntConfig(dsda_config_software_fuzzmode)==0
-#define REFRACTION_FUZZ dsda_IntConfig(dsda_config_software_fuzzmode)==1 && allow_incompatibility
-#define SHADOW_FUZZ dsda_IntConfig(dsda_config_software_fuzzmode)==2 && allow_incompatibility
+#define BLOCKY_FUZZ (dsda_IntConfig(dsda_config_software_fuzzmode)==0 || dsda_StrictMode())
+#define REFRACTION_FUZZ (dsda_IntConfig(dsda_config_software_fuzzmode)==1 && !dsda_StrictMode())
+#define SHADOW_FUZZ (dsda_IntConfig(dsda_config_software_fuzzmode)==2 && !dsda_StrictMode())
 
 //
 // R_FlushWholeOpaque
@@ -50,7 +50,7 @@ static void R_FLUSHWHOLE_FUNCNAME(void)
    // Scaled software fuzz algorithm
 #if (R_DRAWCOLUMN_PIPELINE & RDC_FUZZ)
 {
-   if (BLOCKY_FUZZ || REFRACTION_FUZZ || !allow_incompatibility)
+   if (BLOCKY_FUZZ || REFRACTION_FUZZ)
    {
       int yl, yh, count;
 
