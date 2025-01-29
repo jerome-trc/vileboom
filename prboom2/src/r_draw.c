@@ -46,6 +46,7 @@
 #include "lprintf.h"
 #include "i_system.h"
 
+#include "dsda/settings.h"
 #include "dsda/stretch.h"
 
 //
