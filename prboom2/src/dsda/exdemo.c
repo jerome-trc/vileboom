@@ -20,6 +20,7 @@
 #include "d_main.h"
 #include "doomstat.h"
 #include "g_overflow.h"
+#include "g_game.h"
 #include "i_system.h"
 #include "lprintf.h"
 #include "m_argv.h"
@@ -310,8 +311,9 @@ static void DemoEx_AddParams(wadtbl_t* wadtbl) {
   }
 
   // add complevel for formats which do not have it in header
+  // add limit-removing status
   if (demo_compatibility) {
-    sprintf(buf, "-complevel %d ", compatibility_level);
+    sprintf(buf, "-complevel %d%s ", compatibility_level, limitremoving ? "r" : "");
     dsda_StringCat(&files, buf);
   }
 

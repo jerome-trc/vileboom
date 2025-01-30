@@ -46,8 +46,8 @@ typedef enum {
   // 25
   // 26
   // 27
-  uf_blink_keys = 28,
-  uf_fuzz = 29,
+  // 28
+  // 29
 
   uf_unknown = 30,
   uf_invalid = 31,
@@ -84,6 +84,12 @@ typedef enum {
   uf_ghost,
   uf_advanced_map,
   // 63
+
+  uf_blink_keys = 64,
+  uf_fuzz,
+  // 66
+  //
+  // 127
 } dsda_feature_flag_t;
 
 #define FEATURE_SIZE 8
