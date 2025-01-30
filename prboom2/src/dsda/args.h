@@ -38,7 +38,6 @@ typedef enum {
   dsda_arg_nm,
   dsda_arg_episode,
   dsda_arg_complevel,
-  dsda_arg_launcher,
   dsda_arg_fast,
   dsda_arg_respawn,
   dsda_arg_nomonsters,

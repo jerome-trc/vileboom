@@ -363,9 +363,6 @@ void dsda_CacheEndoom(void) {
 
   output_format = dsda_IntConfig(dsda_config_ansi_endoom);
 
-  if (dsda_Flag(dsda_arg_launcher))
-    output_format = format_utf8;
-
   show_endoom = dsda_IntConfig(nyan_config_show_endoom);
 
   if (demo_check > 0)
@@ -454,19 +451,6 @@ void dsda_TerminalEndoom(void)
 
   #ifdef _WIN32
       RestoreOldMode();
-
-      if(dsda_IntConfig(nyan_config_endoom_wait) && !dsda_Flag(dsda_arg_launcher))
-      {
-        lprintf(LO_INFO, "Press any key to quit...");
-        for (int i = 0; i < 30; i++)
-        { // Wait for 30 seconds of no user activity, and then quit
-          I_uSleep(1000); // wait 1 second (30 times)
-          if (kbhit())
-          {
-            break; // Exit the program after key press
-          }
-        }
-      }
 
   #endif
 }

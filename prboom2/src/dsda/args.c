@@ -140,11 +140,6 @@ static arg_config_t arg_config[dsda_arg_count] = {
     "sets the compatibility level",
     arg_complevel, -1, mbf21_compatibility,
   },
-  [dsda_arg_launcher] = {
-    "-launcher", NULL, NULL,
-    "If run with the Launcher",
-    arg_null,
-  },
   [dsda_arg_fast] = {
     "-fast", NULL, NULL,
     "turns on fast monsters",
