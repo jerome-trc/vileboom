@@ -34,9 +34,9 @@
 #define GETDESTCOLOR(col) (col)
 #endif
 
-#define BLOCKY_FUZZ (dsda_IntConfig(dsda_config_software_fuzzmode)==0 || dsda_StrictMode())
-#define REFRACTION_FUZZ (dsda_IntConfig(dsda_config_software_fuzzmode)==1 && !dsda_StrictMode())
-#define SHADOW_FUZZ (dsda_IntConfig(dsda_config_software_fuzzmode)==2 && !dsda_StrictMode())
+#define BLOCKY_FUZZ (dsda_IntConfig(dsda_config_fuzzmode)==0 || dsda_StrictMode())
+#define REFRACTION_FUZZ (dsda_IntConfig(dsda_config_fuzzmode)==1 && !dsda_StrictMode())
+#define SHADOW_FUZZ (dsda_IntConfig(dsda_config_fuzzmode)==2 && !dsda_StrictMode())
 
 //
 // R_FlushWholeOpaque

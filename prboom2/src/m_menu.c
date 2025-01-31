@@ -2730,7 +2730,7 @@ setup_menu_t display_settings[] = {
   { "Quake Intensity", S_NUM, m_conf, D_X, dsda_config_quake_intensity },
   { "Weapon Attack Alignment", S_CHOICE, m_conf, D_X, dsda_config_weapon_attack_alignment, 0, weapon_attack_alignment_strings },
   { "Linear Sky Scrolling", S_YESNO, m_conf, D_X, dsda_config_render_linearsky },
-  { "Software Fuzz Mode", S_CHOICE, m_conf, D_X, dsda_config_software_fuzzmode, 0, fuzz_mode_list },
+  { "Software Fuzz Mode", S_CHOICE, m_conf, D_X, dsda_config_fuzzmode, 0, fuzz_mode_list },
   EMPTY_LINE,
   { "Hide Weapon", S_YESNO, m_conf, D_X, dsda_config_hide_weapon },
   { "Hide Status Bar Horns", S_YESNO, m_conf, D_X, dsda_config_hide_horns },

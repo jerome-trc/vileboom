@@ -193,7 +193,7 @@ void dsda_TrackConfigFeatures(void) {
   if (dsda_IntConfig(dsda_config_sts_blink_keys))
     dsda_TrackFeature(uf_blink_keys);
 
-  if (dsda_IntConfig(dsda_config_software_fuzzmode) && V_IsSoftwareMode())
+  if (dsda_IntConfig(dsda_config_fuzzmode) && V_IsSoftwareMode())
     dsda_TrackFeature(uf_fuzz);
 
   if (dsda_IntConfig(dsda_config_movement_strafe50))
@@ -1163,8 +1163,8 @@ dsda_config_t dsda_config[dsda_config_count] = {
     "dsda_quake_intensity", dsda_config_quake_intensity,
     dsda_config_int, 0, 100, { 100 }
   },
-  [dsda_config_software_fuzzmode] = {
-    "dsda_software_fuzzmode", dsda_config_software_fuzzmode,
+  [dsda_config_fuzzmode] = {
+    "dsda_fuzzmode", dsda_config_fuzzmode,
     dsda_config_int, 0, 2, { 0 }, NULL, STRICT_INT(0)
   },
   [dsda_config_map_blinking_locks] = {
