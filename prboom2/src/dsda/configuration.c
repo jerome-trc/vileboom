@@ -193,7 +193,7 @@ void dsda_TrackConfigFeatures(void) {
   if (dsda_IntConfig(dsda_config_sts_blink_keys))
     dsda_TrackFeature(uf_blink_keys);
 
-  if (dsda_IntConfig(dsda_config_fuzzmode) && V_IsSoftwareMode())
+  if ((dsda_IntConfig(dsda_config_fuzzmode) > 0) && V_IsSoftwareMode())
     dsda_TrackFeature(uf_fuzz);
 
   if (dsda_IntConfig(dsda_config_movement_strafe50))
