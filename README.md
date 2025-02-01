@@ -1,5 +1,5 @@
 <div align="center" markdown="1">
-    <img src="./prboom2/ICONS/nyan-doom.svg" alt="Nyan Doom Logo" width="200"/>
+    <a href="https://github.com/andrikpowell/nyan-doom/"><img src="./prboom2/ICONS/nyan-doom.svg" alt="Nyan Doom Logo" width="200"/></a>
     <h1>Nyan Doom</h1>
     <h3>The most fuzzy, cuddly Doom port ever!</h3>
 </div>
