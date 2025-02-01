@@ -27,7 +27,7 @@
 </div>
 
 ## About the source port
-Nyan Doom is based on the DSDA-Doom source port, but adds many more quality-of-life and never-before-seen features! If you like the DSDA-Doom source port, but wanted a few extra whistles and customisations, then this is the port for you!
+Nyan Doom is based on the DSDA-Doom source port, but adds many more quality-of-life and innovative features! If you like the DSDA-Doom, but wanted a few extra whistles and customisations, then this is the port for you!
 
 ## Downloads
 
@@ -68,7 +68,7 @@ Code available at [https://github.com/andrikpowell/nyan-doom/](https://github.co
 Instructions in [guides](./docs/guides/)
 
 ## Notice
-Nyan Doom code is based off [DSDA-Doom](https://github.com/kraflab/dsda-doom). This means that certain features already in DSDA-Doom (and by extension Nyan Doom) may be broken or unfinished, especially in regards to Heretic and Hexen support. Here are some Documentation on those current features:
+Nyan Doom code is based off [DSDA-Doom](https://github.com/kraflab/dsda-doom). This means that certain features already in DSDA-Doom (and by extension Nyan Doom) may be broken or unfinished, especially in regards to Heretic and Hexen support. Here is some documentation on those features:
 
 <details markdown="1">
 
