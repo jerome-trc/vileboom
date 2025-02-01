@@ -2806,6 +2806,7 @@ setup_menu_t stat_settings2[] =
   { "Use Extended Hud", S_YESNO, m_conf, D_X, dsda_config_exhud },
   { "Ex Hud Scale %", S_NUM, m_conf, D_X, dsda_config_ex_text_scale_x },
   { "Ex Hud Ratio %", S_NUM, m_conf, D_X, dsda_config_ex_text_ratio_y },
+  { "Ex Hud Free Text", S_NAME, m_conf, D_X, dsda_config_free_text },
   EMPTY_LINE,
   { "Status Widget", S_SKIP | S_TITLE, m_null, D_X},
   { "Use Status Widget", S_YESNO, m_conf, D_X, nyan_config_ex_status_widget },
