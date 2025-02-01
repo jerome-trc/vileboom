@@ -11,7 +11,7 @@
 [![Static Badge](https://img.shields.io/badge/Linux-grey?logo=linux)]()
 <br>
 [![Release](https://img.shields.io/github/release/andrikpowell/nyan-doom.svg)](https://github.com/andrikpowell/nyan-doom/releases/latest)
-[![Build Status](https://github.com/andrikpowell/nyan-doom/actions/workflows/continuous_integration.yml/badge.svg)](https://github.com/andrikpowell/nyan-doom/actions/workflows/main.yml)
+[![Build Status](https://github.com/andrikpowell/nyan-doom/actions/workflows/continuous_integration.yml/badge.svg)](https://github.com/andrikpowell/nyan-doom/actions/workflows/continuous_integration.yml)
 [![Top Language](https://img.shields.io/github/languages/top/andrikpowell/nyan-doom.svg)](https://github.com/andrikpowell/nyan-doom)
 <br>
 [![Downloads (total)](https://img.shields.io/github/downloads/andrikpowell/nyan-doom/total)](https://github.com/andrikpowell/nyan-doom/releases/latest)
@@ -75,7 +75,7 @@ Nyan Doom code is based off [DSDA-Doom](https://github.com/kraflab/dsda-doom). T
   <summary>Heretic Support</summary>
 
 ### Heretic Support
-- DSDA-Doom includes demo-compatible support for heretic (all the demos stored on dsda are in sync).
+- Nyan Doom includes demo-compatible support for heretic (all the demos stored on dsda are in sync).
 - Heretic game logic should be set automatically if you use `HERETIC.WAD` as the iwad. If it doesn't work, please use the `-heretic` commandline option. This flips a switch in the engine that determines all the core game data.
 - Don't need to supply complevel (heretic is complevel 0 by necessity)
 - Known issues
