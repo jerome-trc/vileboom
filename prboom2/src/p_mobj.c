@@ -1778,6 +1778,27 @@ mobj_t* P_SpawnMobj(fixed_t x,fixed_t y,fixed_t z,mobjtype_t type)
         break;
     }
   }
+  else if (heretic)
+  {
+    // [crispy] blinking key or skull in the status bar
+    switch (mobj->sprite)
+    {
+      case HERETIC_SPR_AKYY:
+        st_keyorskull[key_green] |= KEYBLINK_CARD;
+        break;
+
+      case HERETIC_SPR_BKYY:
+        st_keyorskull[key_blue] |= KEYBLINK_CARD;
+        break;
+
+      case HERETIC_SPR_CKYY:
+        st_keyorskull[key_yellow] |= KEYBLINK_CARD;
+        break;
+
+      default:
+        break;
+    }
+  }
 
   // set subsector and/or block links
 
