@@ -1739,6 +1739,46 @@ mobj_t* P_SpawnMobj(fixed_t x,fixed_t y,fixed_t z,mobjtype_t type)
   mobj->frame  = st->frame;
   mobj->touching_sectorlist = NULL; // NULL head of sector list // phares 3/13/98
 
+  if (!raven)
+  {
+    // [crispy] blinking key or skull in the status bar
+    switch (mobj->sprite)
+    {
+      case SPR_BKEY:
+        st_keyorskull[it_bluecard] |= KEYBLINK_CARD;
+        st_keytype[it_bluecard] = true;
+        break;
+
+      case SPR_BSKU:
+        st_keyorskull[it_bluecard] |= KEYBLINK_SKULL;
+        st_keytype[it_blueskull] = true;
+        break;
+
+      case SPR_RKEY:
+        st_keyorskull[it_redcard] |= KEYBLINK_CARD;
+        st_keytype[it_redcard] = true;
+        break;
+
+      case SPR_RSKU:
+        st_keyorskull[it_redcard] |= KEYBLINK_SKULL;
+        st_keytype[it_redskull] = true;
+        break;
+
+      case SPR_YKEY:
+        st_keyorskull[it_yellowcard] |= KEYBLINK_CARD;
+        st_keytype[it_yellowcard] = true;
+        break;
+
+      case SPR_YSKU:
+        st_keyorskull[it_yellowcard] |= KEYBLINK_SKULL;
+        st_keytype[it_yellowskull] = true;
+        break;
+
+      default:
+        break;
+    }
+  }
+
   // set subsector and/or block links
 
   P_SetThingPosition (mobj);
@@ -2659,67 +2699,6 @@ spawnit:
 
   if (mobj->flags & MF_COUNTITEM)
     totalitems++;
-
-  if (!raven)
-  {
-    // [crispy] blinking key or skull in the status bar
-    switch (mobj->sprite)
-    {
-      case SPR_BKEY:
-        st_keyorskull[it_bluecard] |= KEYBLINK_CARD;
-        st_keytype[it_bluecard] = true;
-        break;
-
-      case SPR_BSKU:
-        st_keyorskull[it_bluecard] |= KEYBLINK_SKULL;
-        st_keytype[it_blueskull] = true;
-        break;
-
-      case SPR_RKEY:
-        st_keyorskull[it_redcard] |= KEYBLINK_CARD;
-        st_keytype[it_redcard] = true;
-        break;
-
-      case SPR_RSKU:
-        st_keyorskull[it_redcard] |= KEYBLINK_SKULL;
-        st_keytype[it_redskull] = true;
-        break;
-
-      case SPR_YKEY:
-        st_keyorskull[it_yellowcard] |= KEYBLINK_CARD;
-        st_keytype[it_yellowcard] = true;
-        break;
-
-      case SPR_YSKU:
-        st_keyorskull[it_yellowcard] |= KEYBLINK_SKULL;
-        st_keytype[it_yellowskull] = true;
-        break;
-
-      default:
-        break;
-    }
-  }
-  else if (heretic)
-  {
-    // [crispy] blinking key or skull in the status bar
-    switch (mobj->sprite)
-    {
-      case HERETIC_SPR_AKYY:
-        st_keyorskull[key_green] |= KEYBLINK_CARD;
-        break;
-
-      case HERETIC_SPR_BKYY:
-        st_keyorskull[key_blue] |= KEYBLINK_CARD;
-        break;
-
-      case HERETIC_SPR_CKYY:
-        st_keyorskull[key_yellow] |= KEYBLINK_CARD;
-        break;
-
-      default:
-        break;
-    }
-  }
 
   if (map_format.hexen)
   {

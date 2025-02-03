@@ -3873,17 +3873,6 @@ void P_SetupLevel(int episode, int map, int playermask, int skill)
     P_CloseWeapons();
   }
 
-  if (!raven)
-  {
-    st_6keys = st_keytype[it_bluecard] && st_keytype[it_blueskull] &&
-              st_keytype[it_redcard] && st_keytype[it_redskull] &&
-              st_keytype[it_yellowcard] && st_keytype[it_yellowskull];
-
-    st_3keys = (st_keytype[it_bluecard] || st_keytype[it_blueskull]) &&
-              (st_keytype[it_redcard] || st_keytype[it_redskull]) &&
-              (st_keytype[it_yellowcard] || st_keytype[it_yellowskull]);
-  }
-
   // if deathmatch, randomly spawn the active players
   if (deathmatch)
   {

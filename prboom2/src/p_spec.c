@@ -1049,6 +1049,10 @@ dboolean P_CanUnlockGenDoor
         )
       )
       {
+        int st_6keys = st_keytype[it_bluecard] && st_keytype[it_blueskull] &&
+                       st_keytype[it_redcard] && st_keytype[it_redskull] &&
+                       st_keytype[it_yellowcard] && st_keytype[it_yellowskull];
+
         dsda_AddPlayerMessage(s_PD_ALL6, player);
         S_StartMobjSound(player->mo,sfx_oof);             // killough 3/20/98
         if (st_6keys) ST_SetKeyBlink(player, KEYBLINK_BOTH, KEYBLINK_BOTH, KEYBLINK_BOTH);
@@ -1074,6 +1078,10 @@ dboolean P_CanUnlockGenDoor
         )
       )
       {
+        int st_3keys = (st_keytype[it_bluecard] || st_keytype[it_blueskull]) &&
+                       (st_keytype[it_redcard] || st_keytype[it_redskull]) &&
+                       (st_keytype[it_yellowcard] || st_keytype[it_yellowskull]);
+
         dsda_AddPlayerMessage(s_PD_ALL3, player);
         S_StartMobjSound(player->mo,sfx_oof);             // killough 3/20/98
         if (st_3keys) ST_SetKeyBlink(player, KEYBLINK_EITHER, KEYBLINK_EITHER, KEYBLINK_EITHER);

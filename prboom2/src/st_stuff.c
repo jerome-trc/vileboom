@@ -419,8 +419,6 @@ static int      keyboxes[3];
 // [crispy] blinking key or skull in the status bar
 int             st_keyorskull[3];
 int             st_keytype[5];
-int             st_6keys;
-int             st_3keys;
 
 // decides when to show icons or not
 static int      st_armorindex;
