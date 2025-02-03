@@ -3821,6 +3821,10 @@ void P_SetupLevel(int episode, int map, int playermask, int skill)
   if (!hexen)
     memset(st_keyorskull, 0, sizeof(st_keyorskull));
 
+  // Reset statusbar keys
+  if (!raven)
+    memset(st_keytype, 0, sizeof(st_keytype));
+
   // should be after P_RemoveSlimeTrails, because it changes vertexes
   R_CalcSegsLength();
 
@@ -3867,6 +3871,17 @@ void P_SetupLevel(int episode, int map, int playermask, int skill)
   if (heretic)
   {
     P_CloseWeapons();
+  }
+
+  if (!raven)
+  {
+    st_6keys = st_keytype[it_bluecard] && st_keytype[it_blueskull] &&
+              st_keytype[it_redcard] && st_keytype[it_redskull] &&
+              st_keytype[it_yellowcard] && st_keytype[it_yellowskull];
+
+    st_3keys = (st_keytype[it_bluecard] || st_keytype[it_blueskull]) &&
+              (st_keytype[it_redcard] || st_keytype[it_redskull]) &&
+              (st_keytype[it_yellowcard] || st_keytype[it_yellowskull]);
   }
 
   // if deathmatch, randomly spawn the active players

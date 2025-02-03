@@ -1051,7 +1051,7 @@ dboolean P_CanUnlockGenDoor
       {
         dsda_AddPlayerMessage(s_PD_ALL6, player);
         S_StartMobjSound(player->mo,sfx_oof);             // killough 3/20/98
-        ST_SetKeyBlink(player, KEYBLINK_BOTH, KEYBLINK_BOTH, KEYBLINK_BOTH);
+        if (st_6keys) ST_SetKeyBlink(player, KEYBLINK_BOTH, KEYBLINK_BOTH, KEYBLINK_BOTH);
         return false;
       }
       if
@@ -1076,7 +1076,7 @@ dboolean P_CanUnlockGenDoor
       {
         dsda_AddPlayerMessage(s_PD_ALL3, player);
         S_StartMobjSound(player->mo,sfx_oof);             // killough 3/20/98
-        ST_SetKeyBlink(player, KEYBLINK_EITHER, KEYBLINK_EITHER, KEYBLINK_EITHER);
+        if (st_3keys) ST_SetKeyBlink(player, KEYBLINK_EITHER, KEYBLINK_EITHER, KEYBLINK_EITHER);
         return false;
       }
       break;
