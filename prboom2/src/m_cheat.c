@@ -550,25 +550,33 @@ static void cheat_rate()
 
 static void cheat_comp0()
 {
-  doom_printf("Complevel: %i - %s", compatibility_level, comp_lev_str[compatibility_level]);
+  if (!raven)
+    doom_printf("Complevel: %i - %s", compatibility_level, comp_lev_str[compatibility_level]);
+  else
+    doom_printf("Cheat disabled for %s", heretic ? "Heretic" : "Hexen");
 }
 
 static void cheat_comp(char buf[3])
 {
-  int compinput = (buf[0] - '0') * 10 + buf[1] - '0';
-
-  if (compinput < 0 ||
-      compinput >= MAX_COMPATIBILITY_LEVEL ||
-      (compinput > 17 && compinput < 21))
+  if (!raven)
   {
-    return; //doom_printf("Invalid complevel");
+    int compinput = (buf[0] - '0') * 10 + buf[1] - '0';
+
+    if (compinput < 0 ||
+        compinput >= MAX_COMPATIBILITY_LEVEL ||
+        (compinput > 17 && compinput < 21))
+    {
+      return; //doom_printf("Invalid complevel");
+    }
+    else
+    {
+      compatibility_level = compinput;
+      G_Compatibility(); // this is missing options checking
+      doom_printf("New Complevel: %i - %s", compatibility_level, comp_lev_str[compatibility_level]);
+    }
   }
   else
-  {
-    compatibility_level = compinput;
-    G_Compatibility(); // this is missing options checking
-    doom_printf("New Complevel: %i - %s", compatibility_level, comp_lev_str[compatibility_level]);
-  }
+    doom_printf("Cheat disabled for %s", heretic ? "Heretic" : "Hexen");
 }
 
 static void cheat_skill0()
