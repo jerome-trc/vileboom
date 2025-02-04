@@ -77,12 +77,13 @@ typedef enum {
   pack_tnt,     // TNT mission pack
   pack_plut,    // Plutonia pack
   pack_nerve,   // No Rest For The Living
-  hacx,         // HACX - Twitch 'n Kill
+  tc_hacx,      // HACX - Twitch 'n Kill
   tc_chex,      // Chex Quest
   tc_rekkr,     // REKKR
   none
 } GameMission_t;
 
+#define hacx    (gamemission == tc_hacx)
 #define chex    (gamemission == tc_chex)
 #define rekkr   (gamemission == tc_rekkr)
 

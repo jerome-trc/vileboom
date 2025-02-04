@@ -1074,7 +1074,7 @@ void AddIWAD(const char *iwad)
       else if (i>=12 && !strnicmp(iwad+i-12,"plutonia.wad",12))
         gamemission = pack_plut;
       else if (i>=8 && !strnicmp(iwad+i-8,"hacx.wad",8))
-        gamemission = hacx;
+        gamemission = tc_hacx;
       break;
     default:
       gamemission = none;
@@ -1465,6 +1465,7 @@ static const char *D_AutoLoadGameBase()
 {
   return hexen ? "hexen-all" :
          heretic ? "heretic-all" :
+         hacx ? "hacx-all" :
          rekkr ? "rekkr-all" :
          chex ? "chex-all" :
          "doom-all";
@@ -1668,7 +1669,7 @@ static void EvaluateDoomVerStr(void)
           case pack_tnt:
             doomverstr = "Final DOOM - TNT: Evilution";
             break;
-          case hacx:
+          case tc_hacx:
             doomverstr = "HACX - Twitch 'n Kill";
             break;
           default:
