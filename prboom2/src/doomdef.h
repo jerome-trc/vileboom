@@ -80,12 +80,14 @@ typedef enum {
   tc_hacx,      // HACX - Twitch 'n Kill
   tc_chex,      // Chex Quest
   tc_rekkr,     // REKKR
+  tc_freedoom,  // Freedoom
   none
 } GameMission_t;
 
-#define hacx    (gamemission == tc_hacx)
-#define chex    (gamemission == tc_chex)
-#define rekkr   (gamemission == tc_rekkr)
+#define hacx      (gamemission == tc_hacx)
+#define chex      (gamemission == tc_chex)
+#define rekkr     (gamemission == tc_rekkr)
+#define freedoom  (gamemission == tc_freedoom)
 
 // Identify language to use, software localization.
 typedef enum {
