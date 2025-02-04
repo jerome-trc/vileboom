@@ -3571,6 +3571,43 @@ dboolean deh_GetData(char *s, char *k, uint64_t *l, char **strval)
 
 static deh_bexptr null_bexptr = { NULL, "(NULL)" };
 
+static dboolean CheckSafeState(statenum_t state)
+{
+    int count = 0;
+
+    for (statenum_t s = state; s != S_NULL; s = states[s].nextstate)
+    {
+        // [FG] recursive/nested states
+        if (count++ >= 100)
+        {
+            return false;
+        }
+
+        // [crispy] a state with -1 tics never changes
+        if (states[s].tics == -1)
+        {
+            break;
+        }
+
+        if (states[s].action)
+        {
+            // [FG] A_Light*() considered harmless
+            if (states[s].action == A_Light0 ||
+                states[s].action == A_Light1 ||
+                states[s].action == A_Light2)
+            {
+                continue;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
 void PostProcessDeh(void)
 {
   int i, j;
@@ -3641,6 +3678,12 @@ void PostProcessDeh(void)
         states[i].args[2] = deh_translate_bits(states[i].args[2], deh_mobjflags_mbf21);
       }
     }
+  }
+
+  // [FG] fix desyncs by SSG-flash correction
+  if (CheckSafeState(S_DSGUNFLASH1) && states[S_DSGUNFLASH1].tics == 5)
+  {
+    states[S_DSGUNFLASH1].tics = 4;
   }
 
   dsda_FreeDehStates();
