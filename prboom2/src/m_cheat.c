@@ -91,6 +91,7 @@ static void cheat_mypos();
 static void cheat_rate();
 static void cheat_comp0();
 static void cheat_comp();
+static void cheat_skill();
 static void cheat_skill0();
 static void cheat_friction();
 static void cheat_pushers();
@@ -176,6 +177,7 @@ cheatseq_t cheat[] = {
   // phares
   CHEAT("tntcomp",    NULL,   NULL,               not_demo, cheat_comp, -2, false),
   CHEAT("tntcomp",    NULL,   NULL,               not_demo, cheat_comp0, 0, false),
+  CHEAT("skill",      NULL,   NULL,               not_demo, cheat_skill, -1, false),
   CHEAT("skill",      NULL,   NULL,               not_demo, cheat_skill0, 0, false),
   // jff 2/01/98 kill all monsters
   CHEAT("tntem",      NULL,   NULL,               not_demo, cheat_massacre, 0, false),
@@ -575,6 +577,22 @@ static void cheat_skill0()
     doom_printf("Skill: %i - %s", gameskill+1, skill_str[gameskill+1]);
   else
     doom_printf("Skill: %i", gameskill+1);
+}
+
+static void cheat_skill(char buf[1])
+{
+  int skill = buf[0] - '0';
+
+  if (skill >= 1 && skill <= 5)
+  {
+    gameskill = skill - 1;
+    if (!raven)
+      doom_printf("Next Level Skill: %i - %s", gameskill+1, skill_str[gameskill + 1]);
+    else
+      doom_printf("Next Level Skill: %i", gameskill + 1);
+
+    dsda_UpdateGameSkill(gameskill);
+  }
 }
 
 // variable friction cheat
