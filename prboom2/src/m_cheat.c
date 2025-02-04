@@ -548,8 +548,7 @@ static void cheat_rate()
 
 static void cheat_comp0()
 {
-  const char* complevel = comp_lev_str[compatibility_level];
-  doom_printf("Complevel: %s", complevel);
+  doom_printf("Complevel: %i - %s", compatibility_level, comp_lev_str[compatibility_level]);
 }
 
 static void cheat_comp(char buf[3])
@@ -566,13 +565,16 @@ static void cheat_comp(char buf[3])
   {
     compatibility_level = compinput;
     G_Compatibility(); // this is missing options checking
-    doom_printf("New Complevel: %s", comp_lev_str[compatibility_level]);
+    doom_printf("New Complevel: %i - %s", compatibility_level, comp_lev_str[compatibility_level]);
   }
 }
 
 static void cheat_skill0()
 {
-  doom_printf("Skill: %s", skill_str[gameskill+1]);
+  if (!raven)
+    doom_printf("Skill: %i - %s", gameskill+1, skill_str[gameskill+1]);
+  else
+    doom_printf("Skill: %i", gameskill+1);
 }
 
 // variable friction cheat
