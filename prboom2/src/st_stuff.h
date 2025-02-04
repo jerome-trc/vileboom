@@ -120,7 +120,7 @@ extern void ST_updateBlinkingKeys(player_t* plyr);
 extern void ST_SetKeyBlink(player_t* player, int blue, int yellow, int red);
 extern int  ST_BlinkKey(player_t* player, int index);
 extern int  st_keyorskull[3];
-extern int  st_keytype[5];
+extern int  st_keytype[6];
 
 // e6y: makes sense for wide resolutions
 extern patchnum_t grnrock;
