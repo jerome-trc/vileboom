@@ -17,14 +17,12 @@
 
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
-#include "conio.h"
 #include "windows.h"
 #endif
 
+#include "args.h"
 #include "doomdef.h"
 #include "doomtype.h"
-#include "args.h"
-#include "i_system.h"
 #include "lprintf.h"
 #include "w_wad.h"
 
