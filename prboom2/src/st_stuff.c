@@ -1251,17 +1251,17 @@ static void ST_loadGraphics(void)
   // Armor Icon
   for (i=0;i<DOOM_ARMORICON;i++)
     {
-      if (!chex)
+      if (chex)
       {
-        sprintf(namebuf, "STFARMS%d", i);
+        sprintf(namebuf, "CHXARMS%d", i);
         R_SetPatchNum(&armorstyle1[i], namebuf);
-        sprintf(namebuf, "STFARM2%d", i);
         R_SetPatchNum(&armorstyle2[i], namebuf);
       }
       else
       {
-        sprintf(namebuf, "CHXARMS%d", i);
+        sprintf(namebuf, "STFARMS%d", i);
         R_SetPatchNum(&armorstyle1[i], namebuf);
+        sprintf(namebuf, "STFARM2%d", i);
         R_SetPatchNum(&armorstyle2[i], namebuf);
       }
     }
@@ -1269,10 +1269,10 @@ static void ST_loadGraphics(void)
   // Berserk Icon
   for (i=0;i<DOOM_BERSERKICON;i++)
     {
-      if (!chex)
-        sprintf(namebuf, "STFPSTR%d", i);
-      else
+      if (chex)
         sprintf(namebuf, "CHXPSTR%d", i);
+      else
+        sprintf(namebuf, "STFPSTR%d", i);
       R_SetPatchNum(&berserkpatch[i], namebuf);
     }
 

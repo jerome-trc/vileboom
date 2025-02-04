@@ -138,8 +138,6 @@ const char* g_skyflatname;
 dboolean hexen = false;
 dboolean heretic = false;
 dboolean raven = false;
-dboolean rekkr = false;
-dboolean chex = false;
 
 static void dsda_InitDoom(void) {
   int i;
@@ -614,41 +612,11 @@ static dboolean dsda_AutoDetectHexen(void)
   return false;
 }
 
-static dboolean dsda_AutoDetectRekkr(void)
-{
-  dsda_arg_t* arg;
-  int length;
-  arg = dsda_Arg(dsda_arg_iwad);
-  if (arg->found) {
-    length = strlen(arg->value.v_string);
-    if (length >= 11 && !strnicmp(arg->value.v_string + length - 11, "rekkrsa.wad", 11))
-      return true;
-  }
-
-  return false;
-}
-
-static dboolean dsda_AutoDetectChex(void)
-{
-  dsda_arg_t* arg;
-  int length;
-  arg = dsda_Arg(dsda_arg_iwad);
-  if (arg->found) {
-    length = strlen(arg->value.v_string);
-    if (length >= 8 && !strnicmp(arg->value.v_string + length - 8, "chex.wad", 8))
-      return true;
-  }
-
-  return false;
-}
-
 extern void dsda_ResetNullPClass(void);
 
 void dsda_InitGlobal(void) {
   heretic = dsda_Flag(dsda_arg_heretic) || dsda_AutoDetectHeretic();
   hexen = dsda_Flag(dsda_arg_hexen) || dsda_AutoDetectHexen();
-  rekkr = dsda_Flag(dsda_arg_rekkr) || dsda_AutoDetectRekkr();
-  chex = dsda_Flag(dsda_arg_chex) || dsda_AutoDetectChex();
   raven = heretic || hexen;
 
   if (hexen)

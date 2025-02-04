@@ -78,8 +78,13 @@ typedef enum {
   pack_plut,    // Plutonia pack
   pack_nerve,   // No Rest For The Living
   hacx,         // HACX - Twitch 'n Kill
+  tc_chex,      // Chex Quest
+  tc_rekkr,     // REKKR
   none
 } GameMission_t;
+
+#define chex    (gamemission == tc_chex)
+#define rekkr   (gamemission == tc_rekkr)
 
 // Identify language to use, software localization.
 typedef enum {
@@ -454,8 +459,6 @@ typedef enum {
 // TODO_HEXEN: BLINKTHRESHOLD is (4*35)
 
 extern dboolean heretic;
-extern dboolean rekkr;
-extern dboolean chex;
 
 //hexen
 
