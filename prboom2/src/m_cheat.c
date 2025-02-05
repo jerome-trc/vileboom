@@ -581,7 +581,7 @@ static void cheat_comp(char buf[3])
 
 static void cheat_skill0()
 {
-  if (!raven)
+  if (!raven && !tc_game)
     doom_printf("Skill: %i - %s", gameskill+1, skill_str[gameskill+1]);
   else
     doom_printf("Skill: %i", gameskill+1);
