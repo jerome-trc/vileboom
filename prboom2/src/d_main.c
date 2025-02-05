@@ -171,8 +171,11 @@ const char *const standard_iwads[]=
   "freedoom1.wad",
   "freedm.wad",
 
-  "hacx.wad",
   "chex.wad",
+  "chex3v.wad",
+  "chex3d2.wad",
+
+  "hacx.wad",
   "rekkrsa.wad",
 
   "bfgdoom2.wad",
@@ -1068,6 +1071,8 @@ void AddIWAD(const char *iwad)
       gamemission = doom;
       if (i>=11 && !strnicmp(iwad+i-11,"rekkrsa.wad",11))
         gamemission = tc_rekkr;
+      else if (i>=10 && !strnicmp(iwad+i-10,"chex3v.wad",10))
+        gamemission = tc_chex3v;
       else if (i>=8 && !strnicmp(iwad+i-8,"chex.wad",8))
         gamemission = tc_chex;
       else if (i>=13 && !strnicmp(iwad+i-13,"freedoom1.wad",13))
@@ -1081,6 +1086,8 @@ void AddIWAD(const char *iwad)
         gamemission = pack_tnt;
       else if (i>=12 && !strnicmp(iwad+i-12,"plutonia.wad",12))
         gamemission = pack_plut;
+      else if (i>=11 && !strnicmp(iwad+i-11,"chex3d2.wad",11))
+        gamemission = tc_chex3v;
       else if (i>=8 && !strnicmp(iwad+i-8,"hacx.wad",8))
         gamemission = tc_hacx;
       else if ((i>=13 && !strnicmp(iwad+i-13,"freedoom2.wad",13))
@@ -1661,6 +1668,9 @@ static void EvaluateDoomVerStr(void)
           case tc_chex:
             doomverstr = "Chex(R) Quest";
             break;
+          case tc_chex3v:
+            doomverstr = "Chex(R) Quest 3: Vanilla Edition";
+            break;
           case tc_freedoom:
             doomverstr = "Freedoom Phase 1";
             break;
@@ -1683,6 +1693,9 @@ static void EvaluateDoomVerStr(void)
             break;
           case pack_tnt:
             doomverstr = "Final DOOM - TNT: Evilution";
+            break;
+          case tc_chex3v:
+            doomverstr = "Chex(R) Quest 3: Modding Edition";
             break;
           case tc_hacx:
             doomverstr = "HACX - Twitch 'n Kill";
@@ -1985,7 +1998,7 @@ static void D_DoomMainSetup(void)
         ProcessDehFile(NULL, D_dehout(), lump);
       }
     }
-    if (chex)
+    if (gamemission == tc_chex)
     {
       int lump = W_CheckNumForName2("CHEXDEH", ns_prboom);
       if (lump != LUMP_NOT_FOUND)

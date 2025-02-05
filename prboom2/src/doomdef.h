@@ -79,13 +79,16 @@ typedef enum {
   pack_nerve,   // No Rest For The Living
   tc_hacx,      // HACX - Twitch 'n Kill
   tc_chex,      // Chex Quest
+  tc_chex3v,    // Chex Quest 3: Vanilla/Modding Edition
   tc_rekkr,     // REKKR
   tc_freedoom,  // Freedoom
   none
 } GameMission_t;
 
+#define chex      ((gamemission == tc_chex) || (gamemission == tc_chex3v))
+#define chex_exe  (gamemission == tc_chex)
+
 #define hacx      (gamemission == tc_hacx)
-#define chex      (gamemission == tc_chex)
 #define rekkr     (gamemission == tc_rekkr)
 #define freedoom  (gamemission == tc_freedoom)
 
