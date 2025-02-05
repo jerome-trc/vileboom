@@ -4363,7 +4363,7 @@ void M_DrawHelp (void)
   M_ChangeMenu(NULL, mnact_full);
 
   V_ClearBorder();
-  if (PWADhelp || !dsda_IntConfig(nyan_config_boom_credit_help))
+  if (PWADhelp || !dsda_IntConfig(nyan_config_boom_credit_help) || tc_game)
       V_DrawNameNyanPatch(0, 0, 0, helplump, CR_DEFAULT, VPT_STRETCH);
   else
   {
@@ -4421,7 +4421,7 @@ void M_DrawCredits(void)     // killough 10/98: credit screen
   inhelpscreens = true;
 
   V_ClearBorder();
-  if (!dsda_IntConfig(nyan_config_boom_credit_help))
+  if (!dsda_IntConfig(nyan_config_boom_credit_help) || tc_game)
     V_DrawNameNyanPatch(0, 0, 0, credit, CR_DEFAULT, VPT_STRETCH);
   else
     M_DrawCreditsDynamic();
