@@ -986,12 +986,9 @@ static int M_FindCheats(int key)
   cheatseq_t* cht;
   char char_key;
 
-  // Arsinikk - define cheat situations
-  #define deh_cheats_in_game (allow_incompatibility && dsda_IntConfig(dsda_config_deh_change_cheats) && !dsda_Flag(dsda_arg_nocheats))
-  #define deh_cheats_in_demo (!allow_incompatibility && dsda_IntConfig(dsda_config_deh_apply_cheats) && !dsda_Flag(dsda_arg_nocheats))
-
-  // Arsinikk - allow ignoring cheats from dehacked files in-game
-  #define WHICH_CHEAT (deh_cheats_in_game || deh_cheats_in_demo ? cht->deh_cheat : cht->cheat)
+  // Allow cheats from dehacked files in-game
+  #define allow_deh_cheats (allow_incompatibility && dsda_IntConfig(dsda_config_deh_change_cheats) && !dsda_Flag(dsda_arg_nocheats))
+  #define WHICH_CHEAT (allow_deh_cheats ? cht->deh_cheat : cht->cheat)
 
   cht_InitCheats();
 

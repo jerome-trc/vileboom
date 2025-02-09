@@ -165,7 +165,6 @@ typedef enum {
   dsda_config_movement_mousestrafedivisor,
   dsda_config_fine_sensitivity,
   dsda_config_use_game_controller,
-  dsda_config_deh_apply_cheats,
   dsda_config_deh_change_cheats,
   dsda_config_movement_strafe50,
   dsda_config_movement_strafe50onturns,
