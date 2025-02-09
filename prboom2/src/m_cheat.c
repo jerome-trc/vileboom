@@ -70,6 +70,10 @@
 
 #define plyr (players+consoleplayer)     /* the console player */
 
+// Allow cheats from dehacked files in-game
+#define allow_deh_cheats (dsda_IntConfig(dsda_config_deh_change_cheats) && !dsda_Flag(dsda_arg_nocheats))
+#define WHICH_CHEAT(x) (allow_deh_cheats ? (x)->deh_cheat : (x)->cheat)
+
 //-----------------------------------------------------------------------------
 //
 // CHEAT SEQUENCE PACKAGE
@@ -986,15 +990,11 @@ static int M_FindCheats(int key)
   cheatseq_t* cht;
   char char_key;
 
-  // Allow cheats from dehacked files in-game
-  #define allow_deh_cheats (dsda_IntConfig(dsda_config_deh_change_cheats) && !dsda_Flag(dsda_arg_nocheats))
-  #define WHICH_CHEAT (allow_deh_cheats ? cht->deh_cheat : cht->cheat)
-
   cht_InitCheats();
 
   char_key = (char)key;
 
-  for (cht = cheat; WHICH_CHEAT; cht++)
+  for (cht = cheat; WHICH_CHEAT(cht); cht++)
   {
     if (M_CheatAllowed(cht->when))
     {
@@ -1004,9 +1004,9 @@ static int M_FindCheats(int key)
         // and verifying.  reset back to the beginning
         // if a key is wrong
 
-        if (char_key == WHICH_CHEAT[cht->chars_read])
+        if (char_key == WHICH_CHEAT(cht)[cht->chars_read])
           ++cht->chars_read;
-        else if (char_key == WHICH_CHEAT[0])
+        else if (char_key == WHICH_CHEAT(cht)[0])
           cht->chars_read = 1;
         else
           cht->chars_read = 0;
@@ -1124,9 +1124,9 @@ dboolean M_CheatEntered(const char* element, const char* value)
 {
   cheatseq_t* cheat_i;
 
-  for (cheat_i = cheat; cheat_i->cheat; cheat_i++)
+  for (cheat_i = cheat; WHICH_CHEAT(cheat_i); cheat_i++)
   {
-    if (!strcmp(cheat_i->cheat, element) && M_CheatAllowed(cheat_i->when & ~not_menu))
+    if (!strcmp(WHICH_CHEAT(cheat_i), element) && M_CheatAllowed(cheat_i->when & ~not_menu))
     {
       if (cheat_i->arg >= 0)
         cheat_i->func(cheat_i->arg);
