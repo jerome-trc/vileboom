@@ -1573,7 +1573,7 @@ uint64_t deh_stringToMobjFlags(char *strval)
   return deh_stringToFlags(strval, deh_mobjflags);
 }
 
-void deh_copyDefaultCheats(void)
+void dsda_CopyDefaultCheats(void)
 {
   int ix;
   for (ix = 0; cheat[ix].cheat; ix++)

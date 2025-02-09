@@ -44,7 +44,7 @@
 
 #include "doomtype.h"
 
-void deh_copyDefaultCheats(void);
+void dsda_CopyDefaultCheats(void);
 void ProcessDehFile(const char *filename, const char *outfilename, int lumpnum);
 void PostProcessDeh(void);
 

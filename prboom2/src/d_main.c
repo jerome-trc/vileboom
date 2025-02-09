@@ -2016,7 +2016,6 @@ static void D_DoomMainSetup(void)
   }
 
   G_ReloadDefaults();
-  deh_copyDefaultCheats();
 
   lprintf(LO_DEBUG, "dsda_ReloadNyanLumps: Loading NYAN lumps.\n");
   dsda_ReloadNyanLumps();
@@ -2024,6 +2023,8 @@ static void D_DoomMainSetup(void)
 
   if (limitremoving)
     lprintf(LO_INFO, "Limit-removing detected. Overflows disabled\n");
+
+  dsda_CopyDefaultCheats();
 
   // e6y
   // option to disable automatic loading of dehacked-in-wad lump
