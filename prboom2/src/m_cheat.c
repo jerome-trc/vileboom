@@ -987,7 +987,7 @@ static int M_FindCheats(int key)
   char char_key;
 
   // Allow cheats from dehacked files in-game
-  #define allow_deh_cheats (allow_incompatibility && dsda_IntConfig(dsda_config_deh_change_cheats) && !dsda_Flag(dsda_arg_nocheats))
+  #define allow_deh_cheats (dsda_IntConfig(dsda_config_deh_change_cheats) && !dsda_Flag(dsda_arg_nocheats))
   #define WHICH_CHEAT (allow_deh_cheats ? cht->deh_cheat : cht->cheat)
 
   cht_InitCheats();
