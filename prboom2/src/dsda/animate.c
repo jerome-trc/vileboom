@@ -110,12 +110,12 @@ void V_DrawNameNyanPatch(const int x, const int y, const int scrn, const char* l
     int WideCheck = 0;
     int SkipWide = 0;
 
+    if (!strcmp(lump, mskull1))  { SkipWide = 1; lump = "SKULL"; }
+    if (!strcmp(lump, mdoom))    { SkipWide = 1; lump = "DOOM"; }
+    if (!strcmp(lump, starms))   { SkipWide = 1; }
+
     if (animateLumps)
     {
-        if (!strcmp(lump, mskull1))  { SkipWide = 1; lump = "SKULL"; }
-        if (!strcmp(lump, mdoom))    { SkipWide = 1; lump = "DOOM"; }
-        if (!strcmp(lump, starms))   { SkipWide = 1; }
-
         AniCheck = D_SetupAnimatePatch(lump);
 
         if (AniCheck)
@@ -196,24 +196,12 @@ int D_SetupWidePatch(const char* lump)
 
 const char* PrefixCombine(const char *lump_prefix, const char *lump_main)
 {
-    char lump_short[7];
-    size_t main, prefix;
-    char *result;
-    memcpy(lump_short, lump_main, strnlen(lump_main,7));
+    char result[9];
 
     if (lump_prefix == NULL)
-        lump_prefix = "S_";
+        lump_prefix = "W_";
 
-    if (strlen(lump_main) > 6)
-        lump_short[6] = 0;
-    else
-        lump_short[strlen(lump_main)] = 0;
-
-    main = strlen(lump_short);
-    prefix = strlen(lump_prefix);
-
-    result = Z_Malloc(prefix + main + 1);
-    memcpy(result, lump_prefix, prefix);
-    memcpy(result + prefix, lump_short, main + 1);
+    strncpy(result, lump_prefix, 2);
+    strncpy(&result[2], lump_main, 6);
     return result;
 }
