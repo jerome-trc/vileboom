@@ -134,6 +134,9 @@ static void cheat_class();
 static void cheat_init();
 static void cheat_script();
 
+// nyan
+static void cheat_nut();
+
 //-----------------------------------------------------------------------------
 //
 // List of cheat codes, functions, and special argument indicators.
@@ -262,6 +265,9 @@ cheatseq_t cheat[] = {
   CHEAT("mapsco", NULL, NULL, cht_always, cheat_ddt, 0, true),
   CHEAT("deliverance", NULL, NULL, not_demo, cheat_chicken, 0, false),
 
+  // nyan
+  CHEAT("idnut", NULL, NULL, cht_always, cheat_nut, 0, false),
+
   // end-of-list marker
   {NULL}
 };
@@ -369,6 +375,20 @@ static void cheat_god()
   }
 
   M_CheatGod();
+}
+
+void cheat_nut(void)
+{
+
+  if (raven) return;
+
+  plyr->cheats ^= CF_NUT;
+  if (plyr->cheats & CF_NUT)
+  {
+    dsda_AddMessage("Feeling Nutty?");
+  }
+  else
+    dsda_AddMessage("Go live your nut-less life.");
 }
 
 // CPhipps - new health and armour cheat codes

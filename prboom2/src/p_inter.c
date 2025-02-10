@@ -475,6 +475,7 @@ void P_TouchSpecialThing(mobj_t *special, mobj_t *toucher)
   int      i;
   int      sound;
   fixed_t  delta = special->z - toucher->z;
+  const char *soul_message, *mega_message;
 
   if (heretic) return Heretic_P_TouchSpecialThing(special, toucher);
   if (hexen) return Hexen_P_TouchSpecialThing(special, toucher);
@@ -484,6 +485,10 @@ void P_TouchSpecialThing(mobj_t *special, mobj_t *toucher)
 
   sound = sfx_itemup;
   player = toucher->player;
+
+  // Nutty Messages
+  mega_message = (player->cheats & CF_NUT) ? "You got a Coconut!" : s_GOTMSPHERE;
+  soul_message = (player->cheats & CF_NUT) ? "You got a Blueberry!" : s_GOTSUPER;
 
   // Dead thing touching.
   // Can happen with a sliding player corpse.
@@ -543,7 +548,7 @@ void P_TouchSpecialThing(mobj_t *special, mobj_t *toucher)
       if (player->health > max_soul)
         player->health = max_soul;
       player->mo->health = player->health;
-      dsda_AddPlayerMessage(s_GOTSUPER, player);
+      dsda_AddPlayerMessage(soul_message, player);
       sound = sfx_getpow;
       break;
 
@@ -558,7 +563,7 @@ void P_TouchSpecialThing(mobj_t *special, mobj_t *toucher)
       P_GiveArmor (player,
          ((!demo_compatibility || prboom_comp[PC_APPLY_BLUE_ARMOR_CLASS_TO_MEGASPHERE].state) ?
           blue_armor_class : 2));
-      dsda_AddPlayerMessage(s_GOTMSPHERE, player);
+      dsda_AddPlayerMessage(mega_message, player);
       sound = sfx_getpow;
       break;
 
