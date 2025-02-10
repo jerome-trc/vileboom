@@ -286,7 +286,7 @@ const lighttable_t** GetLightTable(int lightlevel)
   if(NYAN_LITEAMP && lightnum <= (64 >> LIGHTSEGSHIFT))
     lightnum = (64 >> LIGHTSEGSHIFT) + (extralight * LIGHTBRIGHT);
 
-  return scalelight[BETWEEN(0, LIGHTLEVELS - 1, lightnum)];
+  return scalelight[BETWEEN(0, LIGHTLEVELS - 1, lightnum+NYAN_LITESCALE)];
 }
 
 static void R_UpdateWallLights(int lightlevel)
@@ -349,7 +349,7 @@ static void R_ApplyLightColormap(draw_column_vars_t *dcvars, fixed_t scale)
 {
   if (!fixedcolormap || NYAN_LITEAMP)
   {
-    int index = (int)(((int64_t) scale * 160 / wide_centerx) >> (LIGHTSCALESHIFT-NYAN_LITESHIFT));
+    int index = (int)(((int64_t) scale * 160 / wide_centerx) >> (LIGHTSCALESHIFT));
     if (index >= MAXLIGHTSCALE)
         index = MAXLIGHTSCALE - 1;
     dcvars->colormap = walllights[index];

@@ -520,7 +520,7 @@ static void R_SetSpritelights(int lightlevel)
   if(NYAN_LITEAMP && (lightnum <= (64 >> LIGHTSEGSHIFT)))
     lightnum = (64 >> LIGHTSEGSHIFT) + (extralight * LIGHTBRIGHT);
 
-  spritelights = scalelight[BETWEEN(0, LIGHTLEVELS - 1, lightnum)];
+  spritelights = scalelight[BETWEEN(0, LIGHTLEVELS - 1, lightnum+NYAN_LITESCALE)];
 }
 
 
@@ -915,7 +915,7 @@ static void R_ProjectSprite (mobj_t* thing, int lightlevel)
     vis->colormap = fullcolormap;     // full bright  // killough 3/20/98
   else
     {      // diminished light
-      int index = (int)(((int64_t)xscale * 160 / wide_centerx) >> (LIGHTSCALESHIFT-NYAN_LITESHIFT));
+      int index = (int)(((int64_t)xscale * 160 / wide_centerx) >> (LIGHTSCALESHIFT));
       if (index >= MAXLIGHTSCALE)
         index = MAXLIGHTSCALE - 1;
       vis->colormap = spritelights[index];

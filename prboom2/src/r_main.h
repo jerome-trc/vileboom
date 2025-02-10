@@ -98,6 +98,7 @@ extern int LIGHTLEVELS;
 
 #define NYAN_LITEAMP         (dsda_IntConfig(dsda_config_enhanced_liteamp) && !raven && viewplayer->powers[pw_infrared] && !viewplayer->powers[pw_invulnerability])
 #define NYAN_LITESHIFT       (NYAN_LITEAMP ? 3 : 0)
+#define NYAN_LITESCALE       (NYAN_LITEAMP ? 9 : 0)
 
 // killough 3/20/98: Allow colormaps to be dynamic (e.g. underwater)
 extern const lighttable_t *(*scalelight)[MAXLIGHTSCALE];
