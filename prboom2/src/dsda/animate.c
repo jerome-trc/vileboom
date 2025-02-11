@@ -56,25 +56,17 @@ void dsda_ReloadNyanLumps(void)
     }
 }
 
-const char* PrefixCombine(const char *lump_prefix, const char *lump_main)
-{
-    static char result[9];
-
-    if (lump_prefix == NULL)
-        lump_prefix = "W_";
-
-    strncpy(result, lump_prefix, 2);
-    strncpy(&result[2], lump_main, 6);
-    result[8] = 0;
-    return result;
-}
 
 const int D_CheckWide(const char* lump)
 {
+    const char *lump_w;
+   
     if (!widescreenLumps)
         return false;
 
-    if (W_CheckNumForName(PrefixCombine("W_", lump)) != LUMP_NOT_FOUND)
+    lump_w = PrefixCombine("W_", lump);
+
+    if (W_CheckNumForName(lump_w) != LUMP_NOT_FOUND)
         return true;
 
     return false;
@@ -82,7 +74,8 @@ const int D_CheckWide(const char* lump)
 
 int D_SetupWidePatch(const char* lump)
 {
-    int WLump = W_CheckNumForName(PrefixCombine("W_", lump));
+    const char *lump_w = PrefixCombine("W_", lump);
+    int WLump = W_CheckNumForName(lump_w);
 
     if (WLump != LUMP_NOT_FOUND)
         return WLump;
@@ -90,10 +83,35 @@ int D_SetupWidePatch(const char* lump)
     return false;
 }
 
+const int D_CheckAnimate(const char* lump)
+{
+    const char *lump_s, *lump_e; 
+    int SLump, ELump;
+
+    if (!animateLumps)
+        return false;
+
+    if (!strcmp(lump, mskull1)) { lump = "SKULL"; }
+    if (!strcmp(lump, mdoom))   { lump = "DOOM";  }
+
+    lump_s = PrefixCombine("S_", lump);
+    SLump = W_CheckNumForName(lump_s);
+    lump_e = PrefixCombine("E_", lump);
+    ELump = W_CheckNumForName(lump_e);
+
+    if ((SLump != LUMP_NOT_FOUND) && (ELump != LUMP_NOT_FOUND))
+        if (SLump <= ELump)
+            return true;
+
+    return false;
+}
+
 int D_SetupAnimatePatch(const char* lump)
 {
-    int SLump = W_CheckNumForName(PrefixCombine("S_", lump));
-    int ELump = W_CheckNumForName(PrefixCombine("E_", lump));
+    const char *lump_s = PrefixCombine("S_", lump);
+    int SLump = W_CheckNumForName(lump_s);
+    const char *lump_e = PrefixCombine("E_", lump);
+    int ELump = W_CheckNumForName(lump_e);
 
     if ((SLump != LUMP_NOT_FOUND) && (ELump != LUMP_NOT_FOUND))
     {
@@ -104,26 +122,6 @@ int D_SetupAnimatePatch(const char* lump)
             return SLump + frame;
         }
     }
-
-    return false;
-}
-
-const int D_CheckAnimate(const char* lump)
-{
-    int SLump, ELump;
-
-    if (!animateLumps)
-        return false;
-
-    if (!strcmp(lump, mskull1)) { lump = "SKULL"; }
-    if (!strcmp(lump, mdoom))   { lump = "DOOM";  }
-
-    SLump = W_CheckNumForName(PrefixCombine("S_", lump));
-    ELump = W_CheckNumForName(PrefixCombine("E_", lump));
-
-    if ((SLump != LUMP_NOT_FOUND) && (ELump != LUMP_NOT_FOUND))
-        if (SLump <= ELump)
-            return true;
 
     return false;
 }
@@ -174,4 +172,16 @@ void V_DrawNyanBackground(const char* lump, const int scrn)
     }
 
     V_DrawBackgroundNum(lumpNum, scrn);
+}
+
+const char* PrefixCombine(const char *lump_prefix, const char *lump_main)
+{
+    static char result[9];
+
+    if (lump_prefix == NULL)
+        lump_prefix = "W_";
+
+    strncpy(result, lump_prefix, 2);
+    strncpy(&result[2], lump_main, 6);
+    return result;
 }
