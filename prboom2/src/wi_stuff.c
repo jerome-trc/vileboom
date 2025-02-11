@@ -481,7 +481,8 @@ static void WI_slamBackground(void)
   // e6y: wide-res
   V_ClearBorder();
 
-      V_DrawNameNyanPatch(0, 0, FB, name, CR_DEFAULT, VPT_STRETCH);   // background
+  // background
+  V_DrawNameNyanPatch(0, 0, FB, name, CR_DEFAULT, VPT_STRETCH);
 }
 
 #define SPACEWIDTH 4

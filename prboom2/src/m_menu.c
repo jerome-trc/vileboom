@@ -4432,7 +4432,7 @@ void M_DrawCreditsDynamic(void)     // Dynamic Credits
   inhelpscreens = true;
 
   // force drawing an animated background
-  V_DrawNyanBackground(aniflat1, aniflat2, 0);
+  V_DrawNyanBackground(aniflat, 0);
   M_DrawTitle(91, 6, "NYANLOGO", cr_logo, PACKAGE_NAME " v" PACKAGE_VERSION, cr_title);
   M_DrawTitle(91,25, "NYANNAME", cr_logo, "by Andrik 'Arsinikk' Powell", cr_logo);
   M_DrawScreenItems(cred_settings, 48);
@@ -4443,7 +4443,7 @@ void M_DrawHelpDynamic(void)     // Dynamic Credits
   inhelpscreens = true;
 
   // force drawing an animated background
-  V_DrawNyanBackground(aniflat1, aniflat2, 0);
+  V_DrawNyanBackground(aniflat, 0);
   M_DrawScreenItems(helpstrings, 2);
 }
 

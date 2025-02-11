@@ -19,12 +19,7 @@
 #define __DSDA_LIBRARY__
 
 // Define menu animated background
-#define doomflat1   (gamemode == shareware ? "NUKAGE1" : "FWATER1")
-#define doomflat2   (gamemode == shareware ? "NUKAGE3" : "FWATER4")
-#define ravenflat1  (hexen ? "X_005" : "FLTWAWA1")
-#define ravenflat2  (hexen ? "X_008" : "FLTWAWA3")
-#define aniflat1    (raven ? ravenflat1 : doomflat1)
-#define aniflat2    (raven ? ravenflat2 : doomflat2)
+#define aniflat (raven ? hexen ? "X_005" : "FLTWAWA1" : (gamemode != shareware ? "FWATER1" : "NUKAGE1"))
 
 // Define standard Doom lumps
 #define mskull1     "M_SKULL1"

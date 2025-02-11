@@ -960,16 +960,47 @@ void F_StartScroll (const char* right, const char* left, const char* music, dboo
   F_StartScrollMusic(music, loop_music);
 }
 
-const rpatch_t *p1, *p2, *p1a, *p2a, *p1w, *p2w, *p1f, *p2f;
+const rpatch_t *p1, *p2;
 static int  p1offset, p2width;
+
+#define R_PatchAnimateByName(name, fallback) (D_CheckAnimate(name) ? R_PatchByName(PrefixCombine("S_", name)) : fallback)
+#define R_PatchWideByName(name, fallback)    (D_CheckWide(name)    ? R_PatchByName(PrefixCombine("W_", name)) : fallback)
+
+void F_BunnyApplyWidth(void)
+{
+  p1 = R_PatchByName(scrollpic1);
+  p2 = R_PatchByName(scrollpic2);
+
+  if (widescreenLumps)
+  {
+    p1 = R_PatchWideByName(scrollpic1, p1);
+    p2 = R_PatchWideByName(scrollpic2, p2);
+  }
+
+  if (animateLumps)
+  {
+    p1 = R_PatchAnimateByName(scrollpic1, p1);
+    p2 = R_PatchAnimateByName(scrollpic2, p2);
+  }
+
+  p2width = p2->width;
+  if (p1->width == 320)
+  {
+    // Unity or original PFUBs.
+    p1offset = (p2width - 320) / 2;
+  }
+  else
+  {
+    // Widescreen mod PFUBs.
+    p1offset = 0;
+  }
+}
 
 void F_BunnyScroll (void)
 {
   char        name[10];
   int         stage;
   static int  laststage;
-
-  F_BunnyLumpSetup();
 
   {
     int scrolled = 320 - (finalecount-230)/2;
@@ -1014,44 +1045,6 @@ void F_BunnyScroll (void)
   sprintf (name,"END%i",stage);
   // CPhipps - patch drawing updated
   V_DrawNamePatch((320-13*8)/2, (200-8*8)/2, 0, name, CR_DEFAULT, VPT_STRETCH);
-}
-
-void F_BunnyLumpSetup(void) 
-{
-  p1 = R_PatchByName(scrollpic1);
-  p2 = R_PatchByName(scrollpic2);
-  p1a = D_CheckAnimate(scrollpic1) ? R_PatchByName(PrefixCombine("S_", scrollpic1)) : p1;
-  p2a = D_CheckAnimate(scrollpic2) ? R_PatchByName(PrefixCombine("S_", scrollpic2)) : p2;
-  p1w = D_CheckWide(scrollpic1) ? R_PatchByName(PrefixCombine("W_", scrollpic1)) : p1;
-  p2w = D_CheckWide(scrollpic2) ? R_PatchByName(PrefixCombine("W_", scrollpic2)) : p2;
-}
-
-void F_BunnyApplyWidth(void)
-{
-  p1f = p1;
-  p2f = p2;
-
-  if (widescreenLumps) {
-    if(p1w) { p1f = p1w; }
-    if(p2w) { p2f = p2w; }
-  }
-
-  if (animateLumps) {
-    if(p1a) { p1f = p1a; }
-    if(p2a) { p2f = p2a; }
-  }
-
-  p2width = p2f->width;
-  if (p1f->width == 320)
-  {
-    // Unity or original PFUBs.
-    p1offset = (p2width - 320) / 2;
-  }
-  else
-  {
-    // Widescreen mod PFUBs.
-    p1offset = 0;
-  }
 }
 
 void F_StartPostFinale (void)
