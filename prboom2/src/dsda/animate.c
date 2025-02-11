@@ -58,15 +58,11 @@ void dsda_ReloadNyanLumps(void)
 
 
 const int D_CheckWide(const char* lump)
-{
-    const char *lump_w;
-   
+{   
     if (!widescreenLumps)
         return false;
 
-    lump_w = PrefixCombine("W_", lump);
-
-    if (W_CheckNumForName(lump_w) != LUMP_NOT_FOUND)
+    if (W_CheckNumForName(PrefixCombine("W_", lump)) != LUMP_NOT_FOUND)
         return true;
 
     return false;
@@ -74,8 +70,7 @@ const int D_CheckWide(const char* lump)
 
 int D_SetupWidePatch(const char* lump)
 {
-    const char *lump_w = PrefixCombine("W_", lump);
-    int WLump = W_CheckNumForName(lump_w);
+    int WLump = W_CheckNumForName(PrefixCombine("W_", lump));
 
     if (WLump != LUMP_NOT_FOUND)
         return WLump;
@@ -85,7 +80,6 @@ int D_SetupWidePatch(const char* lump)
 
 const int D_CheckAnimate(const char* lump)
 {
-    const char *lump_s, *lump_e; 
     int SLump, ELump;
 
     if (!animateLumps)
@@ -94,10 +88,8 @@ const int D_CheckAnimate(const char* lump)
     if (!strcmp(lump, mskull1)) { lump = "SKULL"; }
     if (!strcmp(lump, mdoom))   { lump = "DOOM";  }
 
-    lump_s = PrefixCombine("S_", lump);
-    SLump = W_CheckNumForName(lump_s);
-    lump_e = PrefixCombine("E_", lump);
-    ELump = W_CheckNumForName(lump_e);
+    SLump = W_CheckNumForName(PrefixCombine("S_", lump));
+    ELump = W_CheckNumForName(PrefixCombine("E_", lump));
 
     if ((SLump != LUMP_NOT_FOUND) && (ELump != LUMP_NOT_FOUND))
         if (SLump <= ELump)
@@ -108,10 +100,8 @@ const int D_CheckAnimate(const char* lump)
 
 int D_SetupAnimatePatch(const char* lump)
 {
-    const char *lump_s = PrefixCombine("S_", lump);
-    int SLump = W_CheckNumForName(lump_s);
-    const char *lump_e = PrefixCombine("E_", lump);
-    int ELump = W_CheckNumForName(lump_e);
+    int SLump = W_CheckNumForName(PrefixCombine("S_", lump));
+    int ELump = W_CheckNumForName(PrefixCombine("E_", lump));
 
     if ((SLump != LUMP_NOT_FOUND) && (ELump != LUMP_NOT_FOUND))
     {
@@ -181,7 +171,8 @@ const char* PrefixCombine(const char *lump_prefix, const char *lump_main)
     if (lump_prefix == NULL)
         lump_prefix = "W_";
 
-    strncpy(result, lump_prefix, 2);
-    strncpy(&result[2], lump_main, 6);
+    memcpy(result, lump_prefix, 2);
+    memcpy(&result[2], lump_main, 6);
+    result[8] = 0;
     return result;
 }
