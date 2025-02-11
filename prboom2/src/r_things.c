@@ -514,11 +514,11 @@ static void R_SetSpritelights(int lightlevel)
 {
   int lightnum;
 
-  lightnum = (lightlevel >> LIGHTSEGSHIFT) + (extralight * LIGHTBRIGHT);
+  // Enhanced Light Amp - Allow dark areas to be seen
+  if (NYAN_LITEAMP && (lightlevel <= 64))
+    lightlevel = 64;
 
-  // Allow dark areas to be seen
-  if(NYAN_LITEAMP && (lightnum <= (64 >> LIGHTSEGSHIFT)))
-    lightnum = (64 >> LIGHTSEGSHIFT) + (extralight * LIGHTBRIGHT);
+  lightnum = (lightlevel >> LIGHTSEGSHIFT) + (extralight * LIGHTBRIGHT);
 
   spritelights = scalelight[BETWEEN(0, LIGHTLEVELS - 1, lightnum+NYAN_LITESCALE)];
 }

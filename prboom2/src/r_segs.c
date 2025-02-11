@@ -278,13 +278,13 @@ const lighttable_t** GetLightTable(int lightlevel)
 {
   int lightnum;
 
+  // Enhanced Light Amp - Allow dark areas to be seen
+  if (NYAN_LITEAMP && (lightlevel <= 64))
+    lightlevel = 64;
+
   R_AddContrast(curline, &lightlevel);
 
   lightnum = (lightlevel >> LIGHTSEGSHIFT) + (extralight * LIGHTBRIGHT);
-
-  // Enhanced Light Amp - Allow dark areas to be seen
-  if(NYAN_LITEAMP && lightnum <= (64 >> LIGHTSEGSHIFT))
-    lightnum = (64 >> LIGHTSEGSHIFT) + (extralight * LIGHTBRIGHT);
 
   return scalelight[BETWEEN(0, LIGHTLEVELS - 1, lightnum+NYAN_LITESCALE)];
 }

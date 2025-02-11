@@ -391,6 +391,11 @@ void gld_MapDrawSubsectors(player_t *plr, int fx, int fy, fixed_t mx, fixed_t my
       sector_t *sec = R_FakeFlat(sub->sector, &tempsec, &floorlight, NULL, false);
 
       gld_BindFlat(gltexture, 0);
+
+      // Enhanced Light Amp - Allow dark areas to be seen
+      if(NYAN_LITEAMP && (light <= 64))
+        light = 64;
+
       light = gld_Calc2DLightLevel(floorlight);
       gld_StaticLightAlpha(light, alpha);
 
@@ -1342,6 +1347,10 @@ void gld_AddWall(seg_t *seg)
   if (!frontsector)
     return;
 
+  // Enhanced Light Amp - Allow dark areas to be seen
+  if(NYAN_LITEAMP && (frontsector->lightlevel <= 64))
+    frontsector->lightlevel = 64;
+
   base_lightlevel = frontsector->lightlevel + gld_GetGunFlashLight();
 
   R_AddContrast(seg, &base_lightlevel);
@@ -1841,6 +1850,11 @@ static void gld_AddFlat(int sectornum, dboolean ceiling, visplane_t *plane)
     flat.gltexture=gld_RegisterFlat(flattranslation[plane->picnum], true, true);
     if (!flat.gltexture)
       return;
+
+    // Enhanced Light Amp - Allow dark areas to be seen
+    if(NYAN_LITEAMP && (plane->lightlevel <= 64))
+      plane->lightlevel = 64;
+
     // get the lightlevel from floorlightlevel
     flat.light=gld_CalcLightLevel(plane->lightlevel+gld_GetGunFlashLight());
     // calculate texture offsets
@@ -1944,6 +1958,11 @@ static void gld_AddFlat(int sectornum, dboolean ceiling, visplane_t *plane)
     flat.gltexture=gld_RegisterFlat(flattranslation[plane->picnum], true, true);
     if (!flat.gltexture)
       return;
+
+    // Enhanced Light Amp - Allow dark areas to be seen
+    if(NYAN_LITEAMP && (plane->lightlevel <= 64))
+      plane->lightlevel = 64;
+
     // get the lightlevel from ceilinglightlevel
     flat.light=gld_CalcLightLevel(plane->lightlevel+gld_GetGunFlashLight());
     // calculate texture offsets
@@ -2401,6 +2420,10 @@ void gld_ProjectSprite(mobj_t* thing, int lightlevel)
   }
   else
   {
+    // Enhanced Light Amp - Allow dark areas to be seen
+    if(NYAN_LITEAMP && (lightlevel <= 64))
+      lightlevel = 64;
+
     sprite.light = gld_CalcLightLevel(lightlevel+gld_GetGunFlashLight());
   }
   if (thing->color)

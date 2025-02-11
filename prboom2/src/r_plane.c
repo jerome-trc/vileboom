@@ -758,12 +758,10 @@ static void R_DoDrawPlane(visplane_t *pl)
       // SoM 10/19/02: deep water colormap fix
       if(fixedcolormap && !NYAN_LITEAMP)
         light = (255  >> LIGHTSEGSHIFT);
+      else if (NYAN_LITEAMP && (pl->lightlevel <= 64))
+        light = (64  >> LIGHTSEGSHIFT) + (extralight * LIGHTBRIGHT);
       else
         light = (pl->lightlevel >> LIGHTSEGSHIFT) + (extralight * LIGHTBRIGHT);
-
-      // Enhanced Light Amp - Allow dark areas to be seen
-      if(NYAN_LITEAMP && (light <= (64 >> LIGHTSEGSHIFT)))
-        light = (64 >> LIGHTSEGSHIFT) + (extralight * LIGHTBRIGHT);
 
       if(light >= LIGHTLEVELS)
         light = LIGHTLEVELS-1;
