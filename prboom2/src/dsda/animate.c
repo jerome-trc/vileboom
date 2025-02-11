@@ -15,6 +15,8 @@
 //	DSDA Animate
 //
 
+#include <string.h>
+
 #include "library.h"
 #include "lprintf.h"
 #include "m_menu.h"
@@ -63,6 +65,7 @@ const char* PrefixCombine(const char *lump_prefix, const char *lump_main)
 
     strncpy(result, lump_prefix, 2);
     strncpy(&result[2], lump_main, 6);
+    result[8] = 0;
     return result;
 }
 
