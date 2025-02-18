@@ -1104,6 +1104,14 @@ void AddIWAD(const char *iwad)
   if (gamemode == indetermined)
     //jff 9/3/98 use logical output routine
     lprintf(LO_WARN,"Unknown Game Version, may not work\n");
+
+  // Set up gamemission booleans
+  tc_game = (gamemission > pack_nerve);
+  freedoom = (gamemission == tc_freedoom);
+  chex_exe = (gamemission == tc_chex);
+  chex = ((gamemission == tc_chex)
+       || (gamemission == tc_chex3v));
+
   D_AddFile(iwad,source_iwad);
 }
 
@@ -1517,11 +1525,10 @@ static const char *D_AutoLoadGameBase()
 {
   return hexen ? "hexen-all" :
          heretic ? "heretic-all" :
-         hacx ? "hacx-all" :
-         rekkr ? "rekkr-all" :
          chex ? "chex-all" :
          freedoom ? "freedoom-all" :
-         "doom-all";
+         !tc_game ? "doom-all":
+         NULL;
 }
 
 #define ALL_AUTOLOAD "all-all"
@@ -1538,11 +1545,14 @@ void D_AutoloadIWadDir()
   LoadZIPsAtPath(autoload_dir, source_auto_load, &autoload_deh_all_queue);
   Z_Free(autoload_dir);
 
-  // common auto-loaded files for the game
-  autoload_dir = GetAutoloadDir(D_AutoLoadGameBase(), true);
-  LoadWADsAtPath(autoload_dir, source_auto_load);
-  LoadZIPsAtPath(autoload_dir, source_auto_load, &autoload_deh_game_queue);
-  Z_Free(autoload_dir);
+  if (D_AutoLoadGameBase())
+  {
+    // common auto-loaded files for the game
+    autoload_dir = GetAutoloadDir(D_AutoLoadGameBase(), true);
+    LoadWADsAtPath(autoload_dir, source_auto_load);
+    LoadZIPsAtPath(autoload_dir, source_auto_load, &autoload_deh_game_queue);
+    Z_Free(autoload_dir);
+  }
 
   // auto-loaded files per IWAD
   autoload_dir = GetAutoloadDir(IWADBaseName(), true);
@@ -1581,11 +1591,14 @@ static void D_AutoloadDehIWadDir()
   D_ProcessDehAutoloadQueue(&autoload_deh_all_queue);
   Z_Free(autoload_dir);
 
-  // common auto-loaded files for the game
-  autoload_dir = GetAutoloadDir(D_AutoLoadGameBase(), true);
-  LoadDehackedFilesAtPath(autoload_dir, false, NULL);
-  D_ProcessDehAutoloadQueue(&autoload_deh_game_queue);
-  Z_Free(autoload_dir);
+  if (D_AutoLoadGameBase())
+  {
+    // common auto-loaded files for the game
+    autoload_dir = GetAutoloadDir(D_AutoLoadGameBase(), true);
+    LoadDehackedFilesAtPath(autoload_dir, false, NULL);
+    D_ProcessDehAutoloadQueue(&autoload_deh_game_queue);
+    Z_Free(autoload_dir);
+  }
 
   // auto-loaded files per IWAD
   autoload_dir = GetAutoloadDir(IWADBaseName(), true);
