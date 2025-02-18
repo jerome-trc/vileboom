@@ -1177,7 +1177,8 @@ void ST_Drawer(dboolean refresh)
    * completely by the call from D_Display
    * proff - really do it
    */
-  st_firsttime = st_firsttime || refresh || fullmenu || alwaysrefresh;
+  st_firsttime = st_firsttime || refresh || fullmenu;
+  st_force_refresh = V_IsOpenGLMode() || fadeBG() || armor_icon || berserk_icon || alwaysrefresh;
 
   ST_doPaletteStuff();  // Do red-/gold-shifts from damage/items
 
@@ -1196,7 +1197,7 @@ void ST_Drawer(dboolean refresh)
   //
   //
   if (statusbaron) {
-    if (st_firsttime || (V_IsOpenGLMode() || fadeBG()))
+    if (st_firsttime || st_force_refresh)
     {
       /* If just after ST_Start(), refresh all */
       st_firsttime = false;

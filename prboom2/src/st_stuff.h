@@ -64,6 +64,8 @@ void ST_LoadTextColors(void);
 // Called by main loop.
 dboolean ST_Responder(event_t* ev);
 
+dboolean st_force_refresh;
+
 // Called by main loop.
 void ST_Ticker(void);
 

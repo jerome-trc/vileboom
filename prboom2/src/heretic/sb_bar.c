@@ -547,8 +547,9 @@ static int oldpieces = -1;
 void SB_Drawer(dboolean statusbaron, dboolean refresh, dboolean fullmenu)
 {
     dboolean alwaysrefresh = true;
+    st_force_refresh = V_IsOpenGLMode() || fadeBG() || alwaysrefresh;
 
-    if (alwaysrefresh || refresh || fullmenu || fadeBG() || V_IsOpenGLMode()) SB_state = -1;
+    if (refresh || fullmenu || st_force_refresh) SB_state = -1;
 
     if (!statusbaron)
     {
