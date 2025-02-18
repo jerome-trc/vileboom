@@ -1174,6 +1174,7 @@ void ST_Drawer(dboolean refresh)
   dboolean statusbaron = R_StatusBarVisible();
   dboolean fullmenu = (menuactive == mnact_full) && !M_MenuIsShaded();
   dboolean alwaysrefresh = true;
+  dboolean st_force_refresh;
 
   V_BeginUIDraw();
 
