@@ -2431,8 +2431,6 @@ void G_AfterLoad(void)
   if (setsizeneeded)
     R_ExecuteSetViewSize ();
 
-  R_FillBackScreen ();
-
   BorderNeedRefresh = true;
   ST_Start();
 }
