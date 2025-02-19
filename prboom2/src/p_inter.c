@@ -667,7 +667,7 @@ void P_TouchSpecialThing(mobj_t *special, mobj_t *toucher)
       break;
 
     case SPR_PMAP:
-      if (!P_GivePower (player, pw_allmap))
+      if (!P_GivePower (player, pw_allmap) && !allow_incompatibility) // Pickup multiple area maps
         return;
       dsda_AddPlayerMessage(s_GOTMAP, player);
       sound = sfx_getpow;
