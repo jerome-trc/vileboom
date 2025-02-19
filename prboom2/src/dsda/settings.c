@@ -306,12 +306,6 @@ void dsda_ResetRevealMap(void) {
   dsda_reveal_map = 0;
 }
 
-dboolean dsda_AreamapTagfinder(void) {
-  if (!allow_incompatibility) return 0;
-
-  return dsda_IntConfig(nyan_config_area_map_tagfinder);
-}
-
 int dsda_GameSpeed(void) {
   return dsda_IntConfig(dsda_config_game_speed);
 }

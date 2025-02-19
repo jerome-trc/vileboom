@@ -3270,7 +3270,6 @@ setup_menu_t nyan_settings[] = {
   { "Pause After Intermission", S_YESNO, m_conf, G_X, nyan_config_intermission_pause },
   EMPTY_LINE,
   { "Enhanced Lite Amp Effect", S_YESNO, m_conf, G_X, dsda_config_enhanced_liteamp },
-  { "Area Map Allows Tag Highlight", S_YESNO, m_conf, G_X, nyan_config_area_map_tagfinder },
   { "Flashing Item Bonuses", S_YESNO, m_conf, G_X, nyan_config_item_bonus_flash },
   { "Colored Blood", S_CHOICE, m_conf, G_X, nyan_config_colored_blood, 0, colored_blood_list },
   EMPTY_LINE,

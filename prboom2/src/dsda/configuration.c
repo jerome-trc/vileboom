@@ -1398,10 +1398,6 @@ dsda_config_t dsda_config[dsda_config_count] = {
     "vanilla_translucent_ghosts", dsda_config_vanilla_translucent_ghosts,
     CONF_BOOL(0), NULL, NOT_STRICT
   },
-  [nyan_config_area_map_tagfinder] = {
-    "nyan_area_map_tagfinder", nyan_config_area_map_tagfinder,
-    CONF_BOOL(0), NULL, NOT_STRICT
-  },
   [nyan_config_item_bonus_flash] = {
     "nyan_item_bonus_flash", nyan_config_item_bonus_flash,
     CONF_BOOL(0), NULL, NOT_STRICT, deh_changeBonusFlash

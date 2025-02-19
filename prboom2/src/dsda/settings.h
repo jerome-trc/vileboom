@@ -63,7 +63,6 @@ dboolean dsda_WipeAtFullSpeed(void);
 int dsda_ShowAliveMonsters(void);
 int dsda_CycleShowAliveMonsters(void);
 int dsda_RevealAutomap(void);
-dboolean dsda_AreamapTagfinder(void);
 void dsda_ResetRevealMap(void);
 int dsda_GameSpeed(void);
 void dsda_UpdateGameSpeed(int value);
