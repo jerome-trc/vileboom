@@ -307,7 +307,7 @@ void dsda_ResetRevealMap(void) {
 }
 
 dboolean dsda_AreamapTagfinder(void) {
-  if (dsda_StrictMode()) return 0;
+  if (!allow_incompatibility) return 0;
 
   return dsda_IntConfig(nyan_config_area_map_tagfinder);
 }
