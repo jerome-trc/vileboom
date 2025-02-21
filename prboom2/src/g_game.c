@@ -1805,11 +1805,6 @@ static void G_PlayerFinishLevel(int player)
 
   memset(p->keyblinkkeys, 0, sizeof p->keyblinkkeys);
   p->keyblinktics = 0;
-
-  if (p == &players[consoleplayer])
-  {
-    SB_Start();          // refresh the status bar
-  }
 }
 
 // CPhipps - G_SetPlayerColour
@@ -1888,7 +1883,6 @@ void G_PlayerReborn (int player)
   localQuakeHappening[player] = false;
   if (p == &players[consoleplayer])
   {
-    SB_Start();             // refresh the status bar
     inv_ptr = 0;            // reset the inventory pointer
     curpos = 0;
   }
@@ -2403,8 +2397,6 @@ void RecalculateDrawnSubsectors(void)
 
 void G_AfterLoad(void)
 {
-  extern int BorderNeedRefresh;
-
   dsda_ResetTrackers();
 
   R_ActivateSectorInterpolations(); //e6y
@@ -2431,7 +2423,6 @@ void G_AfterLoad(void)
   if (setsizeneeded)
     R_ExecuteSetViewSize ();
 
-  BorderNeedRefresh = true;
   ST_Start();
 }
 

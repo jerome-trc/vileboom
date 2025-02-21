@@ -148,7 +148,6 @@ dboolean nomusicparm;
 
 //jff 4/18/98
 extern dboolean inhelpscreens;
-extern dboolean BorderNeedRefresh;
 
 int     startskill;
 int     startepisode;
@@ -251,8 +250,6 @@ static void D_Wipe(void)
     if (!raven)
       dsda_TrackFeature(uf_wipescreen);
 
-    // If there's no screen wipe, we still need to refresh the status bar
-    SB_Start();
     return;
   }
 
@@ -356,7 +353,6 @@ void D_MustFillBackScreen(void)
 void D_Display (fixed_t frac)
 {
   static dboolean isborderstate        = false;
-  static dboolean borderwillneedredraw = false;
   static gamestate_t oldgamestate = -1;
   dboolean wipe;
   dboolean viewactive = false, isborder = false;
@@ -423,8 +419,6 @@ void D_Display (fixed_t frac)
     V_EndUIDraw();
   }
   else { // In a level
-    dboolean redrawborderstuff;
-
     // Work out if the player view is visible, and if there is a border
     viewactive = automap_off && !inhelpscreens;
     isborder = viewactive ? R_PartialView() : (!inhelpscreens && automap_active);
@@ -432,29 +426,14 @@ void D_Display (fixed_t frac)
     if (oldgamestate != GS_LEVEL || must_fill_back_screen) {
       must_fill_back_screen = false;
       R_FillBackScreen ();    // draw the pattern into the back screen
-      redrawborderstuff = isborder;
-    } else {
-      // CPhipps -
-      // If there is a border, and either there was no border last time,
-      // or the border might need refreshing, then redraw it.
-      redrawborderstuff = isborder && (!isborderstate || borderwillneedredraw);
-      // The border may need redrawing next time if the border surrounds the screen,
-      // and there is a menu being displayed
-      borderwillneedredraw = menuactive && isborder && viewactive;
-      // e6y
-      // I should do it because I call R_RenderPlayerView in all cases,
-      // not only if viewactive is true
-      borderwillneedredraw = borderwillneedredraw || automap_on;
     }
 
-    if (redrawborderstuff || V_IsOpenGLMode()) {
-      // elim - Update viewport and scene offsets whenever the view is changed (user hits "-" or "+")
-      if (redrawborderstuff && V_IsOpenGLMode()) {
-        dsda_GLSetRenderViewportParams();
-      }
-
-      R_DrawViewBorder();
+    // elim - Update viewport and scene offsets whenever the view is changed (user hits "-" or "+")
+    if (V_IsOpenGLMode()) {
+      dsda_GLSetRenderViewportParams();
     }
+
+    R_DrawViewBorder();
 
     // elim - If we go from visible status bar to invisible status bar, update affected viewport params
     if (!isborder && isborderstate) {
@@ -489,10 +468,8 @@ void D_Display (fixed_t frac)
     R_RestoreInterpolations();
 
     DSDA_ADD_CONTEXT(sf_status_bar);
-    ST_Drawer(redrawborderstuff || BorderNeedRefresh);
+    ST_Drawer();
     DSDA_REMOVE_CONTEXT(sf_status_bar);
-
-    BorderNeedRefresh = false;
 
     // Do not interpolate weapon when changing screensize
     ScreenSize_Interpolate = true;

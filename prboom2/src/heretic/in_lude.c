@@ -42,8 +42,6 @@
 
 #include "in_lude.h"
 
-extern dboolean BorderNeedRefresh;
-
 typedef enum
 {
     SINGLE,
@@ -260,8 +258,6 @@ void IN_WaitStop(void)
 void IN_Stop(void)
 {
     intermission = false;
-    SB_Start();
-    BorderNeedRefresh = true;
 }
 
 //========================================================================

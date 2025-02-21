@@ -224,8 +224,6 @@ char saveOldString[SAVESTRINGSIZE];
 
 dboolean inhelpscreens; // indicates we are in or just left a help screen
 
-dboolean BorderNeedRefresh;
-
 menuactive_t menuactive;    // The menus are up
 
 #define SKULLXOFF  -32
@@ -6247,8 +6245,6 @@ void M_ChangeMenu(menu_t *menudef, menuactive_t mnact)
 void M_ClearMenus (void)
 {
   M_ChangeMenu(&MainDef, mnact_inactive);
-
-  BorderNeedRefresh = true;
 }
 
 //
@@ -6258,8 +6254,6 @@ void M_SetupNextMenu(menu_t *menudef)
 {
   M_ChangeMenu(menudef, mnact_nochange);
   itemOn = currentMenu->lastOn;
-
-  BorderNeedRefresh = true;
 }
 
 /////////////////////////////

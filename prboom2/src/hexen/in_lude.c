@@ -73,8 +73,6 @@ static signed int totalFrags[MAX_MAXPLAYERS];
 static int HubCount;
 static char *HubText;
 
-extern dboolean BorderNeedRefresh;
-
 void Hexen_IN_Start(wbstartstruct_t* wbstartstruct)
 {
     V_SetPalette(0);
@@ -100,8 +98,6 @@ static void WaitStop(void)
 static void Stop(void)
 {
     intermission = false;
-    SB_Start();
-    BorderNeedRefresh = true;
 }
 
 static const char *ClusMsgLumpNames[] = {

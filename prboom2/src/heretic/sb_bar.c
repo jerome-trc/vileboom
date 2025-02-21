@@ -59,7 +59,6 @@ dboolean inventory;
 int curpos;
 int inv_ptr;
 int ArtifactFlash;
-int SB_state = -1;
 int playerkeys = 0;
 
 // Private Data
@@ -193,11 +192,6 @@ static int sb_full_inv_arti_count_y;
 static int sb_full_inv_select_y;
 static int sb_full_inv_gem_xl;
 static int sb_full_inv_gem_xr;
-
-void SB_Start(void)
-{
-  SB_state = -1;
-}
 
 //---------------------------------------------------------------------------
 //
@@ -544,13 +538,8 @@ static int oldmana1 = -1;
 static int oldmana2 = -1;
 static int oldpieces = -1;
 
-void SB_Drawer(dboolean statusbaron, dboolean refresh, dboolean fullmenu)
+void SB_Drawer(dboolean statusbaron, dboolean fullmenu)
 {
-    dboolean alwaysrefresh = true;
-    dboolean st_force_refresh = V_IsOpenGLMode() || fadeBG() || alwaysrefresh;
-
-    if (refresh || fullmenu || st_force_refresh) SB_state = -1;
-
     if (!statusbaron)
     {
         SB_PaletteFlash(false);
@@ -563,56 +552,50 @@ void SB_Drawer(dboolean statusbaron, dboolean refresh, dboolean fullmenu)
     }
 
     CPlayer = &players[consoleplayer];
-    if (SB_state == -1)
+    if (heretic)
     {
-        if (heretic)
+        V_DrawNumPatch(0, 158, 0, LumpBARBACK, CR_DEFAULT, VPT_STRETCH);
+        if (players[consoleplayer].cheats & CF_GODMODE)
         {
-            V_DrawNumPatch(0, 158, 0, LumpBARBACK, CR_DEFAULT, VPT_STRETCH);
-            if (players[consoleplayer].cheats & CF_GODMODE)
-            {
-                V_DrawNamePatch(16, 167, 0, "GOD1", CR_DEFAULT, VPT_STRETCH);
-                V_DrawNamePatch(287, 167, 0, "GOD2", CR_DEFAULT, VPT_STRETCH);
-            }
+            V_DrawNamePatch(16, 167, 0, "GOD1", CR_DEFAULT, VPT_STRETCH);
+            V_DrawNamePatch(287, 167, 0, "GOD2", CR_DEFAULT, VPT_STRETCH);
         }
-        else
-        {
-            V_DrawNumPatch(0, 134, 0, LumpH2BAR, CR_DEFAULT, VPT_STRETCH);
-        }
-
-        oldhealth = -1;
     }
+    else
+    {
+        V_DrawNumPatch(0, 134, 0, LumpH2BAR, CR_DEFAULT, VPT_STRETCH);
+    }
+
+    oldhealth = -1;
     DrawCommonBar();
     if (!inventory)
     {
-        if (SB_state != 0)
+        // Main interface
+        if (heretic)
         {
-            // Main interface
-            if (heretic)
+            V_DrawNumPatch(34, 160, 0, LumpSTATBAR, CR_DEFAULT, VPT_STRETCH);
+        }
+        else
+        {
+            if (!automap_active)
             {
-                V_DrawNumPatch(34, 160, 0, LumpSTATBAR, CR_DEFAULT, VPT_STRETCH);
+                V_DrawNumPatch(38, 162, 0, LumpSTATBAR, CR_DEFAULT, VPT_STRETCH);
             }
             else
             {
-              if (!automap_active)
-              {
-                  V_DrawNumPatch(38, 162, 0, LumpSTATBAR, CR_DEFAULT, VPT_STRETCH);
-              }
-              else
-              {
-                  V_DrawNumPatch(38, 162, 0, LumpKEYBAR, CR_DEFAULT, VPT_STRETCH);
-              }
+                V_DrawNumPatch(38, 162, 0, LumpKEYBAR, CR_DEFAULT, VPT_STRETCH);
             }
-            oldarti = 0;
-            oldammo = -1;
-            oldmana1 = -1;
-            oldmana2 = -1;
-            oldarmor = -1;
-            oldpieces = -1;
-            oldweapon = -1;
-            oldfrags = -9999;       //can't use -1, 'cuz of negative frags
-            oldlife = -1;
-            oldkeys = -1;
         }
+        oldarti = 0;
+        oldammo = -1;
+        oldmana1 = -1;
+        oldmana2 = -1;
+        oldarmor = -1;
+        oldpieces = -1;
+        oldweapon = -1;
+        oldfrags = -9999;       //can't use -1, 'cuz of negative frags
+        oldlife = -1;
+        oldkeys = -1;
         if (heretic || !automap_active)
         {
             DrawMainBar();
@@ -621,16 +604,14 @@ void SB_Drawer(dboolean statusbaron, dboolean refresh, dboolean fullmenu)
         {
             DrawKeyBar();
         }
-        SB_state = 0;
     }
     else
     {
-        if (heretic && SB_state != 1)
+        if (heretic)
         {
             V_DrawNumPatch(34, 160, 0, LumpINVBAR, CR_DEFAULT, VPT_STRETCH);
         }
         DrawInventoryBar();
-        SB_state = 1;
     }
     SB_PaletteFlash(false);
     DrawAnimatedIcons();
@@ -689,7 +670,6 @@ void SB_PaletteFlash(dboolean forceChange)
     }
     if (palette != sb_palette)
     {
-        SB_state = -1;
         sb_palette = palette;
         V_SetPalette(sb_palette);
     }
@@ -1046,7 +1026,6 @@ void SB_SetClassData(void)
     {
         LumpLIFEGEM = W_GetNumForName("lifegem") + g_maxplayers * class + consoleplayer;
     }
-    SB_state = -1;
 }
 
 static void Hexen_DrINumber(signed int val, int x, int y)

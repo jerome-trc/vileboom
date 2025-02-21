@@ -3064,7 +3064,6 @@ void A_MStaffAttack(player_t * player, pspdef_t * psp)
         player->damagecount = 0;
         player->bonuscount = 0;
         V_SetPalette(STARTSCOURGEPAL);
-        SB_Start();
     }
 }
 
@@ -3080,7 +3079,6 @@ void A_MStaffPalette(player_t * player, pspdef_t * psp)
             pal = 0;
         }
         V_SetPalette(pal);
-        SB_Start();
     }
 }
 
@@ -3595,7 +3593,6 @@ void A_CHolyAttack(player_t * player, pspdef_t * psp)
         player->damagecount = 0;
         player->bonuscount = 0;
         V_SetPalette(STARTHOLYPAL);
-        SB_Start();
     }
     S_StartMobjSound(player->mo, hexen_sfx_choly_fire);
 }
@@ -3612,7 +3609,6 @@ void A_CHolyPalette(player_t * player, pspdef_t * psp)
             pal = 0;
         }
         V_SetPalette(pal);
-        SB_Start();
     }
 }
 

@@ -95,8 +95,7 @@ void STlib_initNum
  */
 static void STlib_drawNum
 ( st_number_t*  n,
-  int cm,
-  dboolean refresh )
+  int cm )
 {
 
   int   numdigits = n->width;
@@ -105,17 +104,8 @@ static void STlib_drawNum
   int   w = n->p[0].width;
   int   h = n->p[0].height;
   int   x = n->x;
-  int   clear_x, clear_y;
 
   int   neg;
-
-  // leban 1/20/99:
-  // strange that somebody went through all the work to draw only the
-  // differences, and then went and constantly redrew all the numbers.
-  // return without drawing if the number didn't change and the bar
-  // isn't refreshing.
-  if(n->oldnum == num && !refresh)
-    return;
 
   // CPhipps - compact some code, use num instead of *n->num
   if ((neg = (n->oldnum = num) < 0))
@@ -127,12 +117,6 @@ static void STlib_drawNum
 
     num = -num;
   }
-
-  // clear the area
-  clear_x = n->x - LittleShort(n->p[0].leftoffset) - numdigits * w;
-  clear_y = n->y - LittleShort(n->p[0].topoffset);
-
-  V_CopyRect(BG, FG, clear_x, clear_y, w * numdigits, h, VPT_STRETCH | VPT_ALIGN_BOTTOM);
 
   // if non-number, do not draw it
   if (num == 1994)
@@ -176,10 +160,9 @@ static void STlib_drawNum
  */
 void STlib_updateNum
 ( st_number_t*    n,
-  int cm,
-  dboolean   refresh )
+  int cm )
 {
-  if (*n->on) STlib_drawNum(n, cm, refresh);
+  if (*n->on) STlib_drawNum(n, cm);
 }
 
 //
@@ -219,10 +202,9 @@ void STlib_initPercent
 
 void STlib_updatePercent
 ( st_percent_t*   per,
-  int cm,
-  int refresh )
+  int cm )
 {
-  if (*per->n.on && (refresh || (per->n.oldnum != *per->n.num))) {
+  if (*per->n.on) {
     // killough 2/21/98: fix percents not updated;
     /* CPhipps - make %'s only be updated if number changed */
     // CPhipps - patch drawing updated
@@ -231,7 +213,7 @@ void STlib_updatePercent
        (sts_colored_numbers ? VPT_TRANS : VPT_NONE) | VPT_ALIGN_BOTTOM);
   }
 
-  STlib_updateNum(&per->n, cm, refresh);
+  STlib_updateNum(&per->n, cm);
 }
 
 //
@@ -254,7 +236,6 @@ void STlib_initMultIcon
 {
   i->x  = x;
   i->y  = y;
-  i->oldinum  = -1;
   i->inum = inum;
   i->on = on;
   i->p  = il;
@@ -271,124 +252,15 @@ void STlib_initMultIcon
 // Returns nothing.
 //
 void STlib_updateMultIcon
-( st_multicon_t*  mi,
-  dboolean   refresh )
+( st_multicon_t*  mi )
 {
-  int w;
-  int h;
-  int x;
-  int y;
-
-  if (*mi->on && (mi->oldinum != *mi->inum || refresh))
+  if (*mi->on)
   {
-    if (mi->oldinum != -1)
-    {
-      x = mi->x - mi->p[mi->oldinum].leftoffset;
-      y = mi->y - mi->p[mi->oldinum].topoffset;
-      w = mi->p[mi->oldinum].width;
-      h = mi->p[mi->oldinum].height;
-
 #ifdef RANGECHECK
       if (y - ST_Y < 0)
         I_Error("STlib_updateMultIcon: y - ST_Y < 0");
 #endif
-
-      V_CopyRect(BG, FG, x, y, w, h, VPT_STRETCH | VPT_ALIGN_BOTTOM);
-    }
     if (*mi->inum != -1)  // killough 2/16/98: redraw only if != -1
       V_DrawNumPatch(mi->x, mi->y, FG, mi->p[*mi->inum].lumpnum, CR_DEFAULT, VPT_ALIGN_BOTTOM);
-    mi->oldinum = *mi->inum;
-  }
-}
-
-//
-// STlib_updateMultIcon2()
-//
-// Draw a st_multicon_t widget, used for berserk and armor icons.
-// Does not use V_CopyRect, as it must draw on top of ST_Faces
-//
-void STlib_updateMultIcon2
-( st_multicon_t*  mi,
-  dboolean   refresh )
-{
-
-  if (*mi->on && (mi->oldinum != *mi->inum || refresh))
-  {
-    if (*mi->inum != -1)  // killough 2/16/98: redraw only if != -1
-      V_DrawNumPatch(mi->x, mi->y, FG, mi->p[*mi->inum].lumpnum, CR_DEFAULT, VPT_ALIGN_BOTTOM);
-    mi->oldinum = *mi->inum;
-  }
-}
-
-//
-// STlib_initBinIcon()
-//
-// Initialize a st_binicon_t widget, used for a multinumber display
-// like the status bar's weapons, that are present or not.
-//
-// Passed a st_binicon_t widget, the position, the digit patches, a pointer
-// to the flags representing what is displayed, and pointer to the enable flag
-// Returns nothing.
-//
-
-void STlib_initBinIcon
-(st_binicon_t* b,
-    int x,
-    int y,
-    const patchnum_t* i,
-    dboolean* val,
-    dboolean* on)
-{
-    b->x = x;
-    b->y = y;
-    b->oldval = 0;
-    b->val = val;
-    b->on = on;
-    b->p = i;
-}
-
-
-//
-// STlib_updateBinIcon()
-//
-// DInitialize a st_binicon_t widget, used for a multinumber display
-// like the status bar's weapons, that are present or not.
-//
-// Draw a st_binicon_t widget, used for a multinumber display
-// like the status bar's weapons that are present or not. Displays each
-// when the control flag changes or refresh is true
-//
-// Passed a st_binicon_t widget, and a refresh flag
-// Returns nothing.
-//
-
-
-void STlib_updateBinIcon
-( st_binicon_t*   bi,
-  dboolean   refresh )
-{
-  int     x;
-  int     y;
-  int     w;
-  int     h;
-
-  if (*bi->on && (bi->oldval != *bi->val || refresh))
-  {
-    x = bi->x - bi->p->leftoffset;
-    y = bi->y - bi->p->topoffset;
-    w = bi->p->width;
-    h = bi->p->height;
-
-#ifdef RANGECHECK
-    if (y - ST_Y < 0)
-      I_Error("STlib_updateBinIcon: y - ST_Y < 0");
-#endif
-
-    if (*bi->val)
-      V_DrawNumPatch(bi->x, bi->y, FG, bi->p->lumpnum, CR_DEFAULT, VPT_STRETCH);
-    else
-      V_CopyRect(BG, FG, x, y, w, h, VPT_STRETCH);
-
-    bi->oldval = *bi->val;
   }
 }

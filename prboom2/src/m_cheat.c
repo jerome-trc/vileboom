@@ -368,8 +368,6 @@ void M_CheatGod(void)
   }
   else
     dsda_AddMessage(s_STSTR_DQDOFF);
-
-  if (raven) SB_Start();
 }
 
 static void cheat_god()
@@ -469,9 +467,6 @@ static void cheat_k()
         plyr->cards[i] = true;
         dsda_AddMessage("Keys Added");
       }
-
-  // heretic - reset status bar
-  SB_Start();
 }
 
 static void cheat_kfa()
@@ -1359,7 +1354,6 @@ static void cheat_class(char buf[2])
   PlayerClass[consoleplayer] = new_class;
   P_PostMorphWeapon(plyr, wp_first);
   SB_SetClassData();
-  SB_Start();
   P_SetMessage(plyr, "CLASS CHANGED", true);
 }
 

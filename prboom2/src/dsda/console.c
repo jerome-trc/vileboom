@@ -399,7 +399,6 @@ static dboolean console_PlayerRemoveKey(const char* command, const char* args) {
 
 static dboolean console_PlayerGivePower(const char* command, const char* args) {
   dboolean P_GivePower(player_t *player, int power);
-  void SB_Start(void);
 
   int power;
   int duration = -1;
@@ -414,8 +413,6 @@ static dboolean console_PlayerGivePower(const char* command, const char* args) {
     if (power != pw_strength)
       target_player.powers[power] = duration;
 
-    if (raven) SB_Start();
-
     return true;
   }
 
@@ -423,8 +420,6 @@ static dboolean console_PlayerGivePower(const char* command, const char* args) {
 }
 
 static dboolean console_PlayerRemovePower(const char* command, const char* args) {
-  void SB_Start(void);
-
   int power;
 
   if (sscanf(args, "%i", &power)) {
@@ -464,8 +459,6 @@ static dboolean console_PlayerRemovePower(const char* command, const char* args)
         target_player.pendingweapon = target_player.readyweapon;
       }
     }
-
-    if (raven) SB_Start();
 
     return true;
   }

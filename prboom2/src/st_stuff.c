@@ -273,9 +273,6 @@ int ST_SCALED_OFFSETX;
 // main player in game
 static player_t *plyr;
 
-// ST_Start() has just been called
-static dboolean st_firsttime;
-
 // used to execute ST_Init() only once
 static int veryfirsttime = 1;
 
@@ -507,20 +504,19 @@ static void ST_refreshBackground(void)
   if (st_statusbaron)
     {
       flags = VPT_ALIGN_BOTTOM;
-      V_DrawNameNyanPatch(ST_X, y, BG, stbar, CR_DEFAULT, flags);
+      V_DrawNameNyanPatch(ST_X, y, FG, stbar, CR_DEFAULT, flags);
       if (!deathmatch)
       {
-        V_DrawNameNyanPatch(ST_ARMSBGX, y, BG, starms, CR_DEFAULT, flags);
+        V_DrawNameNyanPatch(ST_ARMSBGX, y, FG, starms, CR_DEFAULT, flags);
       }
 
       // killough 3/7/98: make face background change with displayplayer
       if (netgame)
       {
-        V_DrawNumPatch(ST_FX, y, BG, faceback.lumpnum,
+        V_DrawNumPatch(ST_FX, y, FG, faceback.lumpnum,
            displayplayer ? CR_LIMIT+displayplayer : CR_DEFAULT,
            displayplayer ? (VPT_TRANS | VPT_ALIGN_BOTTOM) : flags);
       }
-      V_CopyRect(BG, FG, ST_X + ST_SCALED_OFFSETX, SCREENHEIGHT - ST_SCALED_HEIGHT, ST_SCALED_WIDTH, ST_SCALED_HEIGHT, VPT_NONE);
     }
 }
 
@@ -1089,7 +1085,7 @@ int ST_HealthColor(int health)
     return cr_health_super;
 }
 
-static void ST_drawWidgets(dboolean refresh)
+static void ST_drawWidgets(void)
 {
   int i;
 
@@ -1105,34 +1101,34 @@ static void ST_drawWidgets(dboolean refresh)
 
   //jff 2/16/98 make color of ammo depend on amount
   if (*w_ready.num == plyr->maxammo[weaponinfo[w_ready.data].ammo])
-    STlib_updateNum(&w_ready, cr_ammo_full, refresh);
+    STlib_updateNum(&w_ready, cr_ammo_full);
   else {
     int ammopct = P_AmmoPercent(plyr, w_ready.data);
 
     if (ammopct < hud_ammo_red)
-      STlib_updateNum(&w_ready, cr_ammo_bad, refresh);
+      STlib_updateNum(&w_ready, cr_ammo_bad);
     else if (ammopct < hud_ammo_yellow)
-      STlib_updateNum(&w_ready, cr_ammo_warning, refresh);
+      STlib_updateNum(&w_ready, cr_ammo_warning);
     else
-      STlib_updateNum(&w_ready, cr_ammo_ok, refresh);
+      STlib_updateNum(&w_ready, cr_ammo_ok);
   }
 
   for (i = 0; i < 4; i++)
   {
-    STlib_updateNum(&w_ammo[i], CR_DEFAULT, refresh);   //jff 2/16/98 no xlation
-    STlib_updateNum(&w_maxammo[i], CR_DEFAULT, refresh);
+    STlib_updateNum(&w_ammo[i], CR_DEFAULT);   //jff 2/16/98 no xlation
+    STlib_updateNum(&w_maxammo[i], CR_DEFAULT);
   }
 
   //jff 2/16/98 make color of health depend on amount
-  STlib_updatePercent(&w_health, ST_HealthColor(plyr->health), refresh);
+  STlib_updatePercent(&w_health, ST_HealthColor(plyr->health));
 
   // armor color dictated by type (Status Bar)
   if (plyr->armortype >= 2)
-    STlib_updatePercent(&w_armor, cr_armor_two, refresh);
+    STlib_updatePercent(&w_armor, cr_armor_two);
   else if (plyr->armortype == 1)
-    STlib_updatePercent(&w_armor, cr_armor_one, refresh);
+    STlib_updatePercent(&w_armor, cr_armor_one);
   else if (plyr->armortype == 0)
-    STlib_updatePercent(&w_armor, cr_armor_zero, refresh);
+    STlib_updatePercent(&w_armor, cr_armor_zero);
 
   // SSG on ARMS config
   ssg_arms_config = dsda_IntConfig(dsda_config_ssg_on_arms) && (gamemode == commercial);
@@ -1141,46 +1137,38 @@ static void ST_drawWidgets(dboolean refresh)
   st_shotguns = ssg_arms_config ? (plyr->weaponowned[wp_shotgun] || plyr->weaponowned[wp_supershotgun]) : (plyr->weaponowned[wp_shotgun]);
 
   for (i=0;i<6;i++)
-    STlib_updateMultIcon(&w_arms[i], refresh);
+    STlib_updateMultIcon(&w_arms[i]);
 
-  STlib_updateMultIcon(&w_faces, refresh);
+  STlib_updateMultIcon(&w_faces);
 
   if(armor_icon)
-    STlib_updateMultIcon2(&w_armoricon, refresh);
+    STlib_updateMultIcon(&w_armoricon);
 
   if(berserk_icon)
-    STlib_updateMultIcon2(&w_berserkicon, refresh);
+    STlib_updateMultIcon(&w_berserkicon);
 
   for (i=0;i<3;i++)
-    STlib_updateMultIcon(&w_keyboxes[i], refresh);
+    STlib_updateMultIcon(&w_keyboxes[i]);
 
-  STlib_updateNum(&w_frags, CR_DEFAULT, refresh);
+  STlib_updateNum(&w_frags, CR_DEFAULT);
 
 }
 
 void ST_SetResolution(void)
 {
-  st_firsttime = true;
   R_FillBackScreen();
 }
 
-void ST_Refresh(void)
-{
-  st_firsttime = true;
-}
-
-void ST_Drawer(dboolean refresh)
+void ST_Drawer(void)
 {
   dboolean statusbaron = R_StatusBarVisible();
   dboolean fullmenu = (menuactive == mnact_full) && !M_MenuIsShaded();
-  dboolean alwaysrefresh = true;
-  dboolean st_force_refresh;
 
   V_BeginUIDraw();
 
   if (raven)
   {
-    SB_Drawer(statusbaron, refresh, fullmenu);
+    SB_Drawer(statusbaron, fullmenu);
     V_EndUIDraw();
     return;
   }
@@ -1189,40 +1177,15 @@ void ST_Drawer(dboolean refresh)
    * completely by the call from D_Display
    * proff - really do it
    */
-  st_firsttime = st_firsttime || refresh || fullmenu;
-  st_force_refresh = V_IsOpenGLMode() || fadeBG() || armor_icon || berserk_icon || alwaysrefresh;
 
   ST_doPaletteStuff();  // Do red-/gold-shifts from damage/items
 
-  // Always refresh status bar background for software
-  //
-  // dboolean alwaysrefresh = true
-  //
-  // Haven't seen any downsides to keeping the software
-  // statusbar up-to-date, to be the same as OpenGL.
-  // 
-  // This fixes a few Software issues like when statusbar
-  // numbers are too long and leave artefacts on the
-  // background ("200 Line Christmas") or wider
-  // statusbar faces leaving parts on the background
-  // ("Pirate Doom II").
-  //
-  //
   if (statusbaron) {
-    if (st_firsttime || st_force_refresh)
-    {
-      /* If just after ST_Start(), refresh all */
-      st_firsttime = false;
-      ST_refreshBackground(); // draw status bar background to off-screen buff
-      if (!fullmenu)
-        ST_drawWidgets(true); // and refresh all widgets
-    }
-    else
-    {
-      /* Otherwise, update as little as possible */
-      if (!fullmenu)
-        ST_drawWidgets(false); // update all widgets
-    }
+    ST_refreshBackground(); // draw status bar background to off-screen buff
+
+    // Hide stbar numbers if fade overlay is inactive
+    if (!fullmenu || fadeBG())
+      ST_drawWidgets(); // and refresh all widgets
   }
 
   V_EndUIDraw();
@@ -1358,7 +1321,6 @@ static void ST_initData(void)
 {
   int i;
 
-  st_firsttime = true;
   plyr = &players[displayplayer];            // killough 3/7/98
 
   st_clock = 0;
@@ -1552,7 +1514,7 @@ static dboolean st_stopped = true;
 
 void ST_Start(void)
 {
-  if (raven) return SB_Start();
+  if (raven) return;
 
   if (!st_stopped)
     ST_Stop();
