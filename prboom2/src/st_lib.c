@@ -102,7 +102,6 @@ static void STlib_drawNum
   int   num = *n->num;
 
   int   w = n->p[0].width;
-  int   h = n->p[0].height;
   int   x = n->x;
 
   int   neg;
