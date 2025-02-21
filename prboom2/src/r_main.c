@@ -502,6 +502,7 @@ static void R_InitLightTables (void)
 //
 
 extern dboolean BorderNeedRefresh;
+dboolean ScreenSize_Interpolate;
 dboolean setsizeneeded;
 static int setblocks;
 
@@ -512,6 +513,9 @@ int R_ViewSize(void)
 
 void R_SetViewSize(void)
 {
+  // Do not interpolate weapon when changing screensize
+  ScreenSize_Interpolate = false;
+
   BorderNeedRefresh = true;
   setsizeneeded = true;
   setblocks = dsda_IntConfig(dsda_config_screenblocks);
