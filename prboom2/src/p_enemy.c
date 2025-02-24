@@ -1910,6 +1910,11 @@ dboolean P_RaiseThing(mobj_t *corpse, mobj_t *raiser)
 
   dsda_WatchResurrection(corpse, raiser);
 
+  // Allow ghost monsters to be rendered translucent
+  if (corpse->height == 0 && corpse->radius == 0
+  && dsda_IntConfig(dsda_config_vanilla_translucent_ghosts))
+    corpse->flags |= MF_TRANSLUCENT;
+
   if (!((corpse->flags ^ MF_COUNTKILL) & (MF_FRIEND | MF_COUNTKILL)))
     totallive++;
 
@@ -1990,7 +1995,7 @@ static dboolean P_HealCorpse(mobj_t* actor, int radius, statenum_t healstate, sf
           dsda_WatchResurrection(corpsehit, actor);
 
           // Allow ghost monsters to be rendered translucent
-          if (demo_compatibility && corpsehit->height == 0 && corpsehit->radius == 0
+          if (corpsehit->height == 0 && corpsehit->radius == 0
           && dsda_IntConfig(dsda_config_vanilla_translucent_ghosts))
             corpsehit->flags |= MF_TRANSLUCENT;
 
