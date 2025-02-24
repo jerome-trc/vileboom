@@ -1838,6 +1838,15 @@ void deh_applyCompatibility(void)
       mobjinfo[MT_SKULL].flags &= ~(MF_COUNTKILL);
   }
 
+  // Add rad suits to item count for Doom v1.1
+  if (!edited_mobjinfo_bits[MT_MISC14] && gamemode != commercial)
+  {
+    if (doom_v11 && allow_incompatibility && compatibility_level == doom_12_compatibility)
+      mobjinfo[MT_MISC14].flags |= (MF_COUNTITEM);
+    else
+      mobjinfo[MT_MISC14].flags &= ~(MF_COUNTITEM);
+  }
+
   deh_changeCompTranslucency();
 }
 

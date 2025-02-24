@@ -477,6 +477,7 @@ void P_TouchSpecialThing(mobj_t *special, mobj_t *toucher)
   int      sound;
   fixed_t  delta = special->z - toucher->z;
   const char *soul_message, *mega_message;
+  int sfx_powerup;
 
   if (heretic) return Heretic_P_TouchSpecialThing(special, toucher);
   if (hexen) return Hexen_P_TouchSpecialThing(special, toucher);
@@ -490,6 +491,9 @@ void P_TouchSpecialThing(mobj_t *special, mobj_t *toucher)
   // Nutty Messages
   mega_message = (player->cheats & CF_NUT) ? "You got a Coconut!" : s_GOTMSPHERE;
   soul_message = ((player->cheats & CF_NUT) && (gamemode != commercial)) ? "You got a Blueberry!" : s_GOTSUPER;
+
+  // Check v1.1 powerup sound
+  sfx_powerup = doom_v11 ? sfx_itemup : sfx_getpow;
 
   // Dead thing touching.
   // Can happen with a sliding player corpse.
@@ -550,7 +554,7 @@ void P_TouchSpecialThing(mobj_t *special, mobj_t *toucher)
         player->health = max_soul;
       player->mo->health = player->health;
       dsda_AddPlayerMessage(soul_message, player);
-      sound = sfx_getpow;
+      sound = sfx_powerup;
       break;
 
     case SPR_MEGA:
@@ -565,7 +569,7 @@ void P_TouchSpecialThing(mobj_t *special, mobj_t *toucher)
          ((!demo_compatibility || prboom_comp[PC_APPLY_BLUE_ARMOR_CLASS_TO_MEGASPHERE].state) ?
           blue_armor_class : 2));
       dsda_AddPlayerMessage(mega_message, player);
-      sound = sfx_getpow;
+      sound = sfx_powerup;
       break;
 
         // cards
@@ -641,7 +645,7 @@ void P_TouchSpecialThing(mobj_t *special, mobj_t *toucher)
       if (!P_GivePower (player, pw_invulnerability))
         return;
       dsda_AddPlayerMessage(s_GOTINVUL, player);
-      sound = sfx_getpow;
+      sound = sfx_powerup;
       break;
 
     case SPR_PSTR:
@@ -650,21 +654,21 @@ void P_TouchSpecialThing(mobj_t *special, mobj_t *toucher)
       dsda_AddPlayerMessage(s_GOTBERSERK, player);
       if (player->readyweapon != wp_fist)
         P_AutoSwitchWeapon(player, wp_fist);
-      sound = sfx_getpow;
+      sound = sfx_powerup;
       break;
 
     case SPR_PINS:
       if (!P_GivePower (player, pw_invisibility))
         return;
       dsda_AddPlayerMessage(s_GOTINVIS, player);
-      sound = sfx_getpow;
+      sound = sfx_powerup;
       break;
 
     case SPR_SUIT:
       if (!P_GivePower (player, pw_ironfeet))
         return;
       dsda_AddPlayerMessage(s_GOTSUIT, player);
-      sound = sfx_getpow;
+      sound = sfx_powerup;
       break;
 
     case SPR_PMAP:
@@ -674,7 +678,7 @@ void P_TouchSpecialThing(mobj_t *special, mobj_t *toucher)
         dsda_StringPrintF(&areamap_messsage, "Another %s", s_GOTMAP);
 
         doom_printf(areamap_messsage.string, player);
-        sound = sfx_getpow;
+        sound = sfx_powerup;
 
         dsda_FreeString(&areamap_messsage);
         break;
@@ -683,14 +687,14 @@ void P_TouchSpecialThing(mobj_t *special, mobj_t *toucher)
       if (!P_GivePower (player, pw_allmap))
         return;
       dsda_AddPlayerMessage(s_GOTMAP, player);
-      sound = sfx_getpow;
+      sound = sfx_powerup;
       break;
 
     case SPR_PVIS:
       if (!P_GivePower (player, pw_infrared))
         return;
       dsda_AddPlayerMessage(s_GOTVISOR, player);
-      sound = sfx_getpow;
+      sound = sfx_powerup;
       break;
 
       // ammo

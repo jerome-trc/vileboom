@@ -610,6 +610,7 @@ static const char *pagename; // CPhipps - const
 dboolean bfgedition = 0;
 dboolean unityedition = 0;
 dboolean freedm = 0;
+dboolean doom_v11 = 0;
 
 //
 // D_PageTicker
@@ -900,6 +901,8 @@ void CheckIWAD(const char *iwadname,GameMode_t *gmode,dboolean *hassec)
     dboolean dmenupic = false;
     dboolean large_titlepic = false;
     dboolean freedm_lmp = false;
+    dboolean stbar_left = false;
+    dboolean stbar_right = false;
     FILE* fp;
 
     // Identify IWAD correctly
@@ -966,6 +969,10 @@ void CheckIWAD(const char *iwadname,GameMode_t *gmode,dboolean *hassec)
             hx++;
           if (!strncmp(fileinfo[length].name,"FREEDM",6))
             freedm_lmp = true;
+          if (!strncmp(fileinfo[length].name,"STMBARL",7))
+            stbar_left = true;
+          if (!strncmp(fileinfo[length].name,"STMBARR",7))
+            stbar_right = true;
         }
         Z_Free(fileinfo);
 
@@ -983,6 +990,8 @@ void CheckIWAD(const char *iwadname,GameMode_t *gmode,dboolean *hassec)
       unityedition++;
     if (freedm_lmp)
       freedm++;
+    if (stbar_left && stbar_right)
+      doom_v11++;
 
     // Determine game mode from levels present
     // Must be a full set for whichever mode is present

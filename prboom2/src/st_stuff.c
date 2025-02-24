@@ -75,6 +75,9 @@ int ST_SCALED_HEIGHT;
 int ST_SCALED_WIDTH;
 int ST_SCALED_OFFSETX;
 
+// Check if STBAR exists
+static dboolean stbar_exists;
+
 // Palette indices.
 // For damage/bonus red-/gold-shifts
 #define STARTREDPALS            1
@@ -469,8 +472,10 @@ void ST_SetScaledWidth(void)
       width = stbarbg_ani.width;
   else if (Check_Stbar_Wide && widescreenLumps)
       width = stbarbg_ws.width;
-  else
+  else if (stbar_exists)
       width = stbarbg.width;
+  else
+      width = 320;
 
   if (width == 0)
       width = ST_WIDTH;
@@ -504,7 +509,14 @@ static void ST_refreshBackground(void)
   if (st_statusbaron)
     {
       flags = VPT_ALIGN_BOTTOM;
-      V_DrawNameNyanPatch(ST_X, y, FG, stbar, CR_DEFAULT, flags);
+      if (stbar_exists)
+        V_DrawNameNyanPatch(ST_X, y, FG, stbar, CR_DEFAULT, flags);
+      else if (doom_v11) // Draw Doom v1.1 two part statusbar
+      {
+        V_DrawNamePatch(ST_X, y, FG, "STMBARL", CR_DEFAULT, flags);
+        V_DrawNamePatch(ST_ARMSBGX, y, FG, "STMBARR", CR_DEFAULT, flags);
+      }
+
       if (!deathmatch)
       {
         V_DrawNameNyanPatch(ST_ARMSBGX, y, FG, starms, CR_DEFAULT, flags);
@@ -1252,12 +1264,15 @@ static void ST_loadGraphics(void)
       R_SetPatchNum(&berserkpatch[i], namebuf);
     }
 
+  stbar_exists = W_LumpNameExists(stbar);
+
   //e6y: status bar background
-  if(Check_Stbar_Animate)
+  if (Check_Stbar_Animate)
     R_SetPatchNum(&stbarbg_ani, "S_STBAR");
   if (Check_Stbar_Wide)
     R_SetPatchNum(&stbarbg_ws, "W_STBAR");
-  R_SetPatchNum(&stbarbg, stbar);
+  if (stbar_exists)
+    R_SetPatchNum(&stbarbg, stbar);
   R_SetPatchNum(&brdr_t, "brdr_t");
   R_SetPatchNum(&brdr_b, "brdr_b");
   R_SetPatchNum(&brdr_l, "brdr_l");
