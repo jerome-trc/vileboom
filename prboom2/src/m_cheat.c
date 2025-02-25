@@ -587,7 +587,7 @@ static void cheat_comp0()
     return;
   }
 
-  doom_printf("Cheat disabled for %s", heretic ? "Heretic" : "Hexen");
+  doom_printf("Complevel: %i - %s", compatibility_level, comp_lev_str[compatibility_level]);
 }
 
 static void cheat_comp(char buf[3])
