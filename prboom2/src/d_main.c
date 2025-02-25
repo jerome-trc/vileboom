@@ -2047,10 +2047,7 @@ static void D_DoomMainSetup(void)
 
   if (iwadlump != NULL)
   {
-    if (doomiwadver)
-      lprintf(LO_INFO, "Detected %s lump: %s\n", doomiwadver, iwadlump);
-    else
-      lprintf(LO_INFO, "Detected GAMEINFO lump: %s\n", iwadlump);
+    lprintf(LO_INFO, "Detected %s lump: %s\n", doomiwadver ? doomiwadver : "GAMEINFO", iwadlump);
     Z_Free(iwadlump);
   }
 
