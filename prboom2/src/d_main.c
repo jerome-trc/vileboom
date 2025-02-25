@@ -2116,8 +2116,6 @@ static void D_DoomMainSetup(void)
 
     if (doom_v11)
     {
-      lprintf(LO_INFO, "NOTICE: Doom v1.1 support is purely for historical purposes, thus demo support are disabled.\n");
-
       dboolean recording_attempt =
         dsda_Flag(dsda_arg_record) ||
         dsda_Flag(dsda_arg_recordfromto);
@@ -2126,9 +2124,11 @@ static void D_DoomMainSetup(void)
         dsda_Flag(dsda_arg_playdemo) ||
         dsda_Flag(dsda_arg_timedemo) ||
         dsda_Flag(dsda_arg_fastdemo);
+
+      lprintf(LO_INFO, "NOTICE: Doom v1.1 support is purely for historical purposes, thus demo support are disabled.\n");
   
       if (recording_attempt || playbacking_attempt)
-        I_Error("Doom v1.1 IWAD is not supported for demo recording.");
+        I_Error("Doom v1.1 IWAD is not supported for demo recording / playback.");
     }
   }
 
