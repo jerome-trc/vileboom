@@ -575,15 +575,35 @@ static void cheat_rate()
 
 static void cheat_comp0()
 {
-  if (!raven)
-    doom_printf("Complevel: %i - %s", compatibility_level, comp_lev_str[compatibility_level]);
-  else
+  if (raven)
+  {
     doom_printf("Cheat disabled for %s", heretic ? "Heretic" : "Hexen");
+    return;
+  }
+
+  if (doom_v11)
+  {
+    doom_printf("Cheat disabled");
+    return;
+  }
+
+  doom_printf("Cheat disabled for %s", heretic ? "Heretic" : "Hexen");
 }
 
 static void cheat_comp(char buf[3])
 {
-  if (!raven)
+  if (raven)
+  {
+    doom_printf("Cheat disabled for %s", heretic ? "Heretic" : "Hexen");
+    return;
+  }
+
+  if (doom_v11)
+  {
+    doom_printf("Cheat disabled");
+    return;
+  }
+
   {
     int compinput = (buf[0] - '0') * 10 + buf[1] - '0';
 
@@ -600,8 +620,6 @@ static void cheat_comp(char buf[3])
       doom_printf("New Complevel: %i - %s", compatibility_level, comp_lev_str[compatibility_level]);
     }
   }
-  else
-    doom_printf("Cheat disabled for %s", heretic ? "Heretic" : "Hexen");
 }
 
 static void cheat_skill0()
@@ -615,8 +633,9 @@ static void cheat_skill0()
 static void cheat_skill(char buf[1])
 {
   int skill = buf[0] - '0';
+  int maxskill = doom_v11 ? 4 : 5;
 
-  if (skill >= 1 && skill <= 5)
+  if (skill >= 1 && skill <= maxskill)
   {
     gameskill = skill - 1;
     if (!raven)

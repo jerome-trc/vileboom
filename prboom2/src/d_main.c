@@ -714,7 +714,7 @@ static void D_DrawTitle2(const char *name)
 
 void D_PlayDemoName(const char *name)
 {
-  if (dsda_SkipIwadDemos(name))
+  if (dsda_SkipIwadDemos(name) || doom_v11)
     name = "DEMONULL";
   G_DeferedPlayDemo(name);
 }
@@ -1806,6 +1806,17 @@ static void EvaluateDoomVerStr(void)
     Z_Free (tempverstr);
   }
 
+  if (doom_v11)
+  {
+    char *tempverstr;
+    const char v11verstr[]=" v1.1";
+    tempverstr = Z_Malloc(sizeof(char) * (strlen(doomverstr)+strlen(v11verstr)+1));
+    strcpy (tempverstr, doomverstr);
+    strcat (tempverstr, v11verstr);
+    doomverstr = Z_Strdup (tempverstr);
+    Z_Free (tempverstr);
+  }
+
   /* cphipps - the main display. This shows the copyright and game type */
   lprintf(LO_INFO,
           "%s is released under the GNU General Public license v2.0.\n"
@@ -1953,6 +1964,10 @@ static void D_DoomMainSetup(void)
     autostart = true;
   }
 
+  // Don't allow Nightmare skill for Doom v1.1
+  if (doom_v11 && startskill == 4)
+    startskill = 3;
+
   arg = dsda_Arg(dsda_arg_episode);
   if (arg->found)
   {
@@ -2097,6 +2112,23 @@ static void D_DoomMainSetup(void)
       {
         ProcessDehFile(NULL, D_dehout(), lump);
       }
+    }
+
+    if (doom_v11)
+    {
+      lprintf(LO_INFO, "NOTICE: Doom v1.1 support is purely for historical purposes, thus demo support are disabled.\n");
+
+      dboolean recording_attempt =
+        dsda_Flag(dsda_arg_record) ||
+        dsda_Flag(dsda_arg_recordfromto);
+  
+      dboolean playbacking_attempt =
+        dsda_Flag(dsda_arg_playdemo) ||
+        dsda_Flag(dsda_arg_timedemo) ||
+        dsda_Flag(dsda_arg_fastdemo);
+  
+      if (recording_attempt || playbacking_attempt)
+        I_Error("Doom v1.1 IWAD is not supported for demo recording.");
     }
   }
 
