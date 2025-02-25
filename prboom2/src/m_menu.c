@@ -339,6 +339,9 @@ void M_ChangeApplyPalette(void);
 
 menu_t SkillDef;                                              // phares 5/04/98
 
+dboolean help2_check;
+dboolean dynamic_screens;
+
 // end of prototypes added to support Setup Menus and Extended HELP screens
 
 const char shiftxform[] =
@@ -587,7 +590,7 @@ void M_DrawReadThis1(void)
 {
   inhelpscreens = true;
   // Arsinikk - allows use of HELP2 screen for PWADs under DOOM 1
-  if (pwad_help2_check || gamemode == shareware)
+  if (help2_check || gamemode == shareware)
     M_DrawAd();
   else
     M_DrawCredits();
@@ -4061,7 +4064,7 @@ void M_InitExtendedHelp(void)
             if (raven) {
               ExtHelpDef.prevMenu  = &InfoDef4; /* previous menu */
               InfoMenu4[0].routine = M_ExtHelp;
-            } else if (gamemode == commercial || !pwad_help2_check) {
+            } else if (gamemode == commercial || !help2_check) {
               ExtHelpDef.prevMenu  = &ReadDef1; /* previous menu */
               ReadMenu1[0].routine = M_ExtHelp;
             } else {
@@ -4352,7 +4355,7 @@ void M_DrawHelp (void)
   M_ChangeMenu(NULL, mnact_full);
 
   V_ClearBorder();
-  if (PWADhelp || !dsda_IntConfig(nyan_config_boom_credit_help) || tc_game)
+  if (PWADhelp || !dynamic_screens)
       V_DrawNameNyanPatch(0, 0, 0, helplump, CR_DEFAULT, VPT_STRETCH);
   else
   {
@@ -4410,7 +4413,7 @@ void M_DrawCredits(void)     // killough 10/98: credit screen
   inhelpscreens = true;
 
   V_ClearBorder();
-  if (!dsda_IntConfig(nyan_config_boom_credit_help) || tc_game)
+  if (!dynamic_screens)
     V_DrawNameNyanPatch(0, 0, 0, credit, CR_DEFAULT, VPT_STRETCH);
   else
     M_DrawCreditsDynamic();
@@ -6521,7 +6524,8 @@ void M_ResetBoomHelp(void)
 {
   const char* helpscreen = (gamemode == commercial) ? help0 : help1;
   int PWAD_help = W_PWADLumpNameExists(helpscreen);
-  int Dynamic_help = dsda_IntConfig(nyan_config_boom_credit_help);
+  dynamic_screens = dsda_IntConfig(nyan_config_boom_credit_help) && !tc_game && !doom_v11;
+  help2_check = pwad_help2_check || iwad_help2_check;
 
   if(raven) return;
 
@@ -6546,7 +6550,7 @@ void M_ResetBoomHelp(void)
   // Arsinikk - Cut HELP / README screen down to
   // 1 screen only when dynamic screens are not
   // used or overriden by PWAD HELP lumps
-  if ((!pwad_help2_check && !Dynamic_help && gamemode != shareware) || (!pwad_help2_check && PWAD_help))
+  if ((!help2_check && !dynamic_screens && gamemode != shareware) || (!help2_check && PWAD_help))
   {
     // Only 1 help screen
     ReadMenu1[0].routine = M_FinishReadThis;
@@ -6564,7 +6568,7 @@ void M_ResetBoomHelp(void)
     // and when Dynamic screens are active)
     ReadMenu1[0].routine = M_ReadThis2;
     ReadDef1.routine = M_DrawReadThis1;
-    if(pwad_help2_check || (!Dynamic_help && gamemode <= registered))
+    if(help2_check || (!dynamic_screens && gamemode <= registered))
       ReadDef1.y = 15;
     else
       ReadDef1.y = 175;
