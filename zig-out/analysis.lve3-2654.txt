@@ -1,0 +1,20 @@
+skill 4
+nomonsters 0
+respawn 0
+fast 0
+pacifist 0
+stroller 0
+reality 0
+almost_reality 0
+reborn 0
+100k 1
+100s 0
+missed_monsters 0
+missed_secrets 1
+weapon_collector 0
+tyson_weapons 0
+turbo 0
+solo_net 0
+coop_spawns 0
+category UV Speed
+signature 0

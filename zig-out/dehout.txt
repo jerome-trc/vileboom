@@ -1,0 +1,612 @@
+
+Loading DEH lump from /home/jerome/Data/doom-mods/drla/chaingun.wad
+
+Line='Patch File for DeHackEd v3.0'
+Processing function [17] for 
+Unmatched Block: 'Patch File for DeHackEd v3.0'
+Line='# Created with DECOHack v0.34.0 by Matt Tropiano'
+Line='# Note: Use the pound sign ('#') to start comment lines.'
+Line=''
+Line='Doom version = 2021'
+Processing function [17] for 
+Unmatched Block: 'Doom version = 2021'
+Line='Patch format = 6'
+Processing function [17] for 
+Unmatched Block: 'Patch format = 6'
+Line=''
+Line=''
+Line='Frame 13500'
+Processing function [1] for Frame
+Processing Frame at index 13500: Frame
+ - sprite = 430
+ - tics = 1
+Line='Frame 13501'
+Processing function [1] for Frame
+Processing Frame at index 13501: Frame
+ - sprite = 430
+ - tics = 1
+Line='Frame 13502'
+Processing function [1] for Frame
+Processing Frame at index 13502: Frame
+ - sprite = 430
+ - tics = 1
+Line='Frame 13503'
+Processing function [1] for Frame
+Processing Frame at index 13503: Frame
+ - sprite = 430
+ - frame = 4
+ - nextstate = 13504
+ - tics = 0
+ - args[0] = 0
+ - args[1] = 13521
+Line='Frame 13504'
+Processing function [1] for Frame
+Processing Frame at index 13504: Frame
+ - sprite = 430
+ - frame = 4
+ - nextstate = 13505
+ - tics = 1
+ - args[0] = 830
+ - args[1] = 831
+ - args[2] = 832
+Line='Frame 13505'
+Processing function [1] for Frame
+Processing Frame at index 13505: Frame
+ - sprite = 430
+ - frame = 5
+ - nextstate = 13506
+ - tics = 1
+Line='Frame 13506'
+Processing function [1] for Frame
+Processing Frame at index 13506: Frame
+ - sprite = 430
+ - frame = 6
+ - nextstate = 13507
+ - tics = 1
+Line='Frame 13507'
+Processing function [1] for Frame
+Processing Frame at index 13507: Frame
+ - sprite = 430
+ - frame = 7
+ - nextstate = 13508
+ - tics = 1
+Line='Frame 13508'
+Processing function [1] for Frame
+Processing Frame at index 13508: Frame
+ - sprite = 430
+ - frame = 4
+ - nextstate = 13509
+ - tics = 0
+ - args[0] = 0
+ - args[1] = 13523
+Line='Frame 13509'
+Processing function [1] for Frame
+Processing Frame at index 13509: Frame
+ - sprite = 430
+ - frame = 4
+ - nextstate = 13510
+ - tics = 1
+ - args[0] = 830
+ - args[1] = 831
+ - args[2] = 832
+Line='Frame 13510'
+Processing function [1] for Frame
+Processing Frame at index 13510: Frame
+ - sprite = 430
+ - frame = 5
+ - nextstate = 13511
+ - tics = 1
+Line='Frame 13511'
+Processing function [1] for Frame
+Processing Frame at index 13511: Frame
+ - sprite = 430
+ - frame = 6
+ - nextstate = 13512
+ - tics = 1
+Line='Frame 13512'
+Processing function [1] for Frame
+Processing Frame at index 13512: Frame
+ - sprite = 430
+ - frame = 7
+ - nextstate = 13513
+ - tics = 1
+Line='Frame 13513'
+Processing function [1] for Frame
+Processing Frame at index 13513: Frame
+ - sprite = 430
+ - nextstate = 13514
+ - tics = 1
+Line='Frame 13514'
+Processing function [1] for Frame
+Processing Frame at index 13514: Frame
+ - sprite = 430
+ - frame = 1
+ - nextstate = 13515
+ - tics = 1
+Line='Frame 13515'
+Processing function [1] for Frame
+Processing Frame at index 13515: Frame
+ - sprite = 430
+ - frame = 2
+ - nextstate = 13516
+ - tics = 2
+Line='Frame 13516'
+Processing function [1] for Frame
+Processing Frame at index 13516: Frame
+ - sprite = 430
+ - frame = 3
+ - nextstate = 13517
+ - tics = 2
+Line='Frame 13517'
+Processing function [1] for Frame
+Processing Frame at index 13517: Frame
+ - sprite = 430
+ - nextstate = 13518
+ - tics = 2
+Line='Frame 13518'
+Processing function [1] for Frame
+Processing Frame at index 13518: Frame
+ - sprite = 430
+ - frame = 1
+ - nextstate = 13519
+ - tics = 3
+Line='Frame 13519'
+Processing function [1] for Frame
+Processing Frame at index 13519: Frame
+ - sprite = 430
+ - frame = 2
+ - nextstate = 13520
+ - tics = 3
+Line='Frame 13520'
+Processing function [1] for Frame
+Processing Frame at index 13520: Frame
+ - sprite = 430
+ - frame = 3
+ - nextstate = 13500
+ - tics = 3
+Line='Frame 13521'
+Processing function [1] for Frame
+Processing Frame at index 13521: Frame
+ - sprite = 431
+ - frame = 32772
+ - nextstate = 13522
+ - tics = 1
+Line='Frame 13522'
+Processing function [1] for Frame
+Processing Frame at index 13522: Frame
+ - sprite = 431
+ - frame = 32773
+ - nextstate = 1
+ - tics = 1
+Line='Frame 13523'
+Processing function [1] for Frame
+Processing Frame at index 13523: Frame
+ - sprite = 431
+ - frame = 32774
+ - nextstate = 13524
+ - tics = 1
+Line='Frame 13524'
+Processing function [1] for Frame
+Processing Frame at index 13524: Frame
+ - sprite = 431
+ - frame = 32775
+ - nextstate = 1
+ - tics = 1
+Line='Weapon 3 (RB_RLChaingun)'
+Processing function [5] for Weapon
+Processing Weapon at index 3: Weapon
+Line='[CODEPTR]'
+Processing function [12] for [CODEPTR]
+Processing pointer at index 13500: WeaponReady
+ - applied A_WeaponReady from codeptr[1] to states[13500]
+Processing pointer at index 13501: Lower
+ - applied A_Lower from codeptr[2] to states[13501]
+Processing pointer at index 13502: Raise
+ - applied A_Raise from codeptr[3] to states[13502]
+Processing pointer at index 13503: FireCGunEx
+Invalid frame pointer mnemonic 'FireCGunEx' at 13503
+Processing pointer at index 13504: WeaponSoundRandom
+Invalid frame pointer mnemonic 'WeaponSoundRandom' at 13504
+Processing pointer at index 13508: FireCGunEx
+Invalid frame pointer mnemonic 'FireCGunEx' at 13508
+Processing pointer at index 13509: WeaponSoundRandom
+Invalid frame pointer mnemonic 'WeaponSoundRandom' at 13509
+Processing pointer at index 13513: ReFire
+ - applied A_ReFire from codeptr[5] to states[13513]
+Processing pointer at index 13514: ReFire
+ - applied A_ReFire from codeptr[5] to states[13514]
+Processing pointer at index 13515: ReFire
+ - applied A_ReFire from codeptr[5] to states[13515]
+Processing pointer at index 13516: ReFire
+ - applied A_ReFire from codeptr[5] to states[13516]
+Processing pointer at index 13517: ReFire
+ - applied A_ReFire from codeptr[5] to states[13517]
+Processing pointer at index 13518: ReFire
+ - applied A_ReFire from codeptr[5] to states[13518]
+Processing pointer at index 13519: ReFire
+ - applied A_ReFire from codeptr[5] to states[13519]
+Processing pointer at index 13520: ReFire
+ - applied A_ReFire from codeptr[5] to states[13520]
+Processing pointer at index 13521: Light2
+ - applied A_Light2 from codeptr[9] to states[13521]
+Processing pointer at index 13522: Light1
+ - applied A_Light1 from codeptr[7] to states[13522]
+Processing pointer at index 13523: Light2
+ - applied A_Light2 from codeptr[9] to states[13523]
+Processing pointer at index 13524: Light1
+ - applied A_Light1 from codeptr[7] to states[13524]
+Line='[SPRITES]'
+Processing function [14] for [SPRITES]
+Processing sprite name substitution
+Substituting 'PKCF' for sprite '431'
+Substituting 'PKCG' for sprite '430'
+Line='[SOUNDS]'
+Processing function [15] for [SOUNDS]
+Processing sound name substitution
+Substituting 'CHAIN1' for sound '830'
+Substituting 'CHAIN2' for sound '831'
+Substituting 'CHAIN3' for sound '832'
+
+Loading DEH lump from /home/jerome/Data/doom-mods/drla/heavy-shotgun.wad
+
+Line='Patch File for DeHackEd v3.0'
+Processing function [17] for 
+Unmatched Block: 'Patch File for DeHackEd v3.0'
+Line='# Created with DECOHack v0.34.0 by Matt Tropiano'
+Line='# Note: Use the pound sign ('#') to start comment lines.'
+Line=''
+Line='Doom version = 2021'
+Processing function [17] for 
+Unmatched Block: 'Doom version = 2021'
+Line='Patch format = 6'
+Processing function [17] for 
+Unmatched Block: 'Patch format = 6'
+Line=''
+Line=''
+Line='Frame 13000'
+Processing function [1] for Frame
+Processing Frame at index 13000: Frame
+ - sprite = 420
+ - tics = 1
+Line='Frame 13001'
+Processing function [1] for Frame
+Processing Frame at index 13001: Frame
+ - sprite = 420
+ - tics = 1
+Line='Frame 13002'
+Processing function [1] for Frame
+Processing Frame at index 13002: Frame
+ - sprite = 420
+ - tics = 1
+Line='Frame 13003'
+Processing function [1] for Frame
+Processing Frame at index 13003: Frame
+ - sprite = 420
+ - frame = 32769
+ - nextstate = 13004
+ - tics = 0
+ - args[0] = 0
+Line='Frame 13004'
+Processing function [1] for Frame
+Processing Frame at index 13004: Frame
+ - sprite = 420
+ - frame = 32769
+ - nextstate = 13005
+ - tics = 2
+ - args[0] = 820
+Line='Frame 13005'
+Processing function [1] for Frame
+Processing Frame at index 13005: Frame
+ - sprite = 420
+ - frame = 32770
+ - nextstate = 13006
+ - tics = 2
+Line='Frame 13006'
+Processing function [1] for Frame
+Processing Frame at index 13006: Frame
+ - sprite = 420
+ - frame = 15
+ - nextstate = 13007
+ - tics = 1
+Line='Frame 13007'
+Processing function [1] for Frame
+Processing Frame at index 13007: Frame
+ - sprite = 420
+ - frame = 16
+ - nextstate = 13008
+ - tics = 1
+Line='Frame 13008'
+Processing function [1] for Frame
+Processing Frame at index 13008: Frame
+ - sprite = 420
+ - frame = 17
+ - nextstate = 13009
+ - tics = 1
+Line='Frame 13009'
+Processing function [1] for Frame
+Processing Frame at index 13009: Frame
+ - nextstate = 13010
+ - tics = 0
+ - args[0] = 13000
+ - args[1] = 1
+Line='Frame 13010'
+Processing function [1] for Frame
+Processing Frame at index 13010: Frame
+ - sprite = 420
+ - frame = 3
+ - nextstate = 13011
+ - tics = 3
+Line='Frame 13011'
+Processing function [1] for Frame
+Processing Frame at index 13011: Frame
+ - sprite = 420
+ - frame = 4
+ - nextstate = 13012
+ - tics = 3
+Line='Frame 13012'
+Processing function [1] for Frame
+Processing Frame at index 13012: Frame
+ - sprite = 420
+ - frame = 5
+ - nextstate = 13013
+ - tics = 3
+Line='Frame 13013'
+Processing function [1] for Frame
+Processing Frame at index 13013: Frame
+ - sprite = 420
+ - frame = 6
+ - nextstate = 13014
+ - tics = 3
+Line='Frame 13014'
+Processing function [1] for Frame
+Processing Frame at index 13014: Frame
+ - sprite = 420
+ - frame = 7
+ - nextstate = 13015
+ - tics = 2
+Line='Frame 13015'
+Processing function [1] for Frame
+Processing Frame at index 13015: Frame
+ - nextstate = 13016
+ - tics = 0
+ - args[0] = 821
+ - args[1] = 0
+Line='Frame 13016'
+Processing function [1] for Frame
+Processing Frame at index 13016: Frame
+ - sprite = 420
+ - frame = 8
+ - nextstate = 13017
+ - tics = 1
+Line='Frame 13017'
+Processing function [1] for Frame
+Processing Frame at index 13017: Frame
+ - sprite = 420
+ - frame = 9
+ - nextstate = 13018
+ - tics = 2
+Line='Frame 13018'
+Processing function [1] for Frame
+Processing Frame at index 13018: Frame
+ - sprite = 420
+ - frame = 10
+ - nextstate = 13019
+ - tics = 2
+Line='Frame 13019'
+Processing function [1] for Frame
+Processing Frame at index 13019: Frame
+ - sprite = 420
+ - frame = 11
+ - nextstate = 13020
+ - tics = 2
+Line='Frame 13020'
+Processing function [1] for Frame
+Processing Frame at index 13020: Frame
+ - sprite = 420
+ - frame = 12
+ - nextstate = 13021
+ - tics = 2
+Line='Frame 13021'
+Processing function [1] for Frame
+Processing Frame at index 13021: Frame
+ - sprite = 420
+ - frame = 13
+ - nextstate = 13022
+ - tics = 2
+Line='Frame 13022'
+Processing function [1] for Frame
+Processing Frame at index 13022: Frame
+ - sprite = 420
+ - frame = 14
+ - nextstate = 13023
+ - tics = 2
+Line='Frame 13023'
+Processing function [1] for Frame
+Processing Frame at index 13023: Frame
+ - sprite = 420
+ - nextstate = 13024
+ - tics = 3
+Line='Frame 13024'
+Processing function [1] for Frame
+Processing Frame at index 13024: Frame
+ - sprite = 420
+ - nextstate = 13000
+ - tics = 7
+Line='Frame 13025'
+Processing function [1] for Frame
+Processing Frame at index 13025: Frame
+ - nextstate = 13026
+ - tics = 2
+Line='Frame 13026'
+Processing function [1] for Frame
+Processing Frame at index 13026: Frame
+ - nextstate = 13027
+ - tics = 2
+Line='Frame 13027'
+Processing function [1] for Frame
+Processing Frame at index 13027: Frame
+ - nextstate = 1
+ - tics = 0
+Line='Weapon 2 (RBRL_HeavyShotgun)'
+Processing function [5] for Weapon
+Processing Weapon at index 2: Weapon
+Line='[CODEPTR]'
+Processing function [12] for [CODEPTR]
+Processing pointer at index 13000: WeaponReady
+ - applied A_WeaponReady from codeptr[1] to states[13000]
+Processing pointer at index 13001: Lower
+ - applied A_Lower from codeptr[2] to states[13001]
+Processing pointer at index 13002: Raise
+ - applied A_Raise from codeptr[3] to states[13002]
+Processing pointer at index 13003: FireShotgunEx
+Invalid frame pointer mnemonic 'FireShotgunEx' at 13003
+Processing pointer at index 13004: WeaponSoundRandom
+Invalid frame pointer mnemonic 'WeaponSoundRandom' at 13004
+Processing pointer at index 13009: CheckAmmo
+ - applied A_CheckAmmo from codeptr[112] to states[13009]
+Processing pointer at index 13015: WeaponSound
+ - applied A_WeaponSound from codeptr[108] to states[13015]
+Processing pointer at index 13024: ReFire
+ - applied A_ReFire from codeptr[5] to states[13024]
+Processing pointer at index 13025: Light1
+ - applied A_Light1 from codeptr[7] to states[13025]
+Processing pointer at index 13026: Light2
+ - applied A_Light2 from codeptr[9] to states[13026]
+Processing pointer at index 13027: Light0
+ - applied A_Light0 from codeptr[0] to states[13027]
+Line='[SPRITES]'
+Processing function [14] for [SPRITES]
+Processing sprite name substitution
+Substituting 'HSHO' for sprite '420'
+Line='[SOUNDS]'
+Processing function [15] for [SOUNDS]
+Processing sound name substitution
+Substituting 'HSHOTG' for sound '820'
+Substituting 'SHOTP2' for sound '821'
+
+Loading DEH lump from /home/jerome/Data/doom-mods/drla/hp-combat-pistol.wad
+
+Line='Patch File for DeHackEd v3.0'
+Processing function [17] for 
+Unmatched Block: 'Patch File for DeHackEd v3.0'
+Line='# Created with DECOHack v0.34.0 by Matt Tropiano'
+Line='# Note: Use the pound sign ('#') to start comment lines.'
+Line=''
+Line='Doom version = 2021'
+Processing function [17] for 
+Unmatched Block: 'Doom version = 2021'
+Line='Patch format = 6'
+Processing function [17] for 
+Unmatched Block: 'Patch format = 6'
+Line=''
+Line=''
+Line='Frame 12500'
+Processing function [1] for Frame
+Processing Frame at index 12500: Frame
+ - sprite = 410
+ - tics = 1
+Line='Frame 12501'
+Processing function [1] for Frame
+Processing Frame at index 12501: Frame
+ - sprite = 410
+ - tics = 1
+Line='Frame 12502'
+Processing function [1] for Frame
+Processing Frame at index 12502: Frame
+ - sprite = 410
+ - tics = 1
+Line='Frame 12503'
+Processing function [1] for Frame
+Processing Frame at index 12503: Frame
+ - sprite = 410
+ - frame = 32769
+ - nextstate = 12504
+ - tics = 0
+ - args[0] = 810
+Line='Frame 12504'
+Processing function [1] for Frame
+Processing Frame at index 12504: Frame
+ - sprite = 410
+ - frame = 32769
+ - nextstate = 12505
+ - tics = 3
+ - args[0] = 0
+Line='Frame 12505'
+Processing function [1] for Frame
+Processing Frame at index 12505: Frame
+ - sprite = 410
+ - frame = 2
+ - nextstate = 12506
+ - tics = 3
+Line='Frame 12506'
+Processing function [1] for Frame
+Processing Frame at index 12506: Frame
+ - sprite = 410
+ - frame = 3
+ - nextstate = 12507
+ - tics = 2
+Line='Frame 12507'
+Processing function [1] for Frame
+Processing Frame at index 12507: Frame
+ - sprite = 410
+ - frame = 4
+ - nextstate = 12508
+ - tics = 2
+Line='Frame 12508'
+Processing function [1] for Frame
+Processing Frame at index 12508: Frame
+ - sprite = 410
+ - nextstate = 12509
+ - tics = 4
+Line='Frame 12509'
+Processing function [1] for Frame
+Processing Frame at index 12509: Frame
+ - sprite = 410
+ - nextstate = 12500
+ - tics = 5
+Line='Frame 12510'
+Processing function [1] for Frame
+Processing Frame at index 12510: Frame
+ - nextstate = 12511
+ - tics = 2
+Line='Frame 12511'
+Processing function [1] for Frame
+Processing Frame at index 12511: Frame
+ - nextstate = 12512
+ - tics = 1
+Line='Frame 12512'
+Processing function [1] for Frame
+Processing Frame at index 12512: Frame
+ - nextstate = 1
+ - tics = 0
+Line='Weapon 1 (RBRL_HPCombatPistol)'
+Processing function [5] for Weapon
+Processing Weapon at index 1: Weapon
+Line='[CODEPTR]'
+Processing function [12] for [CODEPTR]
+Processing pointer at index 12500: WeaponReady
+ - applied A_WeaponReady from codeptr[1] to states[12500]
+Processing pointer at index 12501: Lower
+ - applied A_Lower from codeptr[2] to states[12501]
+Processing pointer at index 12502: Raise
+ - applied A_Raise from codeptr[3] to states[12502]
+Processing pointer at index 12503: WeaponSoundRandom
+Invalid frame pointer mnemonic 'WeaponSoundRandom' at 12503
+Processing pointer at index 12504: FirePistolEx
+Invalid frame pointer mnemonic 'FirePistolEx' at 12504
+Processing pointer at index 12509: ReFire
+ - applied A_ReFire from codeptr[5] to states[12509]
+Processing pointer at index 12510: Light2
+ - applied A_Light2 from codeptr[9] to states[12510]
+Processing pointer at index 12511: Light1
+ - applied A_Light1 from codeptr[7] to states[12511]
+Processing pointer at index 12512: Light0
+ - applied A_Light0 from codeptr[0] to states[12512]
+Line='[SPRITES]'
+Processing function [14] for [SPRITES]
+Processing sprite name substitution
+Substituting 'QCPS' for sprite '410'
+Line='[SOUNDS]'
+Processing function [15] for [SOUNDS]
+Processing sound name substitution
+Substituting 'HPCOMP' for sound '810'
