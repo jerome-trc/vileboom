@@ -1,0 +1,35 @@
+.{
+    .name = "vileboom",
+    .version = "0.0.0",
+    .minimum_zig_version = "0.14.0",
+    .dependencies = .{
+        .cimgui = .{
+            .url = "git+https://github.com/cimgui/cimgui.git#7d50243c501888e477f219d77ee7f5afc1c0180c",
+            .hash = "12203b2e77edaf9af89fca3949812dcfbd67a080d1bc592dd637a359e0357f47b26c",
+        },
+        .@"dsda-doom" = .{
+            .url = "git+https://github.com/kraflab/dsda-doom.git#fe0dfa0511b3fc34ebe0da4061f53a7b5c86ac81",
+            .hash = "1220456b58de153bc6f6e0c69dbed1d05ad32148fcdc3370f74da0309d8d3cabc1ba",
+            .comment = "Sample data for demo compatibility regression testing",
+        },
+        .imgui = .{
+            .url = "git+https://github.com/ocornut/imgui.git#947aa9c9722bd6ff740dd757da609ff41f4d3ba3",
+            .hash = "12206c29257ef9b2a949ea5c56f5bc55be47387338c6cd547bbd5aafcfef22c018af",
+        },
+        .@"viletech.ln" = .{
+            .path = "depend/viletech.ln",
+            .comment = "If developing VileTech and VileBoom in tandem, use this symlink",
+        },
+    },
+    .paths = .{
+        "prboom2",
+        "depend",
+        "build.zig",
+        "build.zig.zon",
+        ".gitignore",
+        "LICENSE",
+        "LICENSE-APACHE",
+        "LICENSE-MIT",
+        "README.md",
+    },
+}
