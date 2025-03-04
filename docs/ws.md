@@ -1,6 +1,6 @@
 # Widescreen Native Lump Support
 
-Nyan Doom supports new widescreen background and statusbar lumps with the prefix `W_`.
+VileBoom supports new widescreen background and statusbar lumps with the prefix `W_`.
 
 When any of the `widescreen` lumps are loaded within a WAD, they will take priority over the following `original` lumps.
 
@@ -36,7 +36,7 @@ Note there are no widescreen versions for [animated lumps](animbg.md) as animate
 | HELP99         | W_HELP99                |
 
 ### UMAPINFO Patches
-Nyan Doom automatically truncates strings larger than 6 characters to fit the prefix `W_` in the 8 character limit. Strings under than 6 characters won't be truncated.
+VileBoom automatically truncates strings larger than 6 characters to fit the prefix `W_` in the 8 character limit. Strings under than 6 characters won't be truncated.
 
 | UMAPINFO KEY   | Example        | WS Example              |
 |----------------|----------------|-------------------------|
