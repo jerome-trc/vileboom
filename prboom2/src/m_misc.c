@@ -753,9 +753,9 @@ void M_LoadDefaults (void)
   else
   {
     const char* configdir = I_ConfigDir();
-    int len = snprintf(NULL, 0, "%s/nyan-doom.cfg", configdir);
+    int len = snprintf(NULL, 0, "%s/vileboom.cfg", configdir);
     defaultfile = Z_Malloc(len + 1);
-    snprintf(defaultfile, len + 1, "%s/nyan-doom.cfg", configdir);
+    snprintf(defaultfile, len + 1, "%s/vileboom.cfg", configdir);
   }
 
   lprintf(LO_DEBUG, " default file: %s\n", defaultfile);
@@ -863,7 +863,7 @@ void M_LoadDefaults (void)
 
   dsda_InitSettings();
 
-  //e6y: Check on existence of nyan-doom.wad
+  // Check on existence of base data archive 
   port_wad_file = I_RequireFile(WAD_DATA, "");
 }
 

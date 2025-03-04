@@ -271,11 +271,11 @@ void dsda_InitDemoRecording(void) {
 
   if (compatibility_level_unspecified)
     I_Error("You must specify a compatibility level when recording a demo!\n"
-            "Example: nyan-doom -iwad DOOM -complevel 3 -skill 4 -record demo");
+            "Example: vileboom -iwad DOOM -complevel 3 -skill 4 -record demo");
 
   if (!dsda_Flag(dsda_arg_skill) && !dsda_Flag(dsda_arg_recordfromto))
     I_Error("You must specify a skill level when recording a demo!\n"
-            "Example: nyan-doom -iwad DOOM -complevel 3 -skill 4 -record demo");
+            "Example: vileboom -iwad DOOM -complevel 3 -skill 4 -record demo");
 
   if (dsda_Flag(dsda_arg_pistol_start))
     I_Error("The -pistolstart option is not allowed when recording a demo!");

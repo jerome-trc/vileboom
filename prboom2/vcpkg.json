@@ -1,8 +1,8 @@
 {
   "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
-  "name": "nyan-doom",
+  "name": "vileboom",
   "version": "1.2.2",
-  "homepage": "https://github.com/andrikpowell/nyan-doom",
+  "homepage": "https://github.com/jerome-trc/vileboom",
   "license": "GPL-2.0-only",
   "dependencies": [
     {

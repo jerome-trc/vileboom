@@ -165,7 +165,7 @@ unsigned long I_GetRandomTimeSeed(void)
  */
 const char* I_GetVersionString(char* buf, size_t sz)
 {
-  snprintf(buf,sz,"%s v%s (https://github.com/andrikpowell/nyan-doom/)",PACKAGE_NAME,PACKAGE_VERSION);
+  snprintf(buf,sz,"%s v%s (https://github.com/jerome-trc/vileboom)",PACKAGE_NAME,PACKAGE_VERSION);
   return buf;
 }
 
@@ -329,7 +329,7 @@ const char *I_ConfigDir(void)
     }
 
     // First, try legacy directory.
-    base = dsda_ConcatDir(home, ".nyan-doom");
+    base = dsda_ConcatDir(home, ".viletech");
     if (access(base, F_OK) != 0)
     {
       // Legacy directory is not accessible. Use XDG directory.
@@ -338,14 +338,14 @@ const char *I_ConfigDir(void)
       Z_Free(base);
 
 #ifdef __APPLE__
-      base = dsda_ConcatDir(home, "Library/Application Support/nyan-doom");
+      base = dsda_ConcatDir(home, "Library/Application Support/viletech");
 #else
       xdg_data_home = M_getenv("XDG_DATA_HOME");
       if (xdg_data_home)
-        base = dsda_ConcatDir(xdg_data_home, "nyan-doom");
+        base = dsda_ConcatDir(xdg_data_home, "viletech");
       else
         // $XDG_DATA_HOME should be $HOME/.local/share if not defined.
-        base = dsda_ConcatDir(home, ".local/share/nyan-doom");
+        base = dsda_ConcatDir(home, ".local/share/viletech");
 #endif
     }
 
@@ -447,7 +447,7 @@ char* I_FindFileInternal(const char* wfname, const char* ext, dboolean isStatic)
     {NULL}, // current working directory
     {NULL, NULL, "DOOMWADDIR"}, // run-time $DOOMWADDIR
     {DOOMWADDIR}, // build-time configured DOOMWADDIR
-    {NYAN_ABSOLUTE_PWAD_PATH}, // build-time configured absolute path to nyan-doom.wad
+    {VTEC_ABSOLUTE_PWAD_PATH}, // build-time configured absolute path to base data archive
     {NULL, NULL, NULL, I_GetBasePath}, // search the base path provided by SDL
     {NULL, "../share/games/doom", NULL, I_GetBasePath}, // AppImage
     {NULL, "doom", "HOME"}, // ~/doom
