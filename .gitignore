@@ -1,7 +1,8 @@
+*.ln
+
+/.zig-cache
+/zig-out
 /prboom2/ICONS/icons.aps
-/prboom2/release
-/build*
-/release*
 
 # spec files
 analysis.txt
