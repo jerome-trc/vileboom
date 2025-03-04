@@ -33,7 +33,7 @@
 
 #include "data_organizer.h"
 
-#define DATA_DIR_LIMIT 9
+#define DATA_DIR_LIMIT 2
 static const char* dsda_data_root = "vileboom";
 static char* dsda_data_dir_strings[DATA_DIR_LIMIT];
 static char* dsda_base_data_dir;
