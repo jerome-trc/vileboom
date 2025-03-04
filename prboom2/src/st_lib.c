@@ -255,7 +255,8 @@ void STlib_updateMultIcon
 {
   if (*mi->on)
   {
-#ifdef RANGECHECK
+#if 0 && defined(RANGECHECK)
+      // TODO: someone forgot to update `y` here.
       if (y - ST_Y < 0)
         I_Error("STlib_updateMultIcon: y - ST_Y < 0");
 #endif

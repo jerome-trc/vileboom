@@ -69,7 +69,8 @@ static void R_FLUSHWHOLE_FUNCNAME(void)
          return;
       }
 
-   #ifdef RANGECHECK
+   #if 0 && defined(RANGECHECK)
+      // TODO: someone forgot to update `x` here.
       if ((unsigned)x >= video.width || yl < 0 || yh  >= video.height)
       {
          I_Error("R_DrawFuzzColumn: %i to %i at %i", yl, yh , x);
@@ -139,7 +140,8 @@ static void R_FLUSHWHOLE_FUNCNAME(void)
          dest   = drawvars.topleft + yl*drawvars.pitch + startx + temp_x;
          count  = tempyh[temp_x] - yl + 1;
 
-   #ifdef RANGECHECK
+   #if 0 && defined(RANGECHECK)
+      // TODO: someone forgot to update `x`, `yh`, and `video` here.
       if ((unsigned)x >= video.width || yl < 0 || yh  >= video.height)
       {
          I_Error("R_DrawFuzzColumn: %i to %i at %i", yl, yh , x);
