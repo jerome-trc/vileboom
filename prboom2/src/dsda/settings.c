@@ -216,6 +216,10 @@ dboolean dsda_SwitchWhenAmmoRunsOut(void) {
   return dsda_IntConfig(dsda_config_switch_when_ammo_runs_out);
 }
 
+dboolean dsda_AutoDisableIddt(void) {
+  return dsda_IntConfig(dsda_config_autodisable_iddt);
+}
+
 dboolean dsda_SkipQuitPrompt(void) {
   return dsda_IntConfig(dsda_config_skip_quit_prompt);
 }

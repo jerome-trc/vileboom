@@ -2106,6 +2106,10 @@ void G_ExitLevel(int position)
   secretexit = false;
   gameaction = ga_completed;
   dsda_UpdateLeaveData(0, position, 0, 0);
+
+  if (dsda_AutoDisableIddt()) {
+    dsda_reveal_map = 0;
+  }
 }
 
 // Here's for the german edition.
