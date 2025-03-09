@@ -241,6 +241,7 @@ typedef enum {
   dsda_config_death_use_action,
   dsda_config_allow_jumping,
   dsda_config_always_pistol_start,
+  dsda_config_mark_seen_items,
   dsda_config_pistol_start,
   dsda_config_respawn_monsters,
   dsda_config_fast_monsters,

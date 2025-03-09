@@ -2262,7 +2262,6 @@ static void AM_DrawNiceThings(void)
   }
 
   // walls
-  if (dsda_RevealAutomap() == 2)
   {
     // for all sectors
     for (i = 0; i < numsectors; i++)
@@ -2279,13 +2278,23 @@ static void AM_DrawNiceThings(void)
       t = sectors[i].thinglist;
       while (t) // for all things in that sector
       {
-        if (!t->player)
-        {
-          AM_GetMobjPosition(t, &p, &angle);
-          if (automap_rotate)
-            AM_rotatePoint(&p);
-          AM_ProcessNiceThing(t, angle, p.x, p.y);
+        if (dsda_RevealAutomap() != 2 && !(t->flags2 & MF2_SEEN)) {
+            t = t->snext;
+            continue;
         }
+
+        if (t->player != NULL) {
+          t = t->snext;
+          continue;
+        }
+
+        AM_GetMobjPosition(t, &p, &angle);
+
+        if (automap_rotate) {
+          AM_rotatePoint(&p);
+        }
+
+        AM_ProcessNiceThing(t, angle, p.x, p.y);
         t = t->snext;
       }
     }
@@ -2794,6 +2803,21 @@ static void AM_setFrameVariables(void)
   }
 
   am_frame.precise = (V_IsOpenGLMode());
+}
+
+void AM_mark_items(const subsector_t * subsect) {
+  for (mobj_t* actor = subsect->sector->thinglist; actor != NULL; actor = actor->snext)
+  {
+    if (actor->subsector != subsect) {
+        continue;
+    }
+
+    if (!(actor->flags & MF_SPECIAL)) {
+        continue;
+    }
+
+    actor->flags2 |= MF2_SEEN;
+  }
 }
 
 //

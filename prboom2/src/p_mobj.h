@@ -520,6 +520,9 @@ void P_RemoveMonsters(void);
 #define MF2_CANUSEWALLS       0x0002000000000000ull // can activate use lines
 #define MF2_COUNTSECRET       0x0004000000000000ull // picking up counts as a secret
 
+// VileBoom
+#define MF2_SEEN              0x0008000000000000ull // item gets automap marker
+
 #define AMMO_GWND_WIMPY 10
 #define AMMO_GWND_HEFTY 50
 #define AMMO_CBOW_WIMPY 5
