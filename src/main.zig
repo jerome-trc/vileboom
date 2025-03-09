@@ -16,6 +16,13 @@ pub fn main() anyerror!void {
 
 extern "c" fn cMain(argc: c_int, argv: [*][*:0]u8) c_int;
 
+export fn pathStem(path: [*:0]const u8, out_len: *usize) [*]const u8 {
+    const slice = std.mem.sliceTo(path, 0);
+    const ret = std.fs.path.stem(slice);
+    out_len.* = ret.len;
+    return ret.ptr;
+}
+
 fn setWindowIcon() callconv(.c) void {
     set_window_icon.call();
 }

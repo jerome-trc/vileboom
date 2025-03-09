@@ -177,4 +177,6 @@ extern int global_patch_top_offset;
 
 #define arrlen(array) (sizeof(array) / sizeof(*array))
 
+#define streq(_a_, _b_) (strcmp(_a_, _b_) == 0)
+
 #endif
