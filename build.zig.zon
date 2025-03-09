@@ -1,5 +1,6 @@
 .{
-    .name = "vileboom",
+    .name = .vileboom,
+    .fingerprint = 0x3c15a04c9d41b58a,
     .version = "0.0.0",
     .minimum_zig_version = "0.14.0",
     .dependencies = .{
