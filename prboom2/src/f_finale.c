@@ -522,8 +522,9 @@ void F_Ticker(void)
   if (!finalestage)
     {
       float speed = demo_compatibility ? TEXTSPEED : Get_TextSpeed();
+      const size_t finale_text_len = finaletext != NULL ? strlen(finaletext) : 0;
       /* killough 2/28/98: changed to allow acceleration */
-      if (finalecount > strlen(finaletext)*speed +
+      if (finalecount > finale_text_len * speed +
           (midstage ? NEWTEXTWAIT : TEXTWAIT) ||
           (midstage && acceleratestage)) {
         if (gamemode != commercial)       // Doom 1 / Ultimate Doom episode end
@@ -567,8 +568,9 @@ void F_TextWrite (void)
     V_ClearBorder();
     V_DrawNameNyanPatch(0, 0, 0, finalepatch, CR_DEFAULT, VPT_STRETCH);
   }
-  else
-    V_DrawBackground(finaleflat, 0);
+  else {
+    V_DrawBackground(finaleflat != NULL ? finaleflat : "F_SKY1", 0);
+  }
 
   { // draw some of the text onto the screen
     int         cx = 10;
@@ -579,6 +581,10 @@ void F_TextWrite (void)
 
     if (count < 0)
       count = 0;
+
+    if (ch == NULL) {
+      ch = "<no finale text>";
+    }
 
     for ( ; count ; count-- ) {
       int       c = *ch++;
