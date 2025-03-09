@@ -58,8 +58,8 @@
 
 static dboolean disable_message_box;
 
-int cons_stdout_mask = LO_INFO;
-int cons_stderr_mask = LO_WARN | LO_ERROR;
+int cons_stdout_mask = 0;
+int cons_stderr_mask = LO_INFO | LO_WARN | LO_ERROR;
 
 /* cphipps - enlarged message buffer and made non-static
  * We still have to be careful here, this function can be called after exit
@@ -96,7 +96,7 @@ int lprintf(OutputLevels pri, const char *s, ...)
 
 void I_EnableVerboseLogging(void)
 {
-  cons_stdout_mask = LO_INFO | LO_DEBUG;
+  cons_stderr_mask |= LO_DEBUG;
 }
 
 void I_DisableAllLogging(void)
