@@ -40,6 +40,7 @@ dboolean dsda_AlwaysSR50(void);
 dboolean dsda_HideHorns(void);
 dboolean dsda_HideWeapon(void);
 dboolean dsda_SwitchWhenAmmoRunsOut(void);
+dboolean dsda_AutoDisableIddt(void);
 dboolean dsda_SkipQuitPrompt(void);
 dboolean dsda_PlayQuicksaveSFX(void);
 dboolean dsda_TrackSplits(void);
@@ -77,5 +78,7 @@ dboolean dsda_AllowMouse(void);
 void dsda_WatchGameControllerEvent(void);
 void dsda_WatchMouseEvent(void);
 void dsda_LiftInputRestrictions(void);
+
+extern int dsda_reveal_map;
 
 #endif

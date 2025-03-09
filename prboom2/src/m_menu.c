@@ -79,6 +79,7 @@
 #include "f_finale.h"
 #include "e6y.h"//e6y
 
+#include "dsda/configuration.h"
 #include "dsda/episode.h"
 #include "dsda/exhud.h"
 #include "dsda/features.h"
@@ -2665,6 +2666,7 @@ setup_menu_t weap_settings1[] =  // Weapons Settings screen
   EMPTY_LINE,
   { "Boom Weapon Auto Switch", S_YESNO, m_conf, WP_X, dsda_config_switch_when_ammo_runs_out },
   { "Auto Switch Weapon on Pickup", S_YESNO, m_conf, WP_X, dsda_config_switch_weapon_on_pickup },
+  { "Disable IDDT Between Levels", S_YESNO, m_conf, WP_X, dsda_config_autodisable_iddt },
 
   FINAL_ENTRY
 };

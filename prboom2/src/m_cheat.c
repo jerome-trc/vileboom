@@ -704,8 +704,6 @@ static void cheat_massacre()    // jff 2/01/98 kill all monsters
 
 void M_CheatIDDT(void)
 {
-  extern int dsda_reveal_map;
-
   dsda_TrackFeature(uf_iddt);
 
   dsda_reveal_map = (dsda_reveal_map+1) % 3;
