@@ -341,9 +341,9 @@ static arg_config_t arg_config[dsda_arg_count] = {
     arg_null,
   },
   [dsda_arg_levelstat] = {
-    "-levelstat", NULL, NULL,
-    "writes level stats to levelstat.txt",
-    arg_null,
+    "-levelstat", NULL, "levelstat.txt",
+    "writes level stats to levelstat.txt or stdout",
+    arg_string,
   },
   [dsda_arg_export_text_file] = {
     "-export_text_file", NULL, NULL,
@@ -752,10 +752,14 @@ static void dsda_ParseArg(arg_config_t* config, dsda_arg_t* arg, int argv_i) {
 
     is_integer = sscanf(dsda_argv[argv_i + arg->count + 1], "%d", &x);
 
-    if (dsda_argv[argv_i + arg->count + 1][0] == '-' && !is_integer)
+    if (dsda_argv[argv_i + arg->count + 1][0] == '-' &&
+      !is_integer &&
+      !streq(dsda_argv[argv_i + arg->count + 1], "-"))
+    {
       break;
+    }
 
-    if (config->type == arg_int || config->type == arg_int_array) {
+	if (config->type == arg_int || config->type == arg_int_array) {
       // only valid integers should be interpreted as arguments
       if (!is_integer)
         I_Error("%s does not accept string arguments", config->name);
@@ -864,7 +868,7 @@ void dsda_ParseCommandLineArgs(int argc, char** argv) {
 
     is_integer = sscanf(dsda_argv[argv_i], "%d", &x);
 
-    if (dsda_argv[argv_i][0] == '-' && !is_integer) {
+    if (dsda_argv[argv_i][0] == '-' && !streq(dsda_argv[argv_i], "-") && !is_integer) {
       for (i = 0; i < dsda_arg_count; ++i) {
         config = &arg_config[i];
 

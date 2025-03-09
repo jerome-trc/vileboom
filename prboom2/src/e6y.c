@@ -40,6 +40,7 @@
 #include <direct.h>
 #include <winreg.h>
 #endif
+#include <assert.h>
 #include <SDL_opengl.h>
 #include <string.h>
 #include <math.h>
@@ -194,12 +195,21 @@ void M_ChangeShorttics(void)
   shorttics = dsda_IntConfig(dsda_config_movement_shorttics) || dsda_Flag(dsda_arg_shorttics);
 }
 
-void e6y_InitCommandLine(void)
-{
+void e6y_InitCommandLine(void) {
   stats_level = dsda_Flag(dsda_arg_levelstat);
+  const char* levelstat_arg = dsda_Arg(dsda_arg_levelstat)->value.v_string;
 
-  if ((stroller = dsda_Flag(dsda_arg_stroller)))
+  if (levelstat_arg != NULL) {
+    if (streq(levelstat_arg, "-")) {
+      stats_level = lvlstat_stdout;
+    } else {
+      stats_level = lvlstat_named;
+    }
+  }
+
+  if ((stroller = dsda_Flag(dsda_arg_stroller))) {
     dsda_UpdateIntArg(dsda_arg_turbo, "50");
+  }
 
   dsda_ReadCommandLine();
 
@@ -438,7 +448,7 @@ int I_MessageBox(const char* text, unsigned int type)
   return PRB_IDCANCEL;
 }
 
-int stats_level;
+LevelStat stats_level;
 int stroller;
 int numlevels = 0;
 int levels_max = 0;
@@ -450,7 +460,7 @@ void e6y_G_DoCompleted(void)
 
   dsda_EvaluateSkipModeDoCompleted();
 
-  if(!stats_level)
+  if(stats_level == lvlstat_none)
     return;
 
   if (numlevels >= levels_max)
@@ -504,19 +514,32 @@ typedef struct tmpdata_s
 
 void e6y_WriteStats(void)
 {
-  FILE *f;
+  FILE *f = NULL;
   char str[200];
   int i, level, playerscount;
   timetable_t max;
   tmpdata_t tmp;
   tmpdata_t *all;
   size_t allkills_len=0, allitems_len=0, allsecrets_len=0;
+  const char* levelstat_arg = dsda_Arg(dsda_arg_levelstat)->value.v_string;
 
-  f = M_OpenFile("levelstat.txt", "wb");
+  switch (stats_level) {
+    default:
+      fprintf(stderr, "unreachable code %s:%u\n", __FILE__, __LINE__);
+      abort();
+    case lvlstat_named: {
+      assert(levelstat_arg != NULL);
+      f = M_OpenFile(levelstat_arg, "wb");
+      break;
+    }
+    case lvlstat_stdout: {
+      f = stdout;
+      break;
+    }
+  }
 
-  if (f == NULL)
-  {
-    lprintf(LO_ERROR, "Unable to open levelstat.txt for writing\n");
+  if (f == NULL) {
+    lprintf(LO_ERROR, "Unable to open %s for writing\n", levelstat_arg);
     return;
   }
 
@@ -598,7 +621,10 @@ void e6y_WriteStats(void)
   }
 
   Z_Free(all);
-  fclose(f);
+
+  if (f != stdout) {
+    fclose(f);
+  }
 }
 
 //--------------------------------------------------

@@ -21,6 +21,9 @@
 #include "dsda/excmd.h"
 #include "dsda/exdemo.h"
 #include "dsda/settings.h"
+#include "dsda/playback.h"
+
+#include "viletech/stdx.h"
 
 #include "analysis.h"
 
@@ -81,10 +84,21 @@ void dsda_WriteAnalysis(void) {
 
   if (!dsda_analysis) return;
 
-  fstream = M_OpenFile("analysis.txt", "w");
+  char filename[PATH_MAX];
+  size_t demo_filepfx_len = 0;
+  const char* demo_filepfx = pathStem(dsda_PlaybackName(), &demo_filepfx_len);
+  snprintf(
+      filename,
+      sizeof(filename),
+      "analysis.%.*s.txt",
+      (int)demo_filepfx_len,
+      demo_filepfx
+  );
+
+  fstream = M_OpenFile(filename, "w");
 
   if (fstream == NULL) {
-    fprintf(stderr, "Unable to open analysis.txt for writing!\n");
+    fprintf(stderr, "Unable to open %s for writing!\n", filename);
     return;
   }
 

@@ -192,7 +192,13 @@ typedef struct timetable_s
 const char* WINError(void);
 #endif
 
-extern int stats_level;
+typedef enum LevelStat {
+  lvlstat_none,
+  lvlstat_named,
+  lvlstat_stdout,
+} LevelStat;
+
+extern LevelStat stats_level;
 extern int stroller;
 
 void e6y_G_DoCompleted(void);
