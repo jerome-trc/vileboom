@@ -3293,6 +3293,7 @@ setup_menu_t gameplay_settings[] = {
   EMPTY_LINE,
   { "Always Pistol Start", S_YESNO, m_conf, G_X, dsda_config_always_pistol_start },
   { "Allow Jumping", S_YESNO, m_conf, G_X, dsda_config_allow_jumping },
+  { "Mark Seen Items on Automap", S_YESNO, m_conf, G_X, dsda_config_mark_seen_items, },
   EMPTY_LINE,
   { "Rewind Options", S_SKIP | S_TITLE, m_null, G_X},
   { "Rewind Interval (s)", S_NUM, m_conf, G_X, dsda_config_auto_key_frame_interval },

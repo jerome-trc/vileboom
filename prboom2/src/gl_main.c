@@ -319,6 +319,10 @@ void gld_MapDrawSubsectors(player_t *plr, int fx, int fy, fixed_t mx, fixed_t my
       if (map_subsectors[i] || dsda_RevealAutomap())
       {
         visible_subsectors[visible_subsectors_count++] = &subsectors[i];
+
+        if (dsda_MarkSeenItems()) {
+          AM_mark_items(&subsectors[i]);
+        }
       }
     }
 

@@ -1091,6 +1091,10 @@ dsda_config_t dsda_config[dsda_config_count] = {
     "dsda_always_pistol_start", dsda_config_always_pistol_start,
     CONF_BOOL(0), NULL, NOT_STRICT, dsda_RefreshAlwaysPistolStart
   },
+  [dsda_config_mark_seen_items] = {
+    "dsda_config_mark_seen_items", dsda_config_mark_seen_items,
+    CONF_BOOL(0), NULL, NOT_STRICT,
+  },
   [dsda_config_pistol_start] = {
     "dsda_pistol_start", dsda_config_pistol_start,
     CONF_BOOL(0), NULL, NOT_STRICT, dsda_RefreshPistolStart

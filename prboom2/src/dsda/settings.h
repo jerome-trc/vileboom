@@ -61,6 +61,7 @@ dboolean dsda_BonusPalette(void);
 dboolean dsda_PowerPalette(void);
 dboolean dsda_RenderWipeScreen(void);
 dboolean dsda_WipeAtFullSpeed(void);
+dboolean dsda_MarkSeenItems(void);
 int dsda_ShowAliveMonsters(void);
 int dsda_CycleShowAliveMonsters(void);
 int dsda_RevealAutomap(void);

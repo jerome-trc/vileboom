@@ -41,6 +41,7 @@
 #include "d_event.h"
 #include "m_fixed.h"
 #include "m_misc.h"
+#include "r_defs.h"
 
 typedef struct
 {
@@ -117,6 +118,8 @@ void AM_clearMarks(void);
 void AM_setMarkParams(int num);
 
 void AM_SetResolution(void);
+
+void AM_mark_items(const subsector_t*);
 
 typedef struct
 {
