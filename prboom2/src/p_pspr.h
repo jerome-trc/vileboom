@@ -37,6 +37,7 @@
 /* Basic data types.
  * Needs fixed point, and BAM angles. */
 
+#include "doomdef.h"
 #include "m_fixed.h"
 #include "tables.h"
 
@@ -158,5 +159,14 @@ void P_UpdateBeak(struct player_s * player, pspdef_t * psp);
 void P_SetPspriteNF(struct player_s * player, int position, statenum_t stnum);
 void P_PostMorphWeapon(struct player_s * player, weapontype_t weapon);
 void P_ActivateMorphWeapon(struct player_s * player);
+
+// VileBoom ////////////////////////////////////////////////////////////////////
+
+void A_WeaponSoundRandom(struct player_s*, pspdef_t*);
+
+void A_FirePistolEx(struct player_s *, pspdef_t *);
+void A_FireShotgunEx(struct player_s *, pspdef_t *);
+void A_FireShotgun2Ex(struct player_s *, pspdef_t *);
+void A_FireCGunEx(struct player_s *, pspdef_t *);
 
 #endif

@@ -1232,8 +1232,9 @@ void A_WeaponProjectile(player_t *player, pspdef_t *psp)
 
   CHECK_WEAPON_CODEPOINTER("A_WeaponProjectile", player);
 
-  if (!mbf21 || !psp->state || !psp->state->args[0])
+  if (!psp->state || !psp->state->args[0]) {
     return;
+  }
 
   type        = psp->state->args[0] - 1;
   angle       = psp->state->args[1];
@@ -1283,8 +1284,9 @@ void A_WeaponBulletAttack(player_t *player, pspdef_t *psp)
 
   CHECK_WEAPON_CODEPOINTER("A_WeaponBulletAttack", player);
 
-  if (!mbf21 || !psp->state)
+  if (!psp->state) {
     return;
+  }
 
   hspread    = psp->state->args[0];
   vspread    = psp->state->args[1];
@@ -1321,7 +1323,7 @@ void A_WeaponMeleeAttack(player_t *player, pspdef_t *psp)
 
   CHECK_WEAPON_CODEPOINTER("A_WeaponMeleeAttack", player);
 
-  if (!mbf21 || !psp->state)
+  if (!psp->state)
     return;
 
   damagebase = psp->state->args[0];
@@ -1373,8 +1375,9 @@ void A_WeaponSound(player_t *player, pspdef_t *psp)
 {
   CHECK_WEAPON_CODEPOINTER("A_WeaponSound", player);
 
-  if (!mbf21 || !psp->state)
+  if (!psp->state) {
     return;
+  }
 
   S_StartMobjSound(psp->state->args[1] ? NULL : player->mo, psp->state->args[0]);
 }
@@ -1386,9 +1389,6 @@ void A_WeaponSound(player_t *player, pspdef_t *psp)
 void A_WeaponAlert(player_t *player, pspdef_t *psp)
 {
   CHECK_WEAPON_CODEPOINTER("A_WeaponAlert", player);
-
-  if (!mbf21)
-    return;
 
   P_NoiseAlert(player->mo, player->mo);
 }
@@ -1404,7 +1404,7 @@ void A_WeaponJump(player_t *player, pspdef_t *psp)
 {
   CHECK_WEAPON_CODEPOINTER("A_WeaponJump", player);
 
-  if (!mbf21 || !psp->state)
+  if (!psp->state)
     return;
 
   if (P_Random(pr_mbf21) < psp->state->args[1])
@@ -1422,9 +1422,6 @@ void A_ConsumeAmmo(player_t *player, pspdef_t *psp)
   ammotype_t type;
 
   CHECK_WEAPON_CODEPOINTER("A_ConsumeAmmo", player);
-
-  if (!mbf21)
-    return;
 
   // don't do dumb things, kids
   type = weaponinfo[player->readyweapon].ammo;
@@ -1458,9 +1455,6 @@ void A_CheckAmmo(player_t *player, pspdef_t *psp)
 
   CHECK_WEAPON_CODEPOINTER("A_CheckAmmo", player);
 
-  if (!mbf21)
-    return;
-
   type = weaponinfo[player->readyweapon].ammo;
   if (!psp->state || type == am_noammo)
     return;
@@ -1484,8 +1478,9 @@ void A_RefireTo(player_t *player, pspdef_t *psp)
 {
   CHECK_WEAPON_CODEPOINTER("A_RefireTo", player);
 
-  if (!mbf21 || !psp->state)
+  if (!psp->state) {
     return;
+  }
 
   if ((psp->state->args[1] || P_CheckAmmo(player))
   &&  (player->cmd.buttons & BT_ATTACK)
@@ -1503,8 +1498,9 @@ void A_GunFlashTo(player_t *player, pspdef_t *psp)
 {
   CHECK_WEAPON_CODEPOINTER("A_GunFlashTo", player);
 
-  if (!mbf21 || !psp->state)
+  if (!psp->state) {
     return;
+  }
 
   if(!psp->state->args[1])
     P_SetMobjState(player->mo, S_PLAY_ATK2);
@@ -3972,4 +3968,92 @@ void A_ShedShard(mobj_t * actor)
             mo->special_args[0] = (spermcount == 3) ? 2 : 0;
         }
     }
+}
+
+// VileBoom ////////////////////////////////////////////////////////////////////
+
+void A_FirePistolEx(player_t *player, pspdef_t *psp)
+{
+  CHECK_WEAPON_CODEPOINTER(__func__, player);
+
+  if (psp->state->args[0]) {
+    S_StartMobjSound(player->mo, sfx_pistol);
+  }
+
+  P_SetMobjState(player->mo, S_PLAY_ATK2);
+  P_SubtractAmmo(player, 1);
+  A_FireSomething(player,0);                                      // phares
+  P_BulletSlope(player->mo);
+  P_GunShot(player->mo, !player->refire);
+}
+
+void A_FireShotgunEx(player_t *player, pspdef_t *psp)
+{
+  int i;
+
+  CHECK_WEAPON_CODEPOINTER(__func__, player);
+
+  S_StartMobjSound(player->mo, psp->state->args[0]);
+  P_SetMobjState(player->mo, S_PLAY_ATK2);
+
+  P_SubtractAmmo(player, 1);
+
+  A_FireSomething(player,0);                                      // phares
+
+  P_BulletSlope(player->mo);
+
+  for (i=0; i<7; i++)
+    P_GunShot(player->mo, false);
+}
+
+void A_FireShotgun2Ex(player_t *player, pspdef_t *psp)
+{
+  int i;
+
+  CHECK_WEAPON_CODEPOINTER(__func__, player);
+
+  if (psp->state->args[0]) {
+    S_StartMobjSound(player->mo, sfx_dshtgn);
+  }
+
+  P_SetMobjState(player->mo, S_PLAY_ATK2);
+  P_SubtractAmmo(player, 2);
+  A_FireSomething(player,0);                                      // phares
+  P_BulletSlope(player->mo);
+
+  for (i=0; i<20; i++)
+    {
+      int damage = 5*(P_Random(pr_shotgun)%3+1);
+      angle_t angle = player->mo->angle;
+      // killough 5/5/98: remove dependence on order of evaluation:
+      int t = P_Random(pr_shotgun);
+      angle += (t - P_Random(pr_shotgun))<<19;
+      t = P_Random(pr_shotgun);
+      P_LineAttack(player->mo, angle, MISSILERANGE, bulletslope +
+                   ((t - P_Random(pr_shotgun))<<5), damage);
+    }
+}
+
+void A_FireCGunEx(player_t *player, pspdef_t *psp)
+{
+  dboolean has_ammo;
+
+  CHECK_WEAPON_CODEPOINTER(__func__, player);
+
+  has_ammo = player->ammo[weaponinfo[player->readyweapon].ammo] ||
+             player->cheats & CF_INFINITE_AMMO;
+
+  if (!has_ammo) {
+    return;
+  }
+
+  if (psp->state->args[0] && comp[comp_sound]) {
+    S_StartMobjSound(player->mo, sfx_pistol);
+  }
+
+  P_SetMobjState(player->mo, S_PLAY_ATK2);
+  P_SubtractAmmo(player, 1);
+  P_SetPsprite(player, ps_flash, psp->state->args[1]);
+  P_BulletSlope(player->mo);
+  P_GunShot(player->mo, !player->refire);
 }
