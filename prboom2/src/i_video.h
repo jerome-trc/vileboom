@@ -54,7 +54,7 @@ extern const char *sdl_video_window_pos;
 void I_PreInitGraphics(void); /* CPhipps - do stuff immediately on start */
 void I_InitScreenResolution(void); /* init resolution */
 void I_SetWindowCaption(void); /* Set the window caption */
-void I_SetWindowIcon(void); /* Set the application icon */
+void I_SetWindowIcon(SDL_Window*); /* Set the application icon */
 void I_InitGraphics (void);
 void I_UpdateVideoMode(void);
 void I_ShutdownGraphics(void);

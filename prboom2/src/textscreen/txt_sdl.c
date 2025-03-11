@@ -24,6 +24,7 @@
 
 #include "doomkeys.h"
 
+#include "i_video.h"
 #include "txt_main.h"
 #include "txt_sdl.h"
 
@@ -260,6 +261,8 @@ int TXT_Init(void)
 
     if (TXT_SDLWindow == NULL)
         return 0;
+
+    I_SetWindowIcon(TXT_SDLWindow);
 
     // Instead, we draw everything into an intermediate 8-bit surface
     // the same dimensions as the screen. SDL then takes care of all the

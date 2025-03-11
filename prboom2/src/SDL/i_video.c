@@ -1184,7 +1184,7 @@ void I_InitGraphics(void)
     I_SetWindowCaption();
 
     //e6y: set the application icon
-    I_SetWindowIcon();
+    I_SetWindowIcon(sdl_window);
 
     /* Initialize the input system */
     I_InitInputs();
