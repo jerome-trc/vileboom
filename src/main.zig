@@ -5,7 +5,10 @@ const c = @cImport({
     @cInclude("SDL_image.h");
 
     @cDefine("VTEC_ZIG", "");
+    @cInclude("d_player.h");
     @cInclude("i_video.h");
+    @cInclude("m_random.h");
+    @cInclude("s_sound.h");
     @cUndef("VTEC_ZIG");
 });
 
@@ -57,4 +60,39 @@ var set_window_icon = std.once(struct {
 
 comptime {
     @export(&setWindowIcon, .{ .name = "I_SetWindowIcon" });
+}
+
+fn boomrngRange(rng_class: c.pr_class_t, min_inclusive: c_int, max_inclusive: c_int) c_int {
+    return @rem(c.P_Random(rng_class), max_inclusive) + min_inclusive;
+}
+
+fn weaponSoundRandom(player: *c.player_t, psp: *c.pspdef_t) callconv(.c) void {
+    const play_globally = psp.state.*.args[0] != 0;
+    var choices = std.BoundedArray(c_int, 5).init(0) catch unreachable;
+
+    for (0..choices.buffer.len) |i| {
+        if (psp.state.*.args[i] != 0) {
+            choices.append(@intCast(psp.state.*.args[i])) catch unreachable;
+        }
+    }
+
+    switch (choices.len) {
+        0 => return,
+        1 => {
+            c.S_StartMobjSound(if (play_globally) null else player.mo, choices.get(0));
+            return;
+        },
+        else => {},
+    }
+
+    if (choices.len == 0)
+        return;
+
+    const max_incl = std.math.lossyCast(c_int, choices.len - 1);
+    const which = std.math.lossyCast(usize, boomrngRange(c.pr_mbf21, 0, max_incl));
+    c.S_StartMobjSound(if (play_globally) null else player.mo, choices.get(which));
+}
+
+comptime {
+    @export(&weaponSoundRandom, .{ .name = "A_WeaponSoundRandom" });
 }
