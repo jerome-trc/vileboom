@@ -26,37 +26,31 @@ export fn pathStem(path: [*:0]const u8, out_len: *usize) [*]const u8 {
     return ret.ptr;
 }
 
-fn setWindowIcon() callconv(.c) void {
-    set_window_icon.call();
-}
+fn setWindowIcon(window: *c.SDL_Window) callconv(.c) void {
+    const bytes = @embedFile("viletech.png");
+    const rwop = c.SDL_RWFromConstMem(bytes.ptr, @intCast(bytes.len));
 
-var set_window_icon = std.once(struct {
-    fn impl() void {
-        const bytes = @embedFile("viletech.png");
-        const rwop = c.SDL_RWFromConstMem(bytes.ptr, @intCast(bytes.len));
-
-        if (rwop == null) {
-            log.err(
-                "Failed to set window icon; {s}",
-                .{std.mem.span(c.SDL_GetError())},
-            );
-            return;
-        }
-
-        const surface = c.IMG_LoadPNG_RW(rwop);
-
-        if (surface == null) {
-            log.err(
-                "Failed to read window icon PNG: {s}",
-                .{std.mem.span(c.IMG_GetError())},
-            );
-            return;
-        }
-
-        c.SDL_SetWindowIcon(c.sdl_window, surface);
-        c.SDL_FreeSurface(surface);
+    if (rwop == null) {
+        log.err(
+            "Failed to set window icon; {s}",
+            .{std.mem.span(c.SDL_GetError())},
+        );
+        return;
     }
-}.impl);
+
+    const surface = c.IMG_LoadPNG_RW(rwop);
+
+    if (surface == null) {
+        log.err(
+            "Failed to read window icon PNG: {s}",
+            .{std.mem.span(c.IMG_GetError())},
+        );
+        return;
+    }
+
+    defer c.SDL_FreeSurface(surface);
+    c.SDL_SetWindowIcon(window, surface);
+}
 
 comptime {
     @export(&setWindowIcon, .{ .name = "I_SetWindowIcon" });
