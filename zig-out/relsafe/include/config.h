@@ -33,5 +33,5 @@
 
 #define SIMPLECHECKS 
 
-#define RANGECHECK 
+/* #undef RANGECHECK */
 

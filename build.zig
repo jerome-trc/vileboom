@@ -436,8 +436,8 @@ fn configHeader(self: *Self) *std.Build.Step.ConfigHeader {
         },
         // Extra bounds checks across C code.
         .RANGECHECK = switch (self.optimize) {
-            .Debug, .ReleaseSafe => true,
-            .ReleaseFast, .ReleaseSmall => false,
+            .Debug => true,
+            .ReleaseSafe, .ReleaseFast, .ReleaseSmall => false,
         },
     });
 }
