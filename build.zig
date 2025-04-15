@@ -226,6 +226,25 @@ pub fn engine(self: *Self) *std.Build.Step.Compile {
     const c_lib = self.cStaticLibrary(cfg_hdr);
     const meta_info = self.metainfo();
 
+    const cimport_h = self.b.addTranslateC(.{
+        .root_source_file = self.b.path("prboom2/src/viletech/cimport.h"),
+        .target = self.target,
+        .optimize = self.optimize,
+    });
+    cimport_h.link_libc = true;
+
+    cimport_h.addIncludePath(self.b.path("prboom2/src"));
+    cimport_h.addIncludePath(cfg_hdr.getOutput().dirname());
+
+    for (self.sdl2.includes) |incdir|
+        cimport_h.addIncludePath(.{ .cwd_relative = incdir });
+
+    cimport_h.addIncludePath(self.imgui.path("backends"));
+    cimport_h.addIncludePath(self.cimgui.dep.path(""));
+    cimport_h.addIncludePath(self.cimgui.dep.path("generator/output"));
+
+    const cimport = cimport_h.createModule();
+
     const exe_options = std.Build.ExecutableOptions{
         .name = "vileboom",
         .root_source_file = self.b.path("src/main.zig"),
@@ -239,10 +258,12 @@ pub fn engine(self: *Self) *std.Build.Step.Compile {
 
     self.exeCommon(exe, cfg_hdr);
     exe.root_module.addOptions("meta", meta_info);
+    exe.root_module.addImport("cimport.h", cimport);
     exe.linkLibrary(c_lib);
 
     self.exeCommon(exe_check, cfg_hdr);
     exe_check.root_module.addOptions("meta", meta_info);
+    exe_check.root_module.addImport("cimport.h", cimport);
 
     const datawad = @import("build.data.zig").data(self.b, self.target, cfg_hdr);
     exe.step.dependOn(&datawad.step);
@@ -291,6 +312,8 @@ fn exeCommon(
     exe.root_module.addAnonymousImport("viletech.png", .{
         .root_source_file = self.viletech.path("assets/viletech.png"),
     });
+
+    exe.root_module.addImport("viletech", self.viletech.module("viletech"));
 
     exe.addIncludePath(self.b.path("prboom2/src"));
     exe.addIncludePath(cfg_hdr.getOutput().dirname());
@@ -376,9 +399,6 @@ fn exeCommon(
     }
 
     exe.linkLibrary(self.cimgui.lib);
-    exe.addSystemIncludePath(self.imgui.path("backends"));
-    exe.addSystemIncludePath(self.cimgui.dep.path(""));
-    exe.addSystemIncludePath(self.cimgui.dep.path("generator/output"));
 }
 
 fn configHeader(self: *Self) *std.Build.Step.ConfigHeader {

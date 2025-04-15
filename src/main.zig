@@ -1,7 +1,10 @@
+const builtin = @import("builtin");
 const std = @import("std");
 const log = std.log.scoped(.main);
 
-const c = @cImport({
+const Launcher = @import("Launcher.zig");
+
+pub const c = @cImport({
     @cInclude("SDL_image.h");
 
     @cDefine("VTEC_ZIG", "");
@@ -12,8 +15,37 @@ const c = @cImport({
     @cUndef("VTEC_ZIG");
 });
 
-pub fn main() anyerror!void {
-    _ = cMain(@intCast(std.os.argv.len), std.os.argv.ptr);
+pub const global_allocator = if (builtin.link_libc)
+    std.heap.c_allocator
+else if (builtin.target.isWasm())
+    std.heap.wasm_allocator
+else if (!builtin.single_threaded)
+    std.heap.smp_allocator
+else
+    std.heap.page_allocator;
+
+pub fn main() anyerror!u8 {
+    // User presumably wants to skip the launcher.
+    if (std.os.argv.len > 1) {
+        _ = cMain(@intCast(std.os.argv.len), std.os.argv.ptr);
+        unreachable; // For now.
+    }
+
+    var dbg_gpa: ?std.heap.DebugAllocator(.{}) = if (builtin.mode == .Debug) .{} else null;
+    const gpa = if (builtin.mode == .Debug) dbg_gpa.?.allocator() else global_allocator;
+    var launcher = try Launcher.init(gpa);
+    defer launcher.deinit();
+
+    if (!try launcher.loop()) {
+        try launcher.saveConfig();
+        return 0;
+    }
+
+    try launcher.saveConfig();
+    var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
+    defer arena.deinit();
+    const argv = try launcher.cArguments(arena.allocator());
+    _ = cMain(@intCast(argv.items.len), argv.items.ptr);
     unreachable; // For now.
 }
 

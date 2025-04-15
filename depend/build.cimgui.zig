@@ -92,14 +92,9 @@ pub fn staticLib(
         .root = imgui.path(""),
         .flags = cxx_flags,
         .files = &.{
-            "imgui_demo.cpp",
-            "imgui_draw.cpp",
             "backends/imgui_impl_sdl2.cpp",
             "backends/imgui_impl_sdlrenderer2.cpp",
             "backends/imgui_impl_opengl3.cpp",
-            "imgui_tables.cpp",
-            "imgui_widgets.cpp",
-            "imgui.cpp",
         },
     });
 
